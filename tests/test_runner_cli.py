@@ -170,6 +170,35 @@ def test_claude_json_event_stats_count_tools_and_tokens() -> None:
     }
 
 
+def test_claude_json_event_stats_fold_cache_tokens_into_input() -> None:
+    # Claude Code bills cached context under cache_read/cache_creation fields;
+    # `input_tokens` alone is only the fresh delta. The parser must fold both
+    # cache fields back into agent_input_tokens so totals reflect real usage.
+    stdout = "\n".join(
+        [
+            '{"type":"system","session_id":"s"}',
+            (
+                '{"type":"assistant","message":{"content":[{"type":"text",'
+                '"text":"Working"}],"usage":{"input_tokens":7,'
+                '"cache_read_input_tokens":1000,'
+                '"cache_creation_input_tokens":500,"output_tokens":1}}}'
+            ),
+            (
+                '{"type":"assistant","message":{"content":['
+                '{"type":"tool_use","name":"Bash","id":"t1","input":{}}],'
+                '"usage":{"input_tokens":13,"cache_read_input_tokens":2000,'
+                '"output_tokens":4}}}'
+            ),
+            '{"type":"result","num_turns":2,"totalTokens":3600}',
+        ]
+    )
+
+    stats = _claude_json_event_stats(stdout)
+    assert stats["agent_input_tokens"] == 3520  # 7+1000+500 + 13+2000
+    assert stats["agent_output_tokens"] == 5
+    assert stats["agent_total_tokens"] == 3600
+
+
 def test_gemini_json_event_stats_count_tools_and_tokens() -> None:
     stdout = "\n".join(
         [

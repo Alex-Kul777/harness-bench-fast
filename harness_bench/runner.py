@@ -331,6 +331,14 @@ def _usage_token_counts(usage: Any) -> tuple[int | None, int | None, int | None]
         or _coerce_int(usage.get("prompt_tokens"))
         or _coerce_int(usage.get("prompt_eval_count"))
     )
+    # Anthropic (Claude Code) bills cached context under separate cache fields;
+    # `input_tokens` is only the fresh, non-cached delta. Fold the cache reads
+    # and cache creation back in so token totals reflect the real context size.
+    cache_tokens = (_coerce_int(usage.get("cache_read_input_tokens")) or 0) + (
+        _coerce_int(usage.get("cache_creation_input_tokens")) or 0
+    )
+    if cache_tokens:
+        input_tokens = (input_tokens or 0) + cache_tokens
     output_tokens = (
         _coerce_int(usage.get("output_tokens"))
         or _coerce_int(usage.get("completion_tokens"))

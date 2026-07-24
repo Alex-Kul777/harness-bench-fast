@@ -465,12 +465,6 @@ def _grok_json_event_stats(
 
     usage = end_payload.get("usage")
     usage_stats = _usage_stats_from_mapping(usage)
-    if isinstance(usage, dict):
-        cached_input_tokens = _int_or_none(usage.get("cache_read_input_tokens"))
-        if cached_input_tokens is not None:
-            usage_stats["agent_input_tokens"] = (
-                usage_stats.get("agent_input_tokens", 0) + cached_input_tokens
-            )
     stats.update(usage_stats)
 
     llm_calls = 0
