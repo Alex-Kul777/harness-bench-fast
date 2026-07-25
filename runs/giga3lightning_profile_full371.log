@@ -1,0 +1,981 @@
+Writing results JSON to jobs/giga3lightning_profile_full371.json
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[  1/371] [PASS] task_01_create_hello                       4.7s — hello.py ran and produced expected output
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[  2/371] [PASS] task_02_write_data_json                    4.9s — data.json has expected JSON keys
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[  3/371] [PASS] task_03_slugify                            5.6s — src/utils.py: mod.slugify('Hello, World!') == 'hello-world'; src/utils.py: mod.slugify('Foo Bar Baz') == 'foo-bar-baz'
+[  4/371] [PASS] task_04_write_numbers                      4.1s — numbers.txt lines match
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[  5/371] [PASS] task_05_greet                              5.0s — greeting.py: mod.greet('Аня') == 'Привет, Аня!'
+[  6/371] [PASS] task_06_toggle_debug                       5.3s — config.py contains all expected substrings; config.py free of forbidden substrings
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[  7/371] [PASS] task_07_rename_function                    6.5s — app.py contains all expected substrings; app.py free of forbidden substrings; app.py ran and produced expected output
+[  8/371] [PASS] task_08_bump_version                       5.5s — version.py matches /^VERSION\s*=\s*"1\.0\.1"\s*$/
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[  9/371] [PASS] task_09_replace_hello                      5.4s — greeting.py: mod.greet('Bob') == 'Hi, Bob!'
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 10/371] [PASS] task_10_bump_pyproject                     5.8s — pyproject.toml matches /^version\s*=\s*"0\.2\.0"\s*$/; pyproject.toml contains all expected substrings; pyproject.toml free of forbidden substrings
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 11/371] [PASS] task_11_count_py                           5.7s — count.txt matches expected content
+[ 12/371] [FAIL] task_12_extract_todos                      7.1s — todos.txt missing substrings: ['# TODO: do stuff', '# TODO: refactor this']
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 13/371] [FAIL] task_13_count_csv_lines                    4.8s — lines.txt content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 14/371] [PASS] task_14_sum_numbers                        7.1s — sum.txt matches expected content
+[ 15/371] [PASS] task_15_first_word                         5.0s — first_word.txt matches expected content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 16/371] [PASS] task_16_add_type_hints                     5.0s — math_utils.py matches /def\s+add\s*\(\s*a\s*:\s*int\s*,\s*b\s*:\s*int\s*\)\s*->\s*int\s*:/; math_utils.py contains all expected substrings
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 17/371] [PASS] task_17_add_future_imports                 5.0s — module.py matches /\Afrom __future__ import annotations\b/; module.py contains all expected substrings
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 18/371] [PASS] task_18_add_docstring                      5.3s — calc.py contains all expected substrings; calc.py: mod.calculate(21) == 42
+[ 19/371] [PASS] task_19_remove_old_func                    6.0s — mod.py free of forbidden substrings; mod.py contains all expected substrings; mod.py: mod.new_func() == 'new'
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 20/371] [PASS] task_21_rename_file                        6.7s — oldname.txt absent; newname.txt contains all expected substrings
+[ 21/371] [PASS] task_22_delete_file                        3.8s — obsolete.py absent; keep.py exists; keep.py contains all expected substrings
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 22/371] [FAIL] task_20_move_function                     13.8s — a.py still contains forbidden: ['def helper', "'help'"]
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 23/371] [PASS] task_23_append_log                         8.3s — log.txt lines match
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 24/371] [FAIL] task_24_add_header_comment                 8.7s — src/a.py missing substrings: ['import os', 'print(1)']
+[ 25/371] [PASS] task_25_sort_lines                         5.0s — sorted.txt lines match
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 26/371] [PASS] task_27_update_dep_version                 5.4s — package.json updated as expected
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 27/371] [PASS] task_28_csv_to_json                        5.1s — users.json contains the expected records
+[ 28/371] [PASS] task_29_create_gitignore                   3.6s — .gitignore lines match
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 29/371] [FAIL] task_26_add_json_key                      10.3s — config.json invalid JSON: Expecting ',' delimiter: line 5 column 1 (char 58)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 30/371] [FAIL] task_32_count_words                        7.0s — words.txt content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 31/371] [PASS] task_33_find_max                           5.4s — max.txt matches expected content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 32/371] [FAIL] task_30_add_todo                          16.5s — tasks.txt lines differ
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)Glob of '<default>' aborted partway: Invalid pattern: '**' can only be an entire path component
+Traceback (most recent call last):
+  File "/Users/krestnikov/giga/harness-bench-fast/.venv/lib/python3.12/site-packages/deepagents/backends/filesystem.py", line 913, in glob
+    for matched_path in search_path.rglob(pattern):
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/krestnikov/.local/share/uv/python/cpython-3.12.12-macos-aarch64-none/lib/python3.12/pathlib.py", line 1108, in rglob
+    selector = _make_selector(("**",) + tuple(pattern_parts), self._flavour, case_sensitive)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/krestnikov/.local/share/uv/python/cpython-3.12.12-macos-aarch64-none/lib/python3.12/pathlib.py", line 103, in _make_selector
+    return cls(pat, child_parts, flavour, case_sensitive)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/krestnikov/.local/share/uv/python/cpython-3.12.12-macos-aarch64-none/lib/python3.12/pathlib.py", line 226, in __init__
+    _Selector.__init__(self, child_parts, flavour, case_sensitive)
+  File "/Users/krestnikov/.local/share/uv/python/cpython-3.12.12-macos-aarch64-none/lib/python3.12/pathlib.py", line 158, in __init__
+    self.successor = _make_selector(child_parts, flavour, case_sensitive)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/krestnikov/.local/share/uv/python/cpython-3.12.12-macos-aarch64-none/lib/python3.12/pathlib.py", line 100, in _make_selector
+    raise ValueError("Invalid pattern: '**' can only be an entire path component")
+ValueError: Invalid pattern: '**' can only be an entire path component
+[ 33/371] [FAIL] task_34_filter_errors                      5.3s — errors.log lines differ
+
+[ 34/371] [PASS] task_35_remove_blank_lines                 5.5s — cleaned.txt lines match
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 35/371] [PASS] task_36_add_imports                        5.8s — script.py matches /\Aimport os\nimport sys\n/; script.py contains all expected substrings
+[ 36/371] [FAIL] task_37_make_pytest_test                   3.6s — tests/test_math.py missing substrings: ['from math_utils import add']
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 37/371] [FAIL] task_31_rename_in_multi                   26.8s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 38/371] [PASS] task_38_trim_trailing_ws                   5.3s — trimmed.txt lines match
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 39/371] [FAIL] task_39_reverse_lines                      5.4s — reversed.txt lines differ
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 40/371] [FAIL] task_41_count_todos                        6.4s — count.txt content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 41/371] [FAIL] task_42_snake_case                         9.6s — one.py still contains forbidden: ['userName']
+[ 42/371] [FAIL] task_40_merge_files                       12.7s — merged.txt lines differ
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 43/371] [PASS] task_43_longest_line                       4.9s — longest.txt matches expected content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 44/371] [PASS] task_44_create_requirements                4.0s — requirements.txt lines match
+[ 45/371] [PASS] task_46_add_init_export                    4.5s — src/__init__.py exists; src/__init__.py matches /__all__\s*=\s*\[\s*['\"]foo['\"]\s*,\s*['\"]bar['\"]\s*\]/
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 46/371] [FAIL] task_45_inline_constant                    7.0s — retry.py still contains forbidden: ['MAX_RETRIES']
+[ 47/371] [PASS] task_47_dedupe_lines                       5.3s — deduped.txt lines match
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 48/371] [PASS] task_49_csv_to_markdown                    5.3s — table.md looks like a valid markdown table
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 49/371] [PASS] task_50_fix_typo                           6.6s — docs/intro.md free of forbidden substrings; docs/usage.md free of forbidden substrings; docs/intro.md contains all expected substrings; docs/usage.md contains all expected substrings
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 50/371] [FAIL] task_51_count_total_lines                  6.7s — total.txt content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 51/371] [FAIL] task_52_find_files_with                    6.2s — files.txt entries ['file1.txt', 'file2.txt', 'file3.txt'] do not match expected {'alpha.py', 'gamma.py'}
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 52/371] [FAIL] task_48_append_eof_each                   18.2s — logs/first.log: lost original line 'one alpha'
+[ 53/371] [PASS] task_53_add_shebang                        5.3s — script.py matches /\A#!/usr/bin/env python3\n/; script.py contains all expected substrings
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 54/371] [FAIL] task_55_add_conftest                       3.8s — tests/conftest.py missing substrings: ['@pytest.fixture']
+[ 55/371] [FAIL] task_54_swap_csv_cols                      6.1s — data rows [('Alice', '30'), ('Bob', '25')] do not match expected [('25', 'Bob'), ('30', 'Alice')]
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 56/371] [FAIL] task_56_move_to_subdir                     7.7s — utils/__init__.py runtime error: Traceback (most recent call last):
+[ 57/371] [PASS] task_57_add_main_guard                     5.0s — runme.py contains all expected substrings; runme.py matches /if __name__\s*==\s*['\"]__main__['\"]\s*:\s*\n\s+main\(\)/
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 58/371] [PASS] task_59_unique_words                       5.3s — unique_words.txt sorted unique words match
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 59/371] [PASS] task_60_rename_dir                         6.3s — src/old/ renamed to src/new/ with content preserved
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 60/371] [PASS] task_61_add_env_var                        6.8s — .env lines match
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 61/371] [PASS] task_62_remove_env_var                     5.6s — .env lines match; .env free of forbidden substrings
+[ 62/371] [PASS] task_58_format_phones                     16.2s — phones.txt formatted correctly
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 63/371] [PASS] task_64_add_logger_call                    5.3s — app.py contains all expected substrings; app.py matches /def\s+process\s*\(\s*x\s*\)\s*:\s*\n\s*print\(f\"processing \{x\}\"\)\s*\n\s*return\s+x\s*\*\s*2/
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 64/371] [PASS] task_63_nested_json_edit                   5.6s — database.host updated, other fields intact
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 65/371] [PASS] task_65_sum_floats                         5.6s — sum.txt matches expected content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 66/371] [PASS] task_66_join_with_comma                    5.0s — csv.txt matches expected content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 67/371] [PASS] task_68_add_two_keys                       5.0s — config.json has expected JSON keys
+[ 68/371] [PASS] task_67_replace_in_logs                    7.4s — app.log free of forbidden substrings; app.log contains all expected substrings[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 69/371] [FAIL] task_70_uppercase_first_column            10.0s — cities.csv lines differ
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 70/371] [FAIL] task_71_count_assert                       8.2s — assert_count.txt content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 71/371] [PASS] task_73_extract_emails                     5.1s — all three emails captured exactly once
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 72/371] [PASS] task_72_wrap_in_function                   5.7s — script.py contains all expected substrings; script.py matches /if __name__\s*==\s*['\"]__main__['\"]\s*:\s*\n\s+main\(\)/
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 73/371] [PASS] task_75_squash_blank                       5.4s — squashed.txt has at most one blank line between content lines
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 74/371] [PASS] task_76_create_dataclass                   4.3s — point.py contains all expected substrings; point.py: mod.Point(1.0, 2.0).x == 1.0; point.py: mod.Point(1.0, 2.0).y == 2.0
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 75/371] [FAIL] task_69_remove_comments                   25.8s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 76/371] [PASS] task_74_rename_class                      10.3s — model.py free of forbidden substrings; model.py contains all expected substrings
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 77/371] [PASS] task_77_tally_grades                       5.0s — tally.txt has correct counts (order-agnostic)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 78/371] [PASS] task_78_add_property                       5.7s — user.py contains all expected substrings; user.py free of forbidden substrings; user.py: mod.User('Alice').name == 'Alice'
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 79/371] [PASS] task_79_double_to_single_quotes            9.4s — greetings.py free of forbidden substrings; greetings.py contains all expected substrings; greetings.py: mod.greet() == 'Hello'; greetings.py: mod.short() == 'Hi'
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 80/371] [PASS] task_80_delete_lines_with                  5.6s — api.py free of forbidden substrings; api.py contains all expected substrings
+[ 81/371] [PASS] task_83_const_uppercase                    7.1s — constants.py free of forbidden substrings; constants.py lines match
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 82/371] [PASS] task_82_add_csv_column                     9.1s — users.csv lines match
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 83/371] [FAIL] task_81_swap_lines                        14.8s — order.txt lines differ
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 84/371] [PASS] task_85_add_logging_import                 4.9s — app.py matches /\Aimport logging\nimport os\n/; app.py contains all expected substrings
+[ 85/371] [PASS] task_86_extract_numbers                    6.0s — numbers.txt contains the four numbers in order
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 86/371] [PASS] task_84_concat_csvs                        8.8s — merged.csv lines match
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 87/371] [PASS] task_87_flip_booleans                      5.6s — flags.py lines match
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 88/371] [FAIL] task_89_create_pre_commit                  3.4s — .pre-commit-config.yaml lines differ
+[ 89/371] [PASS] task_88_sort_imports                       5.4s — module.py matches /\Aimport json\nimport os\nimport re\nimport sys\n/; module.py contains all expected substrings
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 90/371] [PASS] task_90_duplicate_function                 5.5s — math_ops.py contains all expected substrings; math_ops.py: mod.add(2, 3) == 5; math_ops.py: mod.mul(2, 3) == 6
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 91/371] [PASS] task_91_kv_to_json                         5.4s — config.json has the three expected keys
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 92/371] [FAIL] task_92_count_chars                        7.5s — count.txt content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 93/371] [PASS] task_94_remove_unused                      5.2s — utils.py free of forbidden substrings; utils.py contains all expected substrings; utils.py: mod.keep_one() == 1; utils.py: mod.keep_two() == 2
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 94/371] [PASS] task_93_split_rows                         8.3s — each data row of users.csv saved to rows/row_N.csv
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 95/371] [PASS] task_95_add_default_arg                    5.2s — repeater.py matches /def\s+repeat\s*\(\s*text\s*,\s*count\s*=\s*10\s*\)\s*:/; repeater.py: mod.repeat('ab') == 'abababababababababab'; repeater.py: mod.repeat('x', 3) == 'xxx'
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 96/371] [FAIL] task_96_group_by_letter                    5.6s — groups.txt lines ['a: apple', 'a: avocado', 'b: banana', 'b: blueberry', 'c: cherry'] differ from expected ['a: apple,avocado', 'b: banana,blueberry', 'c: cherry']
+[ 97/371] [PASS] task_97_negate_filter                      5.4s — filters.py free of forbidden substrings; filters.py contains all expected substrings; filters.py: mod.is_odd(3) == True; filters.py: mod.is_odd(4) == False
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 98/371] [PASS] task_98_count_unique                       5.0s — unique_count.txt matches expected content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[ 99/371] [PASS] task_99_add_readme                         4.4s — README.md lines match
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[100/371] [FAIL] task_101_csv_mean_score                    5.9s — mean.txt content differs
+[101/371] [PASS] task_100_zero_balance                      9.1s — accounts.json has all balances zeroed out, names preserved[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[102/371] [FAIL] task_102_csv_filter_adults                 9.2s — adults.csv content differs
+[103/371] [FAIL] task_103_csv_sort_desc                     5.2s — sorted.csv content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[104/371] [FAIL] task_106_csv_group_count                   4.5s — counts.csv content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[105/371] [PASS] task_104_csv_join                          7.3s — joined.csv matches expected content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[106/371] [FAIL] task_105_csv_to_tsv                        6.3s — data.tsv content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[107/371] [FAIL] task_108_csv_dedupe                        5.3s — unique.csv content differs
+[108/371] [PASS] task_107_csv_max_row                       5.6s — max.csv matches expected content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[109/371] [PASS] task_109_csv_add_total                     6.6s — invoices.csv matches expected content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[110/371] [FAIL] task_111_xlsx_extract_b2                   7.4s — value.txt content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[111/371] [PASS] task_110_csv_count_above                  11.0s — count.txt matches expected content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[112/371] [PASS] task_113_xlsx_update_cell                 11.3s — inventory.xlsx[Inventory!C3] == 999
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[113/371] [FAIL] task_112_xlsx_sum_column                  19.5s — total.txt content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[114/371] [PASS] task_115_json_extract_nested               5.2s — user.txt matches expected content
+[115/371] [PASS] task_114_jsonl_sum_amount                 13.5s — total.txt matches expected content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[116/371] [PASS] task_117_json_to_yaml                      4.7s — data.yaml decodes to the expected mapping
+[117/371] [PASS] task_116_json_filter_active                7.6s — active.json has the expected three records
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[118/371] [FAIL] task_118_jsonl_count_by_status             5.3s — tally.json {'ok': 4, 'err': 3, 'warn': 3} differs from expected {'ok': 5, 'err': 3, 'warn': 2}
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[119/371] [PASS] task_119_yaml_bump_version                 5.3s — config.yaml version bumped, other fields intact
+[120/371] [PASS] task_120_ini_add_section                   6.5s — settings.ini has the new [logging] section
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[121/371] [PASS] task_121_toml_add_dep                      8.2s — pyproject.toml dependencies extended
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[122/371] [PASS] task_122_yaml_to_json                      5.6s — config.json equals the YAML structure
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[123/371] [FAIL] task_124_sqlite_sum                        3.4s — total.txt content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[124/371] [FAIL] task_125_impl_fib                          5.0s — fib.py produced non-JSON output: '0\n1\n1\n55\n6765\n0'
+[125/371] [PASS] task_126_impl_count_vowels                 3.7s — vowels.py: mod.count_vowels('hello') == 2; vowels.py: mod.count_vowels('AEIOU') == 5; vowels.py: mod.count_vowels('xyz') == 0; vowels.py: mod.count_vowels('Quick brown fox') == 4
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[126/371] [PASS] task_127_impl_is_palindrome                4.1s — palindrome.py: mod.is_palindrome('aba') == True; palindrome.py: mod.is_palindrome('abc') == False; palindrome.py: mod.is_palindrome('') == True; palindrome.py: mod.is_palindrome('aabbaa') == True
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[127/371] [PASS] task_123_sqlite_count                     13.8s — count.txt matches expected content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[128/371] [PASS] task_128_fix_bug                           5.5s — pytest tests/ passed
+[129/371] [PASS] task_129_implement_passing                 4.3s — pytest tests/ passed
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[130/371] [FAIL] task_130_impl_extract_phones               4.8s — pytest exit=2; tail: 'ers/81/xpcl3q6d0jqf831cy52ltwfm0000gn/T/hb_task_130_impl_extract_phones_h8uu0agb/phones.py", line 9\nE       if __name__ "__main__":\nE                   ^^^^^^^^^^\nE   SyntaxError: invalid syntax\n=========================== short test summary info ============================\nERROR tests/test_phones.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.07s'
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[131/371] [FAIL] task_131_script_wordcount                  7.3s — count.txt content differs
+[132/371] [FAIL] task_132_md5_hash                          5.4s — hash.txt content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[133/371] [PASS] task_133_impl_factorial                    4.7s — factorial.py: mod.factorial(0) == 1; factorial.py: mod.factorial(5) == 120; factorial.py: mod.factorial(10) == 3628800
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[134/371] [FAIL] task_135_grep_count_imports                6.5s — count.txt content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[135/371] [PASS] task_136_grep_files_with_todo              6.1s — files.txt has the four TODO-bearing files
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[136/371] [PASS] task_138_grep_yaml_with_key                6.5s — with_api_key.txt has the three configs that mention api_key[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+
+[137/371] [PASS] task_134_run_and_capture                  14.2s — greet.py exists; out.txt matches expected content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[138/371] [FAIL] task_139_grep_log_errors                   7.3s — errors_count.txt content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[139/371] [PASS] task_137_grep_count_defs                  17.9s — count.txt matches expected content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[140/371] [FAIL] task_141_grep_classnames                   6.6s — classes.txt lines differ
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[141/371] [FAIL] task_140_grep_emails                      13.5s — emails.txt ['alice@example.com', 'bob@example.org', 'team@docs.com'] differs from expected ['alice@example.com', 'bob@team.org', 'carol@team.org', 'support@demo.net']
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[142/371] [FAIL] task_142_grep_asserts                      5.0s — assert_count.txt content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[143/371] [PASS] task_143_grep_largest_file                 6.7s — largest.txt names the right file: big_project/file_09.py
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[144/371] [FAIL] task_144_grep_duplicate_funcs              7.1s — duplicates.txt ['helper', 'utility'] differs from expected ['bar', 'foo']
+[145/371] [FAIL] task_147_log_filter_404                    6.3s — not_found.log content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[146/371] [FAIL] task_145_log_top_ip                       11.6s — top_ip.txt content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[147/371] [FAIL] task_146_log_count_5xx                    10.7s — err_count.txt content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[148/371] [FAIL] task_148_csv_to_xlsx                       5.4s — verifier raised: BadZipFile: File is not a zip file
+[149/371] [FAIL] task_149_sqlite_to_json                   10.2s — products.json has 0 records, expected 4
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[150/371] [FAIL] task_150_script_csv_total                  7.4s — total.txt is '290.0', expected 290
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[151/371] [FAIL] task_151_pipeline_csv_to_json              8.9s — summary.json JSON mismatch
+[152/371] [PASS] task_154_jsonl_into_sqlite                22.1s — events.db contains all 15 records from events.jsonl
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[153/371] [FAIL] task_152_sqlite_join_to_json              27.3s — graph recursion limit reached after 80 steps
+[154/371] [FAIL] task_153_xlsx_to_markdown_report          28.4s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[155/371] [FAIL] task_155_log_count_per_endpoint            5.9s — endpoints.csv counts {'/api/users': 44, '/api/items': 44, '/api/health': 4, '/login': 44} differ from {'/api/users': 12, '/api/items': 18, '/api/health': 5, '/login': 9}
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[156/371] [FAIL] task_156_csv_validate_split                7.0s — good.csv content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[157/371] [FAIL] task_157_two_csv_diff                      7.8s — only_in_a.txt ['alpha', 'bravo', 'delta'] differs from ['alpha', 'delta']
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[158/371] [PASS] task_159_unzip_extract                     3.8s — archive.zip extracted to extracted/ with all three files
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[159/371] [FAIL] task_160_create_zip                        5.6s — bundle.zip names [] missing some of ['one.txt', 'three.txt', 'two.txt']
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[160/371] [PASS] task_161_gzip_compress                     4.2s — input.txt.gz decompresses to the original input.txt content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[161/371] [PASS] task_162_split_module_by_class             8.3s — big.py was split into alpha.py / beta.py / gamma.py
+[162/371] [PASS] task_163_extract_constants                 8.6s — constants moved out of app.py into constants.py
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[163/371] [PASS] task_158_xlsx_split_sheets                20.0s — all three CSVs match the corresponding xlsx sheets
+[164/371] [PASS] task_166_convert_to_dataclass              6.3s — point.py contains all expected substrings; point.py free of forbidden substrings; point.py: mod.Point(1.0, 2.0).x == 1.0; point.py: mod.Point(1.0, 2.0).y == 2.0
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[165/371] [PASS] task_164_add_type_hints_module             8.5s — utils.py matches /def\s+add\(\s*a:\s*int\s*,\s*b:\s*int\s*\)\s*->\s*int\s*:/; utils.py matches /def\s+greet\(\s*name:\s*str\s*\)\s*->\s*str\s*:/; utils.py matches /def\s+double\(\s*x:\s*int\s*\)\s*->\s*int\s*:/; utils.py: mod.add(2, 3) == 5; utils.py: mod.greet('Bob') == 'hi Bob'
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[166/371] [PASS] task_165_rename_across_files              24.1s — a.py free of forbidden substrings; b.py free of forbidden substrings; c.py free of forbidden substrings; common.py free of forbidden substrings; a.py contains all expected substrings; b.py contains all expected substrings; c.py contains all expected substrings; common.py contains all expected substrings
+[167/371] [PASS] task_168_impl_binary_search               18.9s — pytest tests/ passed
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[168/371] [PASS] task_167_impl_quicksort                   20.2s — pytest tests/ passed
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[169/371] [PASS] task_169_impl_balanced_parens              4.8s — pytest tests/ passed
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[170/371] [FAIL] task_171_impl_linked_list                 19.6s — pytest exit=2; tail: '00gn/T/hb_task_171_impl_linked_list_n217no8d/tests/test_ll_new.py", line 26\nE       def test_to_list(self:\nE                       ^\nE   SyntaxError: \'(\' was never closed\n=========================== short test summary info ============================\nERROR tests/test_ll.py\nERROR tests/test_ll_new.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!!\n2 errors in 0.10s'
+[171/371] [PASS] task_172_impl_tree_inorder                19.4s — pytest tests/ passed
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[172/371] [FAIL] task_174_impl_two_sum                     10.9s — pytest exit=1; tail: "      NameError: name 'self' is not defined\n\ntests/test_twosum.py:5: NameError\n=========================== short test summary info ============================\nFAILED tests/test_twosum.py::test_example - NameError: name 'self' is not def...\nERROR tests/test_twosum.py::test_no_solution\nERROR tests/test_twosum.py::test_duplicate\nERROR tests/test_twosum.py::test_same_index\n1 failed, 3 errors in 0.02s"
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[173/371] [FAIL] task_173_impl_anagram                     17.8s — pytest exit=2; tail: '_task_173_impl_anagram_guexnakg/anagram.py", line 5\nE       }\nE       ^\nE   SyntaxError: closing parenthesis \'}\' does not match opening parenthesis \'(\' on line 4\n=========================== short test summary info ============================\nERROR tests/test_anagram.py\nERROR tests/test_anagram_v2.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!!\n2 errors in 0.09s'
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[174/371] [FAIL] task_175_csv_stats_basic                   6.2s — stats.json[mean] = 20.75, expected 21.85
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[175/371] [FAIL] task_170_impl_lru_cache                   39.9s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[176/371] [FAIL] task_177_csv_histogram                     5.3s — histogram.json JSON mismatch
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[177/371] [FAIL] task_178_csv_pivot_count                   5.1s — pivot.csv content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[178/371] [FAIL] task_176_csv_rolling_avg                   8.5s — rolling.csv has 1 data rows, expected 8
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[179/371] [PASS] task_179_csv_zscore_outliers               5.4s — outliers.csv has the expected outliers [100]
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[180/371] [FAIL] task_180_csv_percentiles                   5.4s — percentiles.json[p75] = 76, expected 75.25
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[181/371] [FAIL] task_181_csv_cumsum                        5.8s — cumulative.csv content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[182/371] [PASS] task_182_csv_group_agg                     5.5s — agg.json has sum/mean/count per category within tolerance
+[183/371] [PASS] task_183_xml_to_json                       5.5s — users.json has the 3 users with correct fields
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[184/371] [FAIL] task_184_md_toc_gen                        5.5s — toc.md content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[185/371] [PASS] task_185_md_frontmatter                    5.3s — frontmatter.json matches expected mapping
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[186/371] [PASS] task_187_dead_functions                   10.0s — dead.txt lists the two unused functions
+[187/371] [PASS] task_188_csv_three_way_join                8.0s — joined.csv matches expected content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[188/371] [FAIL] task_189_log_hourly_counts                 5.4s — hourly.csv {'08': 1, '09': 8, '10': 8, '11': 4, '12': 4} differs from {'08': 5, '09': 12, '10': 20, '11': 8, '12': 3}
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[189/371] [PASS] task_191_sqlite_revenue_report             7.2s — revenue.csv matches expected content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[190/371] [FAIL] task_186_find_call_sites                  27.3s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[191/371] [PASS] task_190_concat_dedupe_sort               17.4s — merged.csv matches expected content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[192/371] [PASS] task_192_rewrite_imports                  11.4s — code/a.py free of forbidden substrings; code/b.py free of forbidden substrings; code/a.py contains all expected substrings; code/b.py contains all expected substrings; code/c.py matches expected content
+[193/371] [PASS] task_195_impl_iterator                    16.6s — pytest tests/ passed
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[194/371] [PASS] task_193_impl_memoize                     25.1s — pytest tests/ passed
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[195/371] [FAIL] task_197_filter_md_by_tag                  7.3s — python_posts.txt ['a.md', 'b.md', 'c.md', 'd.md', 'e.md'] differs from ['a.md', 'c.md', 'e.md']
+[196/371] [FAIL] task_194_impl_context_manager             33.5s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[197/371] [PASS] task_198_tar_extract                       5.4s — bundle.tar.gz extracted to extracted/ with all three files
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[198/371] [PASS] task_200_impl_priority_queue               4.9s — pytest tests/ passed
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[199/371] [FAIL] task_201_reconcile_vip_users               8.2s — vip_users.json JSON mismatch
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[200/371] [FAIL] task_196_xlsx_to_csv_and_json             42.4s — data.csv missing
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[201/371] [FAIL] task_202_zip_sales_consolidation          17.7s — region_totals.csv content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[202/371] [PASS] task_204_requests_to_http_client_migration  20.3s — requests API migrated in 3 files and report is correct
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[203/371] [FAIL] task_203_sqlite_team_markdown_report      22.0s — team_report.md separator row ['--', '--', '--', '--'] is not valid markdown
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[204/371] [FAIL] task_206_reconcile_paid_revenue           17.0s — vip_revenue.csv header ['\ufeffuser_id', 'tier', 'paid_usd', 'paid_orders'] != ['user_id', 'tier', 'paid_usd', 'paid_orders']
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[205/371] [FAIL] task_199_sqlite_filtered_export           75.0s — big_clicks.csv missing
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[206/371] [PASS] task_205_impl_paid_aggregator             26.1s — pytest tests/ passed
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[207/371] [FAIL] task_209_request_latency_reconstruction    5.9s — durations_ms mismatch: {'r1': 450, 'r2': 400, 'r4': 300}
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[208/371] [FAIL] task_207_inventory_anomaly_report         29.0s — graph recursion limit reached after 80 steps
+[209/371] [PASS] task_211_impl_merge_intervals              5.2s — pytest tests/ passed
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[210/371] [PASS] task_212_merge_config_precedence           8.7s — effective_config.json matches expected merged precedence
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[211/371] [FAIL] task_210_tar_manifest_with_hashes         30.5s — graph recursion limit reached after 80 steps
+[212/371] [FAIL] task_214_customer_data_quality_report      5.9s — dq_report mismatch: {'row_count': 5, 'duplicate_ids': ['2'], 'invalid_emails': ['2'], 'invalid_ages': ['3', '4'], 'missing_country_ids': []} != {'row_count': 6, 'duplicate_ids': ['2'], 'invalid_emails': ['2'], 'invalid_ages': ['3', '4'], 'missing_country_ids': ['5']}
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[213/371] [FAIL] task_208_pricing_api_migration            49.7s — app/service.py still contains forbidden: ['pricing.legacy', 'calc_total(']
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[214/371] [FAIL] task_213_markdown_link_audit              12.1s — domains.json mismatch: {'example.com': 2, 'legacy.local': 1, 'docs.site': 1, 'localhost:3000': 1} != {'example.com': 3, 'docs.site': 1, 'legacy.local': 1, 'localhost:3000': 1}
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[215/371] [FAIL] task_216_category_revenue_rollup           6.4s — category_revenue.csv missing substrings: ['books,380']
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[216/371] [PASS] task_217_extract_user_emails               6.0s — emails.json matches expected JSON
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[217/371] [PASS] task_218_build_runtime_config              7.0s — runtime_config.json has expected merged values
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[218/371] [FAIL] task_220_python_import_migration           7.3s — src/app/main.py still contains forbidden: ['utils.math']
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[219/371] [FAIL] task_221_log_level_summary                 5.8s — level_summary.json JSON mismatch
+[220/371] [FAIL] task_215_source_todo_fixme_triage         30.6s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[221/371] [FAIL] task_219_sql_paid_leaderboard             26.1s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[222/371] [FAIL] task_223_memory_city_timezone_script       6.7s — now.py doesn't apply a Moscow timezone (ZoneInfo / timedelta hours=3)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[223/371] [PASS] task_222_memory_name_pyproject             8.1s — name saved to MEMORY.md and used in pyproject.toml
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[224/371] [PASS] task_226_memory_requirements_dev           5.5s — requirements-dev.txt lists the user's dev tools
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[225/371] [PASS] task_225_memory_compute_age_bio            6.1s — bio.txt is short and contains name + correct age
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[226/371] [PASS] task_224_memory_mit_license                8.4s — LICENSE contains all expected substrings; LICENSE matches /Иван\s+Иванов|Иванов\s+Иван|Ivan\s+Ivanov|Ivanov\s+Ivan/; LICENSE matches /Copyright\s*\(c\)\s*2026/; LICENSE contains all expected substrings
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[227/371] [PASS] task_227_memory_profile_json               6.5s — profile.json composed correctly from MEMORY.md
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[228/371] [FAIL] task_229_memory_update_contacts            7.0s — README.md missing substrings: ['alice.new@mail.ru', 'alice2026']
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[229/371] [FAIL] task_230_memory_forget_telegram            6.4s — MEMORY.md still mentions Telegram
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[230/371] [FAIL] task_231_memory_refuse_secrets             9.2s — secret API key leaked into MEMORY.md
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[231/371] [PASS] task_233_memory_endpoints_json             6.0s — endpoints.json correctly normalized from MEMORY.md facts
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[232/371] [PASS] task_232_memory_focus_day_schedule_rules  11.3s — focus day saved and scheduling rules implemented correctly
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[233/371] [FAIL] task_228_memory_style_refactor            31.5s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[234/371] [FAIL] task_235_memory_event_ordering_timeline    9.3s — durations_days keys mismatch: got {'design_approved_to_beta', 'kickoff_to_release', 'beta_to_release'}, expected {'design_approved_to_beta', 'kickoff_to_release'}
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[235/371] [PASS] task_237_memory_preference_following_weekend_plan   7.2s — weekend plan follows preferences and avoids anti-preferences
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[236/371] [PASS] task_238_memory_abstention_unknown_phone   5.8s — unknown phone handled via abstention (null + explicit note)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[237/371] [PASS] task_236_memory_contradiction_resolution_region  18.9s — latest region chosen and propagated across files
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[238/371] [PASS] task_239_memory_multi_hop_salary           6.5s — salary calculations correct
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[239/371] [FAIL] task_234_memory_messenger_migration       29.6s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[240/371] [FAIL] task_242_memory_knowledge_update_job_change   6.0s — MEMORY.md still mentions OldCorp
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[241/371] [FAIL] task_241_memory_instruction_reformat_json  12.5s — config.json should use tabs for indentation
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[242/371] [PASS] task_243_memory_multi_session_packing_list  10.4s — packing list integrates all multi-session facts
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[243/371] [PASS] task_240_memory_summarize_profile         19.5s — summary.txt is concise and includes key facts
+[244/371] [PASS] task_244_memory_save_multi_facts_env       8.9s — facts saved and .env.example generated
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[245/371] [FAIL] task_245_memory_temporal_deadline_urgency   6.1s — urgency = 'high', expected 'medium'
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[246/371] [PASS] task_246_memory_contradiction_latest_version   8.4s — latest version correctly identified from contradicting entries
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[247/371] [PASS] task_247_memory_preference_dockerfile      5.7s — Dockerfile follows memory preferences
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[248/371] [PASS] task_249_memory_info_extraction_spec       5.5s — project spec extracted correctly from memory
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[249/371] [PASS] task_250_memory_abstention_dataclass      10.3s — dataclass with optional fields and correct instance
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[250/371] [PASS] task_251_memory_save_height_unit_convert   8.9s — height saved and conversion script works
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[251/371] [FAIL] task_253_memory_mixed_save_refuse_use      7.5s — README.md should mention Рустам
+[252/371] [PASS] task_252_memory_event_ordering_next_milestone  10.7s — next_milestone() correctly implements event-ordering logic
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[253/371] [FAIL] task_255_terminal_process_hotspots         6.2s — process_hotspots.json mismatch: {'cpu_hot': [{'pid': 1042, 'command': 'python worker.py --queue emails'}], 'memory_hot': [{'pid': 1043, 'command': 'python worker.py --queue images'}]}
+[254/371] [FAIL] task_254_terminal_log_status_matrix        6.9s — report/status_matrix.csv lines differ
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[255/371] [FAIL] task_256_terminal_event_summary            5.7s — job_summary.json mismatch: [{'job': 'export', 'attempts': 2, 'max_duration_ms': 90, 'errors': 0}, {'job': 'ingest', 'attempts': 2, 'max_duration_ms': 510, 'errors': 2}, {'job': 'sync', 'attempts': 2, 'max_duration_ms': 310, 'errors': 1}]
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[256/371] [FAIL] task_248_memory_forget_work_contacts      39.4s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[257/371] [FAIL] task_257_tau2_airline_refusal              8.6s — agent_action.json invalid JSON: Expecting ',' delimiter: line 1 column 188 (char 187)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[258/371] [FAIL] task_259_tau2_telecom_plan_switch          7.6s — telecom_action.json mismatch: {'action': 'switch_plan', 'account_id': 'acct-91', 'new_plan': 'family_15gb', 'monthly_delta_usd': 12, 'requires_consent': True}
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[259/371] [PASS] task_261_swe_config_precedence             7.1s — pytest tests/ passed
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[260/371] [PASS] task_262_swe_csv_top_customers             7.0s — pytest tests/ passed
+[261/371] [FAIL] task_258_tau2_retail_partial_return       29.1s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[262/371] [FAIL] task_263_terminal_du_top_dirs              5.5s — reports/top_dirs.tsv lines differ
+[263/371] [FAIL] task_260_swe_version_parser               30.7s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[264/371] [FAIL] task_265_terminal_makefile_plan            5.7s — build_order.txt lines differ
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[265/371] [PASS] task_264_terminal_env_precedence           8.0s — effective.env lines match
+[266/371] [PASS] task_267_terminal_job_log_report           6.0s — job_report.json matches expected JSON
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[267/371] [FAIL] task_266_terminal_sha256_manifest          8.2s — SHA256SUMS mismatch: ['5da8f23decf397b13f4f55b6fb8a61936238bfe08ed9d901132974f1beccc45c  payload/a.txt', 'b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060  payload/b.txt', '999d1d048ee9123272dd9b718680551c83e867935b47c2650e6906dc22674e47  payload/nested/c.txt']
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[268/371] [FAIL] task_268_terminal_permission_audit         5.8s — permission_findings.tsv lines differ
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[269/371] [PASS] task_270_tau2_bank_duplicate_charge        6.5s — bank_action.json matches expected JSON (free text: ('reason_code',))
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[270/371] [FAIL] task_269_terminal_markdown_index           7.5s — docs_index.tsv lines differ
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[271/371] [FAIL] task_271_tau2_hotel_late_checkout          6.9s — hotel_action.json mismatch: {'action': 'offer_paid_late_checkout', 'reservation_id': 'H-919', 'latest_checkout': '16:00', 'fee_usd': 35}
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[272/371] [PASS] task_273_tau2_insurance_docs               7.5s — insurance_action.json matches expected JSON
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[273/371] [PASS] task_274_tau2_delivery_late_food           7.0s — delivery_action.json matches expected JSON
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[274/371] [PASS] task_272_tau2_clinic_reschedule            9.6s — clinic_action.json matches expected JSON
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[275/371] [PASS] task_275_tau2_subscription_downgrade       5.6s — subscription_action.json matches expected JSON
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[276/371] [FAIL] task_276_tau2_baggage_delay                5.5s — baggage_action.json mismatch: {'action': 'compensate_baggage_delay', 'case_id': 'B-707', 'compensation_usd': 100, 'escalate': True}
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[277/371] [FAIL] task_277_swe_date_parser                   6.1s — pytest exit=1; tail: ' fmt).date().isoformat()\n            except:\n                continue\n>       raise ValueError(f"Cannot parse date: {value}")\nE       ValueError: Cannot parse date: 2026-05-25T10:30:00+\n\ndates.py:12: ValueError\n=========================== short test summary info ============================\nFAILED tests/test_dates.py::test_accepts_iso_datetime_and_date - ValueError: ...\n1 failed, 1 passed in 0.02s'
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[278/371] [FAIL] task_278_swe_query_parser                  6.9s — pytest exit=1; tail: "]}\nE         \nE         Omitting 1 identical items, use -vv to show\nE         Differing items:\nE         {'empty': []} != {'empty': ''}\nE         Use -v to get more diff\n\ntests/test_query.py:12: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_query.py::test_repeated_keys_become_lists_and_blank_values_stay\n1 failed, 1 passed in 0.02s"
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[279/371] [PASS] task_280_swe_pagination_one_based          6.7s — pytest tests/ passed
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[280/371] [FAIL] task_279_swe_markdown_slug_duplicates     10.3s — pytest exit=1; tail: "ssertionError: assert 'hello-world-1' == 'hello-world-2'\nE         \nE         - hello-world-2\nE         ?             ^\nE         + hello-world-1\nE         ?             ^\n\ntests/test_slugs.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_slugs.py::test_duplicate_slugs_get_numeric_suffix - Asserti...\n1 failed, 1 passed in 0.02s"
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[281/371] [PASS] task_281_swe_retry_backoff_cap             6.8s — pytest tests/ passed
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[282/371] [FAIL] task_282_swe_safe_join                     6.5s — pytest exit=1; tail: " os.path.normpath(root)\n               ^^\nE       NameError: name 'os' is not defined. Did you forget to import 'os'\n\npaths.py:2: NameError\n=========================== short test summary info ============================\nFAILED tests/test_paths.py::test_normalizes_inside_root - NameError: name 'os...\nFAILED tests/test_paths.py::test_blocks_escape - NameError: name 'os' is not ...\n2 failed in 0.02s"
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[283/371] [FAIL] task_284_terminal_json_config_inventory    6.5s — enabled_ports.tsv lines differ
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[284/371] [PASS] task_283_swe_inventory_allocate           10.2s — pytest tests/ passed
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[285/371] [FAIL] task_285_terminal_patch_stat_summary       8.1s — patch_summary.tsv lines differ
+[286/371] [FAIL] task_286_terminal_nginx_endpoint_classes   5.2s — endpoint_classes.tsv lines differ
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[287/371] [FAIL] task_287_terminal_changelog_extract        5.6s — release_notes.md lines differ
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[288/371] [PASS] task_288_terminal_artifact_filter          5.2s — publish_artifacts.txt lines match
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[289/371] [PASS] task_290_tau2_car_rental_fee               6.8s — car_action.json matches expected JSON (free text: ('reason',))
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[290/371] [PASS] task_289_tau2_utility_payment_plan         8.5s — utility_action.json matches expected JSON
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[291/371] [FAIL] task_291_tau2_student_extension            6.5s — edu_action.json mismatch: {'action': 'grant_extension', 'student_id': 'student123', 'assignment_id': 'assn456', 'new_due_date': '2025-11-20', 'penalty_percent': 0}
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[292/371] [FAIL] task_292_tau2_pharmacy_refill              6.9s — pharmacy_action.json.action = 'refill', expected 'refuse_refill'
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[293/371] [PASS] task_293_tau2_event_ticket_exchange        8.3s — event_action.json matches expected JSON
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[294/371] [FAIL] task_294_swe_money_cents                   6.8s — pytest exit=1; tail: 'mal_money_is_exact():\n        assert cents("10.25") == 1025\n>       assert cents("0.29") == 29\nE       AssertionError: assert 28 == 29\nE        +  where 28 = cents(\'0.29\')\n\ntests/test_money.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_money.py::test_decimal_money_is_exact - AssertionError: ass...\n1 failed, 1 passed in 0.02s'
+[295/371] [PASS] task_295_swe_parse_tags                    6.3s — pytest tests/ passed
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)[296/371] [FAIL] task_296_swe_roman_parser                  9.0s — pytest exit=1; tail: "              total += table[value[i:i+2]]\n                i += 2\n            else:\n>               total += table[value[i]]\n                         ^^^^^^^^^^^^^^^\nE               KeyError: 'A'\n\nroman.py:10: KeyError\n=========================== short test summary info ============================\nFAILED tests/test_roman.py::test_rejects_invalid_symbols - KeyError: 'A'\n1 failed, 1 passed in 0.02s"
+
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[297/371] [FAIL] task_297_swe_authz_admin                   9.5s — pytest exit=1; tail: 'in user["roles"]\n                                                             ^^^^^^^^^^^^^\nE       KeyError: \'roles\'\n\nauthz.py:2: KeyError\n=========================== short test summary info ============================\nFAILED tests/test_authz.py::test_admin_bypasses_required_role - AssertionErro...\nFAILED tests/test_authz.py::test_missing_roles_is_safe_false - KeyError: \'roles\'\n2 failed in 0.02s'
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[298/371] [PASS] task_298_swe_median_even_empty             6.2s — pytest tests/ passed
+[299/371] [PASS] task_299_resolve_conflict_take_both        5.8s — utils.py free of forbidden substrings; utils.py: mod.add(2, 3) == 5; utils.py: mod.sub(5, 2) == 3; utils.py contains all expected substrings
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[300/371] [PASS] task_300_resolve_conflict_take_ours       11.9s — config.py free of forbidden substrings; config.py lines match
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[301/371] [PASS] task_302_apply_unified_diff                7.3s — calc.py free of forbidden substrings; calc.py: mod.add(2, 3) == 5; calc.py: mod.sub(9, 4) == 5; calc.py: mod.mul(4, 5) == 20
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[302/371] [PASS] task_301_resolve_conflict_take_theirs     20.3s — settings.json free of forbidden substrings; settings.json matches expected JSON
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[303/371] [PASS] task_303_cascading_cross_file             16.2s — schema.py free of forbidden substrings; client.py free of forbidden substrings; server.py free of forbidden substrings; worker.py free of forbidden substrings; schema.py: mod.API_VERSION == 2; client.py: mod.endpoint() == '/v2/items'; server.py: mod.route() == '/v2/route'; worker.py: mod.queue() == 'v2-queue'; client.py free of forbidden substrings; server.py free of forbidden substrings; worker.py free of forbidden substrings
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[304/371] [PASS] task_304_apply_patch_chain                17.3s — seq.py free of forbidden substrings; seq.py: mod.f(3) == 8; seq.py: mod.g(3) == 5; seq.py: mod.f(0) == 2
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[305/371] [PASS] task_306_compute_deep_merge                6.6s — merged.json free of forbidden substrings; merged.json matches expected JSON
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[306/371] [PASS] task_308_detect_unresolved_conflicts       6.6s — report.txt lists exactly the conflicted files
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[307/371] [FAIL] task_305_resolve_and_propagate_rename     27.5s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[308/371] [FAIL] task_310_module_split                     13.8s — pytest exit=1; tail: '__________________\n\n    def test_report():\n>       assert report(5) == (50, 10)\nE       assert (50, 40) == (50, 10)\nE         \nE         At index 1 diff: 40 != 10\nE         Use -v to get more diff\n\ntests/test_app.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_app.py::test_report - assert (50, 40) == (50, 10)\n1 failed in 0.02s'
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[309/371] [FAIL] task_307_resolve_many_files               33.9s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[310/371] [FAIL] task_312_policy_driven_merge              24.8s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[311/371] [FAIL] task_309_rename_refactor_scale            49.3s — lib.py still contains forbidden: ['<<<<<<<', '=======', '>>>>>>>']
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[312/371] [FAIL] task_311_apply_patch_stack_multifile      31.3s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[313/371] [FAIL] task_314_skill_r1_brand_landing            5.8s — index.html does not match /#0b3d2e/
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[314/371] [FAIL] task_315_skill_b1_failure_codebook         7.0s — wrong codes: 1='1'≠TH-OVR; 2='2'≠BRG-WEAR; 3='3'≠ELE-FLT; 4='4'≠LUB-FAIL; 5='5'≠ELE-FLT; 6='6'≠CNT-CONTAM
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[315/371] [FAIL] task_316_skill_b3_claim_triage_policy      6.4s — wrong decisions: collision/500/doc=True: 'MANUAL_REVIEW'≠AUTO_APPROVE; collision/8000/doc=True: 'AUTO_APPROVE'≠MANUAL_REVIEW; flood/500/doc=True: 'AUTO_APPROVE'≠AUTO_REJECT; flood/8000/doc=True: 'AUTO_APPROVE'≠AUTO_REJECT
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[316/371] [FAIL] task_313_aggregate_config_fragments       18.6s — final.json JSON mismatch
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[317/371] [FAIL] task_318_skill_r2_style_guide_report       5.1s — report.txt does not match /^[A-Z][A-Z ]+$/
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[318/371] [FAIL] task_317_skill_g2_repair_phone_skill       7.7s — skills/phone-normalizer/scripts/normalize.py: mod.normalize_phone('+49-30-901820') returned '+14930901820', expected '+4930901820'
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[319/371] [FAIL] task_319_skill_b2_ndr7_parse               6.3s — wrong amounts: 1=0≠122; 2=45≠-452; 3=307≠70; 11=None≠-999
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[320/371] [FAIL] task_320_skill_e1_codebook_with_distractors   6.3s — wrong codes: 1='1'≠TH-OVR; 2='2'≠BRG-WEAR; 3='3'≠ELE-FLT; 4='4'≠LUB-FAIL; 5='5'≠ELE-FLT; 6='6'≠CNT-CONTAM
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[321/371] [FAIL] task_321_skill_e2_negative_control_sum     5.5s — total.txt content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[322/371] [FAIL] task_322_skill_e3_codebook_selection       6.1s — wrong codes: 1='1001'≠TH-OVR; 2='1002'≠BRG-WEAR; 3='1003'≠ELE-FLT; 4='1004'≠LUB-FAIL; 5='1005'≠ELE-FLT; 6='1002'≠CNT-CONTAM
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)Skipping /.agents/skills/orbit-config/SKILL.md: no valid YAML frontmatter found
+Skill at /.agents/skills/orbit-config/SKILL.md failed metadata parse or name validation; skipping
+
+[323/371] [FAIL] task_324_skill_a1_lumen_recipe_dsl         5.9s — recipe.lq invalid: ValueError: recipe.lq must have BEGIN LQ1, three commands, END
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[324/371] [FAIL] task_323_skill_g1_create_slugify_skill     6.8s — skills/slugify-tool/SKILL.md does not match /^name:\s*slugify-tool\s*$/
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[325/371] [FAIL] task_326_skill_a3_quokka_library_quirk     6.4s — samples=3: 4283000.0 != 13.25; samples=5: 3059800.0 != 13.66
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[326/371] [FAIL] task_325_skill_a2_q9_binary_protocol       7.5s — codec raised on PING/0: ValueError: Invalid kind: PING
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[327/371] [FAIL] task_327_skill_r3_act4_compliance_notice  10.5s — missing required text: COMPLIANCE NOTICE; SCOPE; CONTROL SUMMARY; OWNER; DEADLINE; RETENTION; Retention class: R-9 / 7 years; This notice follows Aster Compliance Template ACT-4.
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[328/371] [FAIL] task_329_skill_d1_arcflux_exposure         8.7s — readings.csv: 0.166 != 122.519; hidden_arcflux.csv: 0.21 != 140.357
+[329/371] [FAIL] task_330_skill_d1b_arcflux_multifile       8.7s — compute_total_exposure raised: KeyError: 'signal'
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[330/371] [FAIL] task_332_adv_broken_build                  6.5s — dist/bundle.txt lines differ
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[331/371] [PASS] task_331_adv_py2_to_py3                   16.0s — legacy.py ran and produced expected output
+[332/371] [PASS] task_333_adv_cp1251_decode                 9.7s — result.json has expected JSON keys
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[333/371] [FAIL] task_334_adv_locked_file                  12.7s — token.txt content differs
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[334/371] [FAIL] task_335_adv_missing_config_file           8.1s — created config.yaml (an ignored decoy) instead of touching the real config.json
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[335/371] [FAIL] task_337_adv_skill_missing_template        4.9s — invoice.txt missing substrings: ['ACME-ROBOTICS-INVOICE', 'VENDOR-CODE: AR-7731', 'LINE: gyroscope x3', 'TERMS: NET-14 / PINE-DISCOUNT-4']
+[336/371] [PASS] task_336_adv_hardcoded_path                5.6s — analyze.py ran and produced expected output
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[337/371] [FAIL] task_328_skill_d2_meridian_reconcile_xlsx  47.1s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[338/371] [PASS] task_338_adv_removed_stdlib                6.1s — mapping.py ran and produced expected output
+[339/371] [PASS] task_340_adv_unneeded_dependency           4.9s — pad.py ran and produced expected output
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[340/371] [PASS] task_341_adv_set_e_abort                  10.5s — out.txt matches expected content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[341/371] [PASS] task_339_adv_false_python_version         20.6s — pytest tests/ passed
+[342/371] [PASS] task_343_adv_gzip_masquerade               7.8s — secret.txt matches expected content
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[343/371] [FAIL] task_344_adv_dirty_log_sanitize            8.6s — error_codes.txt lines differ
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[344/371] [FAIL] task_345_adv_agentsmd_wrong_layout         5.4s — app/utils.py runtime error: Traceback (most recent call last):
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[345/371] [PASS] task_347_adv_broken_import_path            5.9s — main.py ran and produced expected output
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[346/371] [FAIL] task_348_adv_broken_package_layout         6.0s — pytest exit=2; tail: "ackage, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/__init__.py:1: in <module>\n    from .circle import area\nE   ModuleNotFoundError: No module named 'tests.circle'\n=========================== short test summary info ============================\nERROR tests/test_area.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.04s"
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[347/371] [FAIL] task_342_adv_npm_in_python_project        36.1s — output.txt lines differ
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[348/371] [FAIL] task_349_adv_malformed_skill_frontmatter  10.2s — .agents/skills/orbit-config/SKILL.md does not match /\A---\n.*?\n---\n/
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[349/371] [FAIL] task_350_adv_contradictory_skills          6.9s — settings.txt missing substrings: ['#NEW999']
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[350/371] [FAIL] task_346_adv_wrong_tests_dir              27.8s — graph recursion limit reached after 80 steps
+[351/371] [FAIL] task_352_structured_log_summary            5.9s — summary.json JSON mismatch: expected {'overall': {'DEBUG': 1, 'INFO': 2, 'WARNING': 1, 'ERROR': 2}, 'by_component': {'api': {'DEBUG': 0, 'INFO': 1, 'WARNING': 1, 'ERROR': 1}, 'db': {'DEBUG': 0, 'INFO': 0, 'WARNING': 0, 'ERROR': 1}, 'worker': {'DEBUG': 1, 'INFO': 1, 'WARNING': 0, 'ERROR': 0}}, 'first_error_at': '2026-07-01T10:00:01Z', 'malformed_lines': 1}, got {'overall': {'DEBUG': 1, 'INFO': 3, 'WARNING': 1, 'ERROR': 2}, 'by_component': {'api': {'DEBUG': 1, 'INFO': 1, 'WARNING': 1, 'ERROR': 1}, 'db': {'DEBUG': 0, 'INFO': 0, 'WARNING': 0, 'ERROR': 1}, 'worker': {'DEBUG': 1, 'INFO': 1, 'ERROR': 0}}, 'first_error_at': '2026-07-01T10:00:01Z', 'malformed_lines': 1}
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[352/371] [FAIL] task_353_reconstruct_sessions              9.0s — sessions.csv rows mismatch: expected [{'session': 's1', 'cycle': '1', 'start': '2026-07-02T10:00:00Z', 'end': '2026-07-02T10:02:00Z', 'duration_seconds': '120', 'status': 'complete'}, {'session': 's1', 'cycle': '2', 'start': '2026-07-02T10:01:00Z', 'end': '2026-07-02T10:03:00Z', 'duration_seconds': '120', 'status': 'complete'}, {'session': 's2', 'cycle': '1', 'start': '', 'end': '2026-07-02T10:00:00Z', 'duration_seconds': '', 'status': 'missing_start'}, {'session': 's2', 'cycle': '2', 'start': '2026-07-02T10:01:00Z', 'end': '', 'duration_seconds': '', 'status': 'missing_end'}, {'session': 's3', 'cycle': '1', 'start': '2026-07-02T10:04:00Z', 'end': '2026-07-02T10:04:30Z', 'duration_seconds': '30', 'status': 'complete'}], got [{'session': 's1', 'cycle': '1', 'start': '2026-07-02T10:01:00Z', 'end': '', 'duration_seconds': '2026-07-02T10:03:00Z', 'status': 'complete'}, {'session': 's1', 'cycle': '2', 'start': '2026-07-02T10:00:00Z', 'end': '2026-07-02T10:02:00Z', 'duration_seconds': 'complete', 'status': None}, {'session': 's2', 'cycle': '1', 'start': '', 'end': '2026-07-02T10:00:00Z', 'duration_seconds': 'missing_end', 'status': None}]
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[353/371] [FAIL] task_351_adv_huge_file_no_slurp           16.3s — answer.json mismatch: token='' (expected 'Z7Q-4F2A-KV91'); error_count=0 (expected 1000)
+[354/371] [FAIL] task_354_catalog_join                     13.4s — sellable.csv rows mismatch: expected [{'sku': 'A-10', 'name': 'Adapter', 'price_cents': '1125', 'available': '5', 'value_cents': '5625'}, {'sku': 'C-30', 'name': 'Cable', 'price_cents': '700', 'available': '3', 'value_cents': '2100'}], got [{'sku': 'A-10', 'name': 'Adapter', 'price_cents': '1250', 'available': '2', 'value_cents': '2500'}, {'sku': 'C-30', 'name': 'Cable', 'price_cents': '750', 'available': '4', 'value_cents': '3000'}, {'sku': 'D-40', 'name': 'Dock', 'price_cents': '3000', 'available': '0', 'value_cents': '0'}]
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[355/371] [FAIL] task_355_segment_audit                     8.3s — audit.json JSON mismatch: expected {'missing': [3, 6], 'duplicates': [4], 'invalid': ['segment_0007.txt', 'segment_bad.json']}, got {'missing': ['0003', '0006'], 'duplicates': ['0004'], 'invalid': ['segment_bad.json']}
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[356/371] [FAIL] task_356_deduplicate_contacts              6.4s — contacts_clean.json is not valid UTF-8 JSON: Extra data: line 1 column 271 (char 270)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[357/371] [FAIL] task_357_request_latency                   7.4s — latency.csv rows mismatch: expected [{'request_id': 'r1', 'endpoint': '/search', 'attempts': '2', 'duration_ms': '250', 'status': 'complete'}, {'request_id': 'r2', 'endpoint': '/items', 'attempts': '1', 'duration_ms': '1500', 'status': 'complete'}, {'request_id': 'r3', 'endpoint': '/search', 'attempts': '2', 'duration_ms': '400', 'status': 'failed'}, {'request_id': 'r4', 'endpoint': '/export', 'attempts': '0', 'duration_ms': '', 'status': 'missing_end'}], got [{'request_id': 'r1', 'endpoint': '/search', 'attempts': '2', 'duration_ms': '0.100', 'status': 'complete'}, {'request_id': 'r3', 'endpoint': '/search', 'attempts': '2', 'duration_ms': '0.200', 'status': 'failed'}, {'request_id': 'r2', 'endpoint': '/items', 'attempts': '1', 'duration_ms': '', 'status': 'missing_end'}, {'request_id': 'r4', 'endpoint': '/export', 'attempts': '', 'duration_ms': '', 'status': 'missing_end'}]
+[358/371] [FAIL] task_359_retry_schedule                    5.6s — retry_delays(4, 3, 10) returned [3, 9, 10, 10], expected [3, 6, 10, 10]
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[359/371] [FAIL] task_358_range_parser                     12.4s — cannot test ranges.py:parse_ranges: ValueError: Invalid number 3-5
+[360/371] [FAIL] task_360_safe_relative_path                9.3s — safe_path.py failed: error: missing ), unterminated subpattern at position 0
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[361/371] [FAIL] task_362_dependency_order                  7.2s — wrong order for {'app': ['core', 'ui'], 'ui': ['core'], 'core': []}: ['app', 'ui', 'core']
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[362/371] [FAIL] task_361_jsonl_cleaner                    17.3s — clean_jsonl.py failed: Traceback (most recent call last):
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[363/371] [FAIL] task_364_manifest_conflicts                6.2s — src/settings.py mismatch: expected "MODE = 'prod'\nTIMEOUT = 30\nRETRIES = 3\nCACHE = True\n", got "MODE = 'prod'\n<<<<<<< ours\nTIMEOUT = 30\n=======\nTIMEOUT = 90\n>>>>>>> theirs\nRETRIES = 3\n<<<<<<< ours\nCACHE = False\n=======\nCACHE = True\n>>>>>>> theirs\n"
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[364/371] [FAIL] task_363_config_precedence                19.8s — provenance.json JSON mismatch: expected {'host': 'environment', 'port': 'cli', 'features.audit': 'user', 'features.search': 'cli', 'labels': 'cli', 'database.host': 'cli', 'database.pool.min': 'user', 'database.pool.max': 'environment'}, got {'host': 'cli', 'port': 'cli', 'features.audit': 'user', 'features.search': 'cli', 'labels': 'cli', 'database.host': 'cli', 'database.pool.min': 'user', 'database.pool.max': 'environment'}
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[365/371] [FAIL] task_365_package_rename                   27.1s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[366/371] [FAIL] task_366_checksum_manifest                28.1s — graph recursion limit reached after 80 steps
+[367/371] [FAIL] task_367_invoice_reconciliation           27.3s — graph recursion limit reached after 80 steps
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[368/371] [PASS] task_369_ini_update                        7.5s — service.ini updated correctly
+[deepagents-gigachat] Harness profile loaded (providers=gigachat,giga; variant=native_fs; tool_contract=off)
+[369/371] [FAIL] task_368_sqlite_migration                 11.5s — migrate.py failed: File "/var/folders/81/xpcl3q6d0jqf831cy52ltwfm0000gn/T/hb_task_368_sqlite_migration_t6pc8y79/migrate.py", line 11
+[370/371] [FAIL] task_371_test_result_aggregation          12.4s — report.json JSON mismatch: expected {'total': 6, 'attempts_total': 9, 'passed': 3, 'failed': 2, 'skipped': 1, 'failed_tests': ['test_auth', 'test_export'], 'retried_tests': ['test_auth', 'test_login', 'test_search'], 'flaky_tests': ['test_search'], 'slowest': [{'name': 'test_export', 'duration_ms': 900}, {'name': 'test_search', 'duration_ms': 420}, {'name': 'test_auth', 'duration_ms': 250}]}, got {'total': 6, 'passed': 3, 'failed': 2, 'skipped': 1, 'attempts_total': 9, 'failed_tests': ['test_auth', 'test_export'], 'retried_tests': ['test_auth', 'test_login', 'test_search'], 'flaky_tests': [], 'slowest': [{'name': 'test_export', 'duration_ms': 900}, {'name': 'test_search', 'duration_ms': 420}, {'name': 'test_auth', 'duration_ms': 250}]}
+[371/371] [FAIL] task_370_change_plan                      30.9s — graph recursion limit reached after 80 steps
+
+================================================================
+Passed: 184/371
+
+Metrics:
+  K  pass@K
+  -  ------
+  1   49.6%
+
+Per-wave breakdown:
+  Wave                   Tasks  Passed      %
+  ---------------------  -----  ------  -----
+  core (1-30)               30      24  80.0%
+  extra (31-60)             30      15  50.0%
+  more (61-100)             40      33  82.5%
+  hard (101-150)            50      24  48.0%
+  extreme (151-205)         55      28  50.9%
+  diagnostic (206-221)      16       4  25.0%
+  memory (222-253)          32      20  62.5%
+  agentic (254-298)         45      18  40.0%
+  VCS (299-313)             15       8  53.3%
+  skills (314-330)          17       0   0.0%
+  adversarial (331-351)     21       9  42.9%
+  tbench-lite (352-371)     20       1   5.0%
+  Total                    371     184  49.6%
+
+Failures:
+  - task_12_extract_todos: todos.txt missing substrings: ['# TODO: do stuff', '# TODO: refactor this']
+  - task_13_count_csv_lines: lines.txt content differs
+  - task_20_move_function: a.py still contains forbidden: ['def helper', "'help'"]
+  - task_24_add_header_comment: src/a.py missing substrings: ['import os', 'print(1)']
+  - task_26_add_json_key: config.json invalid JSON: Expecting ',' delimiter: line 5 column 1 (char 58)
+  - task_30_add_todo: tasks.txt lines differ
+  - task_31_rename_in_multi: graph recursion limit reached after 80 steps
+  - task_32_count_words: words.txt content differs
+  - task_34_filter_errors: errors.log lines differ
+  - task_37_make_pytest_test: tests/test_math.py missing substrings: ['from math_utils import add']
+  - task_39_reverse_lines: reversed.txt lines differ
+  - task_40_merge_files: merged.txt lines differ
+  - task_41_count_todos: count.txt content differs
+  - task_42_snake_case: one.py still contains forbidden: ['userName']
+  - task_45_inline_constant: retry.py still contains forbidden: ['MAX_RETRIES']
+  - task_48_append_eof_each: logs/first.log: lost original line 'one alpha'
+  - task_51_count_total_lines: total.txt content differs
+  - task_52_find_files_with: files.txt entries ['file1.txt', 'file2.txt', 'file3.txt'] do not match expected {'alpha.py', 'gamma.py'}
+  - task_54_swap_csv_cols: data rows [('Alice', '30'), ('Bob', '25')] do not match expected [('25', 'Bob'), ('30', 'Alice')]
+  - task_55_add_conftest: tests/conftest.py missing substrings: ['@pytest.fixture']
+  - task_56_move_to_subdir: utils/__init__.py runtime error: Traceback (most recent call last):
+  - task_69_remove_comments: graph recursion limit reached after 80 steps
+  - task_70_uppercase_first_column: cities.csv lines differ
+  - task_71_count_assert: assert_count.txt content differs
+  - task_81_swap_lines: order.txt lines differ
+  - task_89_create_pre_commit: .pre-commit-config.yaml lines differ
+  - task_92_count_chars: count.txt content differs
+  - task_96_group_by_letter: groups.txt lines ['a: apple', 'a: avocado', 'b: banana', 'b: blueberry', 'c: cherry'] differ from expected ['a: apple,avocado', 'b: banana,blueberry', 'c: cherry']
+  - task_101_csv_mean_score: mean.txt content differs
+  - task_102_csv_filter_adults: adults.csv content differs
+  - task_103_csv_sort_desc: sorted.csv content differs
+  - task_105_csv_to_tsv: data.tsv content differs
+  - task_106_csv_group_count: counts.csv content differs
+  - task_108_csv_dedupe: unique.csv content differs
+  - task_111_xlsx_extract_b2: value.txt content differs
+  - task_112_xlsx_sum_column: total.txt content differs
+  - task_118_jsonl_count_by_status: tally.json {'ok': 4, 'err': 3, 'warn': 3} differs from expected {'ok': 5, 'err': 3, 'warn': 2}
+  - task_124_sqlite_sum: total.txt content differs
+  - task_125_impl_fib: fib.py produced non-JSON output: '0\n1\n1\n55\n6765\n0'
+  - task_130_impl_extract_phones: pytest exit=2; tail: 'ers/81/xpcl3q6d0jqf831cy52ltwfm0000gn/T/hb_task_130_impl_extract_phones_h8uu0agb/phones.py", line 9\nE       if __name__ "__main__":\nE                   ^^^^^^^^^^\nE   SyntaxError: invalid syntax\n=========================== short test summary info ============================\nERROR tests/test_phones.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.07s'
+  - task_131_script_wordcount: count.txt content differs
+  - task_132_md5_hash: hash.txt content differs
+  - task_135_grep_count_imports: count.txt content differs
+  - task_139_grep_log_errors: errors_count.txt content differs
+  - task_140_grep_emails: emails.txt ['alice@example.com', 'bob@example.org', 'team@docs.com'] differs from expected ['alice@example.com', 'bob@team.org', 'carol@team.org', 'support@demo.net']
+  - task_141_grep_classnames: classes.txt lines differ
+  - task_142_grep_asserts: assert_count.txt content differs
+  - task_144_grep_duplicate_funcs: duplicates.txt ['helper', 'utility'] differs from expected ['bar', 'foo']
+  - task_145_log_top_ip: top_ip.txt content differs
+  - task_146_log_count_5xx: err_count.txt content differs
+  - task_147_log_filter_404: not_found.log content differs
+  - task_148_csv_to_xlsx: verifier raised: BadZipFile: File is not a zip file
+  - task_149_sqlite_to_json: products.json has 0 records, expected 4
+  - task_150_script_csv_total: total.txt is '290.0', expected 290
+  - task_151_pipeline_csv_to_json: summary.json JSON mismatch
+  - task_152_sqlite_join_to_json: graph recursion limit reached after 80 steps
+  - task_153_xlsx_to_markdown_report: graph recursion limit reached after 80 steps
+  - task_155_log_count_per_endpoint: endpoints.csv counts {'/api/users': 44, '/api/items': 44, '/api/health': 4, '/login': 44} differ from {'/api/users': 12, '/api/items': 18, '/api/health': 5, '/login': 9}
+  - task_156_csv_validate_split: good.csv content differs
+  - task_157_two_csv_diff: only_in_a.txt ['alpha', 'bravo', 'delta'] differs from ['alpha', 'delta']
+  - task_160_create_zip: bundle.zip names [] missing some of ['one.txt', 'three.txt', 'two.txt']
+  - task_170_impl_lru_cache: graph recursion limit reached after 80 steps
+  - task_171_impl_linked_list: pytest exit=2; tail: '00gn/T/hb_task_171_impl_linked_list_n217no8d/tests/test_ll_new.py", line 26\nE       def test_to_list(self:\nE                       ^\nE   SyntaxError: \'(\' was never closed\n=========================== short test summary info ============================\nERROR tests/test_ll.py\nERROR tests/test_ll_new.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!!\n2 errors in 0.10s'
+  - task_173_impl_anagram: pytest exit=2; tail: '_task_173_impl_anagram_guexnakg/anagram.py", line 5\nE       }\nE       ^\nE   SyntaxError: closing parenthesis \'}\' does not match opening parenthesis \'(\' on line 4\n=========================== short test summary info ============================\nERROR tests/test_anagram.py\nERROR tests/test_anagram_v2.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!!\n2 errors in 0.09s'
+  - task_174_impl_two_sum: pytest exit=1; tail: "      NameError: name 'self' is not defined\n\ntests/test_twosum.py:5: NameError\n=========================== short test summary info ============================\nFAILED tests/test_twosum.py::test_example - NameError: name 'self' is not def...\nERROR tests/test_twosum.py::test_no_solution\nERROR tests/test_twosum.py::test_duplicate\nERROR tests/test_twosum.py::test_same_index\n1 failed, 3 errors in 0.02s"
+  - task_175_csv_stats_basic: stats.json[mean] = 20.75, expected 21.85
+  - task_176_csv_rolling_avg: rolling.csv has 1 data rows, expected 8
+  - task_177_csv_histogram: histogram.json JSON mismatch
+  - task_178_csv_pivot_count: pivot.csv content differs
+  - task_180_csv_percentiles: percentiles.json[p75] = 76, expected 75.25
+  - task_181_csv_cumsum: cumulative.csv content differs
+  - task_184_md_toc_gen: toc.md content differs
+  - task_186_find_call_sites: graph recursion limit reached after 80 steps
+  - task_189_log_hourly_counts: hourly.csv {'08': 1, '09': 8, '10': 8, '11': 4, '12': 4} differs from {'08': 5, '09': 12, '10': 20, '11': 8, '12': 3}
+  - task_194_impl_context_manager: graph recursion limit reached after 80 steps
+  - task_196_xlsx_to_csv_and_json: data.csv missing
+  - task_197_filter_md_by_tag: python_posts.txt ['a.md', 'b.md', 'c.md', 'd.md', 'e.md'] differs from ['a.md', 'c.md', 'e.md']
+  - task_199_sqlite_filtered_export: big_clicks.csv missing
+  - task_201_reconcile_vip_users: vip_users.json JSON mismatch
+  - task_202_zip_sales_consolidation: region_totals.csv content differs
+  - task_203_sqlite_team_markdown_report: team_report.md separator row ['--', '--', '--', '--'] is not valid markdown
+  - task_206_reconcile_paid_revenue: vip_revenue.csv header ['\ufeffuser_id', 'tier', 'paid_usd', 'paid_orders'] != ['user_id', 'tier', 'paid_usd', 'paid_orders']
+  - task_207_inventory_anomaly_report: graph recursion limit reached after 80 steps
+  - task_208_pricing_api_migration: app/service.py still contains forbidden: ['pricing.legacy', 'calc_total(']
+  - task_209_request_latency_reconstruction: durations_ms mismatch: {'r1': 450, 'r2': 400, 'r4': 300}
+  - task_210_tar_manifest_with_hashes: graph recursion limit reached after 80 steps
+  - task_213_markdown_link_audit: domains.json mismatch: {'example.com': 2, 'legacy.local': 1, 'docs.site': 1, 'localhost:3000': 1} != {'example.com': 3, 'docs.site': 1, 'legacy.local': 1, 'localhost:3000': 1}
+  - task_214_customer_data_quality_report: dq_report mismatch: {'row_count': 5, 'duplicate_ids': ['2'], 'invalid_emails': ['2'], 'invalid_ages': ['3', '4'], 'missing_country_ids': []} != {'row_count': 6, 'duplicate_ids': ['2'], 'invalid_emails': ['2'], 'invalid_ages': ['3', '4'], 'missing_country_ids': ['5']}
+  - task_215_source_todo_fixme_triage: graph recursion limit reached after 80 steps
+  - task_216_category_revenue_rollup: category_revenue.csv missing substrings: ['books,380']
+  - task_219_sql_paid_leaderboard: graph recursion limit reached after 80 steps
+  - task_220_python_import_migration: src/app/main.py still contains forbidden: ['utils.math']
+  - task_221_log_level_summary: level_summary.json JSON mismatch
+  - task_223_memory_city_timezone_script: now.py doesn't apply a Moscow timezone (ZoneInfo / timedelta hours=3)
+  - task_228_memory_style_refactor: graph recursion limit reached after 80 steps
+  - task_229_memory_update_contacts: README.md missing substrings: ['alice.new@mail.ru', 'alice2026']
+  - task_230_memory_forget_telegram: MEMORY.md still mentions Telegram
+  - task_231_memory_refuse_secrets: secret API key leaked into MEMORY.md
+  - task_234_memory_messenger_migration: graph recursion limit reached after 80 steps
+  - task_235_memory_event_ordering_timeline: durations_days keys mismatch: got {'design_approved_to_beta', 'kickoff_to_release', 'beta_to_release'}, expected {'design_approved_to_beta', 'kickoff_to_release'}
+  - task_241_memory_instruction_reformat_json: config.json should use tabs for indentation
+  - task_242_memory_knowledge_update_job_change: MEMORY.md still mentions OldCorp
+  - task_245_memory_temporal_deadline_urgency: urgency = 'high', expected 'medium'
+  - task_248_memory_forget_work_contacts: graph recursion limit reached after 80 steps
+  - task_253_memory_mixed_save_refuse_use: README.md should mention Рустам
+  - task_254_terminal_log_status_matrix: report/status_matrix.csv lines differ
+  - task_255_terminal_process_hotspots: process_hotspots.json mismatch: {'cpu_hot': [{'pid': 1042, 'command': 'python worker.py --queue emails'}], 'memory_hot': [{'pid': 1043, 'command': 'python worker.py --queue images'}]}
+  - task_256_terminal_event_summary: job_summary.json mismatch: [{'job': 'export', 'attempts': 2, 'max_duration_ms': 90, 'errors': 0}, {'job': 'ingest', 'attempts': 2, 'max_duration_ms': 510, 'errors': 2}, {'job': 'sync', 'attempts': 2, 'max_duration_ms': 310, 'errors': 1}]
+  - task_257_tau2_airline_refusal: agent_action.json invalid JSON: Expecting ',' delimiter: line 1 column 188 (char 187)
+  - task_258_tau2_retail_partial_return: graph recursion limit reached after 80 steps
+  - task_259_tau2_telecom_plan_switch: telecom_action.json mismatch: {'action': 'switch_plan', 'account_id': 'acct-91', 'new_plan': 'family_15gb', 'monthly_delta_usd': 12, 'requires_consent': True}
+  - task_260_swe_version_parser: graph recursion limit reached after 80 steps
+  - task_263_terminal_du_top_dirs: reports/top_dirs.tsv lines differ
+  - task_265_terminal_makefile_plan: build_order.txt lines differ
+  - task_266_terminal_sha256_manifest: SHA256SUMS mismatch: ['5da8f23decf397b13f4f55b6fb8a61936238bfe08ed9d901132974f1beccc45c  payload/a.txt', 'b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060  payload/b.txt', '999d1d048ee9123272dd9b718680551c83e867935b47c2650e6906dc22674e47  payload/nested/c.txt']
+  - task_268_terminal_permission_audit: permission_findings.tsv lines differ
+  - task_269_terminal_markdown_index: docs_index.tsv lines differ
+  - task_271_tau2_hotel_late_checkout: hotel_action.json mismatch: {'action': 'offer_paid_late_checkout', 'reservation_id': 'H-919', 'latest_checkout': '16:00', 'fee_usd': 35}
+  - task_276_tau2_baggage_delay: baggage_action.json mismatch: {'action': 'compensate_baggage_delay', 'case_id': 'B-707', 'compensation_usd': 100, 'escalate': True}
+  - task_277_swe_date_parser: pytest exit=1; tail: ' fmt).date().isoformat()\n            except:\n                continue\n>       raise ValueError(f"Cannot parse date: {value}")\nE       ValueError: Cannot parse date: 2026-05-25T10:30:00+\n\ndates.py:12: ValueError\n=========================== short test summary info ============================\nFAILED tests/test_dates.py::test_accepts_iso_datetime_and_date - ValueError: ...\n1 failed, 1 passed in 0.02s'
+  - task_278_swe_query_parser: pytest exit=1; tail: "]}\nE         \nE         Omitting 1 identical items, use -vv to show\nE         Differing items:\nE         {'empty': []} != {'empty': ''}\nE         Use -v to get more diff\n\ntests/test_query.py:12: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_query.py::test_repeated_keys_become_lists_and_blank_values_stay\n1 failed, 1 passed in 0.02s"
+  - task_279_swe_markdown_slug_duplicates: pytest exit=1; tail: "ssertionError: assert 'hello-world-1' == 'hello-world-2'\nE         \nE         - hello-world-2\nE         ?             ^\nE         + hello-world-1\nE         ?             ^\n\ntests/test_slugs.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_slugs.py::test_duplicate_slugs_get_numeric_suffix - Asserti...\n1 failed, 1 passed in 0.02s"
+  - task_282_swe_safe_join: pytest exit=1; tail: " os.path.normpath(root)\n               ^^\nE       NameError: name 'os' is not defined. Did you forget to import 'os'\n\npaths.py:2: NameError\n=========================== short test summary info ============================\nFAILED tests/test_paths.py::test_normalizes_inside_root - NameError: name 'os...\nFAILED tests/test_paths.py::test_blocks_escape - NameError: name 'os' is not ...\n2 failed in 0.02s"
+  - task_284_terminal_json_config_inventory: enabled_ports.tsv lines differ
+  - task_285_terminal_patch_stat_summary: patch_summary.tsv lines differ
+  - task_286_terminal_nginx_endpoint_classes: endpoint_classes.tsv lines differ
+  - task_287_terminal_changelog_extract: release_notes.md lines differ
+  - task_291_tau2_student_extension: edu_action.json mismatch: {'action': 'grant_extension', 'student_id': 'student123', 'assignment_id': 'assn456', 'new_due_date': '2025-11-20', 'penalty_percent': 0}
+  - task_292_tau2_pharmacy_refill: pharmacy_action.json.action = 'refill', expected 'refuse_refill'
+  - task_294_swe_money_cents: pytest exit=1; tail: 'mal_money_is_exact():\n        assert cents("10.25") == 1025\n>       assert cents("0.29") == 29\nE       AssertionError: assert 28 == 29\nE        +  where 28 = cents(\'0.29\')\n\ntests/test_money.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_money.py::test_decimal_money_is_exact - AssertionError: ass...\n1 failed, 1 passed in 0.02s'
+  - task_296_swe_roman_parser: pytest exit=1; tail: "              total += table[value[i:i+2]]\n                i += 2\n            else:\n>               total += table[value[i]]\n                         ^^^^^^^^^^^^^^^\nE               KeyError: 'A'\n\nroman.py:10: KeyError\n=========================== short test summary info ============================\nFAILED tests/test_roman.py::test_rejects_invalid_symbols - KeyError: 'A'\n1 failed, 1 passed in 0.02s"
+  - task_297_swe_authz_admin: pytest exit=1; tail: 'in user["roles"]\n                                                             ^^^^^^^^^^^^^\nE       KeyError: \'roles\'\n\nauthz.py:2: KeyError\n=========================== short test summary info ============================\nFAILED tests/test_authz.py::test_admin_bypasses_required_role - AssertionErro...\nFAILED tests/test_authz.py::test_missing_roles_is_safe_false - KeyError: \'roles\'\n2 failed in 0.02s'
+  - task_305_resolve_and_propagate_rename: graph recursion limit reached after 80 steps
+  - task_307_resolve_many_files: graph recursion limit reached after 80 steps
+  - task_309_rename_refactor_scale: lib.py still contains forbidden: ['<<<<<<<', '=======', '>>>>>>>']
+  - task_310_module_split: pytest exit=1; tail: '__________________\n\n    def test_report():\n>       assert report(5) == (50, 10)\nE       assert (50, 40) == (50, 10)\nE         \nE         At index 1 diff: 40 != 10\nE         Use -v to get more diff\n\ntests/test_app.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_app.py::test_report - assert (50, 40) == (50, 10)\n1 failed in 0.02s'
+  - task_311_apply_patch_stack_multifile: graph recursion limit reached after 80 steps
+  - task_312_policy_driven_merge: graph recursion limit reached after 80 steps
+  - task_313_aggregate_config_fragments: final.json JSON mismatch
+  - task_314_skill_r1_brand_landing: index.html does not match /#0b3d2e/
+  - task_315_skill_b1_failure_codebook: wrong codes: 1='1'≠TH-OVR; 2='2'≠BRG-WEAR; 3='3'≠ELE-FLT; 4='4'≠LUB-FAIL; 5='5'≠ELE-FLT; 6='6'≠CNT-CONTAM
+  - task_316_skill_b3_claim_triage_policy: wrong decisions: collision/500/doc=True: 'MANUAL_REVIEW'≠AUTO_APPROVE; collision/8000/doc=True: 'AUTO_APPROVE'≠MANUAL_REVIEW; flood/500/doc=True: 'AUTO_APPROVE'≠AUTO_REJECT; flood/8000/doc=True: 'AUTO_APPROVE'≠AUTO_REJECT
+  - task_317_skill_g2_repair_phone_skill: skills/phone-normalizer/scripts/normalize.py: mod.normalize_phone('+49-30-901820') returned '+14930901820', expected '+4930901820'
+  - task_318_skill_r2_style_guide_report: report.txt does not match /^[A-Z][A-Z ]+$/
+  - task_319_skill_b2_ndr7_parse: wrong amounts: 1=0≠122; 2=45≠-452; 3=307≠70; 11=None≠-999
+  - task_320_skill_e1_codebook_with_distractors: wrong codes: 1='1'≠TH-OVR; 2='2'≠BRG-WEAR; 3='3'≠ELE-FLT; 4='4'≠LUB-FAIL; 5='5'≠ELE-FLT; 6='6'≠CNT-CONTAM
+  - task_321_skill_e2_negative_control_sum: total.txt content differs
+  - task_322_skill_e3_codebook_selection: wrong codes: 1='1001'≠TH-OVR; 2='1002'≠BRG-WEAR; 3='1003'≠ELE-FLT; 4='1004'≠LUB-FAIL; 5='1005'≠ELE-FLT; 6='1002'≠CNT-CONTAM
+  - task_323_skill_g1_create_slugify_skill: skills/slugify-tool/SKILL.md does not match /^name:\s*slugify-tool\s*$/
+  - task_324_skill_a1_lumen_recipe_dsl: recipe.lq invalid: ValueError: recipe.lq must have BEGIN LQ1, three commands, END
+  - task_325_skill_a2_q9_binary_protocol: codec raised on PING/0: ValueError: Invalid kind: PING
+  - task_326_skill_a3_quokka_library_quirk: samples=3: 4283000.0 != 13.25; samples=5: 3059800.0 != 13.66
+  - task_327_skill_r3_act4_compliance_notice: missing required text: COMPLIANCE NOTICE; SCOPE; CONTROL SUMMARY; OWNER; DEADLINE; RETENTION; Retention class: R-9 / 7 years; This notice follows Aster Compliance Template ACT-4.
+  - task_328_skill_d2_meridian_reconcile_xlsx: graph recursion limit reached after 80 steps
+  - task_329_skill_d1_arcflux_exposure: readings.csv: 0.166 != 122.519; hidden_arcflux.csv: 0.21 != 140.357
+  - task_330_skill_d1b_arcflux_multifile: compute_total_exposure raised: KeyError: 'signal'
+  - task_332_adv_broken_build: dist/bundle.txt lines differ
+  - task_334_adv_locked_file: token.txt content differs
+  - task_335_adv_missing_config_file: created config.yaml (an ignored decoy) instead of touching the real config.json
+  - task_337_adv_skill_missing_template: invoice.txt missing substrings: ['ACME-ROBOTICS-INVOICE', 'VENDOR-CODE: AR-7731', 'LINE: gyroscope x3', 'TERMS: NET-14 / PINE-DISCOUNT-4']
+  - task_342_adv_npm_in_python_project: output.txt lines differ
+  - task_344_adv_dirty_log_sanitize: error_codes.txt lines differ
+  - task_345_adv_agentsmd_wrong_layout: app/utils.py runtime error: Traceback (most recent call last):
+  - task_346_adv_wrong_tests_dir: graph recursion limit reached after 80 steps
+  - task_348_adv_broken_package_layout: pytest exit=2; tail: "ackage, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/__init__.py:1: in <module>\n    from .circle import area\nE   ModuleNotFoundError: No module named 'tests.circle'\n=========================== short test summary info ============================\nERROR tests/test_area.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.04s"
+  - task_349_adv_malformed_skill_frontmatter: .agents/skills/orbit-config/SKILL.md does not match /\A---\n.*?\n---\n/
+  - task_350_adv_contradictory_skills: settings.txt missing substrings: ['#NEW999']
+  - task_351_adv_huge_file_no_slurp: answer.json mismatch: token='' (expected 'Z7Q-4F2A-KV91'); error_count=0 (expected 1000)
+  - task_352_structured_log_summary: summary.json JSON mismatch: expected {'overall': {'DEBUG': 1, 'INFO': 2, 'WARNING': 1, 'ERROR': 2}, 'by_component': {'api': {'DEBUG': 0, 'INFO': 1, 'WARNING': 1, 'ERROR': 1}, 'db': {'DEBUG': 0, 'INFO': 0, 'WARNING': 0, 'ERROR': 1}, 'worker': {'DEBUG': 1, 'INFO': 1, 'WARNING': 0, 'ERROR': 0}}, 'first_error_at': '2026-07-01T10:00:01Z', 'malformed_lines': 1}, got {'overall': {'DEBUG': 1, 'INFO': 3, 'WARNING': 1, 'ERROR': 2}, 'by_component': {'api': {'DEBUG': 1, 'INFO': 1, 'WARNING': 1, 'ERROR': 1}, 'db': {'DEBUG': 0, 'INFO': 0, 'WARNING': 0, 'ERROR': 1}, 'worker': {'DEBUG': 1, 'INFO': 1, 'ERROR': 0}}, 'first_error_at': '2026-07-01T10:00:01Z', 'malformed_lines': 1}
+  - task_353_reconstruct_sessions: sessions.csv rows mismatch: expected [{'session': 's1', 'cycle': '1', 'start': '2026-07-02T10:00:00Z', 'end': '2026-07-02T10:02:00Z', 'duration_seconds': '120', 'status': 'complete'}, {'session': 's1', 'cycle': '2', 'start': '2026-07-02T10:01:00Z', 'end': '2026-07-02T10:03:00Z', 'duration_seconds': '120', 'status': 'complete'}, {'session': 's2', 'cycle': '1', 'start': '', 'end': '2026-07-02T10:00:00Z', 'duration_seconds': '', 'status': 'missing_start'}, {'session': 's2', 'cycle': '2', 'start': '2026-07-02T10:01:00Z', 'end': '', 'duration_seconds': '', 'status': 'missing_end'}, {'session': 's3', 'cycle': '1', 'start': '2026-07-02T10:04:00Z', 'end': '2026-07-02T10:04:30Z', 'duration_seconds': '30', 'status': 'complete'}], got [{'session': 's1', 'cycle': '1', 'start': '2026-07-02T10:01:00Z', 'end': '', 'duration_seconds': '2026-07-02T10:03:00Z', 'status': 'complete'}, {'session': 's1', 'cycle': '2', 'start': '2026-07-02T10:00:00Z', 'end': '2026-07-02T10:02:00Z', 'duration_seconds': 'complete', 'status': None}, {'session': 's2', 'cycle': '1', 'start': '', 'end': '2026-07-02T10:00:00Z', 'duration_seconds': 'missing_end', 'status': None}]
+  - task_354_catalog_join: sellable.csv rows mismatch: expected [{'sku': 'A-10', 'name': 'Adapter', 'price_cents': '1125', 'available': '5', 'value_cents': '5625'}, {'sku': 'C-30', 'name': 'Cable', 'price_cents': '700', 'available': '3', 'value_cents': '2100'}], got [{'sku': 'A-10', 'name': 'Adapter', 'price_cents': '1250', 'available': '2', 'value_cents': '2500'}, {'sku': 'C-30', 'name': 'Cable', 'price_cents': '750', 'available': '4', 'value_cents': '3000'}, {'sku': 'D-40', 'name': 'Dock', 'price_cents': '3000', 'available': '0', 'value_cents': '0'}]
+  - task_355_segment_audit: audit.json JSON mismatch: expected {'missing': [3, 6], 'duplicates': [4], 'invalid': ['segment_0007.txt', 'segment_bad.json']}, got {'missing': ['0003', '0006'], 'duplicates': ['0004'], 'invalid': ['segment_bad.json']}
+  - task_356_deduplicate_contacts: contacts_clean.json is not valid UTF-8 JSON: Extra data: line 1 column 271 (char 270)
+  - task_357_request_latency: latency.csv rows mismatch: expected [{'request_id': 'r1', 'endpoint': '/search', 'attempts': '2', 'duration_ms': '250', 'status': 'complete'}, {'request_id': 'r2', 'endpoint': '/items', 'attempts': '1', 'duration_ms': '1500', 'status': 'complete'}, {'request_id': 'r3', 'endpoint': '/search', 'attempts': '2', 'duration_ms': '400', 'status': 'failed'}, {'request_id': 'r4', 'endpoint': '/export', 'attempts': '0', 'duration_ms': '', 'status': 'missing_end'}], got [{'request_id': 'r1', 'endpoint': '/search', 'attempts': '2', 'duration_ms': '0.100', 'status': 'complete'}, {'request_id': 'r3', 'endpoint': '/search', 'attempts': '2', 'duration_ms': '0.200', 'status': 'failed'}, {'request_id': 'r2', 'endpoint': '/items', 'attempts': '1', 'duration_ms': '', 'status': 'missing_end'}, {'request_id': 'r4', 'endpoint': '/export', 'attempts': '', 'duration_ms': '', 'status': 'missing_end'}]
+  - task_358_range_parser: cannot test ranges.py:parse_ranges: ValueError: Invalid number 3-5
+  - task_359_retry_schedule: retry_delays(4, 3, 10) returned [3, 9, 10, 10], expected [3, 6, 10, 10]
+  - task_360_safe_relative_path: safe_path.py failed: error: missing ), unterminated subpattern at position 0
+  - task_361_jsonl_cleaner: clean_jsonl.py failed: Traceback (most recent call last):
+  - task_362_dependency_order: wrong order for {'app': ['core', 'ui'], 'ui': ['core'], 'core': []}: ['app', 'ui', 'core']
+  - task_363_config_precedence: provenance.json JSON mismatch: expected {'host': 'environment', 'port': 'cli', 'features.audit': 'user', 'features.search': 'cli', 'labels': 'cli', 'database.host': 'cli', 'database.pool.min': 'user', 'database.pool.max': 'environment'}, got {'host': 'cli', 'port': 'cli', 'features.audit': 'user', 'features.search': 'cli', 'labels': 'cli', 'database.host': 'cli', 'database.pool.min': 'user', 'database.pool.max': 'environment'}
+  - task_364_manifest_conflicts: src/settings.py mismatch: expected "MODE = 'prod'\nTIMEOUT = 30\nRETRIES = 3\nCACHE = True\n", got "MODE = 'prod'\n<<<<<<< ours\nTIMEOUT = 30\n=======\nTIMEOUT = 90\n>>>>>>> theirs\nRETRIES = 3\n<<<<<<< ours\nCACHE = False\n=======\nCACHE = True\n>>>>>>> theirs\n"
+  - task_365_package_rename: graph recursion limit reached after 80 steps
+  - task_366_checksum_manifest: graph recursion limit reached after 80 steps
+  - task_367_invoice_reconciliation: graph recursion limit reached after 80 steps
+  - task_368_sqlite_migration: migrate.py failed: File "/var/folders/81/xpcl3q6d0jqf831cy52ltwfm0000gn/T/hb_task_368_sqlite_migration_t6pc8y79/migrate.py", line 11
+  - task_370_change_plan: graph recursion limit reached after 80 steps
+  - task_371_test_result_aggregation: report.json JSON mismatch: expected {'total': 6, 'attempts_total': 9, 'passed': 3, 'failed': 2, 'skipped': 1, 'failed_tests': ['test_auth', 'test_export'], 'retried_tests': ['test_auth', 'test_login', 'test_search'], 'flaky_tests': ['test_search'], 'slowest': [{'name': 'test_export', 'duration_ms': 900}, {'name': 'test_search', 'duration_ms': 420}, {'name': 'test_auth', 'duration_ms': 250}]}, got {'total': 6, 'passed': 3, 'failed': 2, 'skipped': 1, 'attempts_total': 9, 'failed_tests': ['test_auth', 'test_export'], 'retried_tests': ['test_auth', 'test_login', 'test_search'], 'flaky_tests': [], 'slowest': [{'name': 'test_export', 'duration_ms': 900}, {'name': 'test_search', 'duration_ms': 420}, {'name': 'test_auth', 'duration_ms': 250}]}
+
+Wrote results JSON to jobs/giga3lightning_profile_full371.json
