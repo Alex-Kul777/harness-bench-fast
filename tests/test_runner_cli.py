@@ -10,6 +10,7 @@ from harness_bench.runner_cli import (
     _gemini_json_event_stats,
     _grok_json_event_stats,
     _mini_swe_agent_traj_stats,
+    _ouroboros_result_stats,
     _task_run_with_cli_stats,
 )
 
@@ -420,6 +421,64 @@ def test_mini_swe_agent_traj_stats_count_steps_and_tokens(tmp_path: Path) -> Non
         "agent_tool_calls": 2,
         "agent_shell_commands": 2,
     }
+
+
+def test_ouroboros_result_stats_reads_cumulative_usage(tmp_path: Path) -> None:
+    (tmp_path / ".ouroboros_result.json").write_text(
+        """
+        {
+          "status": "completed",
+          "loop_outcome": {
+            "usage": {
+              "prompt_tokens": 109284,
+              "completion_tokens": 249,
+              "total_rounds": 4
+            },
+            "trace_refs": {
+              "llm_call_refs": [
+                {"llm_call_id": "a"},
+                {"llm_call_id": "b"},
+                {"llm_call_id": "c"},
+                {"llm_call_id": "d"}
+              ]
+            }
+          }
+        }
+        """,
+        encoding="utf-8",
+    )
+
+    stats = _ouroboros_result_stats(tmp_path)
+    assert stats is not None
+    assert stats["agent_input_tokens"] == 109284
+    assert stats["agent_output_tokens"] == 249
+    assert stats["agent_total_tokens"] == 109533
+    assert stats["agent_steps"] == 4
+    assert stats["agent_llm_calls"] == 4
+
+
+def test_ouroboros_result_stats_absent_file_returns_none(tmp_path: Path) -> None:
+    assert _ouroboros_result_stats(tmp_path) is None
+
+
+def test_task_run_stats_dispatches_to_ouroboros_parser(tmp_path: Path) -> None:
+    (tmp_path / ".ouroboros_result.json").write_text(
+        '{"loop_outcome": {"usage": {"prompt_tokens": 50, "completion_tokens": 6}}}',
+        encoding="utf-8",
+    )
+
+    run = _task_run_with_cli_stats(
+        task_id="task_fake",
+        passed=True,
+        message="ok",
+        elapsed_seconds=0.1,
+        result=subprocess.CompletedProcess(["ouroboros"], 0, "final answer text", ""),
+        workspace=tmp_path,
+    )
+
+    assert run.agent_input_tokens == 50
+    assert run.agent_output_tokens == 6
+    assert run.agent_total_tokens == 56
 
 
 def test_task_run_stats_can_read_mini_traj_without_kept_workspace(tmp_path: Path) -> None:

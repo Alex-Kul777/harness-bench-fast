@@ -837,6 +837,69 @@ def _mini_swe_agent_traj_stats(workspace: Path | None) -> dict[str, int] | None:
     return stats
 
 
+_OUROBOROS_RESULT_FILENAME = ".ouroboros_result.json"
+
+
+def _ouroboros_result_stats(workspace: Path | None) -> dict[str, int] | None:
+    """Extract effort metrics from an Ouroboros ``--result-json-out`` file.
+
+    The Ouroboros CLI is a client/server agent whose stdout is only the final
+    answer text, so token/round counts live in the machine-readable result JSON
+    it writes into the task workspace. ``loop_outcome.usage`` is cumulative
+    across all rounds (prompt/completion tokens and the round count)."""
+    if workspace is None:
+        return None
+    path = workspace / _OUROBOROS_RESULT_FILENAME
+    if not path.is_file():
+        return None
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    if not isinstance(payload, dict):
+        return None
+
+    usage: object = None
+    loop_outcome = payload.get("loop_outcome")
+    if isinstance(loop_outcome, dict) and isinstance(loop_outcome.get("usage"), dict):
+        usage = loop_outcome["usage"]
+    elif isinstance(payload.get("usage"), dict):
+        usage = payload["usage"]
+    else:
+        # Some result shapes surface the counters at the top level.
+        usage = payload
+    if not isinstance(usage, dict):
+        return None
+
+    prompt_tokens = _int_or_none(usage.get("prompt_tokens"))
+    completion_tokens = _int_or_none(usage.get("completion_tokens"))
+    if prompt_tokens is None and completion_tokens is None:
+        return None
+
+    stats: dict[str, int] = {}
+    if prompt_tokens is not None:
+        stats["agent_input_tokens"] = prompt_tokens
+    if completion_tokens is not None:
+        stats["agent_output_tokens"] = completion_tokens
+    total_tokens = _int_or_none(usage.get("total_tokens"))
+    if total_tokens is None:
+        total_tokens = (prompt_tokens or 0) + (completion_tokens or 0)
+    stats["agent_total_tokens"] = total_tokens
+
+    rounds = _int_or_none(usage.get("total_rounds"))
+    if rounds is not None:
+        stats["agent_steps"] = rounds
+        stats["agent_llm_calls"] = rounds
+
+    trace_refs = (loop_outcome or {}).get("trace_refs") if isinstance(loop_outcome, dict) else None
+    if isinstance(trace_refs, dict):
+        llm_call_refs = trace_refs.get("llm_call_refs")
+        if isinstance(llm_call_refs, list) and llm_call_refs:
+            stats["agent_llm_calls"] = len(llm_call_refs)
+
+    return _with_default_agent_metrics(stats)
+
+
 def _task_run_with_cli_stats(
     *,
     task_id: str,
@@ -858,6 +921,8 @@ def _task_run_with_cli_stats(
             result.stdout or "",
             workspace=stats_workspace or workspace,
         )
+    if stats is None:
+        stats = _ouroboros_result_stats(stats_workspace or workspace)
     if stats is None:
         stats = _mini_swe_agent_traj_stats(stats_workspace or workspace)
     return TaskRun(
