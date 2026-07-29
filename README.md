@@ -2,20 +2,47 @@
 
 ## Current Results
 
-Published benchmark results below use the full 351-task set (`task-set v0.13.0`).
+Published benchmark results below use the full 391-task set (`task-set v0.16.0`).
 `Steps` and `Tokens` are shown when the runner exposes them; `—` means the metric
-is absent from the run artifact, not that nothing was spent. Each row is one run
-per harness + model setup, except where marked as a multi-run mean: the
-`deepagents + GigaChat profile / GigaChat 3.5` row averages 3 independent full
-runs (317, 311, 308 passed), with Steps/Tokens as the mean of per-run sums. The `Profile` column shows the deepagents harness
+is absent from the run artifact, not that nothing was spent. Each row is one full
+run per harness + model setup. The `Profile` column shows the deepagents harness
 profile applied: `GigaChat` = the `deepagents-gigachat` tuning profile,
 `Anthropic` = the Anthropic harness profile built into deepagents, `OpenAI` =
-the OpenAI harness profile built into deepagents (`openai:gpt-5.3-codex`, the
-newest available, bridged onto the model), `none` = stock deepagents defaults,
-`—` = not applicable (non-deepagents harnesses).
+the OpenAI harness profile built into deepagents, `none` = stock deepagents
+defaults, `—` = not applicable (non-deepagents harnesses).
 GigaChat rows are the IFT stand, build `32.9.23.6`.
 
 Public landing page: <https://ai-forever.github.io/harness-bench-fast/>
+
+| Harness | Profile | Model | Result | % | Steps | Tokens |
+| --- | --- | --- | ---: | ---: | ---: | ---: |
+| Kimi CLI | — | Kimi K3 | 390/391 | 99.7% | — | — |
+| Claude Code CLI | — | Claude Haiku 4.5 | 380/391 | 97.2% | 1,645 | 176,430,286 |
+| deepagents | GigaChat | GigaChat 3.5 | 340/391 | 87.0% | 3,316 | 4,319,421 |
+| deepagents | GigaChat | GigaChat 3 Ultra | 340/391 | 87.0% | 3,258 | 4,415,043 |
+| deepagents | none | DeepSeek V4 Flash | 320/391 | 81.8% | 5,048 | 61,715,547 |
+| deepagents | none | GigaChat 3 Ultra | 312/391 | 79.8% | 3,591 | 7,994,643 |
+| deepagents | none | GigaChat 3.5 | 302/391 | 77.2% | 3,542 | 7,371,576 |
+| deepagents | none | Qwen3 Coder 30B-A3B | 284/391 | 72.6% | 5,467 | 90,234,558 |
+| deepagents | GigaChat | GigaChat 3 Pro | 241/391 | 61.6% | 2,993 | 3,975,672 |
+| deepagents | none | GPT-OSS-20B | 193/391 | 49.4% | 2,727 | 29,137,983 |
+| deepagents | none | GPT-OSS-120B | 186/391 | 47.6% | 2,193 | 23,831,283 |
+| deepagents | GigaChat | GigaChat 3 Lightning | 178/391 | 45.5% | 2,520 | 2,275,821 |
+
+Two notes on reading the table. The GigaChat profile is worth 7-10 points and
+roughly halves the token spend, which the two profiled/unprofiled GigaChat pairs
+show directly. And a larger model is not automatically a more capable agent:
+GPT-OSS-120B places below its own 20B sibling because it frequently answers in
+prose instead of calling a tool, scoring 0/15 on the VCS wave and 2/20 on
+CLI-composition while remaining competitive on single-shot waves.
+
+<details>
+<summary>Earlier results on task-set v0.13.0 (351 tasks) — not comparable</summary>
+
+The v0.16.0 audit changed task semantics across the set, so these scores cannot
+be compared with the table above. Kept for reference only. The
+`deepagents + GigaChat profile / GigaChat 3.5` row averages 3 independent full
+runs (317, 311, 308 passed), with Steps/Tokens as the mean of per-run sums.
 
 | Harness | Profile | Model | Result | % | Steps | Tokens |
 | --- | --- | --- | ---: | ---: | ---: | ---: |
@@ -48,6 +75,8 @@ Public landing page: <https://ai-forever.github.io/harness-bench-fast/>
 | deepagents | GigaChat | GigaChat 3 Lightning | 179/351 | 51.0% | 2,232 | 1,739,949 |
 | deepagents | none | Llama 4 Maverick | 57/351 | 16.2% | 1,391 | 17,065,878 |
 | deepagents | none | yandex/gpt5-lite | 37/351 | 10.5% | 1,666 | 118,843,500 |
+
+</details>
 
 A self-contained **391-task agent benchmark** (`task-set v0.16.0`) for evaluating LLM-backed
 coding agents on file-operation work: create / edit / refactor source
