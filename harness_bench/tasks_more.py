@@ -159,6 +159,23 @@ TASK_64 = Task(
 # ---------------------------------------------------------------------------
 # 65. sum_floats_3decimals
 # ---------------------------------------------------------------------------
+def _verify_task_65(ws: Path) -> VerifyResult:
+    """The sum rounded to three decimals, in any spelling of that value."""
+    p = ws / "sum.txt"
+    if not p.exists():
+        return VerifyResult(False, "sum.txt missing")
+    text = p.read_text(encoding="utf-8").strip()
+    if "," in text:
+        return VerifyResult(False, f"sum.txt uses a comma decimal separator: {text!r}")
+    try:
+        value = float(text)
+    except ValueError:
+        return VerifyResult(False, f"sum.txt is not a number: {text!r}")
+    if round(value, 3) != 7.5:
+        return VerifyResult(False, f"sum.txt is {text!r}, expected the sum 7.5")
+    return VerifyResult(True, f"sum.txt holds the correct sum ({text})")
+
+
 TASK_65 = Task(
     id="task_65_sum_floats",
     name="Sum floats with 3 decimal places",
@@ -171,7 +188,11 @@ TASK_65 = Task(
     ),
     setup_files={"numbers.txt": "1.5\n2.25\n3.125\n0.625\n"},
     gold_files={"sum.txt": "7.500\n"},
-    verifier=file_text_equals("sum.txt", "7.500"),
+    # The fixture sums to exactly 7.5, so "round to three decimals" and "format
+    # with three decimals" diverge: `round(total, 3)` prints 7.5 and byte
+    # comparison rejected it. The prompt asks for a rounded value, so compare
+    # the value — 7.5, 7.50 and 7.500 all pass, 7.6 does not.
+    verifier=_verify_task_65,
 )
 
 
@@ -450,9 +471,17 @@ def _verify_task_75(ws: Path) -> VerifyResult:
     p = ws / "squashed.txt"
     if not p.exists():
         return VerifyResult(False, "squashed.txt missing")
-    text = p.read_text()
+    text = p.read_text(encoding="utf-8")
     if "\n\n\n" in text:
         return VerifyResult(False, "squashed.txt still has 2+ consecutive blank lines")
+    # The prompt says each run collapses to *exactly one* blank line, but only
+    # the "no runs of 2+" half was checked, so deleting every blank line passed.
+    if text.strip() != "one\n\ntwo\n\nthree":
+        return VerifyResult(
+            False,
+            "each run of blank lines must collapse to exactly one blank line; "
+            f"got {text!r}",
+        )
     expected_content_lines = ["one", "two", "three"]
     content_lines = [line for line in text.splitlines() if line.strip()]
     if content_lines != expected_content_lines:
@@ -918,14 +947,18 @@ TASK_89 = Task(
     name="Create .pre-commit-config.yaml",
     tags=("create", "config", "easy"),
     prompt=(
+        # The block is quoted at column 0, exactly as the file must be written.
+        # It used to be indented two spaces for readability while the verifier
+        # demanded the dedented form — so "отступы сохраняй" actively misled, and
+        # half the observed failures on this task were agents obeying it.
         "Создай в корне рабочей директории файл .pre-commit-config.yaml со"
-        " следующими ровно четырьмя непустыми строками (в указанном порядке,"
-        " отступы сохраняй):\n"
-        "  repos:\n"
-        "    - repo: https://github.com/astral-sh/ruff-pre-commit\n"
-        "      rev: v0.6.0\n"
-        "      hooks:\n"
-        " Никаких других строк добавлять не нужно."
+        " следующими ровно четырьмя непустыми строками — скопируй блок ниже"
+        " буквально, вместе с отступами:\n"
+        "repos:\n"
+        "  - repo: https://github.com/astral-sh/ruff-pre-commit\n"
+        "    rev: v0.6.0\n"
+        "    hooks:\n"
+        "Никаких других строк добавлять не нужно."
     ),
     setup_files={},
     gold_files={
@@ -1254,10 +1287,11 @@ TASK_99 = Task(
     name="Create a short README.md",
     tags=("create", "docs", "easy"),
     prompt=(
+        # Quoted at column 0, the way the file must actually look.
         "Создай в корне рабочей директории файл README.md. В нём должно быть"
         " ровно две непустые строки в указанном порядке:\n"
-        "  # demo\n"
-        "  Описание проекта."
+        "# demo\n"
+        "Описание проекта."
     ),
     setup_files={},
     gold_files={"README.md": "# demo\nОписание проекта.\n"},

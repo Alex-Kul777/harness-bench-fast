@@ -60,6 +60,7 @@ TASK_WAVES: tuple[TaskWave, ...] = (
     TaskWave("skills", 314, 330),
     TaskWave("adversarial", 331, 351),
     TaskWave("tbench-lite", 352, 371),
+    TaskWave("cli", 372, 391),
 )
 
 
@@ -237,6 +238,97 @@ TASK_SET_REVISIONS: tuple[TaskSetRevision, ...] = (
             "Added twenty deterministic Terminal-Bench-inspired subtask tasks "
             "for calibrating weaker coding agents. All checks are mechanical, "
             "offline, and gold-verified."
+        ),
+    ),
+    TaskSetRevision(
+        version="0.15.0",
+        introduced="2026-07-27",
+        total_tasks=391,
+        added_task_numbers=(372, 391),
+        modules=("tasks_cli.py",),
+        notes=(
+            "Added a twenty-task CLI-composition wave. Thirteen tasks drive "
+            "bespoke command-line tools shipped per task (logq, pktool, xtab, "
+            "cfgctl, depwalk, slicer) built so that reading --help is the only "
+            "way in. Their surface is deliberately unconventional — a leading "
+            "verb, --src/--cap/--map instead of --input, value mini-languages "
+            "like --span LO..HI, --pick level=ERROR,WARN and --slice 1:5, "
+            "--shape instead of --format — so a guessed familiar-looking "
+            "invocation exits non-zero rather than half-working. On top of "
+            "that the semantics that decide the answer (exclusive upper "
+            "bounds, nearest-rank percentiles, margins summed before "
+            "normalisation, corrupt-record policy, first-occurrence list "
+            "dedupe) appear only in the --help epilog, so even reimplementing "
+            "the work by hand requires reading it. Two tools read binary or "
+            "fixed-width payloads. The remaining seven tasks exercise POSIX "
+            "tools (multi-key sort, join with -1/-2/-a/-e/-o, comm, grep -oE "
+            "with uniq -c, find predicates with xargs -0, awk aggregation, sed "
+            "ranges with capture groups): the agent writes solve.sh and the "
+            "verifier deletes the artifact and executes the script, rejecting "
+            "general-purpose interpreters and, per task, the one tool that "
+            "would collapse the exercise. All checks are mechanical, offline, "
+            "and gold-verified; the shell half needs bash on PATH. All "
+            "frontier-solvable, confirmed on two independent agent harnesses "
+            "and providers: Claude Code 2.1.220 driving claude-opus-5 and Kimi "
+            "Code 0.29.0 driving moonshotai/kimi-k3 (both reasoning=default) "
+            "each pass 20/20, the former in a median of five agent steps per "
+            "task. Two harnesses agreeing rules out a quirk of one agent loop "
+            "and confirms the prompts are unambiguous and the help text "
+            "suffices to reach the exact expected artifact."
+        ),
+    ),
+    TaskSetRevision(
+        version="0.16.0",
+        introduced="2026-07-28",
+        total_tasks=391,
+        added_task_numbers=(0, 0),
+        modules=(
+            "core.py",
+            "verifiers.py",
+            "tasks.py",
+            "tasks_extra.py",
+            "tasks_more.py",
+            "tasks_hard.py",
+            "tasks_extreme.py",
+            "tasks_diagnostic.py",
+            "tasks_memory.py",
+            "tasks_agentic.py",
+            "tasks_skills.py",
+            "tasks_adversarial.py",
+            "tasks_cli.py",
+        ),
+        notes=(
+            "No tasks added or removed; an audit of all 391 corrected defects "
+            "that gold-verification cannot see, since gold writes a "
+            "precomputed constant and the verifier checks that same constant. "
+            "Scores are not comparable with 0.15.0 and earlier. Four classes "
+            "were fixed. (1) Winnable without work: task 35 passed on a "
+            "verbatim copy of its fixture because file_lines_equal drops the "
+            "blank lines the task asks to remove; task 101 quoted its own "
+            "answer as a format example; task 335 passed on an untouched "
+            "workspace, so an idle agent scored the same as one that spotted "
+            "the contradiction; task 341 named both the file and its contents; "
+            "and the ten shell tasks accepted a hardcoded printf. (2) Correct "
+            "work rejected: task 89 said 'отступы сохраняй' over a block the "
+            "verifier wanted dedented — half its observed failures were agents "
+            "obeying the prompt; tasks 222/232 accepted one phrasing of a "
+            "memory key the convention never prescribes; task 180 blessed "
+            "`statistics` while pinning numpy's percentile convention; task "
+            "323 said 'заменить любые пробелы' but tested run-collapsing; task "
+            "349 graded the harness by checking only one of two identical "
+            "skill copies. (3) Prompt requirements left ungraded: eighteen "
+            "tasks forbade editing the tests with nothing but pytest_passes "
+            "behind it, so rewriting the suite to `assert True` scored full "
+            "marks; tasks 231/253 skipped dot-files and so could not see a "
+            "secret written to .env; task 220's required deletion and task "
+            "216's ordering went unchecked. (4) Platform and self-pollution: "
+            "Task.setup now writes fixtures as UTF-8 with LF, so byte-level "
+            "tasks are no longer unwinnable on Windows; path separators are "
+            "normalised where a path is compared; solve.sh saved with CRLF no "
+            "longer dies on 'set: pipefail\\r'; the interpreter ban no longer "
+            "fires on comments nor is evaded by /usr/bin/python3 or gawk; and "
+            "counting tasks are scoped to src/ so a helper script the agent "
+            "writes is not itself counted."
         ),
     ),
 )

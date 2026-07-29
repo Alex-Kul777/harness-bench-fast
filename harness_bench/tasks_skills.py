@@ -27,7 +27,6 @@ from harness_bench.core import Task, VerifyResult
 from harness_bench.verifiers import (
     all_of,
     file_contains,
-    file_exists,
     file_matches_regex,
     file_text_equals,
     python_callable_returns,
@@ -435,7 +434,7 @@ G2_SKILL_REPAIR = Task(
     gold_files={_PHONE_SCRIPT: _PHONE_GOLD},
     verifier=all_of(
         # форма: фронтматтер скилла остался валиден
-        file_matches_regex("skills/phone-normalizer/SKILL.md", r"^name:\s*phone-normalizer\s*$"),
+        file_matches_regex("skills/phone-normalizer/SKILL.md", r"^name:\s*[\"']?phone-normalizer[\"']?\s*$"),
         # функция: на скрытых входах (включая международные)
         python_callable_returns(_PHONE_SCRIPT, "mod.normalize_phone('(415) 555-2671')", "+14155552671"),
         python_callable_returns(_PHONE_SCRIPT, "mod.normalize_phone('1-415-555-2671')", "+14155552671"),
@@ -787,13 +786,26 @@ G1_CREATE_SKILL = Task(
     name="Create a slugify skill following the Acme authoring standard",
     tags=("skill", "create", "code-skill", "medium"),
     prompt=(
-        "Создай новый скилл в каталоге skills/slugify-tool, который умеет"
+        # The fixture ships the Acme standard under `.agents/skills/` and
+        # `.claude/skills/`, so an agent that reads it there naturally writes the
+        # new skill alongside it — the discovery convention of the whole
+        # ecosystem. That made the task measure "does the literal path beat the
+        # surrounding convention" instead of "can the agent author a skill to a
+        # bespoke standard", and it flipped between runs. The destination is now
+        # unambiguous.
+        "Создай новый скилл в каталоге skills/slugify-tool — именно в обычном"
+        " каталоге skills/ в корне рабочей директории, а НЕ в каталогах"
+        " обнаружения скиллов (.agents/skills или .claude/skills), даже если"
+        " другие скиллы лежат там. Скилл должен уметь"
         " приводить произвольный текст к URL-безопасному slug. Скрипт"
         " scripts/slugify.py должен экспортировать функцию slugify(text: str)"
-        " -> str: привести к нижнему регистру, заменить любые пробелы на дефис,"
-        " удалить все символы кроме латиницы a-z, цифр 0-9 и дефиса, и убрать"
-        " дефисы по краям. Оформи скилл строго по внутреннему стандарту"
-        " авторинга скиллов Acme."
+        # "заменить любые пробелы на дефис" read literally gives `.replace(" ", "-")`,
+        # which turns a double space into "--" and fails the hidden 'Foo  Bar Baz'
+        # case. The collapsing rule has to be stated, since nothing else does.
+        " -> str: привести к нижнему регистру, заменить каждую последовательность"
+        " подряд идущих пробельных символов на один дефис, удалить все символы"
+        " кроме латиницы a-z, цифр 0-9 и дефиса, и убрать дефисы по краям."
+        " Оформи скилл строго по внутреннему стандарту авторинга скиллов Acme."
     ),
     setup_files={
         ".claude/skills/acme-skill-standard/SKILL.md": _AUTHORING_STANDARD,
@@ -805,10 +817,17 @@ G1_CREATE_SKILL = Task(
         f"{_SLUG_SKILL}/scripts/slugify.py": _SLUG_GOLD_PY,
     },
     verifier=all_of(
-        # форма + бэспоук-стандарт авторинга (неискомо без скилла-стандарта)
-        file_matches_regex(f"{_SLUG_SKILL}/SKILL.md", r"^name:\s*slugify-tool\s*$"),
-        file_matches_regex(f"{_SLUG_SKILL}/SKILL.md", r"review-status:\s*draft"),
-        file_exists(f"{_SLUG_SKILL}/TESTS.md"),
+        # форма + бэспоук-стандарт авторинга (неискомо без скилла-стандарта).
+        # Quoting is optional in YAML, so `name: "slugify-tool"` carries exactly
+        # the same value as the bare form and must be accepted.
+        file_matches_regex(f"{_SLUG_SKILL}/SKILL.md", r"^name:\s*[\"']?slugify-tool[\"']?\s*$"),
+        file_matches_regex(f"{_SLUG_SKILL}/SKILL.md", r"review-status:\s*[\"']?draft[\"']?"),
+        # The Acme standard requires TESTS.md to carry a worked input -> output
+        # example, and `file_exists` accepted an empty file. Demanding a literal
+        # `slugify(...)` call was too narrow the other way: a table row or an
+        # arrow line documents the example just as well. Look for evidence of a
+        # real slug output instead.
+        file_matches_regex(f"{_SLUG_SKILL}/TESTS.md", r"[a-z0-9]+(?:-[a-z0-9]+)+"),
         # функция на скрытых входах
         python_callable_returns(f"{_SLUG_SKILL}/scripts/slugify.py", "mod.slugify('Hello, World!')", "hello-world"),
         python_callable_returns(f"{_SLUG_SKILL}/scripts/slugify.py", "mod.slugify('Foo  Bar Baz')", "foo-bar-baz"),
@@ -1310,6 +1329,9 @@ Rules:
 6. If a B row exists but the absolute variance is greater than 2, status is
    `REVIEW`.
 7. Output rows in the same order as ledger A.
+8. Normalization is for matching only. Write ids exactly as they appear in the
+   source: `invoice_id` verbatim from ledger A, `matched_id` verbatim from
+   ledger B.
 """
 
 
@@ -1366,8 +1388,17 @@ def _meridian_check(ws) -> VerifyResult:
         return VerifyResult(False, f"could not read reconciliation.csv: {exc}")
     if [c.strip() for c in (rows[0].keys() if rows else [])] != ["invoice_id", "status", "matched_id", "variance_cents"]:
         return VerifyResult(False, "reconciliation.csv must have columns invoice_id,status,matched_id,variance_cents")
-    if [r.get("invoice_id", "").strip() for r in rows] != list(expected):
-        return VerifyResult(False, "rows must be in ledger A order")
+    actual_ids = [r.get("invoice_id", "").strip() for r in rows]
+    if actual_ids != list(expected):
+        # Distinguish the two ways this goes wrong; the old message blamed
+        # ordering even when the ids were merely written in normalized form.
+        if sorted(actual_ids) == sorted(expected):
+            return VerifyResult(False, f"rows are out of ledger A order: {actual_ids!r}")
+        return VerifyResult(
+            False,
+            f"invoice_id column is {actual_ids!r}, expected the ledger A ids {list(expected)!r} "
+            f"written exactly as they appear in the source",
+        )
     wrong = []
     for row in rows:
         inv = row.get("invoice_id", "").strip()
