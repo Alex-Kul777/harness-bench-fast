@@ -18,7 +18,7 @@ Public landing page: <https://ai-forever.github.io/harness-bench-fast/>
 | --- | --- | --- | ---: | ---: | ---: | ---: |
 | Pi | — | GLM-5.2 (high) | 391/391 | 100.0% | 2,272 | 13,274,530 |
 | Kimi CLI | — | Kimi K3 | 390/391 | 99.7% | — | — |
-| OpenClaw | thinking: high | GLM-5.2 | 390/391 | 99.7% | — | — |
+| OpenClaw | thinking: high | GLM-5.2 | 390/391 | 99.7% | ~1,173 | ~47,439,286 |
 | opencode | agent1st v14.1, high | GLM-5.2 | 388/391 | 99.2% | — | — |
 | opencode | agent1st v5.2.1 | Qwen 3.8 Max | 388/391 | 99.2% | — | — |
 | Hermes | MCP off | GLM-5.2 | 387/391 | 99.0% | — | 31,770,687 |
@@ -35,6 +35,11 @@ Public landing page: <https://ai-forever.github.io/harness-bench-fast/>
 | deepagents | none | GPT-OSS-20B | 193/391 | 49.4% | 2,727 | 29,137,983 |
 | deepagents | none | GPT-OSS-120B | 186/391 | 47.6% | 2,193 | 23,831,283 |
 | deepagents | GigaChat | GigaChat 3 Lightning | 178/391 | 45.5% | 2,520 | 2,275,821 |
+
+OpenClaw Steps and Tokens are estimated from a 10-task representative sample
+(3 easy, 4 medium, 3 hard) run with the same model and thinking settings, then
+extrapolated to 391 tasks. Per-task averages: ~121K input + ~354 output tokens,
+~3.0 tool calls, ~229 s elapsed.
 
 Two notes on reading the table. The GigaChat profile is worth 7-10 points and
 roughly halves the token spend, which the two profiled/unprofiled GigaChat pairs
