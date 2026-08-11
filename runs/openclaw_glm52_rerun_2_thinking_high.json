@@ -1,0 +1,43 @@
+{
+  "task_set_version": "0.16.0",
+  "command": "python run_openclaw_bench.py --all --model custom-foundation-models-api-cloud-ru/zai-org/GLM-5.2",
+  "total": 2,
+  "passed": 1,
+  "pass_rate": 0.5,
+  "tokens": 0,
+  "tasks": [
+    {
+      "task_id": "task_230_memory_forget_telegram",
+      "passed": true,
+      "message": "Telegram removed from both MEMORY.md and contacts.json",
+      "elapsed_seconds": 268.29,
+      "error": null,
+      "workspace": null,
+      "agent_input_tokens": 0,
+      "agent_output_tokens": 0,
+      "agent_total_tokens": 0
+    },
+    {
+      "task_id": "task_378_cli_cfgctl_layered_merge",
+      "passed": false,
+      "message": "effective.env missing",
+      "elapsed_seconds": 265.35,
+      "error": null,
+      "workspace": null,
+      "agent_input_tokens": 0,
+      "agent_output_tokens": 0,
+      "agent_total_tokens": 0
+    }
+  ],
+  "summary": {
+    "total": 2,
+    "passed": 1,
+    "failed": 1,
+    "pass_rate": 0.5,
+    "total_seconds": 533.6,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_tokens": 0,
+    "estimated_cost_rub": 0.0
+  }
+}

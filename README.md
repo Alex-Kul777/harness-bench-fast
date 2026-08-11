@@ -16,8 +16,14 @@ Public landing page: <https://ai-forever.github.io/harness-bench-fast/>
 
 | Harness | Profile | Model | Result | % | Steps | Tokens |
 | --- | --- | --- | ---: | ---: | ---: | ---: |
+| Pi | — | GLM-5.2 (high) | 391/391 | 100.0% | 2,272 | 13,274,530 |
 | Kimi CLI | — | Kimi K3 | 390/391 | 99.7% | — | — |
+| OpenClaw | — | GLM-5.2 (thinking: high) | 390/391 | 99.7% | — | — |
+| opencode | — | GLM-5.2 (agent1st v14.1, high) | 388/391 | 99.2% | — | — |
+| opencode | — | Qwen 3.8 Max (agent1st v5.2.1) | 388/391 | 99.2% | — | — |
+| Pi | — | DeepSeek V4 Flash 0731 (high) | 387/391 | 99.0% | 1,694 | 10,004,355 |
 | Claude Code CLI | — | Claude Haiku 4.5 | 380/391 | 97.2% | 1,645 | 176,430,286 |
+| opencode | — | DeepSeek V4 Flash 0731 (agent1st v37.1) | 384/391 | 98.2% | — | — |
 | opencode | — | GLM-5.2 (self-hosted) | 362/391 | 92.6% | — | — |
 | deepagents | GigaChat | GigaChat 3.5 | 340/391 | 87.0% | 3,316 | 4,319,421 |
 | deepagents | GigaChat | GigaChat 3 Ultra | 340/391 | 87.0% | 3,258 | 4,415,043 |

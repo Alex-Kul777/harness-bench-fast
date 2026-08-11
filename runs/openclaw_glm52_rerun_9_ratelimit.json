@@ -1,0 +1,120 @@
+{
+  "task_set_version": "0.16.0",
+  "command": "python run_openclaw_bench.py --all --model custom-foundation-models-api-cloud-ru/zai-org/GLM-5.2",
+  "total": 9,
+  "passed": 8,
+  "pass_rate": 0.8889,
+  "tokens": 0,
+  "tasks": [
+    {
+      "task_id": "task_291_tau2_student_extension",
+      "passed": true,
+      "message": "edu_action.json matches expected JSON",
+      "elapsed_seconds": 220.04,
+      "error": null,
+      "workspace": null,
+      "agent_input_tokens": 0,
+      "agent_output_tokens": 0,
+      "agent_total_tokens": 0
+    },
+    {
+      "task_id": "task_286_terminal_nginx_endpoint_classes",
+      "passed": true,
+      "message": "endpoint_classes.tsv lines match",
+      "elapsed_seconds": 254.28,
+      "error": null,
+      "workspace": null,
+      "agent_input_tokens": 0,
+      "agent_output_tokens": 0,
+      "agent_total_tokens": 0
+    },
+    {
+      "task_id": "task_319_skill_b2_ndr7_parse",
+      "passed": true,
+      "message": "all NDR-7 records parsed with correct signed amounts",
+      "elapsed_seconds": 235.29,
+      "error": null,
+      "workspace": null,
+      "agent_input_tokens": 0,
+      "agent_output_tokens": 0,
+      "agent_total_tokens": 0
+    },
+    {
+      "task_id": "task_322_skill_e3_codebook_selection",
+      "passed": true,
+      "message": "all 8 failure reasons normalized to the correct codes",
+      "elapsed_seconds": 243.89,
+      "error": null,
+      "workspace": null,
+      "agent_input_tokens": 0,
+      "agent_output_tokens": 0,
+      "agent_total_tokens": 0
+    },
+    {
+      "task_id": "task_378_cli_cfgctl_layered_merge",
+      "passed": false,
+      "message": "effective.env missing",
+      "elapsed_seconds": 274.65,
+      "error": null,
+      "workspace": null,
+      "agent_input_tokens": 0,
+      "agent_output_tokens": 0,
+      "agent_total_tokens": 0
+    },
+    {
+      "task_id": "task_363_config_precedence",
+      "passed": true,
+      "message": "resolved.json matches expected JSON; provenance.json matches expected JSON",
+      "elapsed_seconds": 351.52,
+      "error": null,
+      "workspace": null,
+      "agent_input_tokens": 0,
+      "agent_output_tokens": 0,
+      "agent_total_tokens": 0
+    },
+    {
+      "task_id": "task_384_cli_mixed_slicer_warehouse_value",
+      "passed": true,
+      "message": "solve.sh ran; warehouse_value.csv matches expected output",
+      "elapsed_seconds": 300.13,
+      "error": null,
+      "workspace": null,
+      "agent_input_tokens": 0,
+      "agent_output_tokens": 0,
+      "agent_total_tokens": 0
+    },
+    {
+      "task_id": "task_383_cli_mixed_pktool_ports",
+      "passed": true,
+      "message": "solve.sh ran; ports.tsv matches expected output",
+      "elapsed_seconds": 341.5,
+      "error": null,
+      "workspace": null,
+      "agent_input_tokens": 0,
+      "agent_output_tokens": 0,
+      "agent_total_tokens": 0
+    },
+    {
+      "task_id": "task_387_cli_comm_set_algebra",
+      "passed": true,
+      "message": "solve.sh ran; campaign.txt matches expected output",
+      "elapsed_seconds": 315.48,
+      "error": null,
+      "workspace": null,
+      "agent_input_tokens": 0,
+      "agent_output_tokens": 0,
+      "agent_total_tokens": 0
+    }
+  ],
+  "summary": {
+    "total": 9,
+    "passed": 8,
+    "failed": 1,
+    "pass_rate": 0.8889,
+    "total_seconds": 2536.8,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_tokens": 0,
+    "estimated_cost_rub": 0.0
+  }
+}
