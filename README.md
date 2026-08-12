@@ -64,14 +64,15 @@ runs (see [`docs/ADR-001`](docs/ADR-001-shot-list.md) for the decision record
 and [`shot_list.txt`](shot_list.txt) for the task list).
 
 `Time` is wall-clock minutes for the 52 tasks. `Steps` and `Tokens` are shown
-when the runner exposes them. Rows are sorted by pass count.
+when the runner exposes them. Cost in parentheses is estimated spend in ₽.
+Rows are sorted by pass count.
 
-| Harness | Profile | Model | Result | % | Time | Steps | Tokens |
+| Harness | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
 | Kimi CLI | — | Kimi K3 | 51/52 | 98.1% | 61.8m | — | — |
 | Hermes | MCP off | GLM-5.2 | 48/52 | 92.3% | 93.1m | 953 | 11,442,855 |
 | Claude Code CLI | — | Claude Haiku 4.5 | 47/52 | 90.4% | 46.7m | 367 | 38,310,340 |
-| OpenClaw | thinking: off | GLM-5.2 | 47/52 | 90.4% | 231.9m | 247 | 1,777,320 |
+| OpenClaw | thinking: off | GLM-5.2 | 47/52 | 90.4% | 231.9m | 247 | 1,777,320 (1,793₽) |
 | OpenClaw | thinking: high | GLM-5.2 | 46/52 | 88.5% | 226.4m | — | — |
 | opencode | — | GLM-5.2 (self-hosted) | 40/52 | 76.9% | 63.2m | — | — |
 | deepagents | none | DeepSeek V4 Flash | 30/52 | 57.7% | 90.6m | 835 | 12,277,890 |
@@ -199,7 +200,7 @@ uv run python -m harness_bench run-openrouter \
 # OPENROUTER_BASE_URL=https://gateway.example/x/ai/llm/v1
 # OPENROUTER_AUTH_URL=https://gateway.example/auth/realms/.../token
 # OPENROUTER_AUTH_USERNAME=...
-# OPENROUTER_AUTH_PASSWORD=...
+# OPENROUTER_AUTH_PASSWORD=***
 # OPENROUTER_AUTH_CLIENT_ID=api
 # OPENROUTER_AUTH_VERIFY_TLS=false  # only for private gateways that need curl -k
 uv run python -m harness_bench run-openrouter \
@@ -275,7 +276,7 @@ uv run python -m harness_bench run-cli \
 # trajectory for agent_steps / agent_llm_calls / token metrics.
 uv tool install mini-swe-agent
 HB_MINI_SWE_AGENT="$(pwd -P)/scripts/hb-mini-swe-agent"
-OPENAI_API_KEY=0 \
+OPENAI_API_KEY=*** \
 OPENAI_API_BASE=http://127.0.0.1:8090/v1 \
 MSWEA_MODEL_NAME='openai/GigaChat-3-Ultra' \
 MSWEA_COST_TRACKING=ignore_errors \
