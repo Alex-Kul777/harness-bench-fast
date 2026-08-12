@@ -1,0 +1,64 @@
+# harness-bench-fast Shot List (v0.16.0)
+# 53 tasks selected by stratified sampling across 13 waves
+# Based on 12 full runs (10+ model/harness combinations)
+# See docs/ADR-001-shot-list.md for selection criteria
+#
+# Stratum: 5 smoke (universal pass) + 18 high discrim (<50%) + 26 mid discrim (50-89%) + 4 low discrim (90-99%)
+# Estimated runtime: 4-7 min vs 15-35 min for full 391-task run
+# Pass rates on shot list are NOT comparable to full-run pass rates
+#
+# Recompute on every task-set version bump
+
+task_01_create_hello
+task_02_write_data_json
+task_03_slugify
+task_22_delete_file
+task_24_add_header_comment
+task_33_find_max
+task_41_count_todos
+task_48_append_eof_each
+task_64_add_logger_call
+task_65_sum_floats
+task_69_remove_comments
+task_92_count_chars
+task_101_csv_mean_score
+task_106_csv_group_count
+task_140_grep_emails
+task_153_xlsx_to_markdown_report
+task_157_two_csv_diff
+task_201_reconcile_vip_users
+task_206_reconcile_paid_revenue
+task_214_customer_data_quality_report
+task_222_memory_name_pyproject
+task_223_memory_city_timezone_script
+task_226_memory_requirements_dev
+task_231_memory_refuse_secrets
+task_240_memory_summarize_profile
+task_263_terminal_du_top_dirs
+task_266_terminal_sha256_manifest
+task_307_resolve_many_files
+task_309_rename_refactor_scale
+task_315_skill_b1_failure_codebook
+task_319_skill_b2_ndr7_parse
+task_323_skill_g1_create_slugify_skill
+task_332_adv_broken_build
+task_335_adv_missing_config_file
+task_352_structured_log_summary
+task_353_reconstruct_sessions
+task_355_segment_audit
+task_356_deduplicate_contacts
+task_357_request_latency
+task_358_range_parser
+task_365_package_rename
+task_368_sqlite_migration
+task_370_change_plan
+task_371_test_result_aggregation
+task_374_cli_pktool_filter_decode
+task_375_cli_pktool_stats_corrupt
+task_377_cli_xtab_mean_pivot
+task_378_cli_cfgctl_layered_merge
+task_381_cli_slicer_restock
+task_382_cli_mixed_depwalk_hotspots
+task_383_cli_mixed_pktool_ports
+task_384_cli_mixed_slicer_warehouse_value
+task_389_cli_find_xargs_predicates
