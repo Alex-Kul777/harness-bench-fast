@@ -63,16 +63,15 @@ wave capabilities and prioritises discrimination power based on 12 published
 runs (see [`docs/ADR-001`](docs/ADR-001-shot-list.md) for the decision record
 and [`shot_list.txt`](shot_list.txt) for the task list).
 
-`Time` is wall-clock minutes for the 52 tasks (extracted from full-run
-artifacts; a dedicated `--shot-list` run would be faster without the other
-339 tasks' overhead). `Steps` and `Tokens` are shown when the runner exposes
-them. Rows are sorted by pass count.
+`Time` is wall-clock minutes for the 52 tasks. `Steps` and `Tokens` are shown
+when the runner exposes them. Rows are sorted by pass count.
 
 | Harness | Profile | Model | Result | % | Time | Steps | Tokens |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
 | Kimi CLI | — | Kimi K3 | 51/52 | 98.1% | 61.8m | — | — |
 | Hermes | MCP off | GLM-5.2 | 48/52 | 92.3% | 93.1m | 953 | 11,442,855 |
 | Claude Code CLI | — | Claude Haiku 4.5 | 47/52 | 90.4% | 46.7m | 367 | 38,310,340 |
+| OpenClaw | thinking: off | GLM-5.2 | 47/52 | 90.4% | 231.9m | 247 | 1,777,320 |
 | OpenClaw | thinking: high | GLM-5.2 | 46/52 | 88.5% | 226.4m | — | — |
 | opencode | — | GLM-5.2 (self-hosted) | 40/52 | 76.9% | 63.2m | — | — |
 | deepagents | none | DeepSeek V4 Flash | 30/52 | 57.7% | 90.6m | 835 | 12,277,890 |
@@ -84,10 +83,19 @@ them. Rows are sorted by pass count.
 | deepagents | GigaChat | GigaChat 3 Lightning | 10/52 | 19.2% | 8.3m | 318 | 427,026 |
 
 The shot list separates models into clear tiers: **>90%** (Kimi, Hermes,
-Claude), **75-90%** (OpenClaw, opencode), **50-60%** (DeepSeek), and **<40%**
-(GigaChat, GPT-OSS). The 18 high-discrimination tasks (<50% pass across all
-12 runs) drive most of the separation — `task_378` (cfgctl layered merge) is
-the hardest, passed by only 2/12 runs.
+Claude, OpenClaw thinking:off), **88-90%** (OpenClaw thinking:high),
+**75-80%** (opencode), **50-60%** (DeepSeek), and **<40%** (GigaChat, GPT-OSS).
+
+OpenClaw with `thinking: off` ties Claude Haiku at 47/52 (90.4%) while using
+**22x fewer tokens** (1.78M vs 38.3M) — reasoning disabled doesn't hurt on the
+shot list and saves significant cost. The 5 failures are: 2 VCS (pytest
+failures), 1 tbench (timeout), 2 CLI (cfgctl + timeout). See
+[`docs/oc_shotlist_thinking_off.html`](docs/oc_shotlist_thinking_off.html) for
+the full HTML report with per-wave breakdown.
+
+The 18 high-discrimination tasks (<50% pass across all 12 runs) drive most of
+the separation — `task_378` (cfgctl layered merge) is the hardest, passed by
+only 2/12 runs.
 
 <details>
 <summary>Earlier results on task-set v0.13.0 (351 tasks) — not comparable</summary>

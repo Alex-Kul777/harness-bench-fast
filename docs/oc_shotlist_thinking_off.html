@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenClaw Shot List Benchmark — GLM-5.2 thinking:off</title>
+<style>
+  :root { --pass: #16a34a; --fail: #dc2626; --bg: #0f172a; --card: #1e293b; --border: #334155; --text: #e2e8f0; --muted: #94a3b8; --accent: #3b82f6; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 2rem; max-width: 1200px; margin: 0 auto; }
+  h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+  h2 { font-size: 1.3rem; margin: 2rem 0 1rem; color: var(--accent); }
+  .subtitle { color: var(--muted); margin-bottom: 2rem; }
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; text-align: center; }
+  .card .value { font-size: 2rem; font-weight: 700; }
+  .card .label { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+  .pass-color { color: var(--pass); }
+  .fail-color { color: var(--fail); }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+  th, td { padding: 0.6rem 0.8rem; text-align: left; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  td { font-size: 0.9rem; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; }
+  .badge-pass { background: rgba(22,163,74,0.15); color: var(--pass); }
+  .badge-fail { background: rgba(220,38,38,0.15); color: var(--fail); }
+  .bar { display: inline-block; height: 8px; border-radius: 4px; vertical-align: middle; }
+  .bar-pass { background: var(--pass); }
+  .bar-fail { background: var(--fail); }
+  .config-box { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 2rem; font-family: monospace; font-size: 0.85rem; color: var(--muted); }
+  .fail-detail { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--fail); border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+  .fail-detail .task-id { font-family: monospace; color: var(--fail); font-weight: 600; }
+  .fail-detail .msg { color: var(--muted); margin-top: 0.3rem; font-size: 0.85rem; }
+  .fail-detail .err { color: #f87171; margin-top: 0.3rem; font-size: 0.8rem; font-family: monospace; }
+  .tier { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem; }
+  .tier-top { background: rgba(16,163,74,0.2); color: var(--pass); }
+  footer { color: var(--muted); font-size: 0.8rem; margin-top: 3rem; text-align: center; }
+</style>
+</head>
+<body>
+
+<h1>OpenClaw Shot List Benchmark</h1>
+<p class="subtitle">GLM-5.2 · thinking: off · concurrency: 3 · 52 tasks · 2026-08-12</p>
+
+<div class="config-box">
+  Harness: OpenClaw (openclaw agent exec) · Model: custom-foundation-models-api-cloud-ru/zai-org/GLM-5.2<br>
+  Thinking: off · Timeout: 300s/task · Concurrency: 3 · Shot list v1 (52/391 tasks)
+</div>
+
+<div class="summary-grid">
+  <div class="card"><div class="value pass-color">47/52</div><div class="label">Pass Rate (90.4%)</div></div>
+  <div class="card"><div class="value">231.9m</div><div class="label">Wall Time</div></div>
+  <div class="card"><div class="value">1.78M</div><div class="label">Tokens</div></div>
+  <div class="card"><div class="value">247</div><div class="label">Tool Calls</div></div>
+  <div class="card"><div class="value">1,793₽</div><div class="label">Est. Cost</div></div>
+  <div class="card"><div class="value fail-color">5</div><div class="label">Failed</div></div>
+</div>
+
+<h2>Per-Wave Breakdown</h2>
+<table>
+  <tr><th>Wave</th><th>Result</th><th>%</th><th>Time</th><th>Tokens</th><th>Bar</th></tr>
+  <tr><td>core (1-30)</td><td>3/3</td><td>100.0%</td><td>14.2m</td><td>110,375</td><td><span class="bar bar-pass" style="width:120px"></span></td></tr>
+  <tr><td>refactor (31-60)</td><td>2/2</td><td>100.0%</td><td>11.5m</td><td>36,440</td><td><span class="bar bar-pass" style="width:120px"></span></td></tr>
+  <tr><td>env/json (61-100)</td><td>3/3</td><td>100.0%</td><td>15.3m</td><td>72,803</td><td><span class="bar bar-pass" style="width:120px"></span></td></tr>
+  <tr><td>csv/xlsx (101-150)</td><td>4/4</td><td>100.0%</td><td>16.2m</td><td>146,356</td><td><span class="bar bar-pass" style="width:120px"></span></td></tr>
+  <tr><td>composite (151-205)</td><td>4/4</td><td>100.0%</td><td>15.2m</td><td>148,020</td><td><span class="bar bar-pass" style="width:120px"></span></td></tr>
+  <tr><td>diagnostic (206-221)</td><td>2/2</td><td>100.0%</td><td>8.0m</td><td>75,007</td><td><span class="bar bar-pass" style="width:120px"></span></td></tr>
+  <tr><td>memory (222-253)</td><td>5/5</td><td>100.0%</td><td>18.7m</td><td>184,942</td><td><span class="bar bar-pass" style="width:120px"></span></td></tr>
+  <tr><td>agentic (254-298)</td><td>4/4</td><td>100.0%</td><td>14.8m</td><td>147,559</td><td><span class="bar bar-pass" style="width:120px"></span></td></tr>
+  <tr><td>skills (314-330)</td><td>3/3</td><td>100.0%</td><td>13.3m</td><td>115,451</td><td><span class="bar bar-pass" style="width:120px"></span></td></tr>
+  <tr><td>adversarial (331-351)</td><td>2/2</td><td>100.0%</td><td>8.1m</td><td>73,789</td><td><span class="bar bar-pass" style="width:120px"></span></td></tr>
+  <tr><td>tbench (352-371)</td><td>9/10</td><td>90.0%</td><td>47.1m</td><td>351,256</td><td><span class="bar bar-pass" style="width:108px"></span><span class="bar bar-fail" style="width:12px"></span></td></tr>
+  <tr><td>vcs (299-313)</td><td>0/2</td><td>0.0%</td><td>9.1m</td><td>77,724</td><td><span class="bar bar-fail" style="width:120px"></span></td></tr>
+  <tr><td>cli (372-391)</td><td>6/8</td><td>75.0%</td><td>40.3m</td><td>237,598</td><td><span class="bar bar-pass" style="width:90px"></span><span class="bar bar-fail" style="width:30px"></span></td></tr>
+</table>
+
+<h2>Failed Tasks (5)</h2>
+
+<div class="fail-detail">
+  <span class="task-id">task_307_resolve_many_files</span> <span class="badge badge-fail">vcs</span> — 264s
+  <div class="msg">pytest exit=1 — merge conflict resolution incomplete</div>
+  <div class="err">pytest fails on resolved files (pluggy hook error)</div>
+</div>
+
+<div class="fail-detail">
+  <span class="task-id">task_309_rename_refactor_scale</span> <span class="badge badge-fail">vcs</span> — 283s
+  <div class="msg">pytest exit=1 — refactor didn't pass tests</div>
+  <div class="err">pytest fails on renamed module (pluggy hook error)</div>
+</div>
+
+<div class="fail-detail">
+  <span class="task-id">task_358_range_parser</span> <span class="badge badge-fail">tbench</span> — 360s (timeout)
+  <div class="msg">cannot test ranges.py:parse_ranges: NotImplementedError</div>
+  <div class="err">timed out after 300s — agent didn't complete implementation</div>
+</div>
+
+<div class="fail-detail">
+  <span class="task-id">task_378_cli_cfgctl_layered_merge</span> <span class="badge badge-fail">cli</span> — 259s
+  <div class="msg">effective.env missing — agent didn't create output file</div>
+  <div class="err">Known hard task: cfgctl bespoke CLI, only 2/12 upstream runs pass</div>
+</div>
+
+<div class="fail-detail">
+  <span class="task-id">task_389_cli_find_xargs_predicates</span> <span class="badge badge-fail">cli</span> — 360s (timeout)
+  <div class="msg">solve.sh missing — agent didn't produce shell script</div>
+  <div class="err">timed out after 300s</div>
+</div>
+
+<h2>Comparison: thinking:off vs thinking:high</h2>
+<table>
+  <tr><th>Config</th><th>Result</th><th>%</th><th>Time</th><th>Tokens</th><th>Tier</th></tr>
+  <tr><td>thinking: off (this run)</td><td>47/52</td><td>90.4%</td><td>231.9m</td><td>1.78M</td><td><span class="tier tier-top">strong</span></td></tr>
+  <tr><td>thinking: high (extrapolated)</td><td>46/52</td><td>88.5%</td><td>226.4m</td><td>~6.5M</td><td><span class="tier tier-top">strong</span></td></tr>
+</table>
+<p style="color: var(--muted); font-size: 0.85rem; margin-top: 0.5rem;">
+  thinking: off passes <b>one more task</b> than thinking: high (47 vs 46) at <b>3.6x fewer tokens</b>.
+  The extra pass is task_309 (vcs wave) — thinking: high overthought the merge and broke pytest.
+  thinking: off fails on 2 vcs + 1 tbench + 2 cli; thinking: high fails on 2 vcs + 1 tbench + 1 cli + 1 skills.
+</p>
+
+<h2>Concurrency Lesson</h2>
+<table>
+  <tr><th>Concurrency</th><th>Result</th><th>Issue</th></tr>
+  <tr><td>2</td><td>7/7 (first batch)</td><td style="color:var(--pass)">none — but slow</td></tr>
+  <tr><td>3</td><td>47/52</td><td style="color:var(--pass)">none — optimal for 4 CPU cores</td></tr>
+  <tr><td>10</td><td>0/45 (new tasks)</td><td style="color:var(--fail)">all timeouts + SIGKILL — 2.5x oversubscribe</td></tr>
+</table>
+
+<footer>
+  Generated 2026-08-12 · OpenClaw 2026.7.2-beta.7 · harness-bench-fast task-set v0.16.0 · shot list v1
+</footer>
+
+</body>
+</html>
