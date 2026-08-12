@@ -55,6 +55,40 @@ GPT-OSS-120B places below its own 20B sibling because it frequently answers in
 prose instead of calling a tool, scoring 0/15 on the VCS wave and 2/20 on
 CLI-composition while remaining competitive on single-shot waves.
 
+## Shot List Leaderboard (52 tasks)
+
+The shot list is a stratified sample of 52 tasks (~13% of 391) selected for
+fast iteration — ~4-7 min vs ~15-35 min for a full run. It preserves all 13
+wave capabilities and prioritises discrimination power based on 12 published
+runs (see [`docs/ADR-001`](docs/ADR-001-shot-list.md) for the decision record
+and [`shot_list.txt`](shot_list.txt) for the task list).
+
+`Time` is wall-clock minutes for the 52 tasks (extracted from full-run
+artifacts; a dedicated `--shot-list` run would be faster without the other
+339 tasks' overhead). `Steps` and `Tokens` are shown when the runner exposes
+them. Rows are sorted by pass count.
+
+| Harness | Profile | Model | Result | % | Time | Steps | Tokens |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Kimi CLI | — | Kimi K3 | 51/52 | 98.1% | 61.8m | — | — |
+| Hermes | MCP off | GLM-5.2 | 48/52 | 92.3% | 93.1m | 953 | 11,442,855 |
+| Claude Code CLI | — | Claude Haiku 4.5 | 47/52 | 90.4% | 46.7m | 367 | 38,310,340 |
+| OpenClaw | thinking: high | GLM-5.2 | 46/52 | 88.5% | 226.4m | — | — |
+| opencode | — | GLM-5.2 (self-hosted) | 40/52 | 76.9% | 63.2m | — | — |
+| deepagents | none | DeepSeek V4 Flash | 30/52 | 57.7% | 90.6m | 835 | 12,277,890 |
+| deepagents | none | Qwen3 Coder 30B | 19/52 | 36.5% | 77.8m | 786 | 18,362,919 |
+| deepagents | none | GigaChat 3.5 | 18/52 | 34.6% | 50.3m | 442 | 1,816,116 |
+| deepagents | GigaChat | GigaChat 3 Pro | 16/52 | 30.8% | 58.1m | 400 | 1,306,224 |
+| deepagents | none | GPT-OSS-20B | 13/52 | 25.0% | 14.3m | 318 | 3,506,424 |
+| deepagents | none | GPT-OSS-120B | 13/52 | 25.0% | 10.1m | 262 | 2,915,334 |
+| deepagents | GigaChat | GigaChat 3 Lightning | 10/52 | 19.2% | 8.3m | 318 | 427,026 |
+
+The shot list separates models into clear tiers: **>90%** (Kimi, Hermes,
+Claude), **75-90%** (OpenClaw, opencode), **50-60%** (DeepSeek), and **<40%**
+(GigaChat, GPT-OSS). The 18 high-discrimination tasks (<50% pass across all
+12 runs) drive most of the separation — `task_378` (cfgctl layered merge) is
+the hardest, passed by only 2/12 runs.
+
 <details>
 <summary>Earlier results on task-set v0.13.0 (351 tasks) — not comparable</summary>
 
