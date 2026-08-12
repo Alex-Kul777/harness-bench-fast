@@ -19,6 +19,7 @@ Public landing page: <https://ai-forever.github.io/harness-bench-fast/>
 | Pi | — | GLM-5.2 (high) | 391/391 | 100.0% | 2,272 | 13,274,530 |
 | Kimi CLI | — | Kimi K3 | 390/391 | 99.7% | — | — |
 | OpenClaw | thinking: high | GLM-5.2 | 390/391 | 99.7% | ~1,173 | ~47,439,286 |
+| OpenClaw | thinking: off | GLM-5.2 | 10/10 (pilot) | 100.0% | 18 | 320,180 |
 | opencode | agent1st v14.1, high | GLM-5.2 | 388/391 | 99.2% | — | — |
 | opencode | agent1st v5.2.1 | Qwen 3.8 Max | 388/391 | 99.2% | — | — |
 | Hermes | MCP off | GLM-5.2 | 387/391 | 99.0% | — | 31,770,687 |
@@ -40,6 +41,12 @@ OpenClaw Steps and Tokens are estimated from a 10-task representative sample
 (3 easy, 4 medium, 3 hard) run with the same model and thinking settings, then
 extrapolated to 391 tasks. Per-task averages: ~121K input + ~354 output tokens,
 ~3.0 tool calls, ~229 s elapsed.
+
+The `OpenClaw thinking: off` row is a 10-task pilot (task_01–10, core file ops)
+run on 2026-08-12 with reasoning disabled. All 10 tasks passed, showing no
+quality degradation on basic tasks versus thinking: high. Per-task averages
+under thinking: off: ~32K input + ~296 output tokens, ~1.8 tool calls, ~211 s.
+A full 391-task run with thinking: off is needed to compare pass rates directly.
 
 Two notes on reading the table. The GigaChat profile is worth 7-10 points and
 roughly halves the token spend, which the two profiled/unprofiled GigaChat pairs
@@ -340,7 +347,7 @@ changes do not need a task-set bump.
 | `0.13.0` | 2026-07-02 | 338–351 | 351 | Adversarial wave completed: removed-stdlib import, misleading `.python-version`, unneeded uninstallable dependency, `set -e` abort, npm-in-a-Python-project, gzip-masquerade, BOM/NUL log, AGENTS.md wrong layout, wrong tests dir, broken import path, broken package layout, malformed SKILL.md frontmatter, contradictory skills, and a ~100 MB log the agent must stream/grep rather than read whole |
 | `0.14.0` | 2026-07-23 | 352–371 | 371 | Calibrated Terminal-Bench-inspired wave with deterministic, offline, gold-verified multi-step tasks |
 | `0.15.0` | 2026-07-27 | 372–391 | 391 | CLI-composition wave: bespoke tools (`logq`, `pktool`, `xtab`, `cfgctl`, `depwalk`, `slicer`) with a deliberately unguessable surface, so `--help` must be read before anything runs, plus POSIX pipeline tasks (`sort`, `join`, `comm`, `grep`/`uniq -c`, `find`/`xargs -0`, `awk`, `sed`) whose `solve.sh` the verifier executes |
-| `0.16.0` | 2026-07-28 | — | 391 | Audit pass over all 391 tasks: no tasks added or removed, but defects gold-verification cannot see were corrected — tasks winnable without work, prompts whose verifier rejected the work they described, requirements the verifier never checked (notably “do not edit the tests”), and platform/self-pollution issues. **Not score-comparable with v0.15.0.** |
+| `0.16.0` | 2026-07-28 | — | 391 | Audit pass over all 391 tasks: no tasks added or removed, but defects gold-verification cannot see were corrected — tasks winnable without work, prompts whose verifier rejected the work they described, requirements the verifier never checked (notably "do not edit the tests"), and platform/self-pollution issues. **Not score-comparable with v0.15.0.** |
 
 ### Infrastructure
 
