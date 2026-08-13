@@ -16,26 +16,26 @@ Public landing page: <https://ai-forever.github.io/harness-bench-fast/>
 
 | Harness | Profile | Model | Result | % | Steps | Tokens |
 | --- | --- | --- | ---: | ---: | ---: | ---: |
-| Pi | — | GLM-5.2 (high) | 391/391 | 100.0% | 2,272 | 13,274,530 |
-| Kimi CLI | — | Kimi K3 | 390/391 | 99.7% | — | — |
-| OpenClaw | thinking: high | GLM-5.2 | 390/391 | 99.7% | ~1,173 | ~47,439,286 |
-| OpenClaw | thinking: off | GLM-5.2 | 10/10 (pilot) | 100.0% | 18 | 320,180 |
-| opencode | agent1st v14.1, high | GLM-5.2 | 388/391 | 99.2% | — | — |
-| opencode | agent1st v5.2.1 | Qwen 3.8 Max | 388/391 | 99.2% | — | — |
-| Hermes | MCP off | GLM-5.2 | 387/391 | 99.0% | — | 31,770,687 |
-| Claude Code CLI | — | Claude Haiku 4.5 | 380/391 | 97.2% | 1,645 | 176,430,286 |
-| opencode | agent1st v37.1 | DeepSeek V4 Flash 0731 | 384/391 | 98.2% | — | — |
-| opencode | — | GLM-5.2 (self-hosted) | 362/391 | 92.6% | — | — |
-| deepagents | GigaChat | GigaChat 3.5 | 340/391 | 87.0% | 3,316 | 4,319,421 |
-| deepagents | GigaChat | GigaChat 3 Ultra | 340/391 | 87.0% | 3,258 | 4,415,043 |
-| deepagents | none | DeepSeek V4 Flash | 320/391 | 81.8% | 5,048 | 61,715,547 |
-| deepagents | none | GigaChat 3 Ultra | 312/391 | 79.8% | 3,591 | 7,994,643 |
-| deepagents | none | GigaChat 3.5 | 302/391 | 77.2% | 3,542 | 7,371,576 |
-| deepagents | none | Qwen3 Coder 30B-A3B | 284/391 | 72.6% | 5,467 | 90,234,558 |
-| deepagents | GigaChat | GigaChat 3 Pro | 241/391 | 61.6% | 2,993 | 3,975,672 |
-| deepagents | none | GPT-OSS-20B | 193/391 | 49.4% | 2,727 | 29,137,983 |
-| deepagents | none | GPT-OSS-120B | 186/391 | 47.6% | 2,193 | 23,831,283 |
-| deepagents | GigaChat | GigaChat 3 Lightning | 178/391 | 45.5% | 2,520 | 2,275,821 |
+| Pi | — (2026-08-10) | GLM-5.2 (high) | 391/391 | 100.0% | 2,272 | 13,274,530 |
+| Kimi CLI | — (2026-08-08) | Kimi K3 | 390/391 | 99.7% | — | — |
+| OpenClaw | thinking: high (2026-08-10) | GLM-5.2 | 390/391 | 99.7% | ~1,173 | ~47,439,286 |
+| OpenClaw | thinking: off (2026-08-12) | GLM-5.2 | 10/10 (pilot) | 100.0% | 18 | 320,180 |
+| opencode | agent1st v14.1, high (2026-08-02) | GLM-5.2 | 388/391 | 99.2% | — | — |
+| opencode | agent1st v5.2.1 (2026-08-02) | Qwen 3.8 Max | 388/391 | 99.2% | — | — |
+| Hermes | MCP off (2026-08-10) | GLM-5.2 | 387/391 | 99.0% | — | 31,770,687 |
+| Claude Code CLI | — (2026-07-29) | Claude Haiku 4.5 | 380/391 | 97.2% | 1,645 | 176,430,286 |
+| opencode | agent1st v37.1 (2026-08-01) | DeepSeek V4 Flash 0731 | 384/391 | 98.2% | — | — |
+| opencode | — (2026-07-29) | GLM-5.2 (self-hosted) | 362/391 | 92.6% | — | — |
+| deepagents | GigaChat (2026-07-29) | GigaChat 3.5 | 340/391 | 87.0% | 3,316 | 4,319,421 |
+| deepagents | GigaChat (2026-07-29) | GigaChat 3 Ultra | 340/391 | 87.0% | 3,258 | 4,415,043 |
+| deepagents | none (2026-07-29) | DeepSeek V4 Flash | 320/391 | 81.8% | 5,048 | 61,715,547 |
+| deepagents | none (2026-07-29) | GigaChat 3 Ultra | 312/391 | 79.8% | 3,591 | 7,994,643 |
+| deepagents | none (2026-07-29) | GigaChat 3.5 | 302/391 | 77.2% | 3,542 | 7,371,576 |
+| deepagents | none (2026-07-29) | Qwen3 Coder 30B-A3B | 284/391 | 72.6% | 5,467 | 90,234,558 |
+| deepagents | GigaChat (2026-07-29) | GigaChat 3 Pro | 241/391 | 61.6% | 2,993 | 3,975,672 |
+| deepagents | none (2026-07-29) | GPT-OSS-20B | 193/391 | 49.4% | 2,727 | 29,137,983 |
+| deepagents | none (2026-07-29) | GPT-OSS-120B | 186/391 | 47.6% | 2,193 | 23,831,283 |
+| deepagents | GigaChat (2026-07-29) | GigaChat 3 Lightning | 178/391 | 45.5% | 2,520 | 2,275,821 |
 
 OpenClaw Steps and Tokens are estimated from a 10-task representative sample
 (3 easy, 4 medium, 3 hard) run with the same model and thinking settings, then
@@ -69,20 +69,20 @@ Rows are sorted by pass count.
 
 | Harness | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| Kimi CLI | — | Kimi K3 | 51/52 | 98.1% | 61.8m | — | — |
-| Hermes | MCP off | GLM-5.2 | 48/52 | 92.3% | 93.1m | 953 | 11,442,855 |
-| Claude Code CLI | — | Claude Haiku 4.5 | 47/52 | 90.4% | 46.7m | 367 | 38,310,340 |
-| OpenClaw | thinking: off | GLM-5.2 | 47/52 | 90.4% | 231.9m | 247 | 1,777,320 (1,793₽) |
-| OpenClaw | thinking: high | GLM-5.2 | 46/52 | 88.5% | 226.4m | — | — |
-| Hermes | MCP off, thinking: off | GLM-5.2 | 46/52 | 88.5% | 68.5m | 270 | 6,209,159 (1,509₽) |
-| opencode | — | GLM-5.2 (self-hosted) | 40/52 | 76.9% | 63.2m | — | — |
-| deepagents | none | DeepSeek V4 Flash | 30/52 | 57.7% | 90.6m | 835 | 12,277,890 |
-| deepagents | none | Qwen3 Coder 30B | 19/52 | 36.5% | 77.8m | 786 | 18,362,919 |
-| deepagents | none | GigaChat 3.5 | 18/52 | 34.6% | 50.3m | 442 | 1,816,116 |
-| deepagents | GigaChat | GigaChat 3 Pro | 16/52 | 30.8% | 58.1m | 400 | 1,306,224 |
-| deepagents | none | GPT-OSS-20B | 13/52 | 25.0% | 14.3m | 318 | 3,506,424 |
-| deepagents | none | GPT-OSS-120B | 13/52 | 25.0% | 10.1m | 262 | 2,915,334 |
-| deepagents | GigaChat | GigaChat 3 Lightning | 10/52 | 19.2% | 8.3m | 318 | 427,026 |
+| Kimi CLI | — (2026-08-08) | Kimi K3 | 51/52 | 98.1% | 61.8m | — | — |
+| Hermes | MCP off (2026-08-10) | GLM-5.2 | 48/52 | 92.3% | 93.1m | 953 | 11,442,855 |
+| Claude Code CLI | — (2026-07-29) | Claude Haiku 4.5 | 47/52 | 90.4% | 46.7m | 367 | 38,310,340 |
+| OpenClaw | thinking: off (2026-08-12) | GLM-5.2 | 47/52 | 90.4% | 231.9m | 247 | 1,777,320 (1,793₽) |
+| OpenClaw | thinking: high (2026-08-10) | GLM-5.2 | 46/52 | 88.5% | 226.4m | — | — |
+| Hermes | MCP off, thinking: off (2026-08-13) | GLM-5.2 | 46/52 | 88.5% | 68.5m | 270 | 6,209,159 (1,509₽) |
+| opencode | — (2026-07-29) | GLM-5.2 (self-hosted) | 40/52 | 76.9% | 63.2m | — | — |
+| deepagents | none (2026-07-29) | DeepSeek V4 Flash | 30/52 | 57.7% | 90.6m | 835 | 12,277,890 |
+| deepagents | none (2026-07-29) | Qwen3 Coder 30B | 19/52 | 36.5% | 77.8m | 786 | 18,362,919 |
+| deepagents | none (2026-07-29) | GigaChat 3.5 | 18/52 | 34.6% | 50.3m | 442 | 1,816,116 |
+| deepagents | GigaChat (2026-07-29) | GigaChat 3 Pro | 16/52 | 30.8% | 58.1m | 400 | 1,306,224 |
+| deepagents | none (2026-07-29) | GPT-OSS-20B | 13/52 | 25.0% | 14.3m | 318 | 3,506,424 |
+| deepagents | none (2026-07-29) | GPT-OSS-120B | 13/52 | 25.0% | 10.1m | 262 | 2,915,334 |
+| deepagents | GigaChat (2026-07-29) | GigaChat 3 Lightning | 10/52 | 19.2% | 8.3m | 318 | 427,026 |
 
 The shot list separates models into clear tiers: **>90%** (Kimi, Hermes,
 Claude, OpenClaw thinking:off), **88-90%** (OpenClaw thinking:high, Hermes
