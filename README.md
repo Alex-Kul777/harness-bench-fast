@@ -74,6 +74,7 @@ Rows are sorted by pass count.
 | Claude Code CLI | — | Claude Haiku 4.5 | 47/52 | 90.4% | 46.7m | 367 | 38,310,340 |
 | OpenClaw | thinking: off | GLM-5.2 | 47/52 | 90.4% | 231.9m | 247 | 1,777,320 (1,793₽) |
 | OpenClaw | thinking: high | GLM-5.2 | 46/52 | 88.5% | 226.4m | — | — |
+| Hermes | MCP off, thinking: off | GLM-5.2 | 46/52 | 88.5% | 68.5m | — | 6,209,159 (1,509₽) |
 | opencode | — | GLM-5.2 (self-hosted) | 40/52 | 76.9% | 63.2m | — | — |
 | deepagents | none | DeepSeek V4 Flash | 30/52 | 57.7% | 90.6m | 835 | 12,277,890 |
 | deepagents | none | Qwen3 Coder 30B | 19/52 | 36.5% | 77.8m | 786 | 18,362,919 |
@@ -84,8 +85,9 @@ Rows are sorted by pass count.
 | deepagents | GigaChat | GigaChat 3 Lightning | 10/52 | 19.2% | 8.3m | 318 | 427,026 |
 
 The shot list separates models into clear tiers: **>90%** (Kimi, Hermes,
-Claude, OpenClaw thinking:off), **88-90%** (OpenClaw thinking:high),
-**75-80%** (opencode), **50-60%** (DeepSeek), and **<40%** (GigaChat, GPT-OSS).
+Claude, OpenClaw thinking:off), **88-90%** (OpenClaw thinking:high, Hermes
+thinking:off), **75-80%** (opencode), **50-60%** (DeepSeek), and **<40%**
+(GigaChat, GPT-OSS).
 
 OpenClaw with `thinking: off` ties Claude Haiku at 47/52 (90.4%) while using
 **22x fewer tokens** (1.78M vs 38.3M) — reasoning disabled doesn't hurt on the
@@ -93,6 +95,14 @@ shot list and saves significant cost. The 5 failures are: 2 VCS (pytest
 failures), 1 tbench (timeout), 2 CLI (cfgctl + timeout). See
 [`docs/oc_shotlist_thinking_off.html`](docs/oc_shotlist_thinking_off.html) for
 the full HTML report with per-wave breakdown.
+
+Hermes with `thinking: off` drops from 48/52 to 46/52 (−2 tasks) but cuts
+tokens by **46%** (11.4M → 6.2M) and time by **26%** (93.1m → 68.5m). The 6
+failures include 2 VCS (pytest), 1 memory (pyproject authors), 1 tbench
+(session reconstruction), 1 CSV group count, and the stable cfgctl. The 2 new
+failures vs thinking-on are `task_106_csv_group_count` and
+`task_222_memory_name_pyproject` — both require multi-step reasoning that
+thinking helps with.
 
 The 18 high-discrimination tasks (<50% pass across all 12 runs) drive most of
 the separation — `task_378` (cfgctl layered merge) is the hardest, passed by
@@ -158,7 +168,7 @@ XLSX cells, and so on.
 The benchmark exists to track how well an agent harness + model
 combination handles **realistic coding tasks** with adversarially-chosen
 edge cases (ambiguous prompts dropped; only honest, scoped-to-tool tests
-remain). It started life as `harness_bench/` inside
+remain). It started life as- `harness_bench/` inside
 [`deepagents-gigachat`](https://github.com/ai-forever/deepagents-gigachat)
 and was extracted into its own repo once it matured.
 
@@ -410,7 +420,7 @@ Each task is independent: the runner creates a fresh
 calls `setup_callback` for binary fixtures), then points
 `LocalShellBackend` at that directory as its `root_dir`. The agent
 file tools are rooted there by `virtual_mode=True`. This is not a
-security sandbox: `execute` still spawns a real shell on the host and
+A security sandbox: `execute` still spawns a real shell on the host and
 the runners inherit environment variables. The benchmark is meant for a
 trusted local environment. After the agent stops, the per-task verifier
 inspects the workspace.
