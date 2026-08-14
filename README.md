@@ -82,7 +82,7 @@ Rows are sorted by pass count.
 | deepagents | GigaChat (2026-07-29) | GigaChat 3 Pro | 16/52 | 30.8% | 58.1m | 400 | 1,306,224 |
 | deepagents | none (2026-07-29) | GPT-OSS-20B | 13/52 | 25.0% | 14.3m | 318 | 3,506,424 |
 | deepagents | none (2026-07-29) | GPT-OSS-120B | 13/52 | 25.0% | 10.1m | 262 | 2,915,334 |
-| OpenClaw | thinking: off (2026-08-13) | GPT-OSS-120B | 17/52 | 32.7% | 205.2m | — | 1,261,870 (1,080₽) |
+| OpenClaw | thinking: off (2026-08-13) | GPT-OSS-120B | 17/52 | 32.7% | 205.2m | 120 | 1,261,870 (1,080₽) |
 | deepagents | GigaChat (2026-07-29) | GigaChat 3 Lightning | 10/52 | 19.2% | 8.3m | 318 | 427,026 |
 
 The shot list separates models into clear tiers: **>90%** (Kimi, Hermes,
@@ -95,8 +95,11 @@ OpenClaw with GPT-OSS-120B scores 17/52 (32.7%) — ahead of deepagents' 13/52
 stock deepagents. GPT-OSS-120B has `reasoning: true, reasoning_optional: false`
 on Cloud.ru, so reasoning is always on and cannot be disabled; the `thinking:
 off` flag has no effect on this model. The 35 failures cluster in CLI
-composition (0/13), VCS (0/15), and memory waves — the model frequently
-answers in prose instead of calling tools.
+composition (2/8), VCS (0/2), agentic (0/4), skills (0/3), and adversarial
+(0/2) waves — the model frequently answers in prose instead of calling tools.
+Strong areas: diagnostic (2/2, 100%), csv-xlsx-sqlite (3/4, 75%), core-file-ops
+(2/3, 67%). See [`docs/oc_shotlist_oss120b.html`](docs/oc_shotlist_oss120b.html)
+for the full HTML report with per-wave breakdown and per-task details.
 
 OpenClaw with `thinking: off` ties Claude Haiku at 47/52 (90.4%) while using
 **22x fewer tokens** (1.78M vs 38.3M) — reasoning disabled doesn't hurt on the
