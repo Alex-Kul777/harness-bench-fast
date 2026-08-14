@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenClaw GPT-OSS-120B Shot List Report</title>
+<style>
+body { font-family: -apple-system, sans-serif; max-width: 1200px; margin: 0 auto; padding: 2rem; color: #1a1a1a; }
+h1 { color: #2c3e50; }
+h2 { color: #34495e; margin-top: 2rem; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid #ddd; padding: 0.5rem 0.75rem; text-align: left; }
+th { background: #f5f6f7; font-weight: 600; }
+tr:hover { background: #f8f9fa; }
+.pass { color: #27ae60; font-weight: 600; }
+.fail { color: #e74c3c; font-weight: 600; }
+.summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0; }
+.card { background: #f8f9fa; border-radius: 8px; padding: 1rem; text-align: center; }
+.card .value { font-size: 1.5rem; font-weight: 700; color: #2c3e50; }
+.card .label { font-size: 0.85rem; color: #7f8c8d; text-transform: uppercase; }
+.wave-pass { color: #27ae60; }
+.wave-fail { color: #e74c3c; }
+.bar { display: inline-block; height: 12px; background: #3498db; border-radius: 2px; vertical-align: middle; }
+</style>
+</head>
+<body>
+
+<h1>OpenClaw + GPT-OSS-120B — Shot List (52 tasks)</h1>
+<p><strong>Model:</strong> <code>openai/gpt-oss-120b</code> (Cloud.ru) ·
+<strong>Date:</strong> 2026-08-13 ·
+<strong>Thinking:</strong> always on (reasoning_optional: false) ·
+<strong>Harness:</strong> OpenClaw agent loop</p>
+
+<div class="summary">
+<div class="card"><div class="value">17/52</div><div class="label">Pass Rate (32.7%)</div></div>
+<div class="card"><div class="value">205.2m</div><div class="label">Wall Clock Time</div></div>
+<div class="card"><div class="value">120</div><div class="label">Total Steps</div></div>
+<div class="card"><div class="value">185</div><div class="label">Total Turns</div></div>
+<div class="card"><div class="value">1,261,870</div><div class="label">Total Tokens</div></div>
+<div class="card"><div class="value">~1,080₽</div><div class="label">Est. Cost</div></div>
+</div>
+
+<h2>Per-Wave Breakdown</h2>
+<table>
+<tr><th>Wave</th><th>Pass</th><th>Fail</th><th>Total</th><th>Rate</th><th>Bar</th></tr>
+<tr><td>adversarial</td><td class="pass">0</td><td class="fail">2</td><td>2</td><td>0%</td><td><span class="bar" style="width:0px"></span></td></tr>
+<tr><td>agentic</td><td class="pass">0</td><td class="fail">4</td><td>4</td><td>0%</td><td><span class="bar" style="width:0px"></span></td></tr>
+<tr><td>cli-composition</td><td class="pass">2</td><td class="fail">6</td><td>8</td><td>25%</td><td><span class="bar" style="width:50px"></span></td></tr>
+<tr><td>composite-pipelines</td><td class="pass">1</td><td class="fail">3</td><td>4</td><td>25%</td><td><span class="bar" style="width:50px"></span></td></tr>
+<tr><td>core-file-ops</td><td class="pass">2</td><td class="fail">1</td><td>3</td><td>67%</td><td><span class="bar" style="width:133px"></span></td></tr>
+<tr><td>csv-xlsx-sqlite</td><td class="pass">3</td><td class="fail">1</td><td>4</td><td>75%</td><td><span class="bar" style="width:150px"></span></td></tr>
+<tr><td>diagnostic</td><td class="pass">2</td><td class="fail">0</td><td>2</td><td>100%</td><td><span class="bar" style="width:200px"></span></td></tr>
+<tr><td>env-json-dataclass</td><td class="pass">2</td><td class="fail">1</td><td>3</td><td>67%</td><td><span class="bar" style="width:133px"></span></td></tr>
+<tr><td>memory</td><td class="pass">2</td><td class="fail">3</td><td>5</td><td>40%</td><td><span class="bar" style="width:80px"></span></td></tr>
+<tr><td>multi-file-refactor</td><td class="pass">0</td><td class="fail">2</td><td>2</td><td>0%</td><td><span class="bar" style="width:0px"></span></td></tr>
+<tr><td>skills</td><td class="pass">0</td><td class="fail">3</td><td>3</td><td>0%</td><td><span class="bar" style="width:0px"></span></td></tr>
+<tr><td>tbench-lite</td><td class="pass">3</td><td class="fail">7</td><td>10</td><td>30%</td><td><span class="bar" style="width:60px"></span></td></tr>
+<tr><td>vcs</td><td class="pass">0</td><td class="fail">2</td><td>2</td><td>0%</td><td><span class="bar" style="width:0px"></span></td></tr>
+</table>
+
+<h2>Passed Tasks (17)</h2>
+<table>
+<tr><th>Task ID</th><th>Wave</th><th>Time</th><th>Steps</th><th>Tokens</th><th>Input tok</th><th>Output tok</th></tr>
+<tr><td>task_01_create_hello</td><td>core-file-ops</td><td>405s</td><td>1</td><td>24,398</td><td>24,101</td><td>302</td></tr>
+<tr><td>task_03_slugify</td><td>core-file-ops</td><td>405s</td><td>1</td><td>24,624</td><td>48,586</td><td>551</td></tr>
+<tr><td>task_63_nested_json_edit</td><td>env-json-dataclass</td><td>213s</td><td>3</td><td>23,992</td><td>93,420</td><td>436</td></tr>
+<tr><td>task_92_count_chars</td><td>env-json-dataclass</td><td>213s</td><td>2</td><td>23,850</td><td>70,524</td><td>390</td></tr>
+<tr><td>task_101_csv_mean_score</td><td>csv-xlsx-sqlite</td><td>212s</td><td>2</td><td>24,045</td><td>70,979</td><td>214</td></tr>
+<tr><td>task_106_csv_group_count</td><td>csv-xlsx-sqlite</td><td>212s</td><td>2</td><td>23,972</td><td>70,839</td><td>498</td></tr>
+<tr><td>task_140_grep_emails</td><td>csv-xlsx-sqlite</td><td>217s</td><td>3</td><td>24,148</td><td>80,400</td><td>501</td></tr>
+<tr><td>task_159_unzip_extract</td><td>composite-pipelines</td><td>219s</td><td>3</td><td>24,033</td><td>94,529</td><td>610</td></tr>
+<tr><td>task_206_reconcile_paid_revenue</td><td>diagnostic</td><td>233s</td><td>2</td><td>24,800</td><td>95,537</td><td>1,049</td></tr>
+<tr><td>task_214_customer_data_quality_report</td><td>diagnostic</td><td>230s</td><td>4</td><td>24,663</td><td>120,246</td><td>896</td></tr>
+<tr><td>task_226_memory_requirements_dev</td><td>memory</td><td>238s</td><td>1</td><td>24,338</td><td>47,825</td><td>344</td></tr>
+<tr><td>task_240_memory_summarize_profile</td><td>memory</td><td>227s</td><td>2</td><td>24,590</td><td>71,500</td><td>341</td></tr>
+<tr><td>task_355_segment_audit</td><td>tbench-lite</td><td>208s</td><td>2</td><td>24,031</td><td>70,857</td><td>685</td></tr>
+<tr><td>task_356_deduplicate_contacts</td><td>tbench-lite</td><td>214s</td><td>2</td><td>24,348</td><td>71,452</td><td>1,823</td></tr>
+<tr><td>task_358_range_parser</td><td>tbench-lite</td><td>284s</td><td>3</td><td>28,057</td><td>125,311</td><td>4,260</td></tr>
+<tr><td>task_375_cli_pktool_stats_corrupt</td><td>cli-composition</td><td>221s</td><td>5</td><td>25,222</td><td>145,295</td><td>932</td></tr>
+<tr><td>task_381_cli_slicer_restock</td><td>cli-composition</td><td>219s</td><td>3</td><td>24,982</td><td>97,160</td><td>892</td></tr>
+</table>
+
+<h2>Failed Tasks (35)</h2>
+<table>
+<tr><th>Task ID</th><th>Wave</th><th>Time</th><th>Steps</th><th>Tokens</th><th>Failure Reason</th></tr>
+<tr><td>task_24_add_header_comment</td><td>core-file-ops</td><td>406s</td><td>1</td><td>24,415</td><td>src/a.py does not match /\A# \(c\) 2026 Acme Inc\./</td></tr>
+<tr><td>task_41_count_todos</td><td>multi-file-refactor</td><td>211s</td><td>1</td><td>23,970</td><td>count.txt missing</td></tr>
+<tr><td>task_48_append_eof_each</td><td>multi-file-refactor</td><td>211s</td><td>1</td><td>23,873</td><td>logs/first.log: last line is 'one alpha', expected 'EOF'</td></tr>
+<tr><td>task_69_remove_comments</td><td>env-json-dataclass</td><td>213s</td><td>0</td><td>23,880</td><td>script.py lines differ — comments not removed</td></tr>
+<tr><td>task_104_csv_join</td><td>csv-xlsx-sqlite</td><td>213s</td><td>1</td><td>23,851</td><td>joined.csv missing</td></tr>
+<tr><td>task_157_two_csv_diff</td><td>composite-pipelines</td><td>218s</td><td>1</td><td>23,910</td><td>only_in_a.txt or only_in_b.txt missing</td></tr>
+<tr><td>task_153_xlsx_to_markdown_report</td><td>composite-pipelines</td><td>220s</td><td>0</td><td>24,694</td><td>report.md missing</td></tr>
+<tr><td>task_201_reconcile_vip_users</td><td>composite-pipelines</td><td>267s</td><td>8</td><td>26,095</td><td>vip_users.json JSON mismatch — user_id as string vs int</td></tr>
+<tr><td>task_223_memory_city_timezone_script</td><td>memory</td><td>231s</td><td>1</td><td>24,267</td><td>MEMORY.md doesn't have a '- Город: Москва' line</td></tr>
+<tr><td>task_222_memory_name_pyproject</td><td>memory</td><td>251s</td><td>0</td><td>1,048</td><td>MEMORY.md doesn't have a '- Имя: Анна Петрова' entry in list format</td></tr>
+<tr><td>task_231_memory_refuse_secrets</td><td>memory</td><td>239s</td><td>2</td><td>24,702</td><td>MEMORY.md doesn't note that the user uses Anthropic / Антропик</td></tr>
+<tr><td>task_263_terminal_du_top_dirs</td><td>agentic</td><td>232s</td><td>0</td><td>24,408</td><td>reports/top_dirs.tsv missing</td></tr>
+<tr><td>task_266_terminal_sha256_manifest</td><td>agentic</td><td>223s</td><td>0</td><td>24,547</td><td>SHA256SUMS missing</td></tr>
+<tr><td>task_270_tau2_bank_duplicate_charge</td><td>agentic</td><td>222s</td><td>1</td><td>23,934</td><td>bank_action.json missing</td></tr>
+<tr><td>task_272_tau2_clinic_reschedule</td><td>agentic</td><td>218s</td><td>1</td><td>23,873</td><td>clinic_action.json missing</td></tr>
+<tr><td>task_307_resolve_many_files</td><td>vcs</td><td>221s</td><td>2</td><td>24,050</td><td>mod01.py still contains merge conflict markers</td></tr>
+<tr><td>task_309_rename_refactor_scale</td><td>vcs</td><td>221s</td><td>1</td><td>24,105</td><td>lib.py still contains merge conflict markers</td></tr>
+<tr><td>task_315_skill_b1_failure_codebook</td><td>skills</td><td>222s</td><td>2</td><td>24,395</td><td>normalized.csv missing</td></tr>
+<tr><td>task_319_skill_b2_ndr7_parse</td><td>skills</td><td>214s</td><td>5</td><td>27,143</td><td>parsed.csv missing</td></tr>
+<tr><td>task_323_skill_g1_create_slugify_skill</td><td>skills</td><td>216s</td><td>2</td><td>24,948</td><td>SKILL.md name field doesn't match expected format</td></tr>
+<tr><td>task_332_adv_broken_build</td><td>adversarial</td><td>206s</td><td>1</td><td>23,832</td><td>dist/bundle.txt missing</td></tr>
+<tr><td>task_335_adv_missing_config_file</td><td>adversarial</td><td>206s</td><td>1</td><td>23,897</td><td>config.json untouched, no NOTES.md — agent did nothing</td></tr>
+<tr><td>task_352_structured_log_summary</td><td>tbench-lite</td><td>209s</td><td>1</td><td>24,026</td><td>summary.json missing</td></tr>
+<tr><td>task_353_reconstruct_sessions</td><td>tbench-lite</td><td>223s</td><td>4</td><td>24,411</td><td>sessions.csv rows mismatch — missing status fields</td></tr>
+<tr><td>task_357_request_latency</td><td>tbench-lite</td><td>205s</td><td>1</td><td>23,944</td><td>latency.csv missing</td></tr>
+<tr><td>task_365_package_rename</td><td>tbench-lite</td><td>231s</td><td>1</td><td>24,064</td><td>blueledger still exists</td></tr>
+<tr><td>task_368_sqlite_migration</td><td>tbench-lite</td><td>348s</td><td>7</td><td>33,033</td><td>migrate.py failed: NotImplementedError</td></tr>
+<tr><td>task_370_change_plan</td><td>tbench-lite</td><td>236s</td><td>4</td><td>24,509</td><td>app.py mismatch: ENDPOINT = 'API_V1' instead of 'API_CURRENT'</td></tr>
+<tr><td>task_371_test_result_aggregation</td><td>tbench-lite</td><td>228s</td><td>1</td><td>23,967</td><td>report.json missing</td></tr>
+<tr><td>task_374_cli_pktool_filter_decode</td><td>cli-composition</td><td>248s</td><td>5</td><td>25,672</td><td>flows.csv missing</td></tr>
+<tr><td>task_378_cli_cfgctl_layered_merge</td><td>cli-composition</td><td>217s</td><td>2</td><td>24,895</td><td>effective.env missing</td></tr>
+<tr><td>task_382_cli_mixed_depwalk_hotspots</td><td>cli-composition</td><td>213s</td><td>2</td><td>24,362</td><td>solve.sh missing</td></tr>
+<tr><td>task_383_cli_mixed_pktool_ports</td><td>cli-composition</td><td>218s</td><td>2</td><td>24,365</td><td>solve.sh missing</td></tr>
+<tr><td>task_384_cli_mixed_slicer_warehouse_value</td><td>cli-composition</td><td>211s</td><td>1</td><td>24,153</td><td>solve.sh missing</td></tr>
+<tr><td>task_389_cli_find_xargs_predicates</td><td>cli-composition</td><td>276s</td><td>16</td><td>28,539</td><td>big_logs.csv mismatch — empty output from solve.sh</td></tr>
+</table>
+
+<h2>Analysis</h2>
+<p><strong>Comparison with deepagents:</strong> deepagents + GPT-OSS-120B = 13/52 (25.0%).
+OpenClaw agent loop adds <strong>+7.7 pp</strong> (17 vs 13) over stock deepagents
+with the same model.</p>
+
+<p><strong>Reasoning:</strong> GPT-OSS-120B has <code>reasoning: true, reasoning_optional: false</code>
+on Cloud.ru. Reasoning is always enabled and cannot be disabled — the
+<code>thinking: off</code> flag has no effect on this model.</p>
+
+<p><strong>Failure clusters:</strong> The 35 failures concentrate in:</p>
+<ul>
+<li><strong>CLI composition</strong> (2/8, 25%) — model answers in prose instead of calling tools</li>
+<li><strong>VCS</strong> (0/2, 0%) — merge conflict resolution failures</li>
+<li><strong>Agentic</strong> (0/4, 0%) — terminal workflows and action decisions</li>
+<li><strong>Skills</strong> (0/3, 0%) — skill creation and format parsing</li>
+<li><strong>Adversarial</strong> (0/2, 0%) — hostile environment workarounds</li>
+<li><strong>Multi-file refactor</strong> (0/2, 0%) — complex refactoring</li>
+</ul>
+
+<p><strong>Strong areas:</strong> diagnostic (2/2, 100%), csv-xlsx-sqlite (3/4, 75%),
+core-file-ops (2/3, 67%), env-json-dataclass (2/3, 67%).</p>
+
+<p><strong>Token efficiency:</strong> 1.26M tokens for 52 tasks — very low compared to
+GLM-5.2 runs (6.2M–11.4M), because GPT-OSS-120B takes fewer steps per task
+(avg 2.3 steps vs 18.3 for Hermes thinking:off). However, this reflects the model
+giving up early rather than working through problems.</p>
+
+<p><a href="../README.md">← Back to README</a></p>
+
+</body>
+</html>
