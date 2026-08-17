@@ -75,6 +75,7 @@ Rows are sorted by pass count.
 | OpenClaw | thinking: off (2026-08-12) | GLM-5.2 | 47/52 | 90.4% | 231.9m | 247 | 1,777,320 (1,793₽) |
 | OpenClaw | thinking: high (2026-08-10) | GLM-5.2 | 46/52 | 88.5% | 226.4m | — | — |
 | Hermes | MCP off, thinking: off (2026-08-13) | GLM-5.2 | 46/52 | 88.5% | 68.5m | 270 | 6,209,159 (1,509₽) |
+| Pi | — (2026-08-17) | Qwen3.6-35B-A3B | 42/52 | 80.8% | 18.5m | 327 | 1,318,346 (362₽) |
 | opencode | — (2026-07-29) | GLM-5.2 (self-hosted) | 40/52 | 76.9% | 63.2m | — | — |
 | OpenClaw | — (2026-08-17) | Qwen3.6-35B-A3B | 40/52 | 76.9% | 195.2m | 328 | 11,672,005 (2,859₽) |
 | Hermes | — (2026-08-17) | Qwen3.6-35B-A3B | 36/52 | 69.2% | 38.6m | 301 | 6,961,237 (1,737₽) |
@@ -139,6 +140,20 @@ depwalk hotspots CSV header in Russian, slicer warehouse missing), and core-file
 (range parser, 372s), and task_389 (find xargs) — all of which OpenClaw failed with
 this model. Strong areas: csv-xlsx-sqlite (4/4), agentic (2/2), adversarial (2/2),
 CLI composition (3/5).
+
+Pi with Qwen3.6-35B-A3B scores 42/52 (80.8%) — the best result for this model
+across all three harnesses, beating OpenClaw (40/52, 76.9%) by +2 and Hermes
+(36/52, 69.2%) by +6. Pi is also the fastest (18.5m vs 195.2m for OpenClaw and
+38.6m for Hermes) and uses the fewest tokens (1.3M vs 11.7M and 7.0M). The 10
+failures cluster in VCS (0/2: pytest pluggy), CLI (1/5: cfgctl stable),
+composite-pipelines (0/2: depwalk + pktool — solve.sh doesn't reference tools),
+tbench (1/6: session reconstruction), core-file-ops (2/3: grep emails, dq report),
+and memory (1/5: requirements-dev). Notably, Pi passes ALL 4 memory tasks that
+Hermes fails (222, 223, 231, 240) and 7 tasks that OpenClaw fails (263, 319,
+323, 356, 371, 384, 389). Pi's Docker isolation means a clean workspace per task
+with no system prompt overhead, resulting in 9x fewer tokens than OpenClaw.
+Strong areas: memory (4/5), csv-xlsx-sqlite (4/4), agentic (2/2), adversarial
+(2/2), CLI composition (3/5), skills (2/3), diagnostic (2/2).
 
 OpenClaw with `thinking: off` ties Claude Haiku at 47/52 (90.4%) while using
 **22x fewer tokens** (1.78M vs 38.3M) — reasoning disabled doesn't hurt on the
