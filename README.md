@@ -77,6 +77,7 @@ Rows are sorted by pass count.
 | Hermes | MCP off, thinking: off (2026-08-13) | GLM-5.2 | 46/52 | 88.5% | 68.5m | 270 | 6,209,159 (1,509₽) |
 | opencode | — (2026-07-29) | GLM-5.2 (self-hosted) | 40/52 | 76.9% | 63.2m | — | — |
 | OpenClaw | — (2026-08-17) | Qwen3.6-35B-A3B | 40/52 | 76.9% | 195.2m | 328 | 11,672,005 (2,859₽) |
+| Hermes | — (2026-08-17) | Qwen3.6-35B-A3B | 36/52 | 69.2% | 38.6m | 301 | 6,961,237 (1,737₽) |
 | deepagents | none (2026-07-29) | DeepSeek V4 Flash | 30/52 | 57.7% | 90.6m | 835 | 12,277,890 |
 | deepagents | none (2026-07-29) | Qwen3 Coder 30B | 19/52 | 36.5% | 77.8m | 786 | 18,362,919 |
 | deepagents | none (2026-07-29) | GigaChat 3.5 | 18/52 | 34.6% | 50.3m | 442 | 1,816,116 |
@@ -123,6 +124,21 @@ count chars format). The model is a 35B-A3B sparse MoE reasoning model with 3B
 active params; reasoning tokens are not reported separately by Cloud.ru. Strong
 areas: composite-pipelines (2/2), csv-xlsx-sqlite (4/4), multi-file-refactor (1/1),
 agentic (2/2), skills creation (1/1), adversarial (2/2), CLI composition (4/5).
+
+Hermes with Qwen3.6-35B-A3B scores 36/52 (69.2%) — 4 fewer passes than OpenClaw
+with the same model (40/52, 76.9%) but 5.1x faster (38.6m vs 195.2m) and using
+1.7x fewer tokens (7.0M vs 11.7M, 1,737₽ vs 2,859₽). The 16 failures cluster in
+memory (0/5: all memory tasks fail — Hermes injects AGENTS.md but the model
+doesn't write MEMORY.md in the expected format), VCS (0/2: pytest pluggy errors,
+same as OpenClaw), skills (1/3: ndr7 parse, same as OpenClaw), tbench (2/6:
+session reconstruction, test aggregation), CLI (1/5: cfgctl stable fail),
+diagnostic (2/4: deduplicate contacts, du top dirs), composite-pipelines (0/2:
+depwalk hotspots CSV header in Russian, slicer warehouse missing), and core-file-ops
+(1/3: data quality report). Notably, Hermes passes task_92 (count chars), task_201
+(reconcile VIP), task_206 (reconcile revenue), task_357 (request latency), task_358
+(range parser, 372s), and task_389 (find xargs) — all of which OpenClaw failed with
+this model. Strong areas: csv-xlsx-sqlite (4/4), agentic (2/2), adversarial (2/2),
+CLI composition (3/5).
 
 OpenClaw with `thinking: off` ties Claude Haiku at 47/52 (90.4%) while using
 **22x fewer tokens** (1.78M vs 38.3M) — reasoning disabled doesn't hurt on the
