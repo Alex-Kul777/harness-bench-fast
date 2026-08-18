@@ -21,6 +21,7 @@ Public landing page: <https://ai-forever.github.io/harness-bench-fast/>
 | OpenClaw | thinking: high (2026-08-10) | GLM-5.2 | 390/391 | 99.7% | ~1,173 | ~47,439,286 |
 | OpenClaw | thinking: off (2026-08-12) | GLM-5.2 | 10/10 (pilot) | 100.0% | 18 | 320,180 |
 | opencode | agent1st v14.1, high (2026-08-02) | GLM-5.2 | 388/391 | 99.2% | — | — |
+| Pi | — (2026-08-13) | DeepSeek V4 Flash 0731 | 387/391 | 98.7% | — | — |
 | opencode | agent1st v5.2.1 (2026-08-02) | Qwen 3.8 Max | 388/391 | 99.2% | — | — |
 | Hermes | MCP off (2026-08-10) | GLM-5.2 | 387/391 | 99.0% | — | 31,770,687 |
 | Claude Code CLI | — (2026-07-29) | Claude Haiku 4.5 | 380/391 | 97.2% | 1,645 | 176,430,286 |
