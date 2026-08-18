@@ -70,6 +70,7 @@ Rows are sorted by pass count.
 | Harness | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
 | Kimi CLI | — (2026-08-08) | Kimi K3 | 51/52 | 98.1% | 61.8m | — | — |
+| Pi | thinking: off (2026-08-17) | GLM-5.2 | 49/52 | 94.2% | 102.8m | 388 | 1,913,439 (501₽) |
 | Hermes | MCP off (2026-08-10) | GLM-5.2 | 48/52 | 92.3% | 93.1m | 953 | 11,442,855 |
 | Claude Code CLI | — (2026-07-29) | Claude Haiku 4.5 | 47/52 | 90.4% | 46.7m | 367 | 38,310,340 |
 | OpenClaw | thinking: off (2026-08-12) | GLM-5.2 | 47/52 | 90.4% | 231.9m | 247 | 1,777,320 (1,793₽) |
@@ -89,7 +90,7 @@ Rows are sorted by pass count.
 | OpenClaw | thinking: off (2026-08-13) | GPT-OSS-120B | 17/52 | 32.7% | 205.2m | 120 | 1,261,870 (1,080₽) |
 | deepagents | GigaChat (2026-07-29) | GigaChat 3 Lightning | 10/52 | 19.2% | 8.3m | 318 | 427,026 |
 
-The shot list separates models into clear tiers: **>90%** (Kimi, Hermes,
+The shot list separates models into clear tiers: \**>90%** (Kimi, Pi, Hermes,
 Claude, OpenClaw thinking:off), **88-90%** (OpenClaw thinking:high, Hermes
 thinking:off), **75-80%** (opencode, OpenClaw Qwen3.6), **50-60%** (DeepSeek), **25-35%**
 (GPT-OSS, GigaChat 3.5/Pro), and **<20%** (GigaChat Lightning).
@@ -154,6 +155,17 @@ Hermes fails (222, 223, 231, 240) and 7 tasks that OpenClaw fails (263, 319,
 with no system prompt overhead, resulting in 9x fewer tokens than OpenClaw.
 Strong areas: memory (4/5), csv-xlsx-sqlite (4/4), agentic (2/2), adversarial
 (2/2), CLI composition (3/5), skills (2/3), diagnostic (2/2).
+
+Pi with GLM-5.2 (thinking: off) scores 49/52 (94.2%) — 2nd place in the shot list
+after Kimi K3 (51/52), beating Hermes (48/52) by +1 and OpenClaw (47/52) by +2
+with the same model. Pi takes 102.8m and uses 1.9M tokens (501₽). The 3 failures
+are: 2 VCS (pytest pluggy errors, same as all harnesses) and 1 CLI (cfgctl stable
+fail, task_378). Notably, Pi passes task_140 (grep emails), task_214 (dq report),
+task_226 (memory requirements-dev), task_353 (session reconstruction), task_374
+(flows.csv), task_382 (depwalk hotspots), and task_383 (pktool ports) — all of
+which Pi with Qwen3.6 failed. The full 391-task run with Pi + GLM-5.2 (high) is
+already 391/391 (100.0%). See [`results/pi_shotlist_glm52_thinking_off.json`](results/pi_shotlist_glm52_thinking_off.json)
+for the full JSON report.
 
 OpenClaw with `thinking: off` ties Claude Haiku at 47/52 (90.4%) while using
 **22x fewer tokens** (1.78M vs 38.3M) — reasoning disabled doesn't hurt on the
