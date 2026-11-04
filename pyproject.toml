@@ -1,7 +1,7 @@
 [project]
 name = "harness-bench-fast"
 version = "0.1.0"
-description = "Self-contained 371-task agent benchmark (file ops, code edits, data pipelines, memory, agentic, adversarial, and terminal workflows)"
+description = "Self-contained 531-task agent benchmark (file ops, code edits, data pipelines, memory, agentic, adversarial, and terminal workflows)"
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
@@ -43,7 +43,7 @@ gigachat = [
 # matching local deepagents-gigachat wheel/source described in README.md.
 gigachat-profile = [
     "langchain-gigachat==0.5.1",
-    "deepagents-gigachat==0.0.3",
+    "deepagents-gigachat==0.0.4",
 ]
 # `uv pip install harness-bench-fast[openrouter]` for `runner_openrouter.py`
 # against any OpenAI-compatible OpenRouter model.
@@ -87,7 +87,7 @@ dev = [
     "ruff>=0.15.12",
     "langchain-openai==1.2.2",
     "langchain-gigachat==0.5.1",
-    "deepagents-gigachat==0.0.3",
+    "deepagents-gigachat==0.0.4",
 ]
 
 [tool.ruff]

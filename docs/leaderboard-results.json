@@ -1,0 +1,4777 @@
+{
+  "task_set_version": "0.19",
+  "light_tasks": 391,
+  "medium_tasks": 80,
+  "wave21_task_set_version": "0.21.2",
+  "wave21_tasks": 10,
+  "provenance": {
+    "method": "Historical rescores, eight complete v0.19.0 runs, sixteen new wave19 harness configurations and fresh Sonnet/Astra Medium runs plus three complete Claude Haiku harness runs; v0.19 protocol revisions grouped for display, exact source_version retained per row; composites explicitly labeled; secret sft deepagents accepted by the operator",
+    "source_commit": "3796b9084093e5f9383077d7bde8f1ce1f0d57b5",
+    "wave21_results_sha256": "1d35d5b2b0d9b28829b5d27d28f852d6f1f33d768e95df7581ffa0073d299803",
+    "wave_results_sha256": "6dd03c599564c086bb8c0bf3f9c4a90c3edf27d9b4b7bb746bc5004e59f25683",
+    "secret_700b_sha256": "2f016f31bee69ce7f27be2935631f7737d8d30acabb3c149b38a6e03baa1785d",
+    "secret_sft_codex_sha256": "d2a7ae15ae0534e5c036e3b573a9595ac5a3966e33fa1f68b3b3baf3f44fefb7",
+    "secret_sft_mini_sha256": "3be9fea9bf69468e2b7db3df5a7d3d7f7300a9366ab3fde5c047150807f98fb7",
+    "sonnet55_medium_sha256": "05184a8a69a1e3f75a7bfd0ecd185022203b6219abe5c7dd900a524e67ab540e",
+    "astra_medium_sha256": "e46b98a77b9270db0957173f07cffbdf25f3cd5a2bcc16905a04234bf0768701",
+    "universal_agent_haiku_sha256": "5680801cb7a3efd9eb8e0fac92484f2ac8eeb96d2805fbc3aa465adbd94bcb57",
+    "universal_agent_deepseek_sha256": "e2e923f7324f5908d8bff8cddde6b7999f55828df13c761855bca24554770683",
+    "giga35_ultra_reasoning_sha256": "611fd53c116e51cbe2b772b909034cf7db6ccb4547adede3e145a186e1df5fc9",
+    "archive_sha256": "448eb41a006bca486a21328f7e1799d1c1b7a05e52ee91a11f40fe9de0a8711f",
+    "brain_haiku_experiment_sha256": "d2eeb500c752c07a71f15f58474334298e590370edd42f0e39f2511130db8cca",
+    "haiku_three_harnesses_sha256": "2a9ab223dbe6038d58715c8193a94b414d981b6d3f1388f253a4dcc34dbf26c2",
+    "telemetry_sha256": "2058f482d9cc941a8a453c7b9003ee4b3d6525643ff61037001e58dc1b6d8773",
+    "limitation": "Missing old coverage stays null; historical+wave19 composites are not fresh full runs. Wilson intervals do not estimate repeat variability."
+  },
+  "rows": [
+    {
+      "id": "run-0",
+      "harness": "pi-mono",
+      "model": "DeepSeek V4.1 Flash Uncensored FP8 (high)",
+      "runs": 1,
+      "light": {
+        "passed": 391,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 32,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 423.0,
+      "telemetry_note": "@mean1 · Long wave 13/20 · Reflection 19/20 · Steps 0 · Tokens 0 (metrics absent)"
+    },
+    {
+      "id": "ua-glm53",
+      "harness": "GigaCode Universal Agent (gc-cli)",
+      "model": "GLM-5.3 (OpenRouter) (high)",
+      "runs": 1,
+      "light": {
+        "passed": 388,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 35,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 423.0,
+      "telemetry_note": "@mean1 · Long wave 16/20 · Reflection 19/20 · Steps 4,581 · Tokens 271,316,552 (coverage 429/431)"
+    },
+    {
+      "id": "run-1",
+      "harness": "dsh headless",
+      "model": "DeepSeek V4.1 Flash Uncensored FP8 (high)",
+      "runs": 1,
+      "light": {
+        "passed": 390,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 32,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 422.0,
+      "telemetry_note": "@mean1 · Long wave 14/20 · Reflection 18/20 · Steps 3,973 · Tokens 249,558,870"
+    },
+    {
+      "id": "run-2",
+      "harness": "Hermes",
+      "model": "DeepSeek V4.1 Flash Uncensored FP8 (high)",
+      "runs": 1,
+      "light": {
+        "passed": 388,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 34,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 422.0,
+      "telemetry_note": "@mean1 · Long wave 14/20 · Reflection 20/20 · Steps 0 · Tokens 0 (metrics absent)"
+    },
+    {
+      "id": "run-3",
+      "harness": "OpenCode",
+      "model": "DeepSeek V4.1 Flash Uncensored FP8 (high)",
+      "runs": 1,
+      "light": {
+        "passed": 388,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 33,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 421.0,
+      "telemetry_note": "@mean1 · Long wave 14/20 · Reflection 19/20 · Steps 3,818 · Tokens 0 (metric absent)"
+    },
+    {
+      "id": "codex-sol61-low",
+      "harness": "Codex CLI",
+      "model": "GPT-6.1 Sol (low)",
+      "runs": 1,
+      "light": {
+        "passed": 388,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 32,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 420.0,
+      "telemetry_note": "@mean1 · Long wave 19/20 · Reflection 13/20 · Steps 2,817 · Tokens 69,419,504 (raw)"
+    },
+    {
+      "id": "run-4",
+      "harness": "free-code",
+      "model": "DeepSeek V4.1 Flash Uncensored FP8 (high)",
+      "runs": 3,
+      "light": {
+        "passed": 389.3333333333333,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 29.666666666666664,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 419.0,
+      "telemetry_note": "@mean3 · SD 0.6 pp · Long mean 63.3% · Reflection mean 85.0% · Mean steps 4,311 · Mean tokens 631,963,525"
+    },
+    {
+      "id": "ua-ds41",
+      "harness": "GigaCode Universal Agent (gc-cli)",
+      "model": "DeepSeek V4.1 Flash Uncensored FP8 (high)",
+      "runs": 1,
+      "light": {
+        "passed": 389,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 30,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 419.0,
+      "telemetry_note": "@mean1 · Long wave 12/20 · Reflection 18/20 · Steps 5,210 · Tokens 386,165,256"
+    },
+    {
+      "id": "run-5",
+      "harness": "mini-SWE-agent",
+      "model": "DeepSeek V4.1 Flash Uncensored FP8 (high)",
+      "runs": 1,
+      "light": {
+        "passed": 388,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 30,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 418.0,
+      "telemetry_note": "@mean1 · Long wave 10/20 · Reflection 20/20 · Steps 5,846 · Tokens 967,731,127 (raw)"
+    },
+    {
+      "id": "ua-kimi",
+      "harness": "GigaCode Universal Agent (gc-cli)",
+      "model": "Kimi-K3 (OpenRouter) (high)",
+      "runs": 1,
+      "light": {
+        "passed": 387,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 30,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 417.0,
+      "telemetry_note": "@mean1 · Long wave 13/20 · Reflection 17/20 · Steps 3,402 · Tokens 171,347,666 (coverage 426/431)"
+    },
+    {
+      "id": "glm53-openrouter-opencode",
+      "harness": "OpenCode",
+      "model": "GLM-5.3 (OpenRouter) (high)",
+      "runs": 1,
+      "light": {
+        "passed": 386,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 27,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 413.0,
+      "telemetry_note": "@mean1 · Long wave 12/20 · Reflection 15/20 · Steps 3,745 · Tokens 0 (metrics absent)"
+    },
+    {
+      "id": "run-6",
+      "harness": "deepagents",
+      "model": "DeepSeek V4.1 Flash Uncensored FP8 (high)",
+      "runs": 1,
+      "light": {
+        "passed": 383,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 28,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 411.0,
+      "telemetry_note": "@mean1 · Long wave 10/20 · Reflection 18/20 · Steps 10,086 · Tokens 854,671,935 (raw)*"
+    },
+    {
+      "id": "multitool-glm53",
+      "harness": "MultiTool CLI",
+      "model": "GLM-5.3 (OpenRouter) (high)",
+      "runs": 1,
+      "light": {
+        "passed": 386,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 25,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 411.0,
+      "telemetry_note": "@mean1 · Long wave 10/20 · Reflection 15/20 · Steps 3,600 · Tokens 155,371,241 (native audit, including child sessions)"
+    },
+    {
+      "id": "glm53-openrouter-deepagents",
+      "harness": "deepagents",
+      "model": "GLM-5.3 (OpenRouter) (high)",
+      "runs": 1,
+      "light": {
+        "passed": 381,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 27,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 408.0,
+      "telemetry_note": "@mean1 · Long wave 14/20 · Reflection 13/20 · Steps 8,271 · Tokens 696,504,696* (coverage 429/431)"
+    },
+    {
+      "id": "glm53-openrouter-mini",
+      "harness": "mini-SWE-agent",
+      "model": "GLM-5.3 (OpenRouter) (high)",
+      "runs": 1,
+      "light": {
+        "passed": 385,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 22,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 407.0,
+      "telemetry_note": "@mean1 · Long wave 9/20 · Reflection 13/20 · Steps 5,191 · Tokens 769,563,983 (coverage 428/431)"
+    },
+    {
+      "id": "glm-dsh",
+      "harness": "dsh headless",
+      "model": "GLM-5.3 Flash Uncensored FP8 (high)",
+      "runs": 1,
+      "light": {
+        "passed": 383,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 22,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 405.0,
+      "telemetry_note": "@mean1 · Long wave 7/20 · Reflection 15/20 · Steps 3,833 · Tokens 234,756,961 (raw; 0 means absent)"
+    },
+    {
+      "id": "run-55",
+      "harness": "mini-SWE-agent",
+      "model": "GLM-5.3 Flash Uncensored FP8 (high)",
+      "runs": 1,
+      "light": {
+        "passed": 384,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 20,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 404.0,
+      "telemetry_note": "@mean1 · Long wave 5/20 · Reflection 15/20 · Steps 5,109 · Tokens (raw) 375,324,319"
+    },
+    {
+      "id": "glm-free-code",
+      "harness": "free-code",
+      "model": "GLM-5.3 Flash Uncensored FP8 (high)",
+      "runs": 1,
+      "light": {
+        "passed": 381,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 23,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 404.0,
+      "telemetry_note": "@mean1 · Long wave 12/20 · Reflection 11/20 · Steps 4,924 · Tokens 516,879,409 (raw; 0 means absent)"
+    },
+    {
+      "id": "glm53-openrouter-openhands",
+      "harness": "OpenHands",
+      "model": "GLM-5.3 (OpenRouter) (high)",
+      "runs": 1,
+      "light": {
+        "passed": 384,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 20,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 404.0,
+      "telemetry_note": "@mean1 · Long wave 6/20 · Reflection 14/20 · Steps 0 · Tokens 0 (metrics absent)"
+    },
+    {
+      "id": "glm53-openrouter-hermes",
+      "harness": "Hermes",
+      "model": "GLM-5.3 (OpenRouter) (high)",
+      "runs": 1,
+      "light": {
+        "passed": 387,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 15,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 402.0,
+      "telemetry_note": "@mean1 · Long wave 3/20 · Reflection 12/20 · Steps 0 · Tokens 0 (metrics absent)"
+    },
+    {
+      "id": "glm-hermes",
+      "harness": "Hermes",
+      "model": "GLM-5.3 Flash Uncensored FP8 (high)",
+      "runs": 1,
+      "light": {
+        "passed": 384,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 15,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 399.0,
+      "telemetry_note": "@mean1 · Long wave 5/20 · Reflection 10/20 · Steps 0 · Tokens 0 (raw; 0 means absent)"
+    },
+    {
+      "id": "run-56",
+      "harness": "pi-mono",
+      "model": "GLM-5.3 Flash Uncensored FP8 (high)",
+      "runs": 1,
+      "light": {
+        "passed": 380,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 17,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 397.0,
+      "telemetry_note": "@mean1 · Long wave 4/20 · Reflection 13/20 · Steps 0 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-57",
+      "harness": "OpenCode",
+      "model": "GLM-5.3 Flash Uncensored FP8 (high)",
+      "runs": 1,
+      "light": {
+        "passed": 378,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 19,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 397.0,
+      "telemetry_note": "@mean1 · Long wave 6/20 · Reflection 13/20 · Steps 2,911 · Tokens (raw) 0"
+    },
+    {
+      "id": "glm53-openrouter-pi",
+      "harness": "pi-mono 0.73.1",
+      "model": "GLM-5.3 (OpenRouter) (high)",
+      "runs": 1,
+      "light": {
+        "passed": 376,
+        "total": 391,
+        "wilson95": [
+          0.9376751972598407,
+          0.9766158224274761
+        ]
+      },
+      "medium_historical": {
+        "passed": 20,
+        "total": 40,
+        "wilson95": [
+          0.3519952693346575,
+          0.6480047306653425
+        ]
+      },
+      "medium": {
+        "passed": 44,
+        "total": 80,
+        "wilson95": [
+          0.4411950788935626,
+          0.6542231081528851
+        ]
+      },
+      "source_version": "0.18.0",
+      "source_passed": 396,
+      "telemetry_note": "Wave 19 only · tasks432–471 · k=1 · 120 seconds · zero final infrastructure failures · historical431 + new40, not a fresh full run",
+      "measurement_type": "historical_plus_wave19",
+      "wave19": {
+        "passed": 24,
+        "total": 40,
+        "wilson95": [
+          0.44595893660346597,
+          0.7365167431570776
+        ]
+      },
+      "source_sha256": "fa550a21dc95c1873b93be198f1f3471075a123bfa0bdd1d3337c30c2a2ea061",
+      "reasoning_effort": "high",
+      "measurement_date": "2026-10-19",
+      "details_url": "harness-wave19.html#w19-pi-glm53",
+      "historical_provenance": {
+        "source_version": "0.18.0",
+        "source_sha256": null,
+        "validation": "published_aggregate",
+        "light_passed": 376,
+        "medium40_passed": 20
+      },
+      "telemetry": {
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 340,
+            "covered_tasks": 40,
+            "status": "complete",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 4766673,
+            "input_tokens": 4566913,
+            "output_tokens": 199760,
+            "covered_tasks": 40,
+            "status": "partial",
+            "completed_responses": 323,
+            "unmetered_requests": null
+          },
+          "timeouts": 15,
+          "tasks": 40,
+          "notes": [
+            "Historical result is a published score aggregate; raw per-task telemetry is unavailable.",
+            "Steps count unique native tool_execution_start events in the final retained execution. Native message_end usage is counted once; cache input is folded in once, reasoning is already in output."
+          ],
+          "sources_sha256": [
+            "fa550a21dc95c1873b93be198f1f3471075a123bfa0bdd1d3337c30c2a2ea061",
+            "ee0886a2149798c234b3bcbb687051c625913c5abb24726fe37cd36f3d176ffb"
+          ]
+        }
+      }
+    },
+    {
+      "id": "glm-openhands",
+      "harness": "OpenHands",
+      "model": "GLM-5.3 Flash Uncensored FP8 (high)",
+      "runs": 1,
+      "light": {
+        "passed": 383,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 10,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 393.0,
+      "telemetry_note": "@mean1 · Long wave 2/20 · Reflection 8/20 · Steps 0 · Tokens 0 (raw; 0 means absent)"
+    },
+    {
+      "id": "ua-luna",
+      "harness": "GigaCode Universal Agent (gc-cli)",
+      "model": "GPT-6 Luna (OpenRouter) (reasoning none)",
+      "runs": 1,
+      "light": {
+        "passed": 376,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 12,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 388.0,
+      "telemetry_note": "@mean1 · Long wave 3/20 · Reflection 9/20 · Steps 8,716 · Tokens 762,784,868 (coverage 428/431)"
+    },
+    {
+      "id": "secret-700-sft",
+      "harness": "deepagents",
+      "model": "Secret-700-SFT (reasoning default)",
+      "runs": 1,
+      "light": {
+        "passed": 368,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 9,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 377.0,
+      "telemetry_note": "@mean1 · Long wave 0/20 · Reflection 9/20 · Steps 6,321 · Tokens (raw, unaudited)* 149,806,005 · Measurement notes"
+    },
+    {
+      "id": "multitool-haiku",
+      "harness": "MultiTool CLI",
+      "model": "Claude Haiku 4.5 (default)",
+      "runs": 1,
+      "light": {
+        "passed": 371,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 5,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 376.0,
+      "telemetry_note": "@mean1 · Long wave 1/20 · Reflection 4/20 · Steps 5,460 · Tokens 212,030,792 (native audit, including child sessions)"
+    },
+    {
+      "id": "cowork-glm53",
+      "harness": "cowork",
+      "model": "GLM-5.3 (OpenRouter) (high)",
+      "runs": 1,
+      "light": {
+        "passed": 366,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 10,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 376.0,
+      "telemetry_note": "@mean1 · Long wave 1/20 · Reflection 9/20 · Steps ≥3,568 · Tokens ≥89,614,312 (coverage 429/431)"
+    },
+    {
+      "id": "run-58",
+      "harness": "deepagents",
+      "model": "GLM-5.3 Flash Uncensored FP8 (high)",
+      "runs": 1,
+      "light": {
+        "passed": 359,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 16,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 375.0,
+      "telemetry_note": "@mean1 · Long wave 3/20 · Reflection 13/20 · Steps 6,627 · Tokens (raw) 373,783,977"
+    },
+    {
+      "id": "run-7",
+      "harness": "mini-SWE-agent",
+      "model": "GigaChat 2 Reasoning (PROM) (medium)",
+      "runs": 1,
+      "light": {
+        "passed": 363,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 8,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 371.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 8/20 · Steps 6,233 · Tokens (raw) 72,482,990"
+    },
+    {
+      "id": "run-8",
+      "harness": "OpenCode",
+      "model": "GigaChat 3 Ultra (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 331,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 331.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 5,271 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-9",
+      "harness": "OpenCode",
+      "model": "GigaChat 2 Reasoning (PROM) (medium)",
+      "runs": 1,
+      "light": {
+        "passed": 328,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 1,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 329.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 1/20 · Steps 3,612 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-10",
+      "harness": "OpenCode",
+      "model": "GigaChat 2 Max (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 327,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 327.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 4,693 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-11",
+      "harness": "deepagents (GigaChat profile)",
+      "model": "GigaChat 2 Max (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 322,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 322.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 4,976 · Tokens (raw) 267,982,386*"
+    },
+    {
+      "id": "run-12",
+      "harness": "deepagents (GigaChat profile)",
+      "model": "GigaChat 3.5 (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 322,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 322.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 5,329 · Tokens (raw) 317,335,707*"
+    },
+    {
+      "id": "run-13",
+      "harness": "deepagents (GigaChat profile)",
+      "model": "GigaChat 3 Ultra (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 322,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 322.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 4,447 · Tokens (raw) 366,492,603*"
+    },
+    {
+      "id": "run-14",
+      "harness": "deepagents",
+      "model": "GigaChat 3 Ultra (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 304,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 1,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 305.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 1/20 · Steps 10,351 · Tokens (raw) 841,669,092*"
+    },
+    {
+      "id": "run-15",
+      "harness": "deepagents",
+      "model": "GigaChat 2 Max (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 302,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 302.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 10,433 · Tokens (raw) 1,004,755,677*"
+    },
+    {
+      "id": "run-16",
+      "harness": "deepagents",
+      "model": "GigaChat 3.5 (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 299,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 299.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 11,130 · Tokens (raw) 718,324,734*"
+    },
+    {
+      "id": "run-17",
+      "harness": "pi-mono",
+      "model": "GigaChat 2 Max (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 298,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 298.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 0 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-18",
+      "harness": "pi-mono",
+      "model": "GigaChat 3 Ultra (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 295,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 295.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 0 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-19",
+      "harness": "pi-mono 0.73.1",
+      "model": "GigaChat 3.5 (PROM), build 32.9.16.9 (default)",
+      "runs": 1,
+      "light": {
+        "passed": 294,
+        "total": 391,
+        "wilson95": [
+          0.7067958007003114,
+          0.7921386338658973
+        ]
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40,
+        "wilson95": [
+          6.938893903907228e-18,
+          0.08762160119728224
+        ]
+      },
+      "medium": {
+        "passed": 0,
+        "total": 80,
+        "wilson95": [
+          3.469446951953614e-18,
+          0.04581812953552469
+        ]
+      },
+      "source_version": "0.18.0",
+      "source_passed": 294,
+      "telemetry_note": "Wave 19 only · tasks432–471 · k=1 · 120 seconds · zero final infrastructure failures · historical431 + new40, not a fresh full run",
+      "measurement_type": "historical_plus_wave19",
+      "wave19": {
+        "passed": 0,
+        "total": 40,
+        "wilson95": [
+          6.938893903907228e-18,
+          0.08762160119728224
+        ]
+      },
+      "source_sha256": "c180d6747bc518c70fba134a5f46daba5d986ec98636aa492d0db510dcd4f0c0",
+      "reasoning_effort": "default",
+      "measurement_date": "2026-10-19",
+      "details_url": "harness-wave19.html#w19-pi-giga35",
+      "historical_provenance": {
+        "source_version": "0.18.0",
+        "source_sha256": "67e5336c70fe40e65f31b05710e4fb08d24f71a33910908ad229e7fae2bd3c36",
+        "validation": "raw_431_verified",
+        "light_passed": 294,
+        "medium40_passed": 0
+      },
+      "telemetry": {
+        "light": {
+          "observed_tasks": 391,
+          "steps": {
+            "value": null,
+            "covered_tasks": 0,
+            "status": "unavailable",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": null,
+            "input_tokens": null,
+            "output_tokens": null,
+            "covered_tasks": 0,
+            "status": "unavailable",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 0,
+          "tasks": 391,
+          "notes": [
+            "Historical and wave 19 attempts are a composite, not one fresh full run.",
+            "Steps count unique native tool_execution_start events in the final retained execution. Native message_end usage is counted once; cache input is folded in once, reasoning is already in output."
+          ],
+          "sources_sha256": [
+            "c180d6747bc518c70fba134a5f46daba5d986ec98636aa492d0db510dcd4f0c0",
+            "67e5336c70fe40e65f31b05710e4fb08d24f71a33910908ad229e7fae2bd3c36",
+            "4755fa60b25dc273b157160f9c3970b6daab1796006fc99615b98876bde73dbf"
+          ]
+        },
+        "medium": {
+          "observed_tasks": 80,
+          "steps": {
+            "value": null,
+            "covered_tasks": 0,
+            "status": "unavailable",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": null,
+            "input_tokens": null,
+            "output_tokens": null,
+            "covered_tasks": 0,
+            "status": "unavailable"
+          },
+          "timeouts": 4,
+          "tasks": 80,
+          "notes": [
+            "Historical and wave 19 attempts are a composite, not one fresh full run.",
+            "Steps count unique native tool_execution_start events in the final retained execution. Native message_end usage is counted once; cache input is folded in once, reasoning is already in output.",
+            "Historical 40-task Medium telemetry is unavailable; the new 40-task component is reported only under wave 19."
+          ],
+          "sources_sha256": [
+            "c180d6747bc518c70fba134a5f46daba5d986ec98636aa492d0db510dcd4f0c0",
+            "67e5336c70fe40e65f31b05710e4fb08d24f71a33910908ad229e7fae2bd3c36",
+            "4755fa60b25dc273b157160f9c3970b6daab1796006fc99615b98876bde73dbf"
+          ]
+        },
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 199,
+            "covered_tasks": 40,
+            "status": "complete",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 4565789,
+            "input_tokens": 4524406,
+            "output_tokens": 41383,
+            "covered_tasks": 40,
+            "status": "partial",
+            "completed_responses": 238,
+            "unmetered_requests": null
+          },
+          "timeouts": 1,
+          "tasks": 40,
+          "notes": [
+            "Historical and wave 19 attempts are a composite, not one fresh full run.",
+            "Steps count unique native tool_execution_start events in the final retained execution. Native message_end usage is counted once; cache input is folded in once, reasoning is already in output."
+          ],
+          "sources_sha256": [
+            "c180d6747bc518c70fba134a5f46daba5d986ec98636aa492d0db510dcd4f0c0",
+            "67e5336c70fe40e65f31b05710e4fb08d24f71a33910908ad229e7fae2bd3c36",
+            "4755fa60b25dc273b157160f9c3970b6daab1796006fc99615b98876bde73dbf"
+          ]
+        }
+      }
+    },
+    {
+      "id": "run-20",
+      "harness": "deepagents",
+      "model": "GigaChat 2 Reasoning (PROM) (medium)",
+      "runs": 1,
+      "light": {
+        "passed": 272,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 1,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 273.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 1/20 · Steps 10,702 · Tokens (raw) 453,994,698*"
+    },
+    {
+      "id": "run-21",
+      "harness": "mini-SWE-agent",
+      "model": "GigaChat 2 Pro (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 265,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 1,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 266.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 1/20 · Steps 11,451 · Tokens (raw) 231,616,980"
+    },
+    {
+      "id": "run-22",
+      "harness": "mini-SWE-agent",
+      "model": "GigaChat 3 Pro (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 252,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 1,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 253.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 1/20 · Steps 9,169 · Tokens (raw) 172,168,626"
+    },
+    {
+      "id": "run-23",
+      "harness": "deepagents (GigaChat profile)",
+      "model": "GigaChat 2 Reasoning (PROM) (medium)",
+      "runs": 1,
+      "light": {
+        "passed": 250,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 2,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 252.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 2/20 · Steps 5,595 · Tokens (raw) 138,611,193*"
+    },
+    {
+      "id": "run-24",
+      "harness": "maestro harness",
+      "model": "GigaChat 2 Reasoning (PROM) (medium)",
+      "runs": 1,
+      "light": {
+        "passed": 247,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 1,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 248.0,
+      "telemetry_note": "@mean1 · Long wave 0/20 · Reflection 1/20 · Steps 2,214 · Tokens 6,210,278"
+    },
+    {
+      "id": "run-25",
+      "harness": "deepagents (GigaChat profile)",
+      "model": "GigaChat 2 Pro (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 224,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 224.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 5,159 · Tokens (raw) 368,044,770*"
+    },
+    {
+      "id": "run-26",
+      "harness": "Hermes",
+      "model": "GigaChat 2 Pro (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 220,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 220.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 0 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-27",
+      "harness": "Hermes",
+      "model": "GigaChat 3 Pro (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 217,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 217.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 0 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-28",
+      "harness": "pi-mono",
+      "model": "GigaChat 3 Pro (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 216,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 216.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 0 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-29",
+      "harness": "mini-SWE-agent",
+      "model": "GigaChat 3.5 (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 212,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 212.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 3,744 · Tokens (raw) 54,768,767"
+    },
+    {
+      "id": "run-30",
+      "harness": "deepagents (GigaChat profile)",
+      "model": "GigaChat 3 Pro (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 212,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 212.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 6,289 · Tokens (raw) 486,699,543*"
+    },
+    {
+      "id": "run-31",
+      "harness": "mini-SWE-agent",
+      "model": "GigaChat 3 Ultra (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 206,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 1,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 207.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 1/20 · Steps 4,820 · Tokens (raw) 124,288,018"
+    },
+    {
+      "id": "run-32",
+      "harness": "pi-mono",
+      "model": "GigaChat 2 Pro (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 205,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 205.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 0 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-33",
+      "harness": "mini-SWE-agent",
+      "model": "GigaChat 2 Max (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 198,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 198.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 4,932 · Tokens (raw) 107,919,373"
+    },
+    {
+      "id": "run-34",
+      "harness": "deepagents",
+      "model": "GigaChat 3 Pro (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 191,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 191.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 5,711 · Tokens (raw) 295,423,833*"
+    },
+    {
+      "id": "run-35",
+      "harness": "deepagents",
+      "model": "GigaChat 2 Pro (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 188,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 188.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 5,749 · Tokens (raw) 349,701,240*"
+    },
+    {
+      "id": "run-36",
+      "harness": "OpenCode",
+      "model": "GigaChat 3 Pro (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 174,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 174.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 3,071 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-37",
+      "harness": "pi-mono",
+      "model": "GigaChat 3 Lightning (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 171,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 171.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 0 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-38",
+      "harness": "OpenCode",
+      "model": "GigaChat 2 Pro (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 169,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 169.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 3,001 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-39",
+      "harness": "pi-mono",
+      "model": "GigaChat 2 (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 164,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 164.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 0 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-40",
+      "harness": "OpenHands",
+      "model": "GigaChat 2 Reasoning (PROM) (medium)",
+      "runs": 1,
+      "light": {
+        "passed": 160,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 160.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 0 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-41",
+      "harness": "OpenHands",
+      "model": "GigaChat 2 (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 159,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 159.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 0 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-42",
+      "harness": "Hermes",
+      "model": "GigaChat 2 Reasoning (PROM) (medium)",
+      "runs": 1,
+      "light": {
+        "passed": 159,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 159.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 0 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-43",
+      "harness": "Hermes",
+      "model": "GigaChat 3 Lightning (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 156,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 156.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 0 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-44",
+      "harness": "OpenHands",
+      "model": "GigaChat 3 Lightning (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 146,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 146.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 0 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-45",
+      "harness": "deepagents (GigaChat profile)",
+      "model": "GigaChat 2 (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 144,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 144.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 2,817 · Tokens (raw) 136,240,902*"
+    },
+    {
+      "id": "run-46",
+      "harness": "Hermes",
+      "model": "GigaChat 2 (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 141,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 141.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 0 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-47",
+      "harness": "OpenCode",
+      "model": "GigaChat 2 (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 139,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 139.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 8,575 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-48",
+      "harness": "deepagents (GigaChat profile)",
+      "model": "GigaChat 3 Lightning (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 134,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 134.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 3,545 · Tokens (raw) 148,656,135*"
+    },
+    {
+      "id": "run-49",
+      "harness": "OpenCode",
+      "model": "GigaChat 3 Lightning (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 134,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 134.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 10,580 · Tokens (raw) 0"
+    },
+    {
+      "id": "run-50",
+      "harness": "deepagents",
+      "model": "GigaChat 3 Lightning (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 113,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 113.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 5,330 · Tokens (raw) 326,514,969*"
+    },
+    {
+      "id": "run-51",
+      "harness": "deepagents",
+      "model": "GigaChat 2 (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 111,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 111.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 5,336 · Tokens (raw) 288,537,210*"
+    },
+    {
+      "id": "run-52",
+      "harness": "mini-SWE-agent",
+      "model": "GigaChat 2 (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 21,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 21.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 1,786 · Tokens (raw) 4,976,949"
+    },
+    {
+      "id": "run-53",
+      "harness": "mini-SWE-agent",
+      "model": "GigaChat 3 Lightning (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 9,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 9.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 2,042 · Tokens (raw) 4,511,527"
+    },
+    {
+      "id": "run-54",
+      "harness": "Hermes",
+      "model": "GigaChat 2 Max (PROM)",
+      "runs": 1,
+      "light": {
+        "passed": 0,
+        "total": 391
+      },
+      "medium_historical": {
+        "passed": 0,
+        "total": 40
+      },
+      "medium": null,
+      "source_version": "0.18.0",
+      "source_passed": 0.0,
+      "telemetry_note": "Long wave 0/20 · Reflection 0/20 · Steps 0 · Tokens (raw) 0"
+    },
+    {
+      "id": "wave19-giga35",
+      "model": "GigaChat 3.5 (PROM), build 32.9.16.9 (default)",
+      "harness": "deepagents (no profile)",
+      "runs": 1,
+      "source_version": "0.19.0",
+      "source_passed": 292,
+      "source_sha256": "f463374d9ad89be0c19320b1a485b09bf6d4eaedcd93069e8c12ef7e7db330d2",
+      "measurement_date": "2026-10-19",
+      "reasoning_effort": "default",
+      "thinking_enabled": null,
+      "medium_historical": null,
+      "light": {
+        "passed": 292,
+        "total": 391,
+        "wilson95": [
+          0.7014434557165126,
+          0.7873603304321084
+        ]
+      },
+      "medium": {
+        "passed": 0,
+        "total": 80,
+        "wilson95": [
+          3.469446951953614e-18,
+          0.04581812953552469
+        ]
+      },
+      "telemetry_note": "Wave 19 measurement · k=1 · c=4 · max_tokens=16384 · reasoning default · 471/471 tasks · infrastructure failures: 0",
+      "measurement_type": "full_run",
+      "wave19": {
+        "passed": 0,
+        "total": 40,
+        "wilson95": [
+          6.938893903907228e-18,
+          0.08762160119728224
+        ]
+      },
+      "telemetry": {
+        "light": {
+          "observed_tasks": 391,
+          "steps": {
+            "value": 1867,
+            "covered_tasks": 370,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 22695451,
+            "input_tokens": 22399314,
+            "output_tokens": 296137,
+            "covered_tasks": 391,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 0,
+          "tasks": 391,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "f463374d9ad89be0c19320b1a485b09bf6d4eaedcd93069e8c12ef7e7db330d2"
+          ]
+        },
+        "medium": {
+          "observed_tasks": 80,
+          "steps": {
+            "value": 2973,
+            "covered_tasks": 47,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 293100390,
+            "input_tokens": 291388528,
+            "output_tokens": 1711862,
+            "covered_tasks": 74,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 6,
+          "tasks": 80,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "f463374d9ad89be0c19320b1a485b09bf6d4eaedcd93069e8c12ef7e7db330d2"
+          ]
+        },
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 104,
+            "covered_tasks": 12,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 19092411,
+            "input_tokens": 19040155,
+            "output_tokens": 52256,
+            "covered_tasks": 36,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 4,
+          "tasks": 40,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "f463374d9ad89be0c19320b1a485b09bf6d4eaedcd93069e8c12ef7e7db330d2"
+          ]
+        }
+      }
+    },
+    {
+      "id": "wave19-haiku",
+      "model": "Claude Haiku 5.5 (OpenRouter) (default)",
+      "harness": "deepagents (no profile)",
+      "runs": 1,
+      "source_version": "0.19.0",
+      "source_passed": 427,
+      "source_sha256": "7e7b26736b67122f73a1a13e5786d51774d803731742cdb404832c4d220e1ae9",
+      "measurement_date": "2026-10-19",
+      "reasoning_effort": "default",
+      "thinking_enabled": null,
+      "medium_historical": null,
+      "light": {
+        "passed": 377,
+        "total": 391,
+        "wilson95": [
+          0.9408027893848103,
+          0.9785535545113007
+        ]
+      },
+      "medium": {
+        "passed": 50,
+        "total": 80,
+        "wilson95": [
+          0.515487254631433,
+          0.7230582129846858
+        ]
+      },
+      "telemetry_note": "Wave 19 measurement · k=1 · c=4 · max_tokens=16384 · reasoning default · 471/471 tasks · infrastructure failures: 0",
+      "measurement_type": "full_run",
+      "wave19": {
+        "passed": 31,
+        "total": 40,
+        "wilson95": [
+          0.6249690325769044,
+          0.8768390867645905
+        ]
+      },
+      "telemetry": {
+        "light": {
+          "observed_tasks": 391,
+          "steps": {
+            "value": 1693,
+            "covered_tasks": 391,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 18772122,
+            "input_tokens": 18312827,
+            "output_tokens": 459295,
+            "covered_tasks": 391,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 0,
+          "tasks": 391,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "7e7b26736b67122f73a1a13e5786d51774d803731742cdb404832c4d220e1ae9"
+          ]
+        },
+        "medium": {
+          "observed_tasks": 80,
+          "steps": {
+            "value": 1736,
+            "covered_tasks": 73,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 222945339,
+            "input_tokens": 211787182,
+            "output_tokens": 11158157,
+            "covered_tasks": 73,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 7,
+          "tasks": 80,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "7e7b26736b67122f73a1a13e5786d51774d803731742cdb404832c4d220e1ae9"
+          ]
+        },
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 394,
+            "covered_tasks": 33,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 7413396,
+            "input_tokens": 7130003,
+            "output_tokens": 283393,
+            "covered_tasks": 33,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 7,
+          "tasks": 40,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "7e7b26736b67122f73a1a13e5786d51774d803731742cdb404832c4d220e1ae9"
+          ]
+        }
+      }
+    },
+    {
+      "id": "wave19-glm53",
+      "model": "GLM-5.3 (OpenRouter) (high)",
+      "harness": "deepagents (no profile)",
+      "runs": 1,
+      "source_version": "0.19.0",
+      "source_passed": 414,
+      "source_sha256": "69d10ca1ec4be03f1a21c55b51c2092616857411d8a11ebae571d6cd2021adc3",
+      "measurement_date": "2026-10-19",
+      "reasoning_effort": "high",
+      "thinking_enabled": true,
+      "medium_historical": null,
+      "light": {
+        "passed": 378,
+        "total": 391,
+        "wilson95": [
+          0.9439532048798743,
+          0.9804684632250306
+        ]
+      },
+      "medium": {
+        "passed": 36,
+        "total": 80,
+        "wilson95": [
+          0.3457768918471149,
+          0.5588049211064375
+        ]
+      },
+      "telemetry_note": "Wave 19 measurement · k=1 · c=4 · max_tokens=16384 · reasoning high · 471/471 tasks · infrastructure failures: 0",
+      "measurement_type": "full_run",
+      "wave19": {
+        "passed": 9,
+        "total": 40,
+        "wilson95": [
+          0.12316091323540954,
+          0.3750309674230957
+        ]
+      },
+      "telemetry": {
+        "light": {
+          "observed_tasks": 391,
+          "steps": {
+            "value": 2069,
+            "covered_tasks": 390,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 15495905,
+            "input_tokens": 15281519,
+            "output_tokens": 214386,
+            "covered_tasks": 391,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 0,
+          "tasks": 391,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "69d10ca1ec4be03f1a21c55b51c2092616857411d8a11ebae571d6cd2021adc3"
+          ]
+        },
+        "medium": {
+          "observed_tasks": 80,
+          "steps": {
+            "value": 2366,
+            "covered_tasks": 52,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 221297120,
+            "input_tokens": 217717714,
+            "output_tokens": 3579406,
+            "covered_tasks": 52,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 28,
+          "tasks": 80,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "69d10ca1ec4be03f1a21c55b51c2092616857411d8a11ebae571d6cd2021adc3"
+          ]
+        },
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 169,
+            "covered_tasks": 13,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 2258463,
+            "input_tokens": 2205469,
+            "output_tokens": 52994,
+            "covered_tasks": 13,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 27,
+          "tasks": 40,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "69d10ca1ec4be03f1a21c55b51c2092616857411d8a11ebae571d6cd2021adc3"
+          ]
+        }
+      }
+    },
+    {
+      "id": "wave19-deepseek41flash",
+      "model": "DeepSeek V4.1 Flash (OpenRouter) (high)",
+      "harness": "deepagents (no profile)",
+      "runs": 1,
+      "source_version": "0.19.0",
+      "source_passed": 444,
+      "source_sha256": "e9ab6233d7549ef3fceadde6ce76ad281241c8abc833414ea5a70c361476e6a4",
+      "measurement_date": "2026-10-19",
+      "reasoning_effort": "high",
+      "thinking_enabled": true,
+      "medium_historical": null,
+      "light": {
+        "passed": 385,
+        "total": 391,
+        "wilson95": [
+          0.9669302938675344,
+          0.9929486436989285
+        ]
+      },
+      "medium": {
+        "passed": 59,
+        "total": 80,
+        "wilson95": [
+          0.6318104033557214,
+          0.8214259851149045
+        ]
+      },
+      "telemetry_note": "Wave 19 measurement · k=1 · c=4 · max_tokens=16384 · reasoning high · 471/471 tasks · infrastructure failures: 0",
+      "measurement_type": "full_run",
+      "wave19": {
+        "passed": 27,
+        "total": 40,
+        "wilson95": [
+          0.5201774618987811,
+          0.7991549776821703
+        ]
+      },
+      "telemetry": {
+        "light": {
+          "observed_tasks": 391,
+          "steps": {
+            "value": 2625,
+            "covered_tasks": 391,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 21139195,
+            "input_tokens": 20694903,
+            "output_tokens": 444292,
+            "covered_tasks": 391,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 0,
+          "tasks": 391,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "e9ab6233d7549ef3fceadde6ce76ad281241c8abc833414ea5a70c361476e6a4"
+          ]
+        },
+        "medium": {
+          "observed_tasks": 80,
+          "steps": {
+            "value": 3612,
+            "covered_tasks": 71,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 371546456,
+            "input_tokens": 364862050,
+            "output_tokens": 6684406,
+            "covered_tasks": 71,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 9,
+          "tasks": 80,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "e9ab6233d7549ef3fceadde6ce76ad281241c8abc833414ea5a70c361476e6a4"
+          ]
+        },
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 455,
+            "covered_tasks": 31,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 6516624,
+            "input_tokens": 6336712,
+            "output_tokens": 179912,
+            "covered_tasks": 31,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 9,
+          "tasks": 40,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "e9ab6233d7549ef3fceadde6ce76ad281241c8abc833414ea5a70c361476e6a4"
+          ]
+        }
+      }
+    },
+    {
+      "id": "w19-codex-giga35",
+      "harness": "Codex CLI 0.160.1",
+      "model": "GigaChat 3.5 (PROM), build 32.9.16.9 (default)",
+      "runs": 1,
+      "source_version": "0.19.0",
+      "measurement_type": "wave19_only",
+      "source_passed": null,
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": {
+        "passed": 0,
+        "total": 40,
+        "wilson95": [
+          6.938893903907228e-18,
+          0.08762160119728224
+        ]
+      },
+      "source_sha256": "0fc6528cfb7f3dc59218854d74e49c364598bdb89ee889d0baa4b6d3146da64e",
+      "reasoning_effort": "default",
+      "measurement_date": "2026-10-19",
+      "details_url": "harness-wave19.html#w19-codex-giga35",
+      "telemetry_note": "Wave 19 only · tasks432–471 · k=1 · 120 seconds · zero final infrastructure failures",
+      "telemetry": {
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 32,
+            "covered_tasks": 32,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 2565951,
+            "input_tokens": 2519482,
+            "output_tokens": 46469,
+            "covered_tasks": 32,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 8,
+          "tasks": 40,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "0fc6528cfb7f3dc59218854d74e49c364598bdb89ee889d0baa4b6d3146da64e"
+          ]
+        }
+      }
+    },
+    {
+      "id": "w19-codex-haiku",
+      "harness": "Codex CLI 0.160.1",
+      "model": "Claude Haiku 5.5 (OpenRouter) (default)",
+      "runs": 1,
+      "source_version": "0.19.0",
+      "measurement_type": "wave19_only",
+      "source_passed": null,
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": {
+        "passed": 31,
+        "total": 40,
+        "wilson95": [
+          0.6249690325769044,
+          0.8768390867645905
+        ]
+      },
+      "source_sha256": "71e30121e573f90983ddbc9bcef3bf887b3dfb5b65d7e47252957a4bf407c0d3",
+      "reasoning_effort": "default",
+      "measurement_date": "2026-10-19",
+      "details_url": "harness-wave19.html#w19-codex-haiku",
+      "telemetry_note": "Wave 19 only · tasks432–471 · k=1 · 120 seconds · zero final infrastructure failures",
+      "telemetry": {
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 35,
+            "covered_tasks": 35,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 6001082,
+            "input_tokens": 5749776,
+            "output_tokens": 251306,
+            "covered_tasks": 35,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 5,
+          "tasks": 40,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "71e30121e573f90983ddbc9bcef3bf887b3dfb5b65d7e47252957a4bf407c0d3"
+          ]
+        }
+      }
+    },
+    {
+      "id": "w19-codex-glm53",
+      "harness": "Codex CLI 0.160.1",
+      "model": "GLM-5.3 (OpenRouter) (high)",
+      "runs": 1,
+      "source_version": "0.19.0",
+      "measurement_type": "wave19_only",
+      "source_passed": null,
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": {
+        "passed": 14,
+        "total": 40,
+        "wilson95": [
+          0.22134528873176587,
+          0.5049411916274189
+        ]
+      },
+      "source_sha256": "bb02337d2b7ed2980d74893e78300217d165d51b80e840e2e1ff316e3e954e14",
+      "reasoning_effort": "high",
+      "measurement_date": "2026-10-19",
+      "details_url": "harness-wave19.html#w19-codex-glm53",
+      "telemetry_note": "Wave 19 only · tasks432–471 · k=1 · 120 seconds · zero final infrastructure failures",
+      "telemetry": {
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 193,
+            "covered_tasks": 25,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 2993038,
+            "input_tokens": 2920204,
+            "output_tokens": 72834,
+            "covered_tasks": 25,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 15,
+          "tasks": 40,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "bb02337d2b7ed2980d74893e78300217d165d51b80e840e2e1ff316e3e954e14"
+          ]
+        }
+      }
+    },
+    {
+      "id": "w19-codex-deepseek41flash",
+      "harness": "Codex CLI 0.160.1",
+      "model": "DeepSeek V4.1 Flash (OpenRouter) (high)",
+      "runs": 1,
+      "source_version": "0.19.0",
+      "measurement_type": "wave19_only",
+      "source_passed": null,
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": {
+        "passed": 31,
+        "total": 40,
+        "wilson95": [
+          0.6249690325769044,
+          0.8768390867645905
+        ]
+      },
+      "source_sha256": "c08925f32471f8b8b50a0c3b11f530b49df62795d78a47c33e31da13ed60d297",
+      "reasoning_effort": "high",
+      "measurement_date": "2026-10-19",
+      "details_url": "harness-wave19.html#w19-codex-deepseek41flash",
+      "telemetry_note": "Wave 19 only · tasks432–471 · k=1 · 120 seconds · zero final infrastructure failures",
+      "telemetry": {
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 332,
+            "covered_tasks": 33,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 5805387,
+            "input_tokens": 5596169,
+            "output_tokens": 209218,
+            "covered_tasks": 33,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 7,
+          "tasks": 40,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "c08925f32471f8b8b50a0c3b11f530b49df62795d78a47c33e31da13ed60d297"
+          ]
+        }
+      }
+    },
+    {
+      "id": "w19-claude-giga35",
+      "harness": "Claude Code 2.1.300",
+      "model": "GigaChat 3.5 (PROM), build 32.9.16.9 (default)",
+      "runs": 1,
+      "source_version": "0.19.0",
+      "measurement_type": "wave19_only",
+      "source_passed": null,
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": {
+        "passed": 2,
+        "total": 40,
+        "wilson95": [
+          0.013820667386148802,
+          0.16503877369140524
+        ]
+      },
+      "source_sha256": "1ad88b0a038f3527fa3775375e07e8f1ef410367b8e73592a95fa79c0203089f",
+      "reasoning_effort": "default",
+      "measurement_date": "2026-10-19",
+      "details_url": "harness-wave19.html#w19-claude-giga35",
+      "telemetry_note": "Wave 19 only · tasks432–471 · k=1 · 120 seconds · zero final infrastructure failures",
+      "telemetry": {
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 134,
+            "covered_tasks": 17,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 4043593,
+            "input_tokens": null,
+            "output_tokens": null,
+            "covered_tasks": 17,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 23,
+          "tasks": 40,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero.",
+            "Raw token total and component counters disagree; component breakdown is unavailable."
+          ],
+          "sources_sha256": [
+            "1ad88b0a038f3527fa3775375e07e8f1ef410367b8e73592a95fa79c0203089f"
+          ]
+        }
+      }
+    },
+    {
+      "id": "w19-claude-haiku",
+      "harness": "Claude Code 2.1.300",
+      "model": "Claude Haiku 5.5 (OpenRouter) (default)",
+      "runs": 1,
+      "source_version": "0.19.0",
+      "measurement_type": "wave19_only",
+      "source_passed": null,
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": {
+        "passed": 26,
+        "total": 40,
+        "wilson95": [
+          0.4950588083725812,
+          0.7786547112682342
+        ]
+      },
+      "source_sha256": "562ededc1c66362b0cc5672bc3e0aab90898acb8ceb6d4acf0627e163af3f8c2",
+      "reasoning_effort": "default",
+      "measurement_date": "2026-10-20",
+      "details_url": "harness-wave19.html#w19-claude-haiku",
+      "telemetry_note": "Wave 19 only · tasks432–471 · k=1 · 120 seconds · zero final infrastructure failures",
+      "telemetry": {
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 287,
+            "covered_tasks": 36,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 13532650,
+            "input_tokens": null,
+            "output_tokens": null,
+            "covered_tasks": 36,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 4,
+          "tasks": 40,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero.",
+            "Raw token total and component counters disagree; component breakdown is unavailable."
+          ],
+          "sources_sha256": [
+            "562ededc1c66362b0cc5672bc3e0aab90898acb8ceb6d4acf0627e163af3f8c2"
+          ]
+        }
+      }
+    },
+    {
+      "id": "w19-claude-glm53",
+      "harness": "Claude Code 2.1.300",
+      "model": "GLM-5.3 (OpenRouter) (high)",
+      "runs": 1,
+      "source_version": "0.19.0",
+      "measurement_type": "wave19_only",
+      "source_passed": null,
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": {
+        "passed": 17,
+        "total": 40,
+        "wilson95": [
+          0.2850939255995071,
+          0.5780493145800853
+        ]
+      },
+      "source_sha256": "b3bed91d409f76fc215d19c2b417ee5166d46d4ae1a3578fb164df78a5f3e9b7",
+      "reasoning_effort": "high",
+      "measurement_date": "2026-10-19",
+      "details_url": "harness-wave19.html#w19-claude-glm53",
+      "telemetry_note": "Wave 19 only · tasks432–471 · k=1 · 120 seconds · zero final infrastructure failures",
+      "telemetry": {
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 144,
+            "covered_tasks": 18,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 6266724,
+            "input_tokens": 6266724,
+            "output_tokens": 0,
+            "covered_tasks": 18,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 22,
+          "tasks": 40,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "b3bed91d409f76fc215d19c2b417ee5166d46d4ae1a3578fb164df78a5f3e9b7"
+          ]
+        }
+      }
+    },
+    {
+      "id": "w19-claude-deepseek41flash",
+      "harness": "Claude Code 2.1.300",
+      "model": "DeepSeek V4.1 Flash (OpenRouter) (high)",
+      "runs": 1,
+      "source_version": "0.19.0",
+      "measurement_type": "wave19_only",
+      "source_passed": null,
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": {
+        "passed": 30,
+        "total": 40,
+        "wilson95": [
+          0.5980603857923241,
+          0.8581288136090348
+        ]
+      },
+      "source_sha256": "0795af44ce39fe693fd679dd25146336e967ef89be8a1f6ec3cdefd2f898690c",
+      "reasoning_effort": "high",
+      "measurement_date": "2026-10-19",
+      "details_url": "harness-wave19.html#w19-claude-deepseek41flash",
+      "telemetry_note": "Wave 19 only · tasks432–471 · k=1 · 120 seconds · zero final infrastructure failures",
+      "telemetry": {
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 314,
+            "covered_tasks": 31,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 12797229,
+            "input_tokens": 12797229,
+            "output_tokens": 0,
+            "covered_tasks": 31,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 9,
+          "tasks": 40,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "0795af44ce39fe693fd679dd25146336e967ef89be8a1f6ec3cdefd2f898690c"
+          ]
+        }
+      }
+    },
+    {
+      "id": "w19-pi-haiku",
+      "harness": "pi-mono 0.73.1",
+      "model": "Claude Haiku 5.5 (OpenRouter) (default)",
+      "runs": 1,
+      "source_version": "0.19.0",
+      "measurement_type": "wave19_only",
+      "source_passed": null,
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": {
+        "passed": 29,
+        "total": 40,
+        "wilson95": [
+          0.5716504419378987,
+          0.8389198375233242
+        ]
+      },
+      "source_sha256": "f85833c14926faeed84c35f9aa748ab0418270f521a9cfa880ea6ea279b0a71d",
+      "reasoning_effort": "default",
+      "measurement_date": "2026-10-19",
+      "details_url": "harness-wave19.html#w19-pi-haiku",
+      "telemetry_note": "Wave 19 only · tasks432–471 · k=1 · 120 seconds · zero final infrastructure failures",
+      "telemetry": {
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 323,
+            "covered_tasks": 40,
+            "status": "complete",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 7436402,
+            "input_tokens": 7108231,
+            "output_tokens": 328171,
+            "covered_tasks": 40,
+            "status": "partial",
+            "completed_responses": 353,
+            "unmetered_requests": null
+          },
+          "timeouts": 7,
+          "tasks": 40,
+          "notes": [
+            "Steps count unique native tool_execution_start events in the final retained execution. Native message_end usage is counted once; cache input is folded in once, reasoning is already in output."
+          ],
+          "sources_sha256": [
+            "f85833c14926faeed84c35f9aa748ab0418270f521a9cfa880ea6ea279b0a71d",
+            "9e05d228eb9e6f8db928198b8a9e152f1de5249b574b3bce6875206979fd206c"
+          ]
+        }
+      }
+    },
+    {
+      "id": "w19-pi-deepseek41flash",
+      "harness": "pi-mono 0.73.1",
+      "model": "DeepSeek V4.1 Flash (OpenRouter) (high)",
+      "runs": 1,
+      "source_version": "0.19.0",
+      "measurement_type": "wave19_only",
+      "source_passed": null,
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": {
+        "passed": 26,
+        "total": 40,
+        "wilson95": [
+          0.4950588083725812,
+          0.7786547112682342
+        ]
+      },
+      "source_sha256": "3db937aeb3d715e2d9a0348bab5d08a8a5c522bee730353fe4a00380920b83da",
+      "reasoning_effort": "high",
+      "measurement_date": "2026-10-19",
+      "details_url": "harness-wave19.html#w19-pi-deepseek41flash",
+      "telemetry_note": "Wave 19 only · tasks432–471 · k=1 · 120 seconds · zero final infrastructure failures",
+      "telemetry": {
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 375,
+            "covered_tasks": 40,
+            "status": "complete",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 6747840,
+            "input_tokens": 6516940,
+            "output_tokens": 230900,
+            "covered_tasks": 40,
+            "status": "partial",
+            "completed_responses": 359,
+            "unmetered_requests": null
+          },
+          "timeouts": 13,
+          "tasks": 40,
+          "notes": [
+            "Steps count unique native tool_execution_start events in the final retained execution. Native message_end usage is counted once; cache input is folded in once, reasoning is already in output."
+          ],
+          "sources_sha256": [
+            "3db937aeb3d715e2d9a0348bab5d08a8a5c522bee730353fe4a00380920b83da",
+            "0e2536e724e475696d017fdef91fddc4d5f102efa399d17c1fd40e4dbddfd121"
+          ]
+        }
+      }
+    },
+    {
+      "id": "w19-openclaw-giga35",
+      "harness": "OpenClaw 2026.9.6",
+      "model": "GigaChat 3.5 (PROM), build 32.9.16.9 (default)",
+      "runs": 1,
+      "source_version": "0.19.0",
+      "measurement_type": "wave19_only",
+      "source_passed": null,
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": {
+        "passed": 0,
+        "total": 40,
+        "wilson95": [
+          6.938893903907228e-18,
+          0.08762160119728224
+        ]
+      },
+      "source_sha256": "ab9c64f4130b90ad8b3dba4130efca199bf2390fa72decd9a21551dad20bc51c",
+      "reasoning_effort": "default",
+      "measurement_date": "2026-10-19",
+      "details_url": "harness-wave19.html#w19-openclaw-giga35",
+      "telemetry_note": "Wave 19 only · tasks432–471 · k=1 · 120 seconds · zero final infrastructure failures",
+      "telemetry": {
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 242,
+            "covered_tasks": 37,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 7435870,
+            "input_tokens": 7399910,
+            "output_tokens": 35960,
+            "covered_tasks": 37,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 3,
+          "tasks": 40,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "ab9c64f4130b90ad8b3dba4130efca199bf2390fa72decd9a21551dad20bc51c"
+          ]
+        }
+      }
+    },
+    {
+      "id": "w19-openclaw-haiku",
+      "harness": "OpenClaw 2026.9.6",
+      "model": "Claude Haiku 5.5 (OpenRouter) (default)",
+      "runs": 1,
+      "source_version": "0.19.0",
+      "measurement_type": "wave19_only",
+      "source_passed": null,
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": {
+        "passed": 23,
+        "total": 40,
+        "wilson95": [
+          0.42195068541991465,
+          0.7149060744004929
+        ]
+      },
+      "source_sha256": "639e0aaad318d7e1c3cab7b4d5b66795a61e42c4414bc1be61d715a82bca8a3d",
+      "reasoning_effort": "default",
+      "measurement_date": "2026-10-19",
+      "details_url": "harness-wave19.html#w19-openclaw-haiku",
+      "telemetry_note": "Wave 19 only · tasks432–471 · k=1 · 120 seconds · zero final infrastructure failures",
+      "telemetry": {
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 208,
+            "covered_tasks": 35,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 5959305,
+            "input_tokens": 5675515,
+            "output_tokens": 283790,
+            "covered_tasks": 35,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 5,
+          "tasks": 40,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "639e0aaad318d7e1c3cab7b4d5b66795a61e42c4414bc1be61d715a82bca8a3d"
+          ]
+        }
+      }
+    },
+    {
+      "id": "w19-openclaw-glm53",
+      "harness": "OpenClaw 2026.9.6",
+      "model": "GLM-5.3 (OpenRouter) (high)",
+      "runs": 1,
+      "source_version": "0.18.0",
+      "measurement_type": "historical_plus_wave19",
+      "source_passed": 408,
+      "light": {
+        "passed": 385,
+        "total": 391,
+        "wilson95": [
+          0.9669302938675344,
+          0.9929486436989285
+        ]
+      },
+      "medium": {
+        "passed": 41,
+        "total": 80,
+        "wilson95": [
+          0.40493334216542537,
+          0.6189212045961865
+        ]
+      },
+      "medium_historical": {
+        "passed": 23,
+        "total": 40,
+        "wilson95": [
+          0.42195068541991465,
+          0.7149060744004929
+        ]
+      },
+      "wave19": {
+        "passed": 18,
+        "total": 40,
+        "wilson95": [
+          0.30705307810905275,
+          0.6017090820106756
+        ]
+      },
+      "source_sha256": "4c35e9cf435d6f53a0d768870b34007c234c102d5436563277c9d9afeaca8a49",
+      "reasoning_effort": "high",
+      "measurement_date": "2026-10-19",
+      "details_url": "harness-wave19.html#w19-openclaw-glm53",
+      "telemetry_note": "Wave 19 only · tasks432–471 · k=1 · 120 seconds · zero final infrastructure failures · historical431 + new40, not a fresh full run",
+      "historical_provenance": {
+        "source_version": "0.18.0",
+        "source_sha256": "0f8edf1e9af3e9423e982a7a4c74a1aa0d0f92c9ed1bbcac89592127ad731936",
+        "validation": "raw_431_verified",
+        "light_passed": 385,
+        "medium40_passed": 23
+      },
+      "telemetry": {
+        "light": {
+          "observed_tasks": 391,
+          "steps": {
+            "value": 1578,
+            "covered_tasks": 391,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 1491137,
+            "input_tokens": 1205593,
+            "output_tokens": 285544,
+            "covered_tasks": 391,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 0,
+          "tasks": 391,
+          "notes": [
+            "Historical and wave 19 attempts are a composite, not one fresh full run.",
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "4c35e9cf435d6f53a0d768870b34007c234c102d5436563277c9d9afeaca8a49",
+            "0f8edf1e9af3e9423e982a7a4c74a1aa0d0f92c9ed1bbcac89592127ad731936"
+          ]
+        },
+        "medium": {
+          "observed_tasks": 80,
+          "steps": {
+            "value": 1285,
+            "covered_tasks": 58,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 4681398,
+            "input_tokens": 3423201,
+            "output_tokens": 1258197,
+            "covered_tasks": 58,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 22,
+          "tasks": 80,
+          "notes": [
+            "Historical and wave 19 attempts are a composite, not one fresh full run.",
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "4c35e9cf435d6f53a0d768870b34007c234c102d5436563277c9d9afeaca8a49",
+            "0f8edf1e9af3e9423e982a7a4c74a1aa0d0f92c9ed1bbcac89592127ad731936"
+          ]
+        },
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 132,
+            "covered_tasks": 18,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 368210,
+            "input_tokens": 278499,
+            "output_tokens": 89711,
+            "covered_tasks": 18,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 22,
+          "tasks": 40,
+          "notes": [
+            "Historical and wave 19 attempts are a composite, not one fresh full run.",
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "4c35e9cf435d6f53a0d768870b34007c234c102d5436563277c9d9afeaca8a49",
+            "0f8edf1e9af3e9423e982a7a4c74a1aa0d0f92c9ed1bbcac89592127ad731936"
+          ]
+        }
+      }
+    },
+    {
+      "id": "w19-openclaw-deepseek41flash",
+      "harness": "OpenClaw 2026.9.6",
+      "model": "DeepSeek V4.1 Flash (OpenRouter) (high)",
+      "runs": 1,
+      "source_version": "0.19.0",
+      "measurement_type": "wave19_only",
+      "source_passed": null,
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": {
+        "passed": 28,
+        "total": 40,
+        "wilson95": [
+          0.545699811818555,
+          0.8192515477025322
+        ]
+      },
+      "source_sha256": "ff342b61d477f048db68e78756c5bd076b8ea75657db5e845e5d574ea4b88494",
+      "reasoning_effort": "high",
+      "measurement_date": "2026-10-19",
+      "details_url": "harness-wave19.html#w19-openclaw-deepseek41flash",
+      "telemetry_note": "Wave 19 only · tasks432–471 · k=1 · 120 seconds · zero final infrastructure failures",
+      "telemetry": {
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 223,
+            "covered_tasks": 30,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 920067,
+            "input_tokens": 757805,
+            "output_tokens": 162262,
+            "covered_tasks": 30,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 10,
+          "tasks": 40,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "ff342b61d477f048db68e78756c5bd076b8ea75657db5e845e5d574ea4b88494"
+          ]
+        }
+      }
+    },
+    {
+      "id": "secret-700b-v019",
+      "harness": "deepagents",
+      "model": "secret sft",
+      "runs": 1,
+      "measurement_type": "operator_accepted",
+      "measurement_valid": true,
+      "validation_basis": "operator_acceptance",
+      "source_version": "0.19.0",
+      "source_passed": 377,
+      "source_sha256": "232d92c02b6f04ac4fd5e3a5d17825800168530ab7c7fb70ad6bd99976f7bff6",
+      "medium_historical": null,
+      "details_url": "secret-700b.html",
+      "light": {
+        "passed": 370,
+        "total": 391
+      },
+      "medium": {
+        "passed": 7,
+        "total": 80
+      },
+      "wave19": {
+        "passed": 0,
+        "total": 40
+      },
+      "telemetry": {
+        "light": {
+          "observed_tasks": 391,
+          "steps": {
+            "value": 2419,
+            "covered_tasks": 383,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 23376390,
+            "input_tokens": 22833233,
+            "output_tokens": 543157,
+            "covered_tasks": 391,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 0,
+          "tasks": 391,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "232d92c02b6f04ac4fd5e3a5d17825800168530ab7c7fb70ad6bd99976f7bff6"
+          ]
+        },
+        "medium": {
+          "observed_tasks": 80,
+          "steps": {
+            "value": 851,
+            "covered_tasks": 19,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 51563200,
+            "input_tokens": 51281321,
+            "output_tokens": 281879,
+            "covered_tasks": 20,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 59,
+          "tasks": 80,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "232d92c02b6f04ac4fd5e3a5d17825800168530ab7c7fb70ad6bd99976f7bff6"
+          ]
+        },
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": null,
+            "covered_tasks": 0,
+            "status": "unavailable",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": null,
+            "input_tokens": null,
+            "output_tokens": null,
+            "covered_tasks": 0,
+            "status": "unavailable",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 40,
+          "tasks": 40,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "232d92c02b6f04ac4fd5e3a5d17825800168530ab7c7fb70ad6bd99976f7bff6"
+          ]
+        }
+      }
+    },
+    {
+      "id": "sonnet55-pi-medium",
+      "harness": "pi-mono 0.73.1",
+      "model": "Claude Sonnet 5.5 (OpenRouter) (medium)",
+      "runs": 1,
+      "measurement_type": "medium_run",
+      "measurement_valid": true,
+      "source_version": "0.19.0",
+      "source_passed": 53,
+      "source_sha256": "1ad33ab48a4875143b7cfca90f794e9c0271440384a3b2dbe3890881e7a48b71",
+      "reasoning_effort": "medium",
+      "measurement_date": "2026-10-20",
+      "light": null,
+      "medium_historical": null,
+      "medium": {
+        "passed": 53,
+        "total": 80,
+        "wilson95": [
+          0.5535652339817697,
+          0.756543873919184
+        ],
+        "note": "includes 2 provider content-filter failures"
+      },
+      "wave19": {
+        "passed": 32,
+        "total": 40,
+        "wilson95": [
+          0.652426936536005,
+          0.895000102745623
+        ]
+      },
+      "details_url": "sonnet55-medium.html",
+      "telemetry": {
+        "medium": {
+          "observed_tasks": 80,
+          "steps": {
+            "value": 1281,
+            "covered_tasks": 80,
+            "status": "complete",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 118517782,
+            "input_tokens": 116231987,
+            "output_tokens": 2285795,
+            "covered_tasks": 80,
+            "status": "partial",
+            "completed_responses": 1311,
+            "unmetered_requests": 4
+          },
+          "timeouts": 4,
+          "tasks": 80,
+          "notes": [
+            "Tokens sum unique completed API responses including responses received after a task cancellation. Failed requests without usage and unreturned generations cannot be measured; this is recorded token usage, not a billing statement.",
+            "Steps count unique native tool_execution_start events in the final retained execution. Native message_end usage is counted once; cache input is folded in once, reasoning is already in output.",
+            "4 failed API requests have no token usage; recorded tokens are a lower bound."
+          ],
+          "sources_sha256": [
+            "1ad33ab48a4875143b7cfca90f794e9c0271440384a3b2dbe3890881e7a48b71",
+            "56e3f5361af1f162b9ef5e21845151e1df867b0f0a8f053cc253aa6f9d5a4ab8",
+            "a241d399c3520ebb75109575a71eb0b729f1ef6c39b098898eec95aa0d6bd185"
+          ]
+        },
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 238,
+            "covered_tasks": 40,
+            "status": "complete",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 4484004,
+            "input_tokens": 4354136,
+            "output_tokens": 129868,
+            "covered_tasks": 40,
+            "status": "complete",
+            "completed_responses": 268,
+            "unmetered_requests": 0
+          },
+          "timeouts": 4,
+          "tasks": 40,
+          "notes": [
+            "Tokens sum unique completed API responses including responses received after a task cancellation. Failed requests without usage and unreturned generations cannot be measured; this is recorded token usage, not a billing statement.",
+            "Steps count unique native tool_execution_start events in the final retained execution. Native message_end usage is counted once; cache input is folded in once, reasoning is already in output."
+          ],
+          "sources_sha256": [
+            "1ad33ab48a4875143b7cfca90f794e9c0271440384a3b2dbe3890881e7a48b71",
+            "56e3f5361af1f162b9ef5e21845151e1df867b0f0a8f053cc253aa6f9d5a4ab8",
+            "a241d399c3520ebb75109575a71eb0b729f1ef6c39b098898eec95aa0d6bd185"
+          ]
+        }
+      }
+    },
+    {
+      "id": "astra-pi-medium",
+      "harness": "pi-mono 0.73.1",
+      "model": "GPT-6-Astra (OpenRouter) (medium)",
+      "runs": 1,
+      "measurement_type": "medium_run",
+      "measurement_valid": true,
+      "source_version": "0.19.0",
+      "source_passed": 58,
+      "source_sha256": "edd65d3fc76449b3a1392f562b2908e38ef2621315d90b6100e72aa0ac18211a",
+      "reasoning_effort": "medium",
+      "measurement_date": "2026-10-20",
+      "light": null,
+      "medium_historical": null,
+      "medium": {
+        "passed": 58,
+        "total": 80,
+        "wilson95": [
+          0.6185594135898548,
+          0.810822428119158
+        ]
+      },
+      "wave19": {
+        "passed": 23,
+        "total": 40,
+        "wilson95": [
+          0.42195068541991065,
+          0.7149060744004962
+        ]
+      },
+      "details_url": "astra-medium.html",
+      "telemetry": {
+        "medium": {
+          "observed_tasks": 80,
+          "steps": {
+            "value": 1328,
+            "covered_tasks": 80,
+            "status": "complete",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 49216848,
+            "input_tokens": 48956637,
+            "output_tokens": 260211,
+            "covered_tasks": 80,
+            "status": "partial",
+            "completed_responses": 1330,
+            "unmetered_requests": 7
+          },
+          "timeouts": 15,
+          "tasks": 80,
+          "notes": [
+            "Tokens sum unique completed API responses including responses received after a task cancellation. Failed requests without usage and unreturned generations cannot be measured; this is recorded token usage, not a billing statement.",
+            "Steps count unique native tool_execution_start events in the final retained execution. Native message_end usage is counted once; cache input is folded in once, reasoning is already in output.",
+            "7 failed API requests have no token usage; recorded tokens are a lower bound."
+          ],
+          "sources_sha256": [
+            "edd65d3fc76449b3a1392f562b2908e38ef2621315d90b6100e72aa0ac18211a",
+            "f729efa839a2bb2c6c4f9f687745605289bc187d98df7aae68045efaf6000ddb",
+            "87d5030f9a8042ac5772a24394c06491abd9aeeb61db5fccb1888527a839a51e"
+          ]
+        },
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": 283,
+            "covered_tasks": 40,
+            "status": "complete",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 4270108,
+            "input_tokens": 4223492,
+            "output_tokens": 46616,
+            "covered_tasks": 40,
+            "status": "partial",
+            "completed_responses": 317,
+            "unmetered_requests": 1
+          },
+          "timeouts": 15,
+          "tasks": 40,
+          "notes": [
+            "Tokens sum unique completed API responses including responses received after a task cancellation. Failed requests without usage and unreturned generations cannot be measured; this is recorded token usage, not a billing statement.",
+            "Steps count unique native tool_execution_start events in the final retained execution. Native message_end usage is counted once; cache input is folded in once, reasoning is already in output.",
+            "1 failed API requests have no token usage; recorded tokens are a lower bound."
+          ],
+          "sources_sha256": [
+            "edd65d3fc76449b3a1392f562b2908e38ef2621315d90b6100e72aa0ac18211a",
+            "f729efa839a2bb2c6c4f9f687745605289bc187d98df7aae68045efaf6000ddb",
+            "87d5030f9a8042ac5772a24394c06491abd9aeeb61db5fccb1888527a839a51e"
+          ]
+        }
+      }
+    },
+    {
+      "id": "secret-sft-mini-v019",
+      "harness": "mini-SWE-agent",
+      "model": "secret sft",
+      "runs": 1,
+      "measurement_type": "full_run",
+      "measurement_valid": true,
+      "validation_basis": "automated_validation",
+      "reasoning_effort": "default",
+      "source_version": "0.19.0",
+      "source_passed": 379,
+      "source_sha256": "d08c13d94724849741076aec91045026632eb6a49668076a7cea7d3a0b8e808e",
+      "measurement_date": "2026-10-20",
+      "medium_historical": null,
+      "details_url": "secret-sft-mini.html",
+      "light": {
+        "passed": 371,
+        "total": 391,
+        "wilson95": [
+          0.9223176438877494,
+          0.9666467547555972
+        ]
+      },
+      "medium": {
+        "passed": 8,
+        "total": 80,
+        "wilson95": [
+          0.05154761556738083,
+          0.18510688806104086
+        ]
+      },
+      "wave19": {
+        "passed": 0,
+        "total": 40,
+        "wilson95": [
+          0.0,
+          0.08762160119728664
+        ]
+      },
+      "telemetry": {
+        "light": {
+          "observed_tasks": 391,
+          "steps": {
+            "value": 2543,
+            "covered_tasks": 377,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 10483742,
+            "input_tokens": 9738295,
+            "output_tokens": 745447,
+            "covered_tasks": 377,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 14,
+          "tasks": 391,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "d08c13d94724849741076aec91045026632eb6a49668076a7cea7d3a0b8e808e"
+          ]
+        },
+        "medium": {
+          "observed_tasks": 80,
+          "steps": {
+            "value": 959,
+            "covered_tasks": 24,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 206144850,
+            "input_tokens": 205651697,
+            "output_tokens": 493153,
+            "covered_tasks": 24,
+            "status": "raw",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 56,
+          "tasks": 80,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "d08c13d94724849741076aec91045026632eb6a49668076a7cea7d3a0b8e808e"
+          ]
+        },
+        "wave19": {
+          "observed_tasks": 40,
+          "steps": {
+            "value": null,
+            "covered_tasks": 0,
+            "status": "unavailable",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": null,
+            "input_tokens": null,
+            "output_tokens": null,
+            "covered_tasks": 0,
+            "status": "unavailable",
+            "completed_responses": null,
+            "unmetered_requests": null
+          },
+          "timeouts": 40,
+          "tasks": 40,
+          "notes": [
+            "Saved runner counters only; not independently audited against native usage. Steps use agent_tool_calls, not graph supersteps. Missing counters are omitted, never imputed as zero."
+          ],
+          "sources_sha256": [
+            "d08c13d94724849741076aec91045026632eb6a49668076a7cea7d3a0b8e808e"
+          ]
+        }
+      }
+    },
+    {
+      "id": "universal-agent-haiku",
+      "harness": "Universal Agent (gc-cli 0.4.0)",
+      "model": "Claude Haiku 5.5 (OpenRouter)",
+      "runs": 1,
+      "measurement_type": "full_run",
+      "measurement_valid": true,
+      "validation_basis": "frozen source and runtime hashes, complete coverage, native grading, transport and independent trace review",
+      "reasoning_effort": "default",
+      "source_version": "0.19.0",
+      "source_passed": 437,
+      "source_sha256": "df83c1ab6c0063dc79a53f15717daa2f00acb3d3a89d8b49e94eba537cec34c5",
+      "measurement_date": [
+        "2026-10-20",
+        "2026-10-21"
+      ],
+      "medium_historical": null,
+      "details_url": "universal-agent-haiku.html",
+      "light": {
+        "passed": 384,
+        "total": 391,
+        "wilson95": [
+          0.9635122053239145,
+          0.9913014080337541
+        ]
+      },
+      "medium": {
+        "passed": 53,
+        "total": 80,
+        "wilson95": [
+          0.5535652339817697,
+          0.756543873919184
+        ]
+      },
+      "wave19": {
+        "passed": 32,
+        "total": 40,
+        "wilson95": [
+          0.652426936536005,
+          0.895000102745623
+        ]
+      }
+    },
+    {
+      "id": "universal-agent-deepseek",
+      "harness": "Universal Agent (gc-cli 0.4.0)",
+      "model": "DeepSeek V4.1 Flash (OpenRouter) (default)",
+      "runs": 1,
+      "measurement_type": "full_run",
+      "measurement_valid": true,
+      "validation_basis": "Independent reconstruction matched all 471 exact executions; first nontransport outcome independent of grade; frozen source/config/workspace hashes verified; original400 grades and native timeouts retained. Accepted as-run harness profile with disclosed compaction and adapter-classification defects.",
+      "reasoning_effort": "default",
+      "source_version": "0.19.0",
+      "source_passed": 444,
+      "source_sha256": "09a965fc79b6c0163a3a43612cf17f05554c23dda0bf8bf94d3eaa349ff66ea8",
+      "measurement_date": [
+        "2026-10-21",
+        "2026-10-22"
+      ],
+      "medium_historical": null,
+      "details_url": "universal-agent-deepseek.html",
+      "light": {
+        "passed": 389,
+        "total": 391,
+        "wilson95": [
+          0.9815440990411085,
+          0.99859613536053
+        ]
+      },
+      "medium": {
+        "passed": 55,
+        "total": 80,
+        "wilson95": [
+          0.5793222425531256,
+          0.7784959588710517
+        ]
+      },
+      "wave19": {
+        "passed": 25,
+        "total": 40,
+        "wilson95": [
+          0.47032439137301096,
+          0.7577702083276673
+        ]
+      },
+      "telemetry": {
+        "light": {
+          "tasks": 391,
+          "observed_tasks": 391,
+          "sources_sha256": [
+            "09a965fc79b6c0163a3a43612cf17f05554c23dda0bf8bf94d3eaa349ff66ea8"
+          ],
+          "steps": {
+            "value": 1922,
+            "covered_tasks": 391,
+            "status": "complete",
+            "unit": "main_llm_responses",
+            "lower_bound": false
+          },
+          "tokens": {
+            "value": 24723469,
+            "covered_tasks": 391,
+            "status": "complete",
+            "lower_bound": false
+          },
+          "notes": [
+            "Only retained attempts; both passed and failed tasks.",
+            "Steps count recorded main LLM responses; API tokens include main and auxiliary calls.",
+            "Interrupted or unreturned responses may be missing; partial scopes are lower bounds."
+          ]
+        },
+        "medium": {
+          "tasks": 80,
+          "observed_tasks": 80,
+          "sources_sha256": [
+            "09a965fc79b6c0163a3a43612cf17f05554c23dda0bf8bf94d3eaa349ff66ea8"
+          ],
+          "steps": {
+            "value": 3993,
+            "covered_tasks": 80,
+            "status": "partial",
+            "unit": "main_llm_responses",
+            "lower_bound": true
+          },
+          "tokens": {
+            "value": 387055304,
+            "covered_tasks": 80,
+            "status": "partial",
+            "lower_bound": true
+          },
+          "notes": [
+            "Only retained attempts; both passed and failed tasks.",
+            "Steps count recorded main LLM responses; API tokens include main and auxiliary calls.",
+            "Interrupted or unreturned responses may be missing; partial scopes are lower bounds."
+          ]
+        },
+        "wave19": {
+          "tasks": 40,
+          "observed_tasks": 40,
+          "sources_sha256": [
+            "09a965fc79b6c0163a3a43612cf17f05554c23dda0bf8bf94d3eaa349ff66ea8"
+          ],
+          "steps": {
+            "value": 425,
+            "covered_tasks": 40,
+            "status": "partial",
+            "unit": "main_llm_responses",
+            "lower_bound": true
+          },
+          "tokens": {
+            "value": 12265071,
+            "covered_tasks": 40,
+            "status": "partial",
+            "lower_bound": true
+          },
+          "notes": [
+            "Only retained attempts; both passed and failed tasks.",
+            "Steps count recorded main LLM responses; API tokens include main and auxiliary calls.",
+            "Interrupted or unreturned responses may be missing; partial scopes are lower bounds."
+          ]
+        }
+      }
+    },
+    {
+      "id": "giga35-ultra-reasoning-v019",
+      "harness": "deepagents (no profile)",
+      "model": "GigaChat 3.5 Ultra Reasoning (PROM), build 3.5.16.9 (medium)",
+      "runs": 1,
+      "measurement_type": "full_run",
+      "measurement_valid": true,
+      "validation_basis": "automated_validation",
+      "reasoning_effort": "medium",
+      "source_version": "0.19.0",
+      "source_passed": 277,
+      "source_sha256": "a927bd3f81a2cacf30d807be6289f43fa40e672cfd8809e2520117c1585851ea",
+      "measurement_date": [
+        "2026-10-21"
+      ],
+      "medium_historical": null,
+      "details_url": "giga35-ultra-reasoning.html",
+      "light": {
+        "passed": 273,
+        "total": 391,
+        "wilson95": [
+          0.6509627813855698,
+          0.7415998447959651
+        ]
+      },
+      "medium": {
+        "passed": 4,
+        "total": 80,
+        "wilson95": [
+          0.01961355453554428,
+          0.1216227620464301
+        ]
+      },
+      "wave19": {
+        "passed": 1,
+        "total": 40,
+        "wilson95": [
+          0.0044268315026814095,
+          0.1288136896347409
+        ]
+      }
+    },
+    {
+      "id": "secret-sft-codex-v019",
+      "harness": "Codex CLI",
+      "model": "secret sft",
+      "runs": 1,
+      "measurement_type": "full_run",
+      "measurement_valid": true,
+      "validation_basis": "automated_validation_and_wire_audit",
+      "reasoning_effort": "default",
+      "source_version": "0.19.0",
+      "source_passed": 370,
+      "source_sha256": "c7e1618a3a5efea30fd194824c72bee8e2e48882f9dea1137d26a991a1d06d0d",
+      "measurement_date": "2026-10-21",
+      "medium_historical": null,
+      "details_url": "secret-sft-codex.html",
+      "light": {
+        "passed": 365,
+        "total": 391,
+        "wilson95": [
+          0.9043519616177298,
+          0.9542204917728527
+        ],
+        "token_usage": {
+          "input_tokens": 8405920,
+          "output_tokens": 592230,
+          "total_tokens": 8998150,
+          "requests": 2134,
+          "requests_with_usage": 2116,
+          "requests_missing_usage": 18,
+          "tasks_with_usage": 391,
+          "lower_bound": true
+        }
+      },
+      "medium": {
+        "passed": 5,
+        "total": 80,
+        "wilson95": [
+          0.026989375670841982,
+          0.13810148767274424
+        ],
+        "token_usage": {
+          "input_tokens": 102086268,
+          "output_tokens": 946679,
+          "total_tokens": 103032947,
+          "requests": 1731,
+          "requests_with_usage": 1660,
+          "requests_missing_usage": 71,
+          "tasks_with_usage": 80,
+          "lower_bound": true
+        }
+      },
+      "wave19": {
+        "passed": 0,
+        "total": 40,
+        "wilson95": [
+          0.0,
+          0.08762160119728664
+        ],
+        "token_usage": {
+          "input_tokens": 345317,
+          "output_tokens": 14849,
+          "total_tokens": 360166,
+          "requests": 112,
+          "requests_with_usage": 73,
+          "requests_missing_usage": 39,
+          "tasks_with_usage": 40,
+          "lower_bound": true
+        }
+      },
+      "telemetry": {
+        "light": {
+          "observed_tasks": 391,
+          "tasks": 391,
+          "steps": {
+            "value": 1441,
+            "covered_tasks": 373,
+            "status": "raw",
+            "unit": "agent_steps"
+          },
+          "tokens": {
+            "value": 8998150,
+            "input_tokens": 8405920,
+            "output_tokens": 592230,
+            "covered_tasks": 391,
+            "status": "partial",
+            "lower_bound": true,
+            "completed_responses": 2116,
+            "unmetered_requests": 18
+          },
+          "timeouts": 18,
+          "notes": [
+            "API usage for final retained task attempts: 2116/2134 requests metered; token sum is a lower bound. Includes repeated context and compaction; reasoning is not added twice. Setup probes excluded.",
+            "Steps are incomplete native agent_steps counters, not audited tool calls. Superseded infrastructure attempts are excluded from published usage."
+          ],
+          "sources_sha256": [
+            "c7e1618a3a5efea30fd194824c72bee8e2e48882f9dea1137d26a991a1d06d0d"
+          ]
+        },
+        "medium": {
+          "observed_tasks": 80,
+          "tasks": 80,
+          "steps": {
+            "value": 774,
+            "covered_tasks": 24,
+            "status": "raw",
+            "unit": "agent_steps"
+          },
+          "tokens": {
+            "value": 103032947,
+            "input_tokens": 102086268,
+            "output_tokens": 946679,
+            "covered_tasks": 80,
+            "status": "partial",
+            "lower_bound": true,
+            "completed_responses": 1660,
+            "unmetered_requests": 71
+          },
+          "timeouts": 56,
+          "notes": [
+            "API usage for final retained task attempts: 1660/1731 requests metered; token sum is a lower bound. Includes repeated context and compaction; reasoning is not added twice. Setup probes excluded.",
+            "Steps are incomplete native agent_steps counters, not audited tool calls. Superseded infrastructure attempts are excluded from published usage."
+          ],
+          "sources_sha256": [
+            "c7e1618a3a5efea30fd194824c72bee8e2e48882f9dea1137d26a991a1d06d0d"
+          ]
+        },
+        "wave19": {
+          "observed_tasks": 40,
+          "tasks": 40,
+          "steps": {
+            "value": 1,
+            "covered_tasks": 1,
+            "status": "raw",
+            "unit": "agent_steps"
+          },
+          "tokens": {
+            "value": 360166,
+            "input_tokens": 345317,
+            "output_tokens": 14849,
+            "covered_tasks": 40,
+            "status": "partial",
+            "lower_bound": true,
+            "completed_responses": 73,
+            "unmetered_requests": 39
+          },
+          "timeouts": 39,
+          "notes": [
+            "API usage for final retained task attempts: 73/112 requests metered; token sum is a lower bound. Includes repeated context and compaction; reasoning is not added twice. Setup probes excluded.",
+            "Steps are incomplete native agent_steps counters, not audited tool calls. Superseded infrastructure attempts are excluded from published usage."
+          ],
+          "sources_sha256": [
+            "c7e1618a3a5efea30fd194824c72bee8e2e48882f9dea1137d26a991a1d06d0d"
+          ]
+        }
+      }
+    },
+    {
+      "id": "brain-haiku-experiment",
+      "harness": "Brain (experimental)",
+      "model": "Claude Haiku 5.5 (OpenRouter) (default)",
+      "runs": 1,
+      "measurement_type": "selected_retries_changed_protocol",
+      "measurement_valid": false,
+      "validation_basis": "operator_requested_experimental_table_inclusion",
+      "reasoning_effort": "default",
+      "source_version": "0.19.0",
+      "source_passed": 444,
+      "measurement_date": "2026-10-21",
+      "medium_historical": null,
+      "details_url": "brain-haiku-experiment.html",
+      "light": {
+        "passed": 385,
+        "total": 391,
+        "note": "experimental · selected retries · changed deadline · transport errors unresolved"
+      },
+      "medium": {
+        "passed": 59,
+        "total": 80,
+        "note": "experimental · selected retries · changed deadline · transport errors unresolved"
+      },
+      "wave19": {
+        "passed": 36,
+        "total": 40,
+        "note": "experimental · selected retries · changed deadline · transport errors unresolved"
+      },
+      "telemetry": {
+        "light": {
+          "tasks": 391,
+          "observed_tasks": 391,
+          "sources_sha256": [
+            "66e84a46846e1a462d9ce0f654c3c8b41b483511e9df52fe1a5aee765702bfce",
+            "c31885135fd27c49e2620ac61c7dc46f41aef72168c17a4f43033b1891f6101a",
+            "5e983dfac344d784353db9a2d9650a38024a7a022b8699b562bc7cb8a26c08f1"
+          ],
+          "steps": {
+            "value": 1079,
+            "covered_tasks": 391,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 17082677,
+            "input_tokens": 16668158,
+            "output_tokens": 414519,
+            "covered_tasks": 391,
+            "status": "raw"
+          },
+          "notes": [
+            "Only final retained attempt per task, passed or failed. Superseded attempts excluded. Token counter presence is not an audit of failed-request usage completeness."
+          ]
+        },
+        "medium": {
+          "tasks": 80,
+          "observed_tasks": 80,
+          "sources_sha256": [
+            "66e84a46846e1a462d9ce0f654c3c8b41b483511e9df52fe1a5aee765702bfce",
+            "c31885135fd27c49e2620ac61c7dc46f41aef72168c17a4f43033b1891f6101a",
+            "5e983dfac344d784353db9a2d9650a38024a7a022b8699b562bc7cb8a26c08f1"
+          ],
+          "steps": {
+            "value": 1724,
+            "covered_tasks": 80,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 174698925,
+            "input_tokens": 168239390,
+            "output_tokens": 6459535,
+            "covered_tasks": 80,
+            "status": "raw"
+          },
+          "notes": [
+            "Only final retained attempt per task, passed or failed. Superseded attempts excluded. Token counter presence is not an audit of failed-request usage completeness."
+          ]
+        },
+        "wave19": {
+          "tasks": 40,
+          "observed_tasks": 40,
+          "sources_sha256": [
+            "66e84a46846e1a462d9ce0f654c3c8b41b483511e9df52fe1a5aee765702bfce",
+            "c31885135fd27c49e2620ac61c7dc46f41aef72168c17a4f43033b1891f6101a",
+            "5e983dfac344d784353db9a2d9650a38024a7a022b8699b562bc7cb8a26c08f1"
+          ],
+          "steps": {
+            "value": 295,
+            "covered_tasks": 40,
+            "status": "raw",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 15338490,
+            "input_tokens": 14971054,
+            "output_tokens": 367436,
+            "covered_tasks": 40,
+            "status": "raw"
+          },
+          "notes": [
+            "Only final retained attempt per task, passed or failed. Superseded attempts excluded. Token counter presence is not an audit of failed-request usage completeness."
+          ]
+        }
+      }
+    },
+    {
+      "id": "haiku-mini-v019",
+      "harness": "mini-SWE-agent 2.4.6",
+      "model": "Claude Haiku 5.5 (OpenRouter) (default)",
+      "runs": 1,
+      "measurement_type": "full_run",
+      "measurement_valid": true,
+      "reasoning_effort": "default",
+      "source_version": "0.19.1",
+      "display_version": "0.19",
+      "source_passed": 435,
+      "source_sha256": "eacc0a8c2947a46d942d644a73bc0ff3d3bbc03ccd3d509102615e59bad5f2a1",
+      "measurement_date": "2026-10-21",
+      "medium_historical": null,
+      "details_url": "haiku-three-harnesses-v0191.html",
+      "light": {
+        "passed": 383,
+        "total": 391
+      },
+      "medium": {
+        "passed": 52,
+        "total": 80
+      },
+      "wave19": {
+        "passed": 34,
+        "total": 40
+      },
+      "telemetry": {
+        "light": {
+          "tasks": 391,
+          "observed_tasks": 391,
+          "sources_sha256": [
+            "eacc0a8c2947a46d942d644a73bc0ff3d3bbc03ccd3d509102615e59bad5f2a1"
+          ],
+          "steps": {
+            "value": 1867,
+            "covered_tasks": 391,
+            "status": "complete",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 6553166,
+            "input_tokens": 5949339,
+            "output_tokens": 603827,
+            "covered_tasks": 391,
+            "status": "complete"
+          },
+          "notes": [
+            "final retained attempt per task, passed or failed; superseded transport attempts excluded",
+            "Upstream response usage verified per task; steps count tool calls."
+          ]
+        },
+        "medium": {
+          "tasks": 80,
+          "observed_tasks": 80,
+          "sources_sha256": [
+            "eacc0a8c2947a46d942d644a73bc0ff3d3bbc03ccd3d509102615e59bad5f2a1"
+          ],
+          "steps": {
+            "value": 2296,
+            "covered_tasks": 80,
+            "status": "complete",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 416243926,
+            "input_tokens": 413302740,
+            "output_tokens": 2941186,
+            "covered_tasks": 80,
+            "status": "complete"
+          },
+          "notes": [
+            "final retained attempt per task, passed or failed; superseded transport attempts excluded",
+            "Upstream response usage verified per task; steps count tool calls."
+          ]
+        },
+        "wave19": {
+          "tasks": 40,
+          "observed_tasks": 40,
+          "sources_sha256": [
+            "eacc0a8c2947a46d942d644a73bc0ff3d3bbc03ccd3d509102615e59bad5f2a1"
+          ],
+          "steps": {
+            "value": 578,
+            "covered_tasks": 40,
+            "status": "complete",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 18077643,
+            "input_tokens": 17417764,
+            "output_tokens": 659879,
+            "covered_tasks": 40,
+            "status": "complete"
+          },
+          "notes": [
+            "final retained attempt per task, passed or failed; superseded transport attempts excluded",
+            "Upstream response usage verified per task; steps count tool calls."
+          ]
+        }
+      }
+    },
+    {
+      "id": "haiku-codex-v019",
+      "harness": "Codex CLI 0.160.1",
+      "model": "Claude Haiku 5.5 (OpenRouter) (default)",
+      "runs": 1,
+      "measurement_type": "full_run",
+      "measurement_valid": true,
+      "reasoning_effort": "default",
+      "source_version": "0.19.1",
+      "display_version": "0.19",
+      "source_passed": 442,
+      "source_sha256": "d022be400fd3462def1777af4a6dbc1ae18f58a833ba72c1cae29d15b55a9f5b",
+      "measurement_date": "2026-10-21",
+      "medium_historical": null,
+      "details_url": "haiku-three-harnesses-v0191.html",
+      "light": {
+        "passed": 387,
+        "total": 391
+      },
+      "medium": {
+        "passed": 55,
+        "total": 80
+      },
+      "wave19": {
+        "passed": 38,
+        "total": 40
+      },
+      "telemetry": {
+        "light": {
+          "tasks": 391,
+          "observed_tasks": 391,
+          "sources_sha256": [
+            "d022be400fd3462def1777af4a6dbc1ae18f58a833ba72c1cae29d15b55a9f5b"
+          ],
+          "steps": {
+            "value": 1158,
+            "covered_tasks": 391,
+            "status": "complete",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 16194487,
+            "input_tokens": 15765515,
+            "output_tokens": 428972,
+            "covered_tasks": 391,
+            "status": "complete"
+          },
+          "notes": [
+            "final retained attempt per task, passed or failed; superseded transport attempts excluded",
+            "Upstream response usage verified per task; steps count tool calls."
+          ]
+        },
+        "medium": {
+          "tasks": 80,
+          "observed_tasks": 80,
+          "sources_sha256": [
+            "d022be400fd3462def1777af4a6dbc1ae18f58a833ba72c1cae29d15b55a9f5b"
+          ],
+          "steps": {
+            "value": 2707,
+            "covered_tasks": 80,
+            "status": "complete",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 249971566,
+            "input_tokens": 241979781,
+            "output_tokens": 7991785,
+            "covered_tasks": 80,
+            "status": "complete"
+          },
+          "notes": [
+            "final retained attempt per task, passed or failed; superseded transport attempts excluded",
+            "Upstream response usage verified per task; steps count tool calls."
+          ]
+        },
+        "wave19": {
+          "tasks": 40,
+          "observed_tasks": 40,
+          "sources_sha256": [
+            "d022be400fd3462def1777af4a6dbc1ae18f58a833ba72c1cae29d15b55a9f5b"
+          ],
+          "steps": {
+            "value": 519,
+            "covered_tasks": 40,
+            "status": "complete",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 14107372,
+            "input_tokens": 13514044,
+            "output_tokens": 593328,
+            "covered_tasks": 40,
+            "status": "complete"
+          },
+          "notes": [
+            "final retained attempt per task, passed or failed; superseded transport attempts excluded",
+            "Upstream response usage verified per task; steps count tool calls."
+          ]
+        }
+      }
+    },
+    {
+      "id": "haiku-claude-v019",
+      "harness": "Claude Code 2.1.300",
+      "model": "Claude Haiku 5.5 (OpenRouter) (default)",
+      "runs": 1,
+      "measurement_type": "full_run",
+      "measurement_valid": true,
+      "reasoning_effort": "default",
+      "source_version": "0.19.1",
+      "display_version": "0.19",
+      "source_passed": 437,
+      "source_sha256": "fb21d4a0d90970ba18534348270bbada5f7628fa1ada5a95750756ca4c29b599",
+      "measurement_date": "2026-10-21",
+      "medium_historical": null,
+      "details_url": "haiku-three-harnesses-v0191.html",
+      "light": {
+        "passed": 377,
+        "total": 391
+      },
+      "medium": {
+        "passed": 60,
+        "total": 80
+      },
+      "wave19": {
+        "passed": 38,
+        "total": 40
+      },
+      "telemetry": {
+        "light": {
+          "tasks": 391,
+          "observed_tasks": 391,
+          "sources_sha256": [
+            "fb21d4a0d90970ba18534348270bbada5f7628fa1ada5a95750756ca4c29b599"
+          ],
+          "steps": {
+            "value": 1301,
+            "covered_tasks": 391,
+            "status": "complete",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 29044277,
+            "input_tokens": 28552977,
+            "output_tokens": 491300,
+            "covered_tasks": 391,
+            "status": "complete"
+          },
+          "notes": [
+            "final retained attempt per task, passed or failed; superseded transport attempts excluded",
+            "Upstream response usage verified per task; steps count tool calls."
+          ]
+        },
+        "medium": {
+          "tasks": 80,
+          "observed_tasks": 80,
+          "sources_sha256": [
+            "fb21d4a0d90970ba18534348270bbada5f7628fa1ada5a95750756ca4c29b599"
+          ],
+          "steps": {
+            "value": 4362,
+            "covered_tasks": 80,
+            "status": "complete",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 192935286,
+            "input_tokens": 180906889,
+            "output_tokens": 12028397,
+            "covered_tasks": 80,
+            "status": "complete"
+          },
+          "notes": [
+            "final retained attempt per task, passed or failed; superseded transport attempts excluded",
+            "Upstream response usage verified per task; steps count tool calls."
+          ]
+        },
+        "wave19": {
+          "tasks": 40,
+          "observed_tasks": 40,
+          "sources_sha256": [
+            "fb21d4a0d90970ba18534348270bbada5f7628fa1ada5a95750756ca4c29b599"
+          ],
+          "steps": {
+            "value": 520,
+            "covered_tasks": 40,
+            "status": "complete",
+            "unit": "tool_calls"
+          },
+          "tokens": {
+            "value": 18807813,
+            "input_tokens": 18101081,
+            "output_tokens": 706732,
+            "covered_tasks": 40,
+            "status": "complete"
+          },
+          "notes": [
+            "final retained attempt per task, passed or failed; superseded transport attempts excluded",
+            "Upstream response usage verified per task; steps count tool calls."
+          ]
+        }
+      }
+    },
+    {
+      "id": "wave21-sonnet55_80",
+      "model": "Sonnet 5.5 (high)",
+      "harness": "DeepAgents 0.6.12 · 80 graph steps",
+      "runs": 1,
+      "measurement_type": "post_selection_rescore",
+      "measurement_valid": true,
+      "source_version": "0.21.0",
+      "display_version": "0.21.2",
+      "measurement_date": "2026-10-21",
+      "reasoning_effort": "high",
+      "source_sha256": "0578e676f8fb351651bea971fadb7b5a770aa8c7793e25a741579de0f05001b0",
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": null,
+      "wave21": {
+        "passed": 5,
+        "total": 10,
+        "note": "calibration rescore"
+      },
+      "telemetry": {
+        "wave21": {
+          "tasks": 10,
+          "observed_tasks": 10,
+          "sources_sha256": [
+            "0578e676f8fb351651bea971fadb7b5a770aa8c7793e25a741579de0f05001b0"
+          ],
+          "notes": [
+            "Selected execution only; missing counters null, observed subtotals explicitly partial. Output tokens include reasoning when provider reports it; no additional summing of reasoning.",
+            "Graph steps and model API requests are different units. Budget80 and160 remain separate configurations; no best-of mixing."
+          ],
+          "steps": {
+            "value": 262,
+            "covered_tasks": 8,
+            "status": "partial",
+            "unit": "native_steps"
+          },
+          "tokens": {
+            "value": 3507874,
+            "covered_tasks": 10,
+            "status": "complete"
+          }
+        }
+      },
+      "details_url": "wave21-measurements.html#sonnet55_80"
+    },
+    {
+      "id": "wave21-deepseek41_flash_80",
+      "model": "DeepSeek V4.1 Flash 1017 (high)",
+      "harness": "DeepAgents 0.6.12 · 80 graph steps",
+      "runs": 1,
+      "measurement_type": "post_selection_rescore",
+      "measurement_valid": true,
+      "source_version": "0.21.0",
+      "display_version": "0.21.2",
+      "measurement_date": "2026-10-22",
+      "reasoning_effort": "high",
+      "source_sha256": "0578e676f8fb351651bea971fadb7b5a770aa8c7793e25a741579de0f05001b0",
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": null,
+      "wave21": {
+        "passed": 0,
+        "total": 10,
+        "note": "calibration rescore"
+      },
+      "telemetry": {
+        "wave21": {
+          "tasks": 10,
+          "observed_tasks": 10,
+          "sources_sha256": [
+            "0578e676f8fb351651bea971fadb7b5a770aa8c7793e25a741579de0f05001b0"
+          ],
+          "notes": [
+            "Selected execution only; missing counters null, observed subtotals explicitly partial. Output tokens include reasoning when provider reports it; no additional summing of reasoning.",
+            "Graph steps and model API requests are different units. Budget80 and160 remain separate configurations; no best-of mixing."
+          ],
+          "steps": {
+            "value": null,
+            "covered_tasks": 0,
+            "status": "unavailable",
+            "unit": "native_steps"
+          },
+          "tokens": {
+            "value": 4096759,
+            "covered_tasks": 10,
+            "status": "complete"
+          }
+        }
+      },
+      "details_url": "wave21-measurements.html#deepseek41_flash_80"
+    },
+    {
+      "id": "wave21-fable51_medium_80",
+      "model": "Fable 5.1 (medium)",
+      "harness": "DeepAgents 0.6.12 · 80 graph steps",
+      "runs": 1,
+      "measurement_type": "post_selection_rescore",
+      "measurement_valid": true,
+      "source_version": "0.21.0",
+      "display_version": "0.21.2",
+      "measurement_date": "2026-10-22",
+      "reasoning_effort": "medium",
+      "source_sha256": "0578e676f8fb351651bea971fadb7b5a770aa8c7793e25a741579de0f05001b0",
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": null,
+      "wave21": {
+        "passed": 0,
+        "total": 10,
+        "note": "calibration rescore"
+      },
+      "telemetry": {
+        "wave21": {
+          "tasks": 10,
+          "observed_tasks": 10,
+          "sources_sha256": [
+            "0578e676f8fb351651bea971fadb7b5a770aa8c7793e25a741579de0f05001b0"
+          ],
+          "notes": [
+            "Selected execution only; missing counters null, observed subtotals explicitly partial. Output tokens include reasoning when provider reports it; no additional summing of reasoning.",
+            "Graph steps and model API requests are different units. Budget80 and160 remain separate configurations; no best-of mixing."
+          ],
+          "steps": {
+            "value": 72,
+            "covered_tasks": 8,
+            "status": "partial",
+            "unit": "native_steps"
+          },
+          "tokens": {
+            "value": 1186934,
+            "covered_tasks": 9,
+            "status": "partial"
+          }
+        }
+      },
+      "details_url": "wave21-measurements.html#fable51_medium_80"
+    },
+    {
+      "id": "wave21-glm53_high_80",
+      "model": "GLM 5.3 (high)",
+      "harness": "DeepAgents 0.6.12 · 80 graph steps",
+      "runs": 1,
+      "measurement_type": "post_selection_rescore",
+      "measurement_valid": true,
+      "source_version": "0.21.0",
+      "display_version": "0.21.2",
+      "measurement_date": "2026-10-22",
+      "reasoning_effort": "high",
+      "source_sha256": "0578e676f8fb351651bea971fadb7b5a770aa8c7793e25a741579de0f05001b0",
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": null,
+      "wave21": {
+        "passed": 0,
+        "total": 10,
+        "note": "calibration rescore"
+      },
+      "telemetry": {
+        "wave21": {
+          "tasks": 10,
+          "observed_tasks": 10,
+          "sources_sha256": [
+            "0578e676f8fb351651bea971fadb7b5a770aa8c7793e25a741579de0f05001b0"
+          ],
+          "notes": [
+            "Selected execution only; missing counters null, observed subtotals explicitly partial. Output tokens include reasoning when provider reports it; no additional summing of reasoning.",
+            "Graph steps and model API requests are different units. Budget80 and160 remain separate configurations; no best-of mixing."
+          ],
+          "steps": {
+            "value": 19,
+            "covered_tasks": 1,
+            "status": "partial",
+            "unit": "native_steps"
+          },
+          "tokens": {
+            "value": 3469103,
+            "covered_tasks": 10,
+            "status": "complete"
+          }
+        }
+      },
+      "details_url": "wave21-measurements.html#glm53_high_80"
+    },
+    {
+      "id": "wave21-mimo26pro_high_80",
+      "model": "MiMo 2.6 Pro (high)",
+      "harness": "DeepAgents 0.6.12 · 80 graph steps",
+      "runs": 1,
+      "measurement_type": "post_selection_rescore",
+      "measurement_valid": true,
+      "source_version": "0.21.0",
+      "display_version": "0.21.2",
+      "measurement_date": "2026-10-22",
+      "reasoning_effort": "high",
+      "source_sha256": "0578e676f8fb351651bea971fadb7b5a770aa8c7793e25a741579de0f05001b0",
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": null,
+      "wave21": {
+        "passed": 0,
+        "total": 10,
+        "note": "calibration rescore"
+      },
+      "telemetry": {
+        "wave21": {
+          "tasks": 10,
+          "observed_tasks": 10,
+          "sources_sha256": [
+            "0578e676f8fb351651bea971fadb7b5a770aa8c7793e25a741579de0f05001b0"
+          ],
+          "notes": [
+            "Selected execution only; missing counters null, observed subtotals explicitly partial. Output tokens include reasoning when provider reports it; no additional summing of reasoning.",
+            "Graph steps and model API requests are different units. Budget80 and160 remain separate configurations; no best-of mixing."
+          ],
+          "steps": {
+            "value": 67,
+            "covered_tasks": 3,
+            "status": "partial",
+            "unit": "native_steps"
+          },
+          "tokens": {
+            "value": 908521,
+            "covered_tasks": 4,
+            "status": "partial"
+          }
+        }
+      },
+      "details_url": "wave21-measurements.html#mimo26pro_high_80"
+    },
+    {
+      "id": "wave21-qwen38max_high_80",
+      "model": "Qwen 3.8 Max (high)",
+      "harness": "DeepAgents 0.6.12 · 80 graph steps",
+      "runs": 1,
+      "measurement_type": "post_selection_rescore",
+      "measurement_valid": true,
+      "source_version": "0.21.0",
+      "display_version": "0.21.2",
+      "measurement_date": "2026-10-22",
+      "reasoning_effort": "high",
+      "source_sha256": "0578e676f8fb351651bea971fadb7b5a770aa8c7793e25a741579de0f05001b0",
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": null,
+      "wave21": {
+        "passed": 0,
+        "total": 10,
+        "note": "calibration rescore"
+      },
+      "telemetry": {
+        "wave21": {
+          "tasks": 10,
+          "observed_tasks": 10,
+          "sources_sha256": [
+            "0578e676f8fb351651bea971fadb7b5a770aa8c7793e25a741579de0f05001b0"
+          ],
+          "notes": [
+            "Selected execution only; missing counters null, observed subtotals explicitly partial. Output tokens include reasoning when provider reports it; no additional summing of reasoning.",
+            "Graph steps and model API requests are different units. Budget80 and160 remain separate configurations; no best-of mixing."
+          ],
+          "steps": {
+            "value": null,
+            "covered_tasks": 0,
+            "status": "unavailable",
+            "unit": "native_steps"
+          },
+          "tokens": {
+            "value": 4712361,
+            "covered_tasks": 9,
+            "status": "partial"
+          }
+        }
+      },
+      "details_url": "wave21-measurements.html#qwen38max_high_80"
+    },
+    {
+      "id": "wave21-sonnet55_high_160",
+      "model": "Sonnet 5.5 (high)",
+      "harness": "DeepAgents 0.6.12 · 160 graph steps",
+      "runs": 1,
+      "measurement_type": "post_selection_rescore",
+      "measurement_valid": true,
+      "source_version": "0.21.1",
+      "display_version": "0.21.2",
+      "measurement_date": "2026-10-22",
+      "reasoning_effort": "high",
+      "source_sha256": "b8007ec6b0060e889b76aa71d8de6cea8db9403f36c1ea06303b6bd872fd6ac5",
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": null,
+      "wave21": {
+        "passed": 9,
+        "total": 10,
+        "note": "calibration rescore"
+      },
+      "telemetry": {
+        "wave21": {
+          "tasks": 10,
+          "observed_tasks": 10,
+          "sources_sha256": [
+            "b8007ec6b0060e889b76aa71d8de6cea8db9403f36c1ea06303b6bd872fd6ac5"
+          ],
+          "notes": [
+            "Selected execution only; missing counters null, observed subtotals explicitly partial. Output tokens include reasoning when provider reports it; no additional summing of reasoning.",
+            "Graph steps and model API requests are different units. Budget80 and160 remain separate configurations; no best-of mixing."
+          ],
+          "steps": {
+            "value": 484,
+            "covered_tasks": 10,
+            "status": "complete",
+            "unit": "native_steps"
+          },
+          "tokens": {
+            "value": 4766905,
+            "covered_tasks": 10,
+            "status": "complete"
+          }
+        }
+      },
+      "details_url": "wave21-measurements.html#sonnet55_high_160"
+    },
+    {
+      "id": "wave21-codex0163_deepseek41_unc_high_160",
+      "model": "DeepSeek V4.1 Flash 1017 UNCENSORED (high)",
+      "harness": "Codex CLI 0.163.0 · 160 model requests",
+      "runs": 1,
+      "measurement_type": "post_selection_rescore",
+      "measurement_valid": true,
+      "source_version": "0.21.1",
+      "display_version": "0.21.2",
+      "measurement_date": "2026-10-22",
+      "reasoning_effort": "high",
+      "source_sha256": "b8007ec6b0060e889b76aa71d8de6cea8db9403f36c1ea06303b6bd872fd6ac5",
+      "light": null,
+      "medium": null,
+      "medium_historical": null,
+      "wave19": null,
+      "wave21": {
+        "passed": 9,
+        "total": 10,
+        "note": "calibration rescore"
+      },
+      "telemetry": {
+        "wave21": {
+          "tasks": 10,
+          "observed_tasks": 10,
+          "sources_sha256": [
+            "b8007ec6b0060e889b76aa71d8de6cea8db9403f36c1ea06303b6bd872fd6ac5"
+          ],
+          "notes": [
+            "Selected execution only; missing counters null, observed subtotals explicitly partial. Output tokens include reasoning when provider reports it; no additional summing of reasoning.",
+            "Graph steps and model API requests are different units. Budget80 and160 remain separate configurations; no best-of mixing."
+          ],
+          "steps": {
+            "value": 679,
+            "covered_tasks": 10,
+            "status": "complete",
+            "unit": "native_steps"
+          },
+          "tokens": {
+            "value": 19225827,
+            "covered_tasks": 10,
+            "status": "complete"
+          }
+        }
+      },
+      "details_url": "wave21-measurements.html#codex0163_deepseek41_unc_high_160"
+    },
+    {
+      "id": "run-qwen3.8-27b-20261023",
+      "model": "Qwen 3.8 27B (default)",
+      "harness": "DeepAgents 0.6.12",
+      "runs": 1,
+      "measurement_type": "fresh_run",
+      "measurement_valid": true,
+      "source_version": "0.19.1",
+      "display_version": "0.21.3",
+      "measurement_date": "2026-10-23",
+      "reasoning_effort": "default",
+      "source_sha256": "8be3d7fbae5c6f6fed8c044e4db6bf473b841c17c72c775d2a092c89edbcb2e9",
+      "light": {
+        "passed": 374,
+        "total": 391
+      },
+      "medium": {
+        "passed": 37,
+        "total": 80
+      },
+      "medium_historical": null,
+      "wave19": null,
+      "wave21": {
+        "passed": 1,
+        "total": 10,
+        "note": "fresh run 2026-10-24 · no subagents, 160 steps"
+      },
+      "telemetry": {
+        "light": {
+          "tasks": 391,
+          "observed_tasks": 391,
+          "sources_sha256": [
+            "8be3d7fbae5c6f6fed8c044e4db6bf473b841c17c72c775d2a092c89edbcb2e9"
+          ],
+          "notes": [
+            "Selected execution only; missing counters null, observed subtotals explicitly partial."
+          ],
+          "steps": {
+            "value": 5242,
+            "covered_tasks": 390,
+            "status": "partial",
+            "unit": "native_steps"
+          },
+          "tokens": {
+            "value": 20087016,
+            "covered_tasks": 390,
+            "status": "partial"
+          }
+        },
+        "medium": {
+          "tasks": 80,
+          "observed_tasks": 80,
+          "sources_sha256": [
+            "8be3d7fbae5c6f6fed8c044e4db6bf473b841c17c72c775d2a092c89edbcb2e9"
+          ],
+          "notes": [
+            "Selected execution only; missing counters null, observed subtotals explicitly partial."
+          ],
+          "steps": {
+            "value": 6032,
+            "covered_tasks": 56,
+            "status": "partial",
+            "unit": "native_steps"
+          },
+          "tokens": {
+            "value": 218439341,
+            "covered_tasks": 58,
+            "status": "partial"
+          }
+        },
+        "wave21": {
+          "tasks": 10,
+          "observed_tasks": 10,
+          "sources_sha256": [
+            "334acdc233943ac2a6b2434ff6837db184f3999ec4bb5ca7d3d967b0d6679b0f"
+          ],
+          "notes": [
+            "Selected execution only; missing counters null, observed subtotals explicitly partial."
+          ],
+          "steps": {
+            "value": 69,
+            "covered_tasks": 1,
+            "status": "partial",
+            "unit": "native_steps"
+          },
+          "tokens": {
+            "value": 2347237,
+            "covered_tasks": 2,
+            "status": "partial"
+          }
+        }
+      },
+      "details_url": "wave21-small-models.html#qwen3.8-27b",
+      "wave21_source_version": "0.21.3"
+    },
+    {
+      "id": "run-qwen3.6-35b-a3b-20261023",
+      "model": "Qwen 3.6 35B A3B (default)",
+      "harness": "DeepAgents 0.6.12",
+      "runs": 1,
+      "measurement_type": "fresh_run",
+      "measurement_valid": true,
+      "source_version": "0.19.1",
+      "display_version": "0.21.3",
+      "measurement_date": "2026-10-23",
+      "reasoning_effort": "default",
+      "source_sha256": "561201ce673d3325938a14602dc7f3abd0716461c7379fdc91f3d7a1b846ab6b",
+      "light": {
+        "passed": 344,
+        "total": 391
+      },
+      "medium": {
+        "passed": 29,
+        "total": 80
+      },
+      "medium_historical": null,
+      "wave19": null,
+      "wave21": {
+        "passed": 0,
+        "total": 10,
+        "note": "fresh run 2026-10-24 · no subagents, 160 steps"
+      },
+      "telemetry": {
+        "light": {
+          "tasks": 391,
+          "observed_tasks": 391,
+          "sources_sha256": [
+            "561201ce673d3325938a14602dc7f3abd0716461c7379fdc91f3d7a1b846ab6b"
+          ],
+          "notes": [
+            "Selected execution only; missing counters null, observed subtotals explicitly partial."
+          ],
+          "steps": {
+            "value": 5517,
+            "covered_tasks": 391,
+            "status": "complete",
+            "unit": "native_steps"
+          },
+          "tokens": {
+            "value": 21554947,
+            "covered_tasks": 391,
+            "status": "complete"
+          }
+        },
+        "medium": {
+          "tasks": 80,
+          "observed_tasks": 80,
+          "sources_sha256": [
+            "561201ce673d3325938a14602dc7f3abd0716461c7379fdc91f3d7a1b846ab6b"
+          ],
+          "notes": [
+            "Selected execution only; missing counters null, observed subtotals explicitly partial."
+          ],
+          "steps": {
+            "value": 7513,
+            "covered_tasks": 66,
+            "status": "partial",
+            "unit": "native_steps"
+          },
+          "tokens": {
+            "value": 414337452,
+            "covered_tasks": 74,
+            "status": "partial"
+          }
+        },
+        "wave21": {
+          "tasks": 10,
+          "observed_tasks": 10,
+          "sources_sha256": [
+            "9e9fd97b4eb226ea5e61c709da982b3c8d667fd4e0d1c52aedb33c36b9e178eb"
+          ],
+          "notes": [
+            "Selected execution only; missing counters null, observed subtotals explicitly partial."
+          ],
+          "steps": {
+            "value": 0,
+            "covered_tasks": 0,
+            "status": "unavailable",
+            "unit": "native_steps"
+          },
+          "tokens": {
+            "value": 10568377,
+            "covered_tasks": 10,
+            "status": "complete"
+          }
+        }
+      },
+      "details_url": "wave21-small-models.html#qwen3.6-35b-a3b",
+      "wave21_source_version": "0.21.3"
+    },
+    {
+      "id": "run-gpt-oss-20b-20261023",
+      "model": "GPT-OSS 20B (default)",
+      "harness": "DeepAgents 0.6.12",
+      "runs": 1,
+      "measurement_type": "fresh_run",
+      "measurement_valid": true,
+      "source_version": "0.19.1",
+      "display_version": "0.21.3",
+      "measurement_date": "2026-10-23",
+      "reasoning_effort": "default",
+      "source_sha256": "a25530bcf20a9ff7231125c032d7cff978c2c56c193dab2ecc5cbbcbd00e97e5",
+      "light": {
+        "passed": 173,
+        "total": 391
+      },
+      "medium": {
+        "passed": 0,
+        "total": 80
+      },
+      "medium_historical": null,
+      "wave19": null,
+      "wave21": {
+        "passed": 0,
+        "total": 10,
+        "note": "fresh run 2026-10-24 · no subagents, 160 steps"
+      },
+      "telemetry": {
+        "light": {
+          "tasks": 391,
+          "observed_tasks": 391,
+          "sources_sha256": [
+            "a25530bcf20a9ff7231125c032d7cff978c2c56c193dab2ecc5cbbcbd00e97e5"
+          ],
+          "notes": [
+            "Selected execution only; missing counters null, observed subtotals explicitly partial."
+          ],
+          "steps": {
+            "value": 2767,
+            "covered_tasks": 391,
+            "status": "complete",
+            "unit": "native_steps"
+          },
+          "tokens": {
+            "value": 9855599,
+            "covered_tasks": 391,
+            "status": "complete"
+          }
+        },
+        "medium": {
+          "tasks": 80,
+          "observed_tasks": 80,
+          "sources_sha256": [
+            "a25530bcf20a9ff7231125c032d7cff978c2c56c193dab2ecc5cbbcbd00e97e5"
+          ],
+          "notes": [
+            "Selected execution only; missing counters null, observed subtotals explicitly partial."
+          ],
+          "steps": {
+            "value": 412,
+            "covered_tasks": 80,
+            "status": "complete",
+            "unit": "native_steps"
+          },
+          "tokens": {
+            "value": 2396655,
+            "covered_tasks": 80,
+            "status": "complete"
+          }
+        },
+        "wave21": {
+          "tasks": 10,
+          "observed_tasks": 10,
+          "sources_sha256": [
+            "767c8942b607ae75c6ecdf00f7d60038efdb3cdc09321ba6b53bc15a7bc6dd76"
+          ],
+          "notes": [
+            "Selected execution only; missing counters null, observed subtotals explicitly partial."
+          ],
+          "steps": {
+            "value": 130,
+            "covered_tasks": 10,
+            "status": "complete",
+            "unit": "native_steps"
+          },
+          "tokens": {
+            "value": 396881,
+            "covered_tasks": 10,
+            "status": "complete"
+          }
+        }
+      },
+      "details_url": "wave21-small-models.html#gpt-oss-20b",
+      "wave21_source_version": "0.21.3"
+    }
+  ]
+}

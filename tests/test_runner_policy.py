@@ -1,15 +1,18 @@
 from __future__ import annotations
 
+import builtins
 import os
 import subprocess
+import sys
 from pathlib import Path
-from types import SimpleNamespace
+from types import ModuleType, SimpleNamespace
 from typing import cast
 
 import pytest
 from langgraph.errors import GraphRecursionError
 
 from harness_bench import __main__ as bench_main
+from harness_bench import runner
 from harness_bench.core import Task, VerifyResult
 from harness_bench.runner import TaskRun, run_task, write_results_json
 from harness_bench.tasks import get_task
@@ -689,7 +692,52 @@ def test_run_all_continues_from_existing_json(monkeypatch, tmp_path: Path, capsy
     assert [task["message"] for task in payload["tasks"]] == ["already done", "newly done"]
 
 
-def test_cli_timeout_results_are_tagged_for_continue(tmp_path: Path) -> None:
+@pytest.mark.parametrize("version", [None, "0.18.0", "0.19.0"])
+@pytest.mark.parametrize("module_name,method,extra_kwargs", [
+    ("runner", "run_all", {}),
+    ("runner_pure", "run_all", {}),
+    ("runner_openrouter", "run_all", {"isolation": "none"}),
+    ("runner_openrouter", "run_all", {"isolation": "bwrap"}),
+    ("runner_cli", "run_all_cli", {}),
+])
+def test_resume_rejects_legacy_protocol_before_model_or_rewrite(
+    monkeypatch, tmp_path, version, module_name, method, extra_kwargs,
+):
+    import importlib
+    import json
+
+    from harness_bench import runner_cli
+    from harness_bench.versioning import TASK_SET_VERSION
+
+    assert version != TASK_SET_VERSION
+    module = importlib.import_module(f"harness_bench.{module_name}")
+    task = Task("task_01_fake", "Fake", "Solve", lambda path: VerifyResult(True))
+    out = tmp_path / "legacy.json"
+    payload = {"tasks": [{"task_id": task.id, "passed": True, "message": "old", "elapsed_seconds": 1}]}
+    if version is not None:
+        payload["task_set_version"] = version
+    original = json.dumps(payload).encode()
+    out.write_bytes(original)
+    for current in {module, runner_cli}:
+        monkeypatch.setattr(current, "_load_env_from_dotenv", lambda: None)
+        monkeypatch.setattr(current, "get_task", lambda tid: task)
+        for name in ("_ensure_credentials", "_ensure_openrouter_key"):
+            if hasattr(current, name):
+                monkeypatch.setattr(current, name, lambda: None)
+        for name in ("run_task", "run_task_cli", "_write_partial_results_json"):
+            if hasattr(current, name):
+                monkeypatch.setattr(current, name,
+                                    lambda *a, **kw: pytest.fail("must reject before model execution or output rewrite"))
+    with pytest.raises(ValueError, match="task_set_version.*current task-set protocol"):
+        getattr(module, method)([task.id], json_output=out, **extra_kwargs)
+    assert out.read_bytes() == original
+    # Historical analysis remains available, without a silent version rewrite.
+    rows = runner.load_results_json(out)
+    assert len(rows) == 1 and rows[0].message == "old"
+    assert out.read_bytes() == original
+
+
+def test_cli_timeout_is_scored_and_not_retried_on_continue(tmp_path: Path) -> None:
     import json
 
     out = tmp_path / "results.json"
@@ -702,10 +750,10 @@ def test_cli_timeout_results_are_tagged_for_continue(tmp_path: Path) -> None:
     payload = json.loads(out.read_text(encoding="utf-8"))
     task = payload["tasks"][0]
     assert task["failure_kind"] == "timeout"
-    assert task["rerun_on_continue"] is True
+    assert "rerun_on_continue" not in task
 
 
-def test_run_all_cli_continues_from_existing_json_reruns_cli_timeout(
+def test_run_all_cli_continues_without_rerunning_cli_timeout(
     monkeypatch,
     tmp_path: Path,
     capsys,
@@ -758,11 +806,11 @@ def test_run_all_cli_continues_from_existing_json_reruns_cli_timeout(
         json_output=out,
     )
 
-    assert calls == ["task_01_fake"]
+    assert calls == []
     assert [result.task_id for result in results] == ["task_01_fake", "task_02_fake"]
-    assert "[CONTINUE] loaded 1/2 completed task attempt(s)" in capsys.readouterr().out
+    assert "[CONTINUE] loaded 2/2 completed task attempt(s)" in capsys.readouterr().out
     payload = json.loads(out.read_text(encoding="utf-8"))
-    assert [task["message"] for task in payload["tasks"]] == ["rerun ok", "already done"]
+    assert [task["message"] for task in payload["tasks"]] == ["", "already done"]
     assert "rerun_on_continue" not in payload["tasks"][0]
 
 
@@ -1025,3 +1073,75 @@ def test_sequential_progress_output_is_cp1251_safe(
     output = capsys.readouterr().out
     assert "[START] task_fake: Fake task" in output
     output.encode("cp1251")
+
+
+
+def test_harness_profile_registers_once_per_process(monkeypatch, tmp_path: Path) -> None:
+    """Registering per task stacks middleware layers until resolution blows the stack.
+
+    `register_harness_profile` merges additively, so the Nth registration builds
+    a resolution N frames deep — past ~450 tasks every agent build raises
+    RecursionError. The workspace pointer still has to move every task.
+    """
+    registrations: list[int] = []
+    workspaces: list[Path] = []
+    fake = ModuleType("deepagents_gigachat")
+    fake.register_harness = lambda: registrations.append(1)  # type: ignore[attr-defined]
+    fake.set_workspace_path = workspaces.append  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "deepagents_gigachat", fake)
+    monkeypatch.setattr(runner, "_HARNESS_PROFILE_REGISTERED", False)
+
+    for index in range(500):
+        runner._ensure_harness_profile(tmp_path / f"ws{index}")
+
+    assert registrations == [1]
+    assert len(workspaces) == 500
+    assert workspaces[-1] == tmp_path / "ws499"
+
+
+def test_harness_profile_absent_package_is_not_an_error(monkeypatch, tmp_path: Path) -> None:
+    real_import = builtins.__import__
+
+    def _no_gigachat(name: str, *args: object, **kwargs: object) -> object:
+        if name == "deepagents_gigachat":
+            raise ImportError("not installed")
+        return real_import(name, *args, **kwargs)  # type: ignore[arg-type]
+
+    monkeypatch.setattr(builtins, "__import__", _no_gigachat)
+    monkeypatch.setattr(runner, "_HARNESS_PROFILE_REGISTERED", False)
+
+    runner._ensure_harness_profile(tmp_path)
+
+
+def test_bridged_profile_learns_the_task_workspace(monkeypatch, tmp_path: Path) -> None:
+    """`MemoryTaskMiddleware` reads the workspace off a module global, not state.
+
+    Without this call a bridged `gigachat` profile runs with that middleware
+    inert, so `run-openrouter` measures the memory wave in a weaker
+    configuration than the native runner.
+    """
+    from harness_bench import runner_openrouter
+
+    seen: list[Path] = []
+    fake = ModuleType("deepagents_gigachat")
+    fake.set_workspace_path = seen.append  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "deepagents_gigachat", fake)
+
+    runner_openrouter._point_gigachat_profile_at(tmp_path / "ws")
+
+    assert seen == [tmp_path / "ws"]
+
+
+def test_bridged_profile_without_the_package_is_not_an_error(monkeypatch, tmp_path: Path) -> None:
+    from harness_bench import runner_openrouter
+
+    real_import = builtins.__import__
+
+    def _no_gigachat(name: str, *args: object, **kwargs: object) -> object:
+        if name == "deepagents_gigachat":
+            raise ImportError("not installed")
+        return real_import(name, *args, **kwargs)  # type: ignore[arg-type]
+
+    monkeypatch.setattr(builtins, "__import__", _no_gigachat)
+
+    runner_openrouter._point_gigachat_profile_at(tmp_path)

@@ -18,12 +18,14 @@ Examples:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import shlex
 import sys
 from collections.abc import Sequence
 from pathlib import Path
 
+from harness_bench.core import VerifyResult
 from harness_bench.harbor_export import export_harbor_dataset
 from harness_bench.metrics import default_metric_ks
 from harness_bench.runner import (
@@ -35,15 +37,21 @@ from harness_bench.runner import (
     summarize,
     verify_gold,
 )
-from harness_bench.runner_cli import DEFAULT_CLI_COMMAND, DEFAULT_TIMEOUT_SECONDS, run_all_cli
+from harness_bench.runner_cli import (
+    DEFAULT_CLI_COMMAND,
+    DEFAULT_TIMEOUT_SECONDS,
+    _task_runtime_identity,
+    run_all_cli,
+)
 from harness_bench.runner_openrouter import DEFAULT_OPENROUTER_MODEL
 from harness_bench.runner_openrouter import run_all as run_all_openrouter
 from harness_bench.runner_pure import run_all as run_all_pure
-from harness_bench.tasks import ALL_TASKS, get_task
+from harness_bench.tasks import ALL_TASKS, SUITES, get_task
 from harness_bench.versioning import (
     CURRENT_TASK_SET_REVISION,
     TASK_SET_REVISIONS,
     TASK_SET_VERSION,
+    task_number,
     validate_task_set_metadata,
 )
 
@@ -59,6 +67,8 @@ def _exit_code(
     fail_on_runtime_error: bool = False,
 ) -> int:
     """Return the process exit code for a completed benchmark run."""
+    if any(getattr(r, "failure_kind", None) == "infrastructure" for r in results):
+        return 1
     if fail_on_runtime_error and _has_runtime_error(results):
         return 1
     if allow_task_failures:
@@ -66,12 +76,57 @@ def _exit_code(
     return 0 if all(getattr(r, "passed", False) for r in results) else 1
 
 
-def _cmd_list(_args: argparse.Namespace) -> int:
-    for task in ALL_TASKS:
+def _has_task_range(args: argparse.Namespace) -> bool:
+    return getattr(args, "from_task", None) is not None or getattr(args, "to_task", None) is not None
+
+
+def _selected_tasks(args: argparse.Namespace) -> list:
+    """The `--suite` tasks, narrowed to `--from-task`..`--to-task` (task numbers, inclusive)."""
+    tasks = SUITES[getattr(args, "suite", "default")]
+    if not _has_task_range(args):
+        return tasks
+    low = getattr(args, "from_task", None) or 1
+    high = getattr(args, "to_task", None)
+    return [
+        task
+        for task in tasks
+        if (number := task_number(task.id)) is not None
+        and number >= low
+        and (high is None or number <= high)
+    ]
+
+
+def _task_ids(args: argparse.Namespace) -> list[str] | None:
+    """Explicit `--task` ids win; otherwise the suite, narrowed by a task-number range."""
+    if getattr(args, "task", None):
+        return args.task
+    if getattr(args, "suite", "default") == "default" and not _has_task_range(args):
+        return None
+    return [task.id for task in _selected_tasks(args)]
+
+
+def _validate_task_range(parser: argparse.ArgumentParser, args: argparse.Namespace) -> None:
+    if not _has_task_range(args):
+        return
+    if getattr(args, "task", None):
+        parser.error("--task cannot be combined with --from-task/--to-task")
+    low, high = getattr(args, "from_task", None), getattr(args, "to_task", None)
+    if (low is not None and low < 1) or (high is not None and high < 1):
+        parser.error("--from-task/--to-task take task numbers starting at 1")
+    if low is not None and high is not None and low > high:
+        parser.error(f"--from-task {low} is after --to-task {high}")
+    if not _selected_tasks(args):
+        parser.error("no tasks in the selected --suite fall inside --from-task/--to-task")
+
+
+def _cmd_list(args: argparse.Namespace) -> int:
+    tasks = _selected_tasks(args)
+    for task in tasks:
         tags = f"  [{', '.join(task.tags)}]" if task.tags else ""
         print(f"  {task.id} — {task.name}{tags}")
-    print(f"\nTotal: {len(ALL_TASKS)} tasks")
-    print(f"Task-set version: {TASK_SET_VERSION}")
+    print(f"\nTotal: {len(tasks)} tasks")
+    if tasks is ALL_TASKS:
+        print(f"Task-set version: {TASK_SET_VERSION}")
     return 0
 
 
@@ -150,7 +205,7 @@ def _cmd_run(args: argparse.Namespace) -> int:
     metric_ks = _metric_ks_for_args(args)
     _announce_json_output(args)
     results = run_all(
-        task_ids=args.task,
+        task_ids=_task_ids(args),
         keep_workspace=args.keep,
         recursion_limit=args.recursion_limit,
         concurrency=args.concurrency,
@@ -164,10 +219,12 @@ def _cmd_run(args: argparse.Namespace) -> int:
 
 
 def _cmd_run_openrouter(args: argparse.Namespace) -> int:
+    from harness_bench.cli_isolation import load_manifest
+
     metric_ks = _metric_ks_for_args(args)
     _announce_json_output(args)
     results = run_all_openrouter(
-        task_ids=args.task,
+        task_ids=_task_ids(args),
         model_name=args.model,
         keep_workspace=args.keep,
         recursion_limit=args.recursion_limit,
@@ -180,6 +237,14 @@ def _cmd_run_openrouter(args: argparse.Namespace) -> int:
         fail_on_runtime_error=args.fail_on_runtime_error,
         rerun_on_fail=args.rerun_on_fail,
         forward_reasoning_history=args.forward_reasoning_history,
+        compact_at_tokens=args.compact_at_tokens,
+        prompt_cache=args.prompt_cache,
+        no_subagents=args.no_subagents,
+        responses_api=args.responses_api,
+        isolation=args.isolation,
+        runtime_paths=load_manifest(args.sandbox_manifest),
+        artifacts_root=args.artifacts_dir,
+        rli=args.rli,
     )
     _summarize_run(results, metric_ks)
     _maybe_report_json(args, results)
@@ -194,7 +259,7 @@ def _cmd_run_pure(args: argparse.Namespace) -> int:
     metric_ks = _metric_ks_for_args(args)
     _announce_json_output(args)
     results = run_all_pure(
-        task_ids=args.task,
+        task_ids=_task_ids(args),
         keep_workspace=args.keep,
         recursion_limit=args.recursion_limit,
         concurrency=args.concurrency,
@@ -208,10 +273,12 @@ def _cmd_run_pure(args: argparse.Namespace) -> int:
 
 
 def _cmd_run_cli(args: argparse.Namespace) -> int:
+    from harness_bench.cli_isolation import load_manifest
+
     metric_ks = _metric_ks_for_args(args)
     _announce_json_output(args)
     results = run_all_cli(
-        task_ids=args.task,
+        task_ids=_task_ids(args),
         cli_command=args.cli_command,
         timeout=args.timeout,
         keep_workspace=args.keep,
@@ -219,6 +286,9 @@ def _cmd_run_cli(args: argparse.Namespace) -> int:
         attempts=args.attempts,
         json_output=args.json_output,
         rerun_on_fail=args.rerun_on_fail,
+        isolation=args.isolation,
+        runtime_paths=load_manifest(args.sandbox_manifest),
+        artifacts_root=args.artifacts_dir,
     )
     _summarize_run(results, metric_ks)
     _maybe_report_json(args, results)
@@ -262,7 +332,7 @@ def _cmd_summarize_json(args: argparse.Namespace) -> int:
 
 
 def _cmd_verify_gold(args: argparse.Namespace) -> int:
-    results = verify_gold(task_ids=args.task)
+    results = verify_gold(task_ids=_task_ids(args))
     failed = [r for r in results if not r.passed]
     print()
     print("=" * 64)
@@ -279,6 +349,8 @@ def _cmd_verify_gold(args: argparse.Namespace) -> int:
 
 def _cmd_apply_gold(args: argparse.Namespace) -> int:
     task = get_task(args.task)
+    if getattr(task, "requires_trusted_service", False):
+        raise ValueError("This task needs an active trusted host service; use verify-gold for a reference check or the isolated CLI runner for an execution")
     workspace = Path(args.workspace)
     workspace.mkdir(parents=True, exist_ok=True)
     task.apply_gold(workspace)
@@ -289,7 +361,44 @@ def _cmd_apply_gold(args: argparse.Namespace) -> int:
 def _cmd_verify_task(args: argparse.Namespace) -> int:
     task = get_task(args.task)
     workspace = Path(args.workspace)
-    result = task.verify(workspace)
+    evidence = getattr(args, "trusted_evidence", None)
+    if getattr(task, "requires_trusted_service", False):
+        if evidence is None:
+            raise ValueError("This task requires --trusted-evidence from the isolated host execution; workspace files alone cannot establish its service history")
+        from harness_bench.feasibility_tasks.io_utils import _read_regular
+        from harness_bench.feasibility_tasks.trusted_service import (
+            MAX_EVIDENCE_BYTES,
+            evidence_context,
+            get_session,
+        )
+
+        evidence = Path(evidence).resolve()
+        if evidence.is_relative_to(workspace.resolve()):
+            raise ValueError("Trusted evidence must be outside the agent workspace")
+        metadata = json.loads(_read_regular(evidence.parent / "execution.json", 2_000_000))
+        if (not isinstance(metadata, dict) or metadata.get("task_id") != task.id
+                or metadata.get("isolation") != "bwrap"
+                or any(metadata.get(key) != value for key, value in _task_runtime_identity(task).items())
+                or metadata.get("trusted_service_sha256") != hashlib.sha256(
+                    _read_regular(evidence, MAX_EVIDENCE_BYTES)).hexdigest()):
+            raise ValueError("Trusted evidence does not match the host execution metadata/task protocol")
+        if metadata.get("failure_kind") is not None or metadata.get("phase") != "verify":
+            result = VerifyResult(False, "host execution did not complete within the valid scoring protocol: "
+                                  + str(metadata.get("failure_kind") or metadata.get("phase")))
+        else:
+            with evidence_context(workspace, evidence):
+                if metadata.get("agent_timed_out"):
+                    receipt = get_session(workspace).completion_receipt()
+                    if (receipt is None or receipt != metadata.get("completion_receipt")
+                            or receipt["timeout_seconds"] != metadata.get("timeout")):
+                        raise ValueError("Timed-out execution lacks matching trusted completion receipt")
+                result = task.verify(workspace)
+            if result.passed != metadata.get("passed"):
+                raise ValueError("Replayed score does not match the recorded host execution")
+    elif evidence is not None:
+        raise ValueError("--trusted-evidence applies only to tasks with a trusted host service")
+    else:
+        result = task.verify(workspace)
     if args.json:
         print(
             json.dumps(
@@ -312,7 +421,7 @@ def _cmd_verify_task(args: argparse.Namespace) -> int:
 def _cmd_export_harbor(args: argparse.Namespace) -> int:
     result = export_harbor_dataset(
         args.output,
-        task_ids=args.task,
+        task_ids=_task_ids(args),
         org=args.org,
         dataset=args.dataset,
         clean=args.clean,
@@ -469,8 +578,8 @@ def build_parser() -> argparse.ArgumentParser:
     p_run.add_argument(
         "--recursion-limit",
         type=int,
-        default=80,
-        help="Cap on agent loop iterations per task (default: 80)",
+        default=0,
+        help="Optional graph step cap per task; 0 means unlimited (default)",
     )
     p_run.add_argument(
         "--concurrency",
@@ -505,7 +614,8 @@ def build_parser() -> argparse.ArgumentParser:
         help=f"OpenRouter model id (default: {DEFAULT_OPENROUTER_MODEL}).",
     )
     p_or.add_argument("--keep", action="store_true", help="Keep temp workspaces")
-    p_or.add_argument("--recursion-limit", type=int, default=80)
+    p_or.add_argument("--recursion-limit", type=int, default=0,
+                        help="Optional graph step cap; 0 means unlimited (default).")
     p_or.add_argument(
         "--max-tokens",
         type=int,
@@ -516,6 +626,15 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     p_or.add_argument("--concurrency", type=int, default=1)
+    p_or.add_argument(
+        "--rli",
+        action="store_true",
+        help=(
+            "Run task tools and verification in isolated RLI sessions. "
+            "Requires --isolation none. The image must contain this task-set version; "
+            "override the environment with HARNESS_BENCH_RLI_ENV and HARNESS_BENCH_RLI_VERSION."
+        ),
+    )
     p_or.add_argument(
         "--transient-attempts",
         type=int,
@@ -532,6 +651,44 @@ def build_parser() -> argparse.ArgumentParser:
             "Replay assistant reasoning traces (reasoning_content / reasoning) "
             "in subsequent model requests. Changes token spend and scores, so "
             "runs that differ in this flag are not comparable."
+        ),
+    )
+    p_or.add_argument(
+        "--compact-at-tokens",
+        type=int,
+        default=None,
+        help=(
+            "Make deepagents auto-compact (summarize) the conversation once a "
+            "prompt reaches this many tokens by deepagents' approximate count, "
+            "e.g. 128000. Default: deepagents' fallback of 170000 for models "
+            "without a profile. Changes agent behavior on long tasks."
+        ),
+    )
+    p_or.add_argument(
+        "--prompt-cache",
+        action="store_true",
+        help=(
+            "Ask the gateway to cache the prompt prefix (top-level "
+            "cache_control, honored for Anthropic models on OpenRouter-style "
+            "gateways). Cuts cost; does not change model inputs."
+        ),
+    )
+    p_or.add_argument(
+        "--no-subagents",
+        action="store_true",
+        help=(
+            "Disable deepagents' auto-added general-purpose subagent (no `task` "
+            "tool), so the whole trajectory stays in one context."
+        ),
+    )
+    p_or.add_argument(
+        "--responses-api",
+        action="store_true",
+        help=(
+            "Call the model through the OpenAI Responses API instead of Chat "
+            "Completions, with reasoning items kept encrypted and replayed each "
+            "turn. Needed for models that reject reasoning_effort together "
+            "with tools on Chat Completions (e.g. openai/gpt-6-luna)."
         ),
     )
     _add_metric_args(p_or)
@@ -560,6 +717,10 @@ def build_parser() -> argparse.ArgumentParser:
             "an agent/runtime exception recorded in the JSON error field."
         ),
     )
+    p_or.add_argument("--isolation", choices=("bwrap", "none"), default="bwrap",
+                      help="Per-task Linux worker sandbox (default); none retains the diagnostic in-process runner")
+    p_or.add_argument("--sandbox-manifest", type=Path, help="Additional trusted runtime paths for editable dependencies")
+    p_or.add_argument("--artifacts-dir", type=Path, help="Persistent per-execution model/tool evidence")
     p_or.set_defaults(func=_cmd_run_openrouter)
 
     p_pure = sub.add_parser(
@@ -571,7 +732,8 @@ def build_parser() -> argparse.ArgumentParser:
     )
     p_pure.add_argument("--task", action="append", help="Task id (repeatable)")
     p_pure.add_argument("--keep", action="store_true", help="Keep temp workspaces")
-    p_pure.add_argument("--recursion-limit", type=int, default=80)
+    p_pure.add_argument("--recursion-limit", type=int, default=0,
+                        help="Optional graph step cap; 0 means unlimited (default).")
     p_pure.add_argument("--concurrency", type=int, default=1)
     _add_metric_args(p_pure)
     _add_json_output(p_pure)
@@ -612,6 +774,10 @@ def build_parser() -> argparse.ArgumentParser:
         help="Workspace path to inspect (default: current directory)",
     )
     p_verify_task.add_argument("--json", action="store_true", help="Print result as JSON")
+    p_verify_task.add_argument(
+        "--trusted-evidence", type=Path,
+        help="Host-owned service evidence outside the workspace, required for wave 19 replay",
+    )
     p_verify_task.set_defaults(func=_cmd_verify_task)
 
     p_harbor = sub.add_parser(
@@ -671,7 +837,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--timeout",
         type=int,
         default=DEFAULT_TIMEOUT_SECONDS,
-        help=f"Per-task timeout in seconds (default: {DEFAULT_TIMEOUT_SECONDS}).",
+        help=f"Sanitary per-task timeout in seconds (default: {DEFAULT_TIMEOUT_SECONDS}).",
     )
     p_cli.add_argument(
         "--concurrency",
@@ -686,8 +852,42 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Exit 0 when the harness completes even if some benchmark tasks fail.",
     )
+    p_cli.add_argument("--isolation", choices=("bwrap", "none"), default="bwrap",
+                       help="Per-task allowlisted Linux sandbox (default: bwrap); none is diagnostic only.")
+    p_cli.add_argument("--sandbox-manifest", type=Path, help="JSON runtime_paths allowlist for custom CLI dependencies")
+    p_cli.add_argument("--artifacts-dir", type=Path, help="Persistent per-execution stdout, stderr, prompts and native traces")
     p_cli.set_defaults(func=_cmd_run_cli)
 
+    for command in ("list", "run", "run-openrouter", "run-pure", "run-cli", "verify-gold"):
+        sub.choices[command].add_argument(
+            "--suite",
+            choices=sorted(SUITES),
+            default="default",
+            help=(
+                "Task suite when no --task is given: 'default' is the scored "
+                f"task registry (531 tasks, v{TASK_SET_VERSION}, including calibration controls); 'light' selects tasks 1-391, "
+                "'medium' selects historical tasks 392-471 plus ten selected wave21 tasks (90 total); "
+                "'medium-historical80' selects tasks 392-471; 'long' is the long-context "
+                "wave (tasks 392-411), 'reflect' is the tool-reflection "
+                "wave inside it (tasks 412-431), 'feasibility' is wave 19 (tasks 432-471), "
+                "'general-hard' is wave 20 (tasks 472-511); 'composite-hard' "
+                "is the selected ten-task wave 21; 'composite-hard-calibration' "
+                "retains all twenty original coupled workflows (tasks 512-531)."
+            ),
+        )
+    for command in ("list", "run", "run-openrouter", "run-pure", "run-cli", "verify-gold", "export-harbor"):
+        sub.choices[command].add_argument(
+            "--from-task",
+            type=int,
+            metavar="N",
+            help="Only tasks numbered N or higher (inclusive), e.g. 1; narrows --suite.",
+        )
+        sub.choices[command].add_argument(
+            "--to-task",
+            type=int,
+            metavar="M",
+            help="Only tasks numbered M or lower (inclusive), e.g. 391 to leave out the long wave.",
+        )
     return parser
 
 
@@ -699,6 +899,7 @@ def _command_for_argv(argv: list[str] | None) -> str:
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
+    _validate_task_range(parser, args)
     set_results_json_command(_command_for_argv(argv))
     try:
         return int(args.func(args))

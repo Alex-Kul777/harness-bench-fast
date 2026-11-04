@@ -4,6 +4,7 @@ from harness_bench.tasks import ALL_TASKS
 from harness_bench.versioning import (
     CURRENT_TASK_SET_REVISION,
     EXPECTED_TASK_COUNT,
+    TASK_SET_REVISIONS,
     TASK_SET_VERSION,
     TASK_WAVES,
     revision_for_task_id,
@@ -87,8 +88,39 @@ def test_cli_tasks_belong_to_their_revision() -> None:
     assert revision_for_task_id("task_391_cli_sed_section_extract").version == "0.15.0"
 
 
-def test_current_revision_is_the_audit_pass() -> None:
+def test_audit_revision_adds_no_tasks() -> None:
     # 0.16.0 adds no tasks: it corrects defects across the existing 391.
-    assert TASK_SET_VERSION == "0.16.0"
-    assert CURRENT_TASK_SET_REVISION.total_tasks == 391
+    audit = next(revision for revision in TASK_SET_REVISIONS if revision.version == "0.16.0")
+    assert audit.total_tasks == 391
+    assert audit.added_task_numbers == (0, 0)
+
+
+def test_long_wave_keeps_its_original_revision() -> None:
+    assert revision_for_task_id("task_392_manuscript_continuity").version == "0.17.0"
+    assert revision_for_task_id("task_411_math_solutions_check").version == "0.17.0"
+
+
+def test_reflect_wave_keeps_its_original_revision() -> None:
+    assert revision_for_task_id("task_412_supplier_minimum").version == "0.18.0"
+    assert revision_for_task_id("task_431_admin_elevation").version == "0.18.0"
+
+
+def test_wave19_keeps_its_original_revision() -> None:
+    assert revision_for_task_id(ALL_TASKS[431].id).version == "0.19.0"
+    assert revision_for_task_id(ALL_TASKS[470].id).version == "0.19.0"
+    assert TASK_WAVES[-3].name == "wave19-feasibility"
+
+
+def test_wave20_keeps_its_original_candidate_revision() -> None:
+    assert revision_for_task_id(ALL_TASKS[471].id).version == "0.20.0"
+    assert revision_for_task_id(ALL_TASKS[510].id).version == "0.20.0"
+    assert TASK_WAVES[-2].name == "wave20-general-hard"
+
+
+def test_composite_selection_preserves_the_calibration_registry() -> None:
+    assert TASK_SET_VERSION == "0.21.3"
+    assert CURRENT_TASK_SET_REVISION.total_tasks == 531
     assert CURRENT_TASK_SET_REVISION.added_task_numbers == (0, 0)
+    assert revision_for_task_id(ALL_TASKS[511].id).version == "0.21.0"
+    assert revision_for_task_id(ALL_TASKS[-1].id).version == "0.21.0"
+    assert TASK_WAVES[-1].name == "wave21-composite-hard"

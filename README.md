@@ -1,60 +1,659 @@
 # harness-bench
 
-## Current Results
+[Live leaderboard and benchmark results](https://ai-forever.github.io/harness-bench-fast/)
 
-Published benchmark results below use the full 391-task set (`task-set v0.16.0`).
+**Medium continuation · wave 21 / task-set v0.21.3: ten selected coupled workflows.** Use
+`--suite composite-hard` for IDs **512, 518, 520, 522, 523, 524, 525, 526, 527, 530**.
+Each task combines two general workflows with documented changes to current
+state, versions and obligations; both goals must be satisfied in one trajectory.
+All domain rules and tools are available locally. Linux/bubblewrap and the
+trusted host service are required. Each task allows 900 seconds and 320 shared
+service requests. For the calibrated DeepAgents profile, use
+`--recursion-limit 160 --max-tokens 16384 --forward-reasoning-history --no-subagents`;
+the prompt discloses the graph budget. A graph step is not a model or service call.
+
+These ten were selected from existing calibration, using at most two successful
+unique model+harness pairs among seven configurations tested on all twenty.
+This is a post-selection rescore, not a held-out difficulty estimate or a new
+model run. The Opus follow-up covered only two tasks and is recorded separately.
+See [wave 21 and its contracts](docs/wave21-composite-hard.md) and the
+[selection manifest](docs/wave21-selected10.json).
+
+The public leaderboard has two canonical suites:
+
+- **Light: 391 tasks, IDs 1–391.** This suite is frozen; future waves do not add tasks to it.
+- **Medium: 90 tasks**, historical IDs 392–471 plus selected wave 21 IDs
+  **512, 518, 520, 522, 523, 524, 525, 526, 527, 530**. Use `--suite medium`.
+
+The two suites contain 481 distinct tasks. The registry still contains **531 tasks**
+to preserve original IDs and historical controls: `default` selects that registry,
+`general-hard` retains wave 20 controls (472–511), and
+`composite-hard-calibration` retains all twenty coupled tasks (512–531).
+Those controls are outside the public Medium score. `medium-historical80` selects
+only IDs 392–471 for reproducing the older Medium scope. No task definitions,
+formal resource budgets or historical outcomes changed in task-set v0.21.3.
+
+The live Medium leaderboard now ranks complete valid 90-task measurements, including the [fresh Claude Haiku 5.5 runs](docs/haiku-medium90.html) on 26 October 2026: mini-SWE-agent 63/90 and DeepAgents 60/90. Their native usage counters are partial; see the protocol for coverage.
+
+A [fresh configured Codex + DeepSeek Medium90 run](docs/codex-deepseek-medium90.html) on 27 October 2026 scored 78/90 (86.7%). It covers all 90 tasks without combining historical model or harness results; exact budgets and counter coverage are recorded in its protocol.
+
+A [fresh MiniSWE + DeepSeek Medium90 run](docs/miniswe-deepseek-medium90.html) on 27 October 2026 scored 70/90 (77.8%). It uses the same checkpoint and frozen tasks as the preceding Codex run; its native harness and reasoning-history compatibility adapter are documented in the protocol.
+
+A [fresh Claude Code + Sonnet 5.5 Medium90 run](docs/claudecode-sonnet-medium90.html) on 27 October 2026 scored 62/90 (68.9%) with high reasoning and sixteen concurrent tasks. Retained API usage is complete for all 90 tasks; the protocol documents native settings, transport and infrastructure replacement policy.
+
+Existing measurements are rescored offline on the new membership. Historical
+source versions, protocols, reasoning levels and budgets remain visible;
+results are combined only for compatible configurations. **A Medium score is
+withheld until all 90 tasks are measured and valid**; missing coverage is
+unmeasured, never a failure. The selected ten are adaptive calibration reuse,
+not a fresh held-out evaluation. Prior wave 1–20 measurements remain available,
+including complete historical Medium 80 results and partial 40-task results.
+See [Medium 90 membership and combination policy](docs/medium90-protocol.html),
+[retained calibration results and historical wave 20](docs/wave21-measurements.html)
+and the [measurement archive](docs/archive.html). No full 531-task measurement is published.
+
+Light covers everyday workflows. Medium covers long context, tool reflection,
+feasibility and coupled general workflows. The 78 published configurations
+(80 underlying runs) rescored from frozen v0.18.0 wave aggregates have complete
+Light coverage and historical Medium coverage of IDs 392–431. Their remaining
+50 current Medium tasks are unmeasured. Existing complete historical 80-task
+measurements retain that scope, including the [wave 19 measurement protocols](docs/wave19-measurements.html).
+
+The [native harness wave 19 comparison](docs/harness-wave19.html) adds Codex,
+Claude Code, pi-mono and OpenClaw on GigaChat 3.5 PROM, Haiku 5.5, GLM-5.3 and
+DeepSeek V4.1 Flash. All sixteen configurations cover tasks 432–471 only.
+Historical Medium results preserve the complete 80-task scope and the matched
+40-task wave separately;
+missing earlier coverage stays unmeasured. Three full Medium entries combine
+historical and new disjoint subsets and are explicitly labeled. Claude Code +
+Haiku is corrected to 26/40 after three confirmed adapter/API-invalid attempts
+were replaced; the other 37 outcomes are unchanged. See the linked protocol for
+runtime versions, transport settings, provenance and validation limits.
+
+Select a suite for a new run, or split an existing result without model calls:
+
+```bash
+uv run python -m harness_bench run-openrouter --suite light --model YOUR_MODEL --json-output light.json
+uv run python -m harness_bench run-openrouter --suite medium --model YOUR_MODEL --json-output medium.json
+uv run python -m harness_bench.suite_reports results.json --output-dir derived
+```
+
+Medium includes wave 19 and selected wave 21 tasks and requires the Linux/bwrap trusted-service path
+described below. Offline reports preserve source definitions and task records,
+recompute steps/tokens with coverage, keep attempts separate and withhold scores
+for incomplete or infrastructure-invalid suites. Wilson intervals in complete
+reports describe a Bernoulli task model, not repeat variability on the fixed suite.
+To rebuild the landing data: `python scripts/build_landing_data.py` (Python 3.12+).
+
+The leaderboard shows **Steps** and **Tokens** for each displayed task subset.
+The public `docs/leaderboard-telemetry.json` snapshot binds these counters to
+the source result hashes. Native tool calls and recorded input/output usage are
+recovered where available; partial or unaudited counters are labeled, and missing
+subset totals appear as a dash. Full-run usage is never substituted for Light,
+Medium or wave 19 usage. Published usage counts only final retained task attempts;
+superseded recovery attempts are excluded. Historical scores and measurement protocols are unchanged.
+
+Historical task set: **471 tasks, `task-set v0.19.1`**. Tasks 432–471 remain **wave 19: feasibility** — 40 tasks in 20 matched pairs; this revision adds no tasks. The agent must construct and submit a solution, execute a feasible search strategy, or prove that the formal conditions cannot be met. The runtime has a 3,600-second sanitary guard against hangs; formal resource budgets inside tasks are unchanged. A timely host-recorded `submit`/`finish` that passes the full verifier earns credit even if the subsequent final reply or process times out. Format and protocol compliance are part of the score. This measures the complete agent configuration, not a separate ability to predict its own solving time. Individual task credit is the main metric; both halves must pass for additional pair credit. See [wave 19](docs/wave19-feasibility.md) for the contracts, runtime and validation limits.
+
+**Wave 19 requires Linux/bubblewrap and a trusted host service.** Use `run-cli --isolation bwrap` or `run-openrouter --isolation bwrap` (the isolated CLI worker). Native `run` / `run-pure`, native OpenRouter execution, RLI and Harbor export reject selections containing these tasks before model execution. To use those paths on earlier tasks, select `--from-task 1 --to-task 431`.
+
+No model results on v0.19.1 have been recorded yet. Published v0.19.0 results and earlier wave 19 calibration retain their original protocols, budgets, denominators and scores; they are not measurements of v0.19.1. The result sections below and linked measurement pages remain historical records.
+
+## GigaChat 3.5 Ultra Reasoning (PROM) (2026-10-21)
+
+[GigaChat 3.5 Ultra Reasoning in the common leaderboard](https://ai-forever.github.io/harness-bench-fast/#giga35-ultra-reasoning):
+**277/471 (58.8%)**, 95% Wilson interval **54.3–63.2%**.
+Light **273/391 (69.8%)**; Medium **4/80 (5.0%)** — long context 0/20,
+tool reflection 3/20, wave 19 feasibility 1/40.
+
+Stock deepagents 0.6.12, no profile; production GigaChat API; reasoning
+medium, history forwarded, max output 16,384. Linux bwrap, four workers,
+temperature omitted. Three long-context `CONTEXT_TOO_LONG` 422s count as
+failures; one HTTP 500 and one HTTP 502 were retried. Timeouts and
+recursion-limit hits remain failures.
+
+The same-harness GigaChat 3.5 PROM default-effort run scored 292/471
+(62.0%). The model and reasoning effort differ. [Protocol](docs/giga35-ultra-reasoning.html)
+· [Measurement data](docs/giga35-ultra-reasoning-v019.json). Raw traces remain private.
+
+## Universal Agent + DeepSeek V4.1 Flash (2026-10-21/22)
+
+[Universal Agent + DeepSeek in the common leaderboard](https://ai-forever.github.io/harness-bench-fast/#universal-agent-deepseek):
+**444/471 (94.3%)**, 95% Wilson interval **91.8–96.0%**.
+Light **389/391 (99.5%)**; Medium **55/80 (68.8%)** — long context 13/20,
+tool reflection 17/20, wave 19 feasibility 25/40.
+
+Universal Agent 0.4.0, OpenRouter, default reasoning effort; historical v0.19.0
+task contracts and user profile preserved. Native reasoning enabled for main
+calls and disabled for auxiliary calls. Compaction/protocol failures and nine
+timeouts remain part of the result. Independent audit restored original HTTP
+400 outcomes instead of retaining later successful retries. Selected traces
+record 5,915 main LLM responses and at least 411,778,773 API tokens.
+
+Against the same-harness Haiku run: **+1.5 pp**, descriptive paired-task 95%
+interval **−0.6 to +3.6 pp**; one run per configuration does not establish
+superiority. [Protocol and comparison](docs/universal-agent-deepseek.html)
+· [Public aggregate](docs/universal-agent-deepseek.json).
+
+## Universal Agent + Claude Haiku 5.5 (2026-10-20/21)
+
+[Universal Agent in the common leaderboard](https://ai-forever.github.io/harness-bench-fast/#universal-agent-haiku):
+**437/471 (92.8%)**, 95% Wilson interval **90.1–94.8%**.
+Light **384/391 (98.2%)**; Medium **53/80 (66.3%)** — long context 8/20,
+tool reflection 13/20, wave 19 feasibility 32/40.
+
+Universal Agent gc-cli/core 0.4.0, user profile with finish gate and token
+compaction; subagents, skills and MCP disabled. OpenRouter; default temperature
+and reasoning effort. Thinking requested but application unconfirmed.
+Linux bwrap, four workers, one retained outcome per task. All 14 tasks affected
+by HTTP 502 were replaced by their first transport-clean retry, regardless of
+score. Native output truncation, finish-gate limit acceptance and nine task
+timeouts remain part of the measured behavior.
+
+The same-model DeepAgents baseline scored 427/471 (90.7%): **+2.1 pp**, with a
+descriptive paired task-bootstrap interval of 0.0 to +4.5 pp. Configuration and
+output budgets differ; this is not an isolated harness-effect estimate or repeat
+variance. [Full protocol, telemetry and comparison](docs/universal-agent-haiku.html)
+and [public aggregate](docs/universal-agent-haiku.json). Raw traces remain private.
+
+## secret sft (2026-10-19/20)
+
+[secret sft in the common leaderboard](https://ai-forever.github.io/harness-bench-fast/#secret-700b):
+**377/471 (80.0%)**, one run with deepagents and no profile.
+Light **370/391 (94.6%)**; Medium **7/80 (8.8%)** — long context 0/20,
+tool reflection 7/20, wave 19 feasibility 0/40. Task 405 was stopped by
+operator request and counted unsolved. The operator accepted these recorded
+outcomes on 2026-10-20. The earlier Secret-700-SFT run remains separate.
+
+Stock deepagents 0.6.12, no profile; reasoning enabled, effort default, history
+forwarded, no additional reasoning budget. Linux bwrap; concurrency 2 initially,
+then 8 after 109 completed tasks; temperature 0.8, top_p 0.95, max output 30,000.
+Source snapshot: `3796b9084093e5f9383077d7bde8f1ce1f0d57b5`.
+[Measurement aggregate](docs/secret-700b-v019.json) includes protocol details and
+source report fingerprint; raw traces and backend identifiers remain private.
+Step/token counters are raw, incomplete and unaudited.
+
+## secret sft · Codex (2026-10-21)
+
+[Codex in the common leaderboard](https://ai-forever.github.io/harness-bench-fast/#secret-sft-codex):
+**370/471 (78.6%)**. Light **365/391 (93.4%)**; Medium **5/80 (6.3%)**.
+All 471 tasks completed; validation passed with zero unresolved infrastructure
+failures. Task-set and execution protocol remain **v0.19.0**, not v0.19.1.
+
+API usage for the final retained attempts is **at least 112,031,097 tokens**:
+110,492,188 input and 1,538,909 output, with usage on 3,776/3,865 requests.
+Light accounts for 8,998,150 and Medium for 103,032,947 tokens, shown in the
+common Tokens column. Superseded infrastructure attempts are excluded.
+These counts include repeated context, exclude setup probes, and do not add
+reasoning twice. Missing usage makes the total a lower bound. Native counters
+(2,215 steps; 55,347,206 tokens; coverage 397/471) are retained separately.
+[Audit and protocol](docs/secret-sft-codex.html) ·
+[Final aggregate with token coverage](docs/secret-sft-codex-v019.json).
+
+## secret sft · mini-SWE-agent (2026-10-20)
+
+[mini-SWE-agent in the common leaderboard](https://ai-forever.github.io/harness-bench-fast/#secret-sft-mini):
+**379/471 (80.5%)**, 95% Wilson interval 76.6–83.8%. Light **371/391 (94.9%)**;
+Medium **8/80 (10.0%)** — long context 0/20, tool reflection 8/20, wave 19 0/40.
+All 471 tasks completed; automated validation passed with zero unresolved
+infrastructure failures. Attempts affected by HTTP 502 were rerun; context
+overflows and timeouts count as failures.
+
+mini-SWE-agent 2.4.6 / LiteLLM 1.102.1; stock HBF CLI adapter, Linux bwrap,
+8 workers; reasoning enabled, effort default, history forwarded, max output
+30,000. Temperature and top_p omitted (native/server defaults), unlike the
+explicit 0.8/0.95 in the deepagents run. No additional reasoning, step or cost
+limit. Same frozen source and task timeouts as the run above.
+[Protocol](docs/secret-sft-mini.html) · [Measurement data](docs/secret-sft-mini-v019.json).
+Raw counters: 3,502 steps and 216,628,592 tokens, both covering 401/471 tasks;
+these are incomplete and not audited API spend.
+
+## Earlier results (task-set v0.18.0, 431 tasks)
+
+### Secret-700-SFT (2026-10-16/17)
+
+Completed native deepagents run on **all 431 tasks**: **377 passed, 54 failed
+(87.5%)**, with 431 unique task IDs and no unresolved infrastructure failures.
+This final result replaces the earlier 409-task progress snapshot and is included
+in the [main leaderboard](https://ai-forever.github.io/harness-bench-fast/#secret-700-sft).
+
+| harness | model | passed | score | steps | tokens |
+|---|---|---:|---:|---:|---:|
+| deepagents | Secret-700-SFT (reasoning default) | 377/431 | 87.5% | 6,321 | 149,806,005\* |
+
+Ordinary tasks: **368/391 (94.1%)**; long context: **0/20**; tool reflection:
+**9/20 (45.0%)**. Nineteen long-context tasks reached the 7,200-second timeout;
+the remaining task completed but failed its verifier. All count as normal failures.
+One attempt per task; deepagents 0.6.12; Linux bwrap; concurrency 2. Reasoning
+is enabled with effort default and history forwarded; temperature 0.8, top_p
+0.95, max output 81,920 tokens per response. Task timeout 900 s, with floors
+of 7,200 s for long context and 1,800 s for tool reflection. Interactive-client
+reasoning limits were not applied to this benchmark run.
+
+\* Steps and tokens are preserved raw runner counters: coverage 402/431 and
+409/431 tasks respectively. Token accounting contains duplicated usage fields
+and omits final telemetry from some interrupted tasks; native-trace and API
+usage totals have not yet been reconciled. These counters are not verified
+spend or cost; pass/fail validation is independent of this telemetry audit.
+[Public aggregate](docs/secret-700-sft-progress.json) (the existing URL now
+contains the completed result); raw traces and backend identifiers remain private.
+
+### MultiTool CLI (2026-10-14)
+
+Two completed @mean1 runs on all 431 tasks, task-set v0.18.0:
+
+| harness | model | passed | score | steps | tokens |
+|---|---|---:|---:|---:|---:|
+| MultiTool CLI | GLM-5.3 (OpenRouter) (high) | 411/431 | 95.4% | 3,600 | 155,371,241 |
+| MultiTool CLI | Claude Haiku 4.5 (default) | 376/431 | 87.2% | 5,460 | 212,030,792 |
+
+MultiTool CLI package 1.14.33, source snapshot, Bun 1.4.2; Linux bwrap,
+concurrency 4. Model IDs: `z-ai/glm-5.3` (reasoning high) and
+`anthropic/claude-haiku-4.5` (default). API responses confirmed these IDs;
+no build fingerprint was provided. Custom profile: max output **16,384 tokens
+per response**, versus native CLI default 32,000; temperature not explicitly
+set. Timeout 900 s, with task floors 7200 s for long and 1800 s for reflection.
+GLM: ordinary 386/391, long 10/20, reflection 15/20. Haiku: 371/391, 1/20, 4/20.
+Steps count native tool attempts, including failed attempts. Tokens sum input,
+output, reasoning and cache usage across parent and child sessions, audited
+from native SQLite telemetry for all 431 tasks; they do not represent monetary
+cost. Transport-affected attempts were replaced after fixing streaming;
+no transient infrastructure failures remain. Six GLM long-task failures
+exhausted the output budget and were retained. Raw traces remain private.
+
+### Other harness measurements
+
+The stand owner identified the measured models as uncensored FP8 snapshots:
+[dealignai/DeepSeek-V4.1-Flash-UNCENSORED-FP8](https://huggingface.co/dealignai/DeepSeek-V4.1-Flash-UNCENSORED-FP8)
+and [dealignai/GLM-5.3-Flash-UNCENSORED-FP8](https://huggingface.co/dealignai/GLM-5.3-Flash-UNCENSORED-FP8).
+Results refer to these modified snapshots, not the original base checkpoints.
+
+
+| harness | model | passed | score | steps | tokens |
+|---|---|---:|---:|---:|---:|
+| pi-mono | DeepSeek V4.1 Flash Uncensored FP8 (high) | 423/431 | 98.1% | 0 | 0 |
+| GigaCode Universal Agent (gc-cli) | GLM-5.3 (OpenRouter) (high) | 423/431 | 98.1% | 4,581 | 271,316,552 |
+| dsh headless | DeepSeek V4.1 Flash Uncensored FP8 (high) | 422/431 | 97.9% | 3,973 | 249,558,870 |
+| Codex CLI | GPT-6.1 Sol (low) | 420/431 | 97.4% | 2,817 | 69,419,504 |
+| free-code | DeepSeek V4.1 Flash Uncensored FP8 (high) | 419/431 | 97.2% | 4,311 | 631,963,525 |
+| GigaCode Universal Agent (gc-cli) | DeepSeek V4.1 Flash Uncensored FP8 (high) | 419/431 | 97.2% | 5,210 | 386,165,256 |
+| GigaCode Universal Agent (gc-cli) | Kimi-K3 (OpenRouter) (high) | 417/431 | 96.7% | 3,402 | 171,347,666 |
+| GigaCode Universal Agent (gc-cli) | GPT-6 Luna (OpenRouter) (reasoning none) | 388/431 | 90.0% | 8,716 | 762,784,868 |
+
+GLM-5.3 Flash Uncensored (`glm-5.3-flash-uncensored`), **@mean1**, measured
+2026-10-06/07, reasoning high, Linux bwrap, concurrency 3. Eight completed
+431-task runs; infrastructure attempts replaced by retries. Raw token telemetry
+is not independently audited; zero means absent. Same frozen harness versions
+and task budgets as the DeepSeek matrix.
+
+| harness | model | passed | score | steps | tokens |
+|---|---|---:|---:|---:|---:|
+| dsh headless | GLM-5.3 Flash Uncensored FP8 (high) | 405/431 | 94.0% | 3,833 | 234,756,961 |
+| mini-SWE-agent | GLM-5.3 Flash Uncensored FP8 (high) | 404/431 | 93.7% | 5,109 | 375,324,319 |
+| free-code | GLM-5.3 Flash Uncensored FP8 (high) | 404/431 | 93.7% | 4,924 | 516,879,409 |
+| Hermes | GLM-5.3 Flash Uncensored FP8 (high) | 399/431 | 92.6% | 0 | 0 |
+| pi-mono | GLM-5.3 Flash Uncensored FP8 (high) | 397/431 | 92.1% | 0 | 0 |
+| OpenCode | GLM-5.3 Flash Uncensored FP8 (high) | 397/431 | 92.1% | 2,911 | 0 |
+| OpenHands | GLM-5.3 Flash Uncensored FP8 (high) | 393/431 | 91.2% | 0 | 0 |
+| deepagents | GLM-5.3 Flash Uncensored FP8 (high) | 375/431 | 87.0% | 6,627 | 373,783,977 |
+
+The live leaderboard supports an inclusive task-set version range with two sliders.
+The historical 431-task results cover v0.1.0 through v0.18.0 and use the task
+definitions of that snapshot. Later v0.19.0 results are linked above. The source
+registry is now v0.19.1; historical rows are not relabeled as this new protocol.
+Revisions with no added tasks contribute zero tasks; an empty range has no score.
+Scores and ranks are recomputed from per-wave passed counts; @mean3 remains
+an arithmetic mean over all three runs. Steps/tokens remain full-run totals.
+The public `docs/wave-results.js` contains only wave summaries; raw task
+results and traces remain on bench.
+
+Codex CLI **0.159.3** + **`gpt-6.1-sol`, reasoning low**, **@mean1**, measured
+2026-10-07: **420/431 (97.4%)**. Ordinary **388/391 (99.2%)**, long
+**19/20 (95.0%)**, reflection **13/20 (65.0%)**. No infrastructure errors in
+final results. Linux bwrap, concurrency 3, ChatGPT OAuth; multi-agent and user
+configs disabled. Timeout 900 s, with long/reflection floors 7200/1800 s.
+Native sessions confirm model and effort. Raw runner telemetry: 2,817 steps,
+69,419,504 tokens, not independently audited. End-to-end TLS used a Mac
+CONNECT/SSH tunnel; runner and tasks stayed on bench. OAuth credentials are
+excluded from final artifacts; initial transport/isolation calibration is excluded.
+
+One full **k=1** run, measured 2026-10-03/04 with dsh **0.2.0-rc.2**,
+profile `hbf` (dsh-base + dsh-headless), model `deepseek-v4.1-flash`,
+reasoning effort **high**, concurrency 3 and Linux **bwrap** isolation.
+Timeout: 900 s, with task-specific floors of 7200 s for the long wave and
+1800 s for the reflection wave. All 431 tasks are included: **390/391 (99.7%)**
+on tasks 1–391, **14/20 (70.0%)** on long-context tasks 392–411, and
+**18/20 (90.0%)** on tool-reflection tasks 412–431.
+
+Server-outage attempts in the affected tail were replaced by recovery attempts;
+unchanged completed results were retained. The final report contains no recorded
+infrastructure failures. Steps and tokens are runner telemetry with coverage
+**430/431**: the timed-out task has no recorded usage, so totals are lower bounds.
+This is a single run, not a mean over three runs. The subsequent repeat hit another
+server outage and is excluded; no dsh mean@3 result is available yet.
+
+The free-code row is **@mean3**, measured 2026-10-04/05 with
+**free-code 2.1.251-free-code.1**, model `deepseek-v4.1-flash`, reasoning
+**high**, concurrency 3 and Linux **bwrap** isolation. Three independent
+431-task runs scored **421, 416, 420**, averaging **419/431 (97.2%) ± 0.6
+percentage points** (sample standard deviation). Steps and tokens in the table
+are rounded per-run means, not totals across three runs; coverage was
+430/431, 428/431 and 430/431, so telemetry is a lower bound and tokens are
+not independently audited. Average wave scores: ordinary **99.6%**, long
+**63.3%**, reflection **85.0%**. **pass@3: 425/431 (98.6%)**;
+**pass^3: 409/431 (94.9%)**. No server outages were recorded.
+The dsh row remains **@mean1**.
+
+The pi-mono row is **@mean1**, measured 2026-10-05 with **pi-mono 0.73.1**,
+model `deepseek-v4.1-flash`, reasoning **high**, concurrency 3 and bwrap.
+It covers all 431 tasks: ordinary **391/391 (100.0%)**, long **13/20 (65.0%)**,
+reflection **19/20 (95.0%)**. No infrastructure failures were recorded.
+Steps and tokens are **0 because these metrics are absent from the artifact**,
+not because no work or tokens were spent. Native traces remain on the benchmark
+server. Both configurations use timeout 900 s with task-specific floors of
+7200 s (long) and 1800 s (reflection).
+
+The GigaCode Universal Agent row is **@mean1**, measured 2026-10-09 with
+[gc-cli 0.4.0](https://gitverse.ru/gigacode-ai/universal-agent) (commit `8c76e8b0c`),
+model `deepseek-v4.1-flash`, reasoning **high** for the main loop and thinking
+disabled for the auxiliary finish-gate/summary calls, concurrency 3 and Linux
+**bwrap** isolation through `run-cli`. It covers all 431 tasks: ordinary
+**389/391 (99.5%)**, long **12/20 (60.0%)**, reflection **18/20 (90.0%)**.
+No infrastructure failures, retries or timeouts were recorded. Steps count main-loop
+model responses and tokens are summed from the agent's own `run_usage` events
+(including finish-gate calls) with coverage 431/431; they are not independently
+audited. Guards (write/read/command moderation) and built-in skills were disabled,
+summarisation thresholds 200k tokens, timeout 900 s with task-specific floors of
+7200 s (long) and 1800 s (reflection).
+
+The GigaCode Universal Agent + GLM-5.3 row is **@mean1**, measured 2026-10-09/10
+with the same gc-cli 0.4.0 build and run-cli/bwrap setup as the DeepSeek row,
+model `z-ai/glm-5.3` served through OpenRouter with `reasoning.effort: high` (upstream weights, **not** the
+`glm-5.3-flash-uncensored` FP8 snapshot measured by the eight-harness GLM matrix
+below; the two are not comparable). Ordinary **388/391 (99.2%)**, long
+**16/20 (80.0%)**, reflection **19/20 (95.0%)**. No infrastructure failures or
+retries; two long tasks hit the 7200 s floor and are scored as fails. Steps and
+tokens are the agent's own usage counters with coverage 429/431 (absent for the
+two timed-out tasks, so totals are lower bounds), not independently audited.
+
+### GLM-5.3 (upstream weights, OpenRouter) harness matrix
+
+All six @mean1 runs of the 2026-10-05 OpenRouter matrix, measured
+2026-10-09/10: `z-ai/glm-5.3` upstream weights through OpenRouter with `reasoning.effort: high`, the same frozen
+harness runtimes as the DeepSeek matrix (pi-mono 0.73.1, mini-SWE-agent 2.4.6,
+deepagents 0.6.12, OpenCode 1.18.33, OpenHands 1.16.0, Hermes 5307e932), Linux bwrap, concurrency 3, timeout 900 s
+with floors of 7200 s (long) and 1800 s (reflection). This is **not** the
+`glm-5.3-flash-uncensored` FP8 snapshot measured by the eight-harness matrix
+below; the two are not comparable.
+No infrastructure failures remain in the final reports (mini-SWE-agent replaced
+three transient request failures on one task by retries, which then timed out).
+Timed-out tasks count as fails. Token telemetry is raw and not independently
+audited; zero means absent.
+
+| harness | model | passed | score | steps | tokens |
+|---|---|---:|---:|---:|---:|
+| GigaCode Universal Agent (gc-cli) | GLM-5.3 (OpenRouter) (high) | 423/431 | 98.1% | 4,581 | 271,316,552 |
+| OpenCode | GLM-5.3 (OpenRouter) (high) | 413/431 | 95.8% | 3,745 | 0 |
+| deepagents | GLM-5.3 (OpenRouter) (high) | 408/431 | 94.7% | 8,271 | 696,504,696\* |
+| mini-SWE-agent | GLM-5.3 (OpenRouter) (high) | 407/431 | 94.4% | 5,191 | 769,563,983 |
+| OpenHands | GLM-5.3 (OpenRouter) (high) | 404/431 | 93.7% | 0 | 0 |
+| Hermes | GLM-5.3 (OpenRouter) (high) | 402/431 | 93.3% | 0 | 0 |
+| pi-mono | GLM-5.3 (OpenRouter) (high) | 396/431 | 91.9% | 0 | 0 |
+| cowork | GLM-5.3 (OpenRouter) (high) | 376/431 | 87.2% | ≥3,568 | ≥89,614,312 |
+
+The cowork row uses the same model ID (`z-ai/glm-5.3`) through OpenRouter, high effort,
+and the Mimir local CLI with reduced evaluation tools. Its k=1 coverage was
+completed in two disjoint batches: 367/411 on October 13 and 9/20
+reflection tasks on October 14. Legacy task definitions, verifiers and the CLI
+runner were checked unchanged before retaining the first batch. No quality
+failures were rerun for this extension. Settings: temperature 0.2, max_tokens
+16,384, 80 tool calls, request timeout 600 s, Linux bwrap, concurrency 8
+(first reflection task piloted alone), task timeout 900 s with native floors.
+Steps and tokens were checked against native traces, coverage 429/431.
+They are lower bounds: timed-out tasks without final telemetry remain scored as failures.
+Tools and budgets differ across rows; this is one configuration
+run, not a controlled harness-only comparison. The original task-397 technical
+retry remains documented in the historical v0.17 notes. Raw results and traces
+remain on the servers; the 411-task historical row is preserved.
+
+Wave scores (ordinary / long / reflection): Universal Agent 388/16/19,
+OpenCode 386/12/15, deepagents 381/14/13, mini-SWE-agent 385/9/13,
+OpenHands 384/6/14, Hermes 387/3/12, pi-mono 376/6/14. \* deepagents tokens are raw counters with known duplicate
+usage accounting.
+
+The GigaCode Universal Agent + Kimi-K3 row is **@mean1**, measured 2026-10-10/11
+with the same gc-cli 0.4.0 build and run-cli/bwrap setup, model
+`moonshotai/kimi-k3` through OpenRouter, reasoning **high**: ordinary
+**387/391 (99.0%)**, long **13/20 (65.0%)**, reflection **17/20 (85.0%)**. Six
+transient gateway errors were replaced by retries; no infrastructure failures
+remain. Five tasks timed out and count as fails; usage coverage 426/431.
+
+The GigaCode Universal Agent + GPT-6 Luna row is **@mean1**, measured 2026-10-11,
+model `openai/gpt-6-luna` through OpenRouter with **`reasoning_effort: none`**:
+the gateway rejects every other effort value for this model when tools are sent
+on Chat Completions, and gc-cli has no Responses API transport, so this run has
+no reasoning and is **not comparable** with the high-effort rows. Ordinary
+**376/391 (96.2%)**, long **3/20 (15.0%)**, reflection **9/20 (45.0%)**. No
+infrastructure failures; three tasks timed out; usage coverage 428/431.
+
+Use a fresh result JSON path for v0.18.0; do not resume an older-version report
+into the new task set. Both new waves belong to the default scored suite.
+Earlier 411-task and 391-task results below are historical and are not scores on v0.18.0.
+
+### GigaChat production matrix
+
+47 completed, validated matrix runs, measured 2026-10-02–06, plus one separate maestro harness run on 2026-10-05. The production matrix is still running; incomplete runs and infrastructure failures are excluded. Each configuration has one run (k=1), with eight task slots across the matrix and bwrap isolation. The separate maestro harness run used four task workers and bwrap.
+
+| Harness | Model | Passed | Score | Steps | Tokens (raw) |
+| --- | --- | ---: | ---: | ---: | ---: |
+| mini-SWE-agent | GigaChat 2 Reasoning (PROM) (medium) | 371/431 | 86.1% | 6,233 | 72,482,990 |
+| OpenCode | GigaChat 3 Ultra (PROM) | 331/431 | 76.8% | 5,271 | 0 |
+| OpenCode | GigaChat 2 Reasoning (PROM) (medium) | 329/431 | 76.3% | 3,612 | 0 |
+| OpenCode | GigaChat 2 Max (PROM) | 327/431 | 75.9% | 4,693 | 0 |
+| deepagents (GigaChat profile) | GigaChat 2 Max (PROM) | 322/431 | 74.7% | 4,976 | 267,982,386\* |
+| deepagents (GigaChat profile) | GigaChat 3.5 (PROM) | 322/431 | 74.7% | 5,329 | 317,335,707\* |
+| deepagents (GigaChat profile) | GigaChat 3 Ultra (PROM) | 322/431 | 74.7% | 4,447 | 366,492,603\* |
+| deepagents (no profile) | GigaChat 3 Ultra (PROM) | 305/431 | 70.8% | 10,351 | 841,669,092\* |
+| deepagents (no profile) | GigaChat 2 Max (PROM) | 302/431 | 70.1% | 10,433 | 1,004,755,677\* |
+| deepagents (no profile) | GigaChat 3.5 (PROM) | 299/431 | 69.4% | 11,130 | 718,324,734\* |
+| pi-mono | GigaChat 2 Max (PROM) | 298/431 | 69.1% | 0 | 0 |
+| pi-mono | GigaChat 3 Ultra (PROM) | 295/431 | 68.4% | 0 | 0 |
+| pi-mono | GigaChat 3.5 (PROM) | 294/431 | 68.2% | 0 | 0 |
+| deepagents (no profile)‡ | GigaChat 2 Reasoning (PROM) (medium) | 273/431 | 63.3% | 10,702 | 453,994,698\* |
+| mini-SWE-agent | GigaChat 2 Pro (PROM) | 266/431 | 61.7% | 11,451 | 231,616,980 |
+| mini-SWE-agent | GigaChat 3 Pro (PROM) | 253/431 | 58.7% | 9,169 | 172,168,626 |
+| deepagents (GigaChat profile) | GigaChat 2 Reasoning (PROM) (medium) | 252/431 | 58.5% | 5,595 | 138,611,193\* |
+| maestro harness | GigaChat 2 Reasoning (PROM) (medium) | 248/431 | 57.5% | 2,214 | 6,210,278 |
+| deepagents (GigaChat profile) | GigaChat 2 Pro (PROM) | 224/431 | 52.0% | 5,159 | 368,044,770\* |
+| Hermes | GigaChat 2 Pro (PROM) | 220/431 | 51.0% | 0 | 0 |
+| Hermes | GigaChat 3 Pro (PROM) | 217/431 | 50.3% | 0 | 0 |
+| pi-mono | GigaChat 3 Pro (PROM) | 216/431 | 50.1% | 0 | 0 |
+| mini-SWE-agent | GigaChat 3.5 (PROM) | 212/431 | 49.2% | 3,744 | 54,768,767 |
+| deepagents (GigaChat profile) | GigaChat 3 Pro (PROM) | 212/431 | 49.2% | 6,289 | 486,699,543\* |
+| mini-SWE-agent | GigaChat 3 Ultra (PROM) | 207/431 | 48.0% | 4,820 | 124,288,018 |
+| pi-mono | GigaChat 2 Pro (PROM) | 205/431 | 47.6% | 0 | 0 |
+| mini-SWE-agent | GigaChat 2 Max (PROM) | 198/431 | 45.9% | 4,932 | 107,919,373 |
+| deepagents (no profile)‡ | GigaChat 3 Pro (PROM) | 191/431 | 44.3% | 5,711 | 295,423,833\* |
+| deepagents (no profile)‡ | GigaChat 2 Pro (PROM) | 188/431 | 43.6% | 5,749 | 349,701,240\* |
+| OpenCode | GigaChat 3 Pro (PROM) | 174/431 | 40.4% | 3,071 | 0 |
+| pi-mono | GigaChat 3 Lightning (PROM) | 171/431 | 39.7% | 0 | 0 |
+| OpenCode | GigaChat 2 Pro (PROM) | 169/431 | 39.2% | 3,001 | 0 |
+| pi-mono | GigaChat 2 (PROM) | 164/431 | 38.1% | 0 | 0 |
+| OpenHands | GigaChat 2 Reasoning (PROM) (medium) | 160/431 | 37.1% | 0 | 0 |
+| OpenHands | GigaChat 2 (PROM) | 159/431 | 36.9% | 0 | 0 |
+| Hermes | GigaChat 2 Reasoning (PROM) (medium) | 159/431 | 36.9% | 0 | 0 |
+| Hermes | GigaChat 3 Lightning (PROM) | 156/431 | 36.2% | 0 | 0 |
+| OpenHands | GigaChat 3 Lightning (PROM) | 146/431 | 33.9% | 0 | 0 |
+| deepagents (GigaChat profile) | GigaChat 2 (PROM) | 144/431 | 33.4% | 2,817 | 136,240,902\* |
+| Hermes | GigaChat 2 (PROM) | 141/431 | 32.7% | 0 | 0 |
+| OpenCode | GigaChat 2 (PROM) | 139/431 | 32.3% | 8,575 | 0 |
+| deepagents (GigaChat profile) | GigaChat 3 Lightning (PROM) | 134/431 | 31.1% | 3,545 | 148,656,135\* |
+| OpenCode | GigaChat 3 Lightning (PROM) | 134/431 | 31.1% | 10,580 | 0 |
+| deepagents (no profile) | GigaChat 3 Lightning (PROM) | 113/431 | 26.2% | 5,330 | 326,514,969\* |
+| deepagents (no profile) | GigaChat 2 (PROM) | 111/431 | 25.8% | 5,336 | 288,537,210\* |
+| mini-SWE-agent | GigaChat 2 (PROM) | 21/431 | 4.9% | 1,786 | 4,976,949 |
+| mini-SWE-agent | GigaChat 3 Lightning (PROM) | 9/431 | 2.1% | 2,042 | 4,511,527 |
+| Hermes | GigaChat 2 Max (PROM) | 0/431 | 0.0% | 0 | 0 |
+
+All PROM matrix runs listed above scored **0/20 on the long-context wave (392–411)**. Tool-reflection scores (412–431): GigaChat 2 Reasoning + mini-SWE-agent: 8/20; GigaChat 2 Reasoning + OpenCode: 1/20; GigaChat 2 Reasoning + deepagents (no profile): 1/20; GigaChat 2 Pro + mini-SWE-agent: 1/20; GigaChat 2 Reasoning + deepagents (GigaChat profile): 2/20. The separate maestro harness run scored 0/20 long and 1/20 reflection. Other listed runs scored 0/20. These are single runs with different tools, profiles and budgets; they do not isolate the effect of the harness.
+
+GigaChat 2 Max + Hermes completed with 0/431 and no infrastructure failures recorded by the runner; the cause of the all-fail result remains under investigation.
+
+‡ Three deepagents runs without profile (GigaChat 2 Pro, GigaChat 2 Reasoning and GigaChat 3 Pro) had HTTP 422 CONTEXT_TOO_LONG incorrectly classified as infrastructure errors. These are normal model/harness failures. Corrected derived reports retain the full denominator and original scores; source reports remain unchanged.
+
+**Telemetry:** 0 means the metric is absent from the result artifact, not zero work or spend. \* Deepagents token totals are raw, unaudited counters with known duplicate usage accounting; they are not verified token spend or cost. CLI counters remain pending native-trace audit except for the recorded mini-SWE-agent and maestro harness metrics.
+
+**maestro harness:** [MAESTRO CARL](https://github.com/AIRI-Institute/maestro-core/tree/9c2ac0d4aedb4bb8bfd53e9694bbbac05c4a725c) with a custom coding adapter, not an upstream ready-made coding agent. Native CARL schedules LLM/tool steps; the adapter provides a shell tool, outer loop and reasoning-history replay. One full k=1 run on 2026-10-05, GigaChat 2 Reasoning (PROM), build `3.5.16.9`, reasoning medium: ordinary **247/391 (63.2%)**, long **0/20 (0.0%)**, reflection **1/20 (5.0%)**. No infrastructure failures. No compaction, self-critic or subagents. Budget: 200 model turns and 900 s per task, with native task-specific floors; `max_tokens=16384`. The 2,214 steps count completed model responses, including final answers; 6,210,278 tokens comprise 5,102,319 input and 1,107,959 output tokens, checked against native traces for all 431 tasks. Elapsed time: 63.8 minutes. This measures this adapter configuration, not CARL as a whole; no repeat-based variance estimate is available. Raw traces remain private.
+
+**Models and settings:** GigaChat 2 and GigaChat 3 Lightning (PROM), build `32.4.16.3`; GigaChat 2 Pro and GigaChat 3 Pro (PROM), build `32.4.30.3`; GigaChat 2 Max, GigaChat 3 Ultra and GigaChat 3.5 (PROM), build `32.9.16.9`; GigaChat 2 Reasoning (PROM), build `3.5.16.9`, reasoning medium. For non-Reasoning models, reasoning is default (not explicitly set) for deepagents, pi-mono, mini-SWE-agent and OpenCode; not requested for OpenHands; medium (native default) for Hermes. Runtime versions: deepagents 0.6.12, deepagents-gigachat 0.0.4, pi-mono 0.73.1, mini-SWE-agent 2.4.6, OpenCode 1.18.33, OpenHands 1.16.0 / SDK 1.21.0, Hermes revision `5307e93252ac`. The GigaChat deepagents profile is bridged onto ChatOpenAI through gpt2giga 0.3.0; earlier native GigaChat-profile runs use a different integration. Task-specific timeout and recursion floors apply, including 7200 seconds for long-context tasks.
+
+Use a fresh result JSON path for v0.18.0; do not resume an older-version report into the new task set. The tool-reflection wave is included in the default suite and is also available through `--suite reflect`. Earlier 411-task and 391-task results below are historical.
+
+## Historical results (task-set v0.17.0, 411 tasks)
+
+| Harness | Profile | Model | Result | % | Long wave (392–411) | Steps | Tokens |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| deepagents | none | DeepSeek V4.1 Flash Uncensored FP8 (high) | 406/411 | 98.8% | 18/20 | 10,457 | 1,693,784,997 |
+| deepagents | none | GPT-6 Luna (high) | 390/411 | 94.9% | 12/20 | 9,822 | 360,640,300 |
+| deepagents | none | GLM-5.3 (high) | 389/411 | 94.6% | 14/20 | 8,031 | 1,005,651,882 |
+| cowork | Mimir local CLI | GLM-5.3 (high) | 367/411 | 89.3% | 1/20 | 3,187 | 82,088,043 |
+| mini-SWE-agent | — | GigaChat 3.5 Ultra Reasoning (PROM)² | 366/411 | 89.1% | 0/20 | 5,898 | 60,635,573 |
+| deepagents | Anthropic | Claude Haiku 4.5 | 361/411 | 87.8% | 1/20 | 7,326 | 600,214,572 |
+| deepagents | GigaChat | GigaChat 3.5 xxxB (internal version) | 348/411 | 84.7% | 0/20 | 5,207 | 61,842,876 |
+| cowork | Mimir local CLI | Claude Haiku 4.5 (default) | 327/411 | 79.6% | 0/20 | 2,133 | 37,464,508 |
+| pi-mono | — | GigaChat 3.5 xxxB (internal version)² | 316/411 | 76.9% | 0/20 | 5,027 | 331,507,322 |
+| pi-mono | — | GigaChat 3.5 Ultra Reasoning (PROM)² | 299/411 | 72.7% | 0/20 | 3,291 | 139,229,464 |
+| mini-SWE-agent | — | GigaChat 3.5 xxxB (internal version)² | 237/411 | 57.7% | 0/20 | 5,044 | 44,772,995 |
+| deepagents | GigaChat | GigaChat 3.5 Ultra Reasoning (PROM)¹ | 222/411 | 54.0% | 0/20 | 3,879 | 38,611,899 |
+
+The **cowork** rows measure a local CLI adapter around Mimir's model loop,
+production prompt and reduced evaluation tools, without the full
+Yggdrasil/Restate/MCP/HITL stack. Both are k=1 on frozen task-set v0.17.0,
+through OpenRouter, Linux bwrap, concurrency 8, temperature 0.2, timeout 900 s
+with task-specific long-wave floors. GLM-5.3 (`z-ai/glm-5.3`) uses reasoning
+high, 16,384 tokens per response and an 80-tool-call limit; Haiku 4.5
+(`anthropic/claude-haiku-4.5`) uses reasoning default, 2,048 tokens and
+12 tool calls. Budgets differ; these are configuration results, with no
+repeat-based variance estimate. Steps and tokens were checked against native
+traces, with metric coverage 411/411. Table totals cover retained task attempts;
+including infrastructure attempts, token totals are 87,296,288 (GLM) and
+37,809,500 (Haiku). GLM task 397 was retried after an HTTP 400 of unresolved
+origin and a diagnostic streaming replay returning 502; the clean retry failed
+at the tool limit, leaving the score unchanged. Original and retry traces are
+preserved privately. Raw task results and traces remain on the benchmark server.
+
+Historical deepagents token totals are preserved as recorded by the runner.
+The collector can count duplicated usage fields more than once; these totals
+have not been independently recalculated and should not be treated as verified
+cost estimates. Pass/fail scores are unaffected.
+
+Each row is one full run. The cowork rows were measured 2026-10-13;
+other rows were measured 2026-09-29/30. DeepSeek V4.1 Flash
+(`deepseek/deepseek-v4.1-flash`), GPT-6 Luna (`openai/gpt-6-luna`) and GLM-5.3
+(`z-ai/glm-5.3`) ran through `run-openrouter` with stock deepagents (no built-in profile
+exists for them), `OPENROUTER_REASONING_EFFORT=high` and `--isolation none`; DeepSeek and
+GLM with `--forward-reasoning-history`, GPT-6 Luna through `--responses-api` because it
+accepts reasoning with tools only there. Claude Haiku 4.5 ran through
+`run-openrouter` with the built-in `anthropic:claude-haiku-4-5` profile
+(`--harness-profile`, `--prompt-cache`, `--isolation none`, reasoning `default`); it solves
+one long-wave task (399). The deepagents GigaChat rows used `deepagents-gigachat` **0.0.4** through
+the native `run` command (`--concurrency 3`, default timeout and step limit; the long-wave
+floors apply). Model builds: GigaChat 3.5 xxxB (internal version), `32.9.16.9`,
+and `GigaChat-3.5-Ultra-Reasoning:3.5.16.9`; reasoning level `default`.
+On tasks 1–391 the internal-version run scores 348/391, in line with the six profile-0.0.4 runs
+on v0.16.0 below (352.8 ± 2.8). Neither GigaChat model solves a long-wave task in any of the listed harnesses.
+
+¹ On PROM this model plans several parallel function calls, returns only one of them,
+and keeps all of them under `functions_state_id`; the next request with a single
+function result then fails with `422 Function calls count does not match function
+results count` (88 of the first 294 tasks as-is). This row was measured with a wrapper
+that omits `functions_state_id` from outgoing messages, after which no 422 occurred and
+the model issues the remaining calls one at a time. It measures the model under that
+workaround, not the stock client.
+
+² The four CLI runs were measured on 2026-09-30 with mini-SWE-agent **2.4.6**
+and pi-mono **0.73.1**, without a deepagents profile, in a Linux bwrap sandbox.
+Each covers all 411 tasks: concurrency 3, timeout 900 s (7200 s for the long
+wave), max_tokens 16,384 per response, no artificial CLI step cap. Model builds
+match the deepagents rows: internal version `32.9.16.9` with reasoning `default`;
+Ultra Reasoning PROM `3.5.16.9` with reasoning `medium` and reasoning-history
+replay. PROM uses the same state-ID workaround described above. These compare
+complete configurations: tools, isolation and budgets differ, and PROM reasoning
+also differs from its deepagents run. One run per setup; variation across repeats
+has not been measured.
+
+CLI steps and tokens were audited against native traces, including usage saved
+on service turns after mini-SWE format errors and completed responses before
+timeouts. Token counts are lower bounds for interrupted responses. The mini-SWE
+PROM score includes one verifier correction (task 253): a service trace in the
+workspace root was mistaken for a model-produced secret leak. Replaying the saved
+deterministic commands without model calls reproduced the original failure;
+moving only telemetry into an excluded dot-directory changed it to a pass
+(365 → 366). Raw results remain unchanged in private artifacts.
+
+## Earlier results (task-set v0.16.0, 391 tasks)
+
+These runs are the full 391-task set. Later revisions add tasks, so a score here is not a score on the current set.
 `Steps` and `Tokens` are shown when the runner exposes them; `—` means the metric
 is absent from the run artifact, not that nothing was spent. Each row is one full
-run per harness + model setup. The `Profile` column shows the deepagents harness
+run per harness + model setup (**k=1**). The 13 archived v0.16.0 runs on the
+benchmark server were checked against their JSON artifacts on **2026-10-01**;
+the table also retains the separately recorded Pi run. This is the date of
+verification, not the date the runs were measured. Different harnesses and
+profiles measure complete configurations, not a controlled comparison of model
+weights. Reasoning level is `default` unless a row explicitly records another
+level; for historical artifacts this does not establish the provider default. The `Profile` column shows the deepagents harness
 profile applied: `GigaChat` = the `deepagents-gigachat` tuning profile,
 `Anthropic` = the Anthropic harness profile built into deepagents, `OpenAI` =
 the OpenAI harness profile built into deepagents, `none` = stock deepagents
 defaults, `—` = not applicable (non-deepagents harnesses).
-GigaChat rows are the IFT stand, build `32.9.23.6`.
+GigaChat rows use the internal version, build `32.9.23.6`.
+
+**Every `GigaChat`-profile row in the v0.16.0 table below was produced with `deepagents-gigachat`
+0.0.3.** The pin now installs **0.0.4**, which is a result-affecting change, so a
+fresh install no longer reproduces those rows. Measured on GigaChat 3.5 (internal version),
+k=4 per version with versions interleaved on one stand: 0.0.3 342.0/391 (87.5%,
+sd 3.9) against 0.0.4 **352.8/391 (90.2%**, sd 2.8 over 6 runs, steps 3,262,
+tokens 6,049,158) — **+10.8 tasks**, with every 0.0.4 run above every 0.0.3 run.
+The gain is 0.0.4's deterministic-output gate, which blocks writing a derived
+value that was never computed. GigaChat 3 Ultra / Pro / Lightning have **not**
+been re-measured on 0.0.4, so their rows stay as published rather than mixing two
+profile versions in one table.
+
+On weaker models the same gate costs rather than pays: on the GigaChat-3.1-10B
+reasoning line it drives the agent to retry the blocked write until the graph
+budget is gone (−14.5 pp, step-limit hits 3.6% → 33.6%). Pin `0.0.3` if your
+model cannot act on a tool-level refusal; see
+[deepagents-gigachat#7](https://github.com/ai-forever/deepagents-gigachat/issues/7).
 
 Public landing page: <https://ai-forever.github.io/harness-bench-fast/>
 
 | Harness | Profile | Model | Result | % | Steps | Tokens |
 | --- | --- | --- | ---: | ---: | ---: | ---: |
-| Pi | — (2026-08-10) | GLM-5.2 (high) | 391/391 | 100.0% | 2,272 | 13,274,530 |
-| Kimi CLI | — (2026-08-08) | Kimi K3 | 390/391 | 99.7% | — | — |
-| OpenClaw | thinking: high (2026-08-10) | GLM-5.2 | 390/391 | 99.7% | ~1,173 | ~47,439,286 |
-| OpenClaw | thinking: off (2026-08-12) | GLM-5.2 | 10/10 (pilot) | 100.0% | 18 | 320,180 |
-| opencode | agent1st v14.1, high (2026-08-02) | GLM-5.2 | 388/391 | 99.2% | — | — |
-| Pi | — (2026-08-13) | DeepSeek V4 Flash 0731 | 387/391 | 98.7% | — | — |
-| opencode | agent1st v5.2.1 (2026-08-02) | Qwen 3.8 Max | 388/391 | 99.2% | — | — |
-| Hermes | MCP off (2026-08-10) | GLM-5.2 | 387/391 | 99.0% | — | 31,770,687 |
-| Claude Code CLI | — (2026-07-29) | Claude Haiku 4.5 | 380/391 | 97.2% | 1,645 | 176,430,286 |
-| opencode | agent1st v37.1 (2026-08-01) | DeepSeek V4 Flash 0731 | 384/391 | 98.2% | — | — |
-| opencode | — (2026-07-29) | GLM-5.2 (self-hosted) | 362/391 | 92.6% | — | — |
-| deepagents | GigaChat (2026-07-29) | GigaChat 3.5 | 340/391 | 87.0% | 3,316 | 4,319,421 |
-| deepagents | GigaChat (2026-07-29) | GigaChat 3 Ultra | 340/391 | 87.0% | 3,258 | 4,415,043 |
-| deepagents | none (2026-07-29) | DeepSeek V4 Flash | 320/391 | 81.8% | 5,048 | 61,715,547 |
-| deepagents | none (2026-07-29) | GigaChat 3 Ultra | 312/391 | 79.8% | 3,591 | 7,994,643 |
-| deepagents | none (2026-07-29) | GigaChat 3.5 | 302/391 | 77.2% | 3,542 | 7,371,576 |
-| deepagents | none (2026-07-29) | Qwen3 Coder 30B-A3B | 284/391 | 72.6% | 5,467 | 90,234,558 |
-| deepagents | GigaChat (2026-07-29) | GigaChat 3 Pro | 241/391 | 61.6% | 2,993 | 3,975,672 |
-| deepagents | none (2026-07-29) | GPT-OSS-20B | 193/391 | 49.4% | 2,727 | 29,137,983 |
-| deepagents | none (2026-07-29) | GPT-OSS-120B | 186/391 | 47.6% | 2,193 | 23,831,283 |
-| deepagents | GigaChat (2026-07-29) | GigaChat 3 Lightning | 178/391 | 45.5% | 2,520 | 2,275,821 |
+| Kimi CLI | — | Kimi K3 | 390/391 | 99.7% | — | — |
+| Pi | — | DeepSeek V4 Flash 0731 (high) | 387/391 | 99.0% | 1,694 | 10,004,355 |
+| Claude Code CLI | — | Claude Haiku 4.5 | 380/391 | 97.2% | 1,645 | 176,430,286 |
+| opencode | — | GLM-5.2 (self-hosted) | 362/391 | 92.6% | — | — |
+| deepagents | GigaChat | GigaChat 3.5 | 340/391 | 87.0% | 3,316 | 4,319,421 |
+| deepagents | GigaChat | GigaChat 3 Ultra | 340/391 | 87.0% | 3,258 | 4,415,043 |
+| deepagents | none | DeepSeek V4 Flash | 320/391 | 81.8% | 5,048 | 61,715,547 |
+| deepagents | none | GigaChat 3 Ultra | 312/391 | 79.8% | 3,591 | 7,994,643 |
+| deepagents | none | GigaChat 3.5 | 302/391 | 77.2% | 3,542 | 7,371,576 |
+| deepagents | none | Qwen3 Coder 30B-A3B | 284/391 | 72.6% | 5,467 | 90,234,558 |
+| deepagents | GigaChat | GigaChat 3 Pro | 241/391 | 61.6% | 2,993 | 3,975,672 |
+| deepagents | none | GPT-OSS-20B | 193/391 | 49.4% | 2,727 | 29,137,983 |
+| deepagents | none | GPT-OSS-120B | 186/391 | 47.6% | 2,193 | 23,831,283 |
+| deepagents | GigaChat | GigaChat 3 Lightning | 178/391 | 45.5% | 2,520 | 2,275,821 |
 
-OpenClaw Steps and Tokens are estimated from a 10-task representative sample
-(3 easy, 4 medium, 3 hard) run with the same model and thinking settings, then
-extrapolated to 391 tasks. Per-task averages: ~121K input + ~354 output tokens,
-~3.0 tool calls, ~229 s elapsed.
-
-The `OpenClaw thinking: off` row is a 10-task pilot (task_01–10, core file ops)
-run on 2026-08-12 with reasoning disabled. All 10 tasks passed, showing no
-quality degradation on basic tasks versus thinking: high. Per-task averages
-under thinking: off: ~32K input + ~296 output tokens, ~1.8 tool calls, ~211 s.
-A full 391-task run with thinking: off is needed to compare pass rates directly.
-
-Two notes on reading the table. The GigaChat profile is worth 7-10 points and
+Three notes on reading the table. The GigaChat profile is worth 7-10 points and
 roughly halves the token spend, which the two profiled/unprofiled GigaChat pairs
-show directly. And a larger model is not automatically a more capable agent:
+show directly. A larger model is not automatically a more capable agent:
 GPT-OSS-120B places below its own 20B sibling because it frequently answers in
 prose instead of calling a tool, scoring 0/15 on the VCS wave and 2/20 on
-CLI-composition while remaining competitive on single-shot waves.
+CLI-composition while remaining competitive on single-shot waves. And each row
+is a single full run with non-deterministic sampling: repeat runs of the same
+mid-scale setup differ by ±1-2 pp, so rows within ~3 points of each other are
+a tie, not a ranking — models near the ceiling are much more stable.
 
 ## Shot List Leaderboard (52 tasks)
 
@@ -233,7 +832,7 @@ runs (317, 311, 308 passed), with Steps/Tokens as the mean of per-run sums.
 
 </details>
 
-A self-contained **391-task agent benchmark** (`task-set v0.16.0`) for evaluating LLM-backed
+A self-contained **471-task agent benchmark** (`task-set v0.19.1`) for evaluating LLM-backed
 coding agents on file-operation work: create / edit / refactor source
 files, transform CSV / JSON / JSONL / XLSX, run pytest, search across a
 project tree, write and use `MEMORY.md` per repo conventions, and chain
@@ -257,6 +856,14 @@ and was extracted into its own repo once it matured.
 
 ## Quick start
 
+Current defaults are **3,600 seconds per task** for ordinary, reflection and
+wave 19 tasks; long-context tasks retain their **7,200-second floor**. Setup
+and verification are outside the agent execution budget. Agent graph steps
+have no benchmark-imposed cap by default (`--recursion-limit 0`). Explicit
+finite caps are supported for diagnostic runs and must be reported as
+nondefault settings; task-specific floors still raise those finite caps.
+Formal resource budgets in the task statements are unchanged.
+
 ```bash
 # Install the bench in a fresh venv. The `[gigachat]` extra adds the
 # GigaChat client; `[openrouter]` adds the OpenAI-compatible client used
@@ -270,26 +877,31 @@ uv venv && uv pip install -e ".[gigachat,openrouter]"
 # to the public profile.
 uv pip install -e ".[gigachat-profile]"
 
-# List all 391 tasks
+# List all 471 tasks
 uv run python -m harness_bench list
+
+# Any contiguous block of task numbers (inclusive; list, run*, verify-gold,
+# export-harbor), e.g. everything except the long-context wave:
+uv run python -m harness_bench run-openrouter --model deepseek/deepseek-v4-flash \
+    --from-task 1 --to-task 391
+# A run over a subset is a partial run: it does not go into the 471-task table.
 
 # Show the benchmark task-set version and revision history
 uv run python -m harness_bench version --check
 
-# Run the whole bench against GigaChat (needs GIGACHAT_USER /
+# Run tasks 1–431 against GigaChat (needs GIGACHAT_USER /
 # GIGACHAT_PASSWORD in .env or env, plus GIGACHAT_BASE_URL pointing at
-# the production gateway):
-uv run python -m harness_bench run --concurrency 5
+# the production gateway). Native execution does not support wave 19:
+uv run python -m harness_bench run --from-task 1 --to-task 431 --concurrency 5
 
 # Run against any OpenAI-compatible OpenRouter model (needs
-# OPENROUTER_API_KEY):
+# OPENROUTER_API_KEY and Linux bwrap). The isolated worker supports all 471 tasks:
 uv run python -m harness_bench run-openrouter \
-    --model deepseek/deepseek-v4-flash --concurrency 5
+    --model deepseek/deepseek-v4-flash --isolation bwrap --concurrency 5
 
 # Internal OpenAI-compatible gateways can use password auth instead of a
 # static API key. The runner fetches and refreshes a bearer token without
 # printing it:
-# OPENROUTER_USE_INTERNAL_TAGME=1  # local shortcut for the ignored tagme example
 # OPENROUTER_BASE_URL=https://gateway.example/x/ai/llm/v1
 # OPENROUTER_AUTH_URL=https://gateway.example/auth/realms/.../token
 # OPENROUTER_AUTH_USERNAME=...
@@ -316,7 +928,7 @@ uv run python -m harness_bench run-openrouter \
 
 # Run stock deepagents + GigaChat while bypassing the GigaChat harness
 # profile even if deepagents-gigachat is installed.
-uv run python -m harness_bench run-pure --concurrency 5
+uv run python -m harness_bench run-pure --from-task 1 --to-task 431 --concurrency 5
 
 # Drive an external CLI agent (Claude Code, etc.). Example with
 # Anthropic's free-code CLI:
@@ -343,6 +955,9 @@ uv run python -m harness_bench run-cli \
 # Code, and Gemini CLI runs auto-enable JSON/stream-json output so those metrics
 # can be read from machine-readable events. The top-level JSON summary also
 # includes `steps` and `tokens` totals for README-style result tables.
+# Usage is counted once per model response, even when several metadata fields
+# contain copies. This corrects earlier DeepAgents overcounting for new runs;
+# historical JSON is not rewritten. Missing usage on timeouts remains missing.
 # JSON checkpointing is enabled by default for run commands. A fresh run writes
 # to `jobs/<timestamp>.json`; pass `--json-output results.json` to use
 # `jobs/results.json`, or pass an explicit path. If the JSON file already
@@ -350,9 +965,15 @@ uv run python -m harness_bench run-cli \
 # continues from the checkpoint. JSON reports also include the command that
 # launched the run. Ctrl-C writes `run_status: "interrupted"` plus
 # `interrupted_attempts`; those attempts are rerun from clean workspaces on the
-# next continue when you rerun with the same JSON path. CLI per-task timeouts
+# next continue when you rerun with the same JSON path. CLI timeout failures
 # are also marked `rerun_on_continue` and rerun from clean workspaces on the
-# next launch with the same `--json-output` file.
+# next launch with the same `--json-output` file. A wave 19 success supported
+# by a timely host receipt and full verification stays a success even when
+# the subsequent final reply/process times out.
+# Resume requires the same task-set version. Start v0.19.1 with a fresh JSON;
+# historical v0.19.0 results must not be rewritten or relabeled.
+# Wave 19 additionally checks runtime_protocol and a task-contract SHA256.
+# A different prompt/service protocol requires a fresh result JSON file.
 # Add `--rerun-on-fail` when continuing to rerun every saved task attempt whose
 # `passed` field is false. Passing attempts stay checkpointed. With `-k N`, only
 # the failed attempt numbers are rerun, once per invocation.
@@ -375,7 +996,7 @@ MSWEA_MODEL_NAME='openai/GigaChat-3-Ultra' \
 MSWEA_COST_TRACKING=ignore_errors \
 uv run python -m harness_bench run-cli \
     --cli-command "$HB_MINI_SWE_AGENT" \
-    --timeout 900 --concurrency 5 \
+    --timeout 3600 --concurrency 5 \
     --json-output mini_swe_agent_gigachat_3_ultra.json
 # Smoke-test one task first by adding:
 #     --task task_01_create_hello --keep
@@ -408,7 +1029,7 @@ uv run python -m harness_bench summarize-json jobs/results.json
 OPENCODE_CONFIG=/path/to/opencode-vllm.json \
 uv run python -m harness_bench run-cli \
     --cli-command 'opencode run -m vllm/qwen3.6-27b' \
-    --timeout 900 --concurrency 5
+    --timeout 3600 --concurrency 5
 
 # Windows/Git Bash + cmd.exe CLIs with non-ASCII prompts/artifacts: force UTF-8
 # in both the outer shell and the Windows console before launching the runner.
@@ -417,17 +1038,22 @@ uv run python -m harness_bench run-cli \
 cmd.exe //c "chcp 65001 >nul" && \
 PYTHONUTF8=1 PYTHONIOENCODING=utf-8 LANG=C.UTF-8 LC_ALL=C.UTF-8 \
 uv run python -m harness_bench run-cli \
-    --timeout 600 \
+    --timeout 3600 \
     --cli-command 'cmd /c gigacode --approval-mode=auto-edit' \
     --task task_05_greet --task task_35_remove_blank_lines
 
 # Verify the gold solutions without calling any model. Useful when
 # adding a new task — confirms the verifier accepts a hand-written
-# "perfect" solution.
+# "perfect" solution. All 471 require Unix sockets for wave 19.
 uv run python -m harness_bench verify-gold
 
+# The CI wrapper explicitly skips unsupported wave 19 gold checks on Windows
+# and verifies the remaining 431 tasks. It reports skips separately:
+uv run python .github/scripts/verify_gold_with_annotations.py
+
 # Direct no-Docker workspace checks for one task. This is the same
-# verifier/oracle surface used by the Harbor export.
+# verifier/oracle surface used by the Harbor export for tasks 1–431.
+# Wave 19 replay additionally requires the host-owned evidence described below.
 uv run python -m harness_bench verify-task \
     --task task_06_toggle_debug --workspace /path/to/workspace
 uv run python -m harness_bench apply-gold \
@@ -438,7 +1064,7 @@ uv run python -m harness_bench apply-gold \
 
 ## What's inside
 
-### Tasks (391 total, task-set v0.16.0)
+### Tasks (471 total, task-set v0.19.1)
 
 | Module | Range | Wave |
 | --- | --- | --- |
@@ -454,7 +1080,10 @@ uv run python -m harness_bench apply-gold \
 | `tasks_skills.py` | 314–330 | skill-discriminator wave: fictional brand/style guides, internal codebooks and policies, bespoke fixed formats, distractor/selection/negative-control skill axes, code-skill creation/repair, fictional DSL/protocol/library specs, spreadsheet reconciliation, and ArcFlux calculation methods. |
 | `tasks_adversarial.py` | 331–351 | adversarial/robustness wave: the agent must diagnose and work around a hostile environment — broken Python versions and imports, unreadable/mis-encoded/permission-locked files, instructions that contradict the environment, broken build commands and skills, and a ~100 MB log that must be streamed rather than read whole. |
 | `tasks_tbench_lite.py` | 352–371 | calibrated Terminal-Bench-inspired workflows: multi-source joins, event reconstruction, parsers, config precedence, conflict resolution, package refactors, SQLite migration, deterministic manifests, and retry-aware aggregation. |
-| `tasks_cli.py` | 372–391 | CLI-composition wave. Thirteen tasks drive bespoke per-task tools (`logq`, `pktool`, `xtab`, `cfgctl`, `depwalk`, `slicer`) built so that reading `--help` is unavoidable: the surface is deliberately unconventional (a leading verb, `--src`/`--cap`/`--map`, mini-languages like `--span LO..HI` and `--pick level=ERROR,WARN`, `--shape` not `--format`), so a guessed invocation exits non-zero — and the semantics that decide the answer (exclusive bounds, nearest-rank percentiles, margins before normalisation, corrupt-record policy) appear only in the `--help` epilog. Two read binary or fixed-width payloads. Seven exercise POSIX tools (multi-key `sort`, `join -1/-2/-a/-e/-o`, `comm`, `grep -oE` with `uniq -c`, `find` predicates with `xargs -0`, `awk`, `sed` ranges): the agent writes `solve.sh` and the verifier deletes the artifact, runs the script, and rejects general-purpose interpreters. **Requires `bash` on `PATH`.** |
+| `tasks_cli.py` | 372–391 | CLI-composition wave. Thirteen tasks drive bespoke per-task tools (`logq`, `pktool`, `xtab`, `cfgctl`, `depwalk`, `slicer`) built so that reading `--help` is unavoidable: the surface is deliberately unconventional (a leading verb, `--src`/`--cap`/`--map`, mini-languages like `--span LO..HI` and `--pick level=ERROR,WARN`, `--shape` not `--format`), so a guessed invocation exits non-zero — and the semantics that decide the answer (exclusive bounds, nearest-rank percentiles, margins before normalisation, corrupt-record policy) appear only in the `--help` epilog. Two read binary or fixed-width payloads. Seven exercise POSIX tools (multi-key `sort`, `join -1/-2/-a/-e/-o`, `comm`, `grep -oE` with `uniq -c`, `find` predicates with `xargs -0`, `awk`, `sed` ranges): the agent writes `solve.sh` and the verifier deletes the artifact, runs the script, and rejects general-purpose interpreters. **Requires `bash` on `PATH`.*\* |
+| `long_tasks/` | 392–411 | Long-context wave. Twenty tasks that require reading a large body of material (a novel, an intranet, parish registers, mail, a codebase, git history, a text adventure, and so on). Each run has a 7200 s floor and no default agent step cap; an explicitly finite recursion limit is raised to at least 3000. Select only this wave with `--suite long`. |
+| `reflect_tasks/` | 412–431 | Stateful tool-reflection wave: partial results, pagination, throttling, stale revisions, async deletion, inherited permissions, and mid-course changes visible in tool responses. Signed client journals are replayed by the verifier. Default runtime guard: 3600 s, no agent step cap. The existing 1800 s floor and 400-step floor apply to explicit finite overrides. Select only this wave with `--suite reflect`. |
+| `feasibility_tasks/` | 432–471 | **Wave 19**, current protocol **v0.19.1**: 20 matched pairs / 40 tasks: formal feasibility, diagnostics, explicit resource budgets and host-owned service history. A 3600 s sanitary guard, with timely valid host-recorded submission counting even if the final reply/process times out; no LLM judge. Individual and strict both-halves scores. Select with `--suite feasibility`; requires CLI/bwrap, including the isolated OpenRouter worker. |
 
 Task prompts are in **Russian** — the bench is deliberately bilingual
 to keep models honest. The verifiers and gold answers are English / data
@@ -483,13 +1112,17 @@ changes do not need a task-set bump.
 | `0.13.0` | 2026-07-02 | 338–351 | 351 | Adversarial wave completed: removed-stdlib import, misleading `.python-version`, unneeded uninstallable dependency, `set -e` abort, npm-in-a-Python-project, gzip-masquerade, BOM/NUL log, AGENTS.md wrong layout, wrong tests dir, broken import path, broken package layout, malformed SKILL.md frontmatter, contradictory skills, and a ~100 MB log the agent must stream/grep rather than read whole |
 | `0.14.0` | 2026-07-23 | 352–371 | 371 | Calibrated Terminal-Bench-inspired wave with deterministic, offline, gold-verified multi-step tasks |
 | `0.15.0` | 2026-07-27 | 372–391 | 391 | CLI-composition wave: bespoke tools (`logq`, `pktool`, `xtab`, `cfgctl`, `depwalk`, `slicer`) with a deliberately unguessable surface, so `--help` must be read before anything runs, plus POSIX pipeline tasks (`sort`, `join`, `comm`, `grep`/`uniq -c`, `find`/`xargs -0`, `awk`, `sed`) whose `solve.sh` the verifier executes |
-| `0.16.0` | 2026-07-28 | — | 391 | Audit pass over all 391 tasks: no tasks added or removed, but defects gold-verification cannot see were corrected — tasks winnable without work, prompts whose verifier rejected the work they described, requirements the verifier never checked (notably "do not edit the tests"), and platform/self-pollution issues. **Not score-comparable with v0.15.0.** |
+| `0.16.0` | 2026-07-28 | — | 391 | Audit pass over all 391 tasks: no tasks added or removed, but defects gold-verification cannot see were corrected — tasks winnable without work, prompts whose verifier rejected the work they described, requirements the verifier never checked (notably “do not edit the tests”), and platform/self-pollution issues. **Not score-comparable with v0.15.0.*\* |
+| `0.17.0` | 2026-09-26 | 392–411 | 411 | Long-context wave, promoted from the separate `--suite long` into the scored set. Registry ids are `task_392_*` … `task_411_*`; generator seeds and paraphrase fixtures stay on `long_NN_*`, so the tasks themselves did not change. Each task floors the runner at 7200 s and 3000 steps. **Not score-comparable with v0.16.0.*\* |
+| `0.18.0` | 2026-10-02 | 412–431 | 431 | Tool-reflection wave promoted into the scored set, with IAM command/policy and wiki append-position fixes. New ids are `task_412_*` … `task_431_*`; `reflect_NN_*` remain lookup aliases. Each task floors the runner at 1800 s and 400 steps. **Not score-comparable with v0.17.0 or pre-fix reflect calibration.*\* |
+| `0.19.0` | 2026-10-16 | 432–471 | 471 | **Wave 19**: 20 matched pairs (40 tasks): 14 engineering contract pairs and 6 search/diagnostic pairs; 120 seconds per task. The current protocol keeps service state outside the agent sandbox. Earlier wave 19 calibration used different prompts/protocol; it is not a result for this implementation. [Details and validation limits](docs/wave19-feasibility.md). Not score-comparable with v0.18.0. |
+| `0.19.1` | 2026-10-21 | — | 471 | **Wave 19 remains wave 19**; no added tasks. A 3600 s sanitary guard replaces the 120 s wave 19 deadline; timely host-recorded submission plus full verification can pass despite a later final-reply/process timeout. Default agent step caps are disabled, ordinary/reflection defaults are 3600 s, and the long-task floor remains 7200 s. Formal problem budgets are unchanged. Task 410 clarifies mandatory extra sugar and the potato synonym without changing nutrition targets. Start a fresh result JSON; historical v0.19.0 scores do not measure this protocol. |
 
 ### Infrastructure
 
 | File | Purpose |
 | --- | --- |
-| `core.py` | `Task` (dataclass) and `VerifyResult`. Supports `setup_callback` / `gold_callback` hooks for binary fixtures (xlsx, sqlite, zip, tar). |
+| `core.py` | `Task` (dataclass) and `VerifyResult`. Supports setup/gold hooks for binary fixtures and `cleanup_callback` for host resources such as the wave 19 service. |
 | `verifiers.py` | Helpers for building verifiers: `file_exists`, `file_contains`, `file_lines_equal`, `file_matches_regex`, `json_file_has`, `python_runs`, `python_callable_returns`, `pytest_passes`, `xlsx_cell_equals`, `sqlite_query_returns`, `all_of`, etc. |
 | `runner.py` | Runs a task in an isolated `tempfile.TemporaryDirectory` with `LocalShellBackend(virtual_mode=True)` rooted at that directory. Drives GigaChat through `langchain-gigachat`. Optional `--concurrency` via a thread pool. Auto-loads the `deepagents-gigachat` harness profile if installed. |
 | `runner_cli.py` | Alternative driver that shells out to an external CLI agent (`free-code`, `claude`, etc.). Default: `free-code -p --model haiku --dangerously-skip-permissions`. Detects Claude-Code-style CLIs and auto-injects workspace `AGENTS.md` via `--append-system-prompt`. |
@@ -498,15 +1131,215 @@ changes do not need a task-set bump.
 | `harbor_export.py` | Additive Harbor export layer. Generates local Harbor task directories from the same Python task registry; does not replace the no-Docker local runners. |
 | `__main__.py` | CLI: `list`, `version`, `run`, `run-pure`, `run-cli`, `run-openrouter`, `verify-gold`, `verify-task`, `apply-gold`, `export-harbor`. |
 
-Each task is independent: the runner creates a fresh
+Each task has its own execution context: the runner creates a fresh
 `tempfile.TemporaryDirectory`, writes `setup_files` (and optionally
 calls `setup_callback` for binary fixtures), then points
 `LocalShellBackend` at that directory as its `root_dir`. The agent
 file tools are rooted there by `virtual_mode=True`. This is not a
 security sandbox: `execute` still spawns a real shell on the host and
 the runners inherit environment variables. The benchmark is meant for a
-trusted local environment. After the agent stops, the per-task verifier
-inspects the workspace.
+trusted local environment. These native paths exclude wave 19. After the agent
+stops, the per-task verifier inspects the workspace; wave 19 also checks the
+trusted service's history. Separate contexts do not imply statistically
+independent fixtures: wave 19 reuses some mathematical components.
+
+### Wave 19 execution and replay
+
+The task's `tools/taskctl` is a public transport that may be read. The hidden
+target, mutable service state and call history stay in the host process. The
+agent receives only a read-only bind of the service socket and public
+`.svc/connection.json`. Direct socket calls use the same state machine and
+quotas; replacing workspace files cannot erase previous calls. The verifier
+checks the final public inputs/client/connection against their originals.
+
+Run only this wave with an already configured CLI agent:
+
+```bash
+CLAUDE_CODE_DISABLE_AUTO_MEMORY=1 \
+uv run python -m harness_bench run-cli --suite feasibility --isolation bwrap \
+    --cli-command 'claude -p --dangerously-skip-permissions' \
+    --json-output wave19.json --keep
+```
+
+Keep the host artifact directory as well as the workspace. Rechecking a saved
+execution in a new process requires `trusted_service.json` and its companion
+`execution.json`, both from the trusted runner and outside the agent workspace:
+
+```bash
+uv run python -m harness_bench verify-task \
+    --task task_432_clock_contract --workspace /path/to/saved/workspace \
+    --trusted-evidence /path/to/host/execution/trusted_service.json
+```
+
+Use the actual task ID and paths from the result artifact. Replay checks the
+protocol, task-contract hash, evidence hash and execution outcome. In v0.19.1,
+a host receipt proves that `submit`/`finish` completed within the execution
+budget; the full verifier must also accept the answer and trusted history.
+That combination can pass after a final-reply/process timeout. A workspace
+file alone, an agent-supplied timestamp, a late submission or an incorrect
+answer cannot earn this credit. The host runner and its artifacts are trusted,
+not adversarial input from the agent.
+
+`verify-gold --suite feasibility` is a host diagnostic, not a model score.
+Direct Python diagnostics may call `task.setup`, `task.apply_gold` and
+`task.verify` in the same host process, with `task.cleanup(workspace)` in a
+`finally` block. Loading raw service evidence into a Python verification context
+is also diagnostic; it does not replace the CLI's execution-metadata checks.
+
+## Long-context wave (tasks 392–411)
+
+Twenty tasks (`harness_bench/long_tasks/tNN_*.py`, registry ids
+`task_392_*` … `task_411_*`) built to push an agent harness through **context
+compaction**: each task needs tens to hundreds of agent steps and reading
+0.4–1.4M characters of material (novels, intranets, parish registers, e-mail
+threads, code bases, git history, binary logs, a text adventure…). They are
+part of `ALL_TASKS` as of task-set v0.17.0. `--suite long` (`list`, `run*`,
+`verify-gold`) selects only this wave. Every task has a minimum timeout
+of 7200 s. The default agent recursion limit is 0 (unlimited); only an explicitly
+finite cap is raised to at least 3000. Tasks are mechanically verified like the
+rest of the bench. Generator
+seeds and the paraphrase fixtures in `_texts/` keep the earlier `long_NN_*`
+names, so promoting the wave did not regenerate the workspaces.
+
+Strong models avoid reading whenever a shortcut exists, so the suite is designed
+against the shortcuts we observed with Claude Opus 5.5:
+
+- structured data is processed by scripts → the answer depends on natural
+  language that has to be read;
+- procedurally generated prose collapses to a few hundred templates → texts are
+  paraphrased by an LLM and every paraphrase is accepted only when an
+  independent LLM, given just the task's rules, recovers the generator's ground
+  truth from it (`scripts/rewrite_long_texts.py`, fixtures in
+  `harness_bench/long_tasks/_texts/`; a stored paraphrase is used only if its
+  draft hash matches, so ground truth always comes from the generator);
+- local data can be decoded → the text adventure encrypts each zone with a key
+  derived from answers found by reading the previous zone;
+- deepagents' general-purpose subagent spreads reading over parallel contexts →
+  measure with `--no-subagents`.
+
+```bash
+# self-check without a model: untouched fails, gold passes, near misses fail
+uv run python scripts/check_long_tasks.py
+# deepagents + Opus 5.5, compaction at 128K real tokens, one context
+uv run python -m harness_bench run-openrouter --suite long \
+    --model anthropic/claude-opus-5.5 --compact-at-tokens 128000 \
+    --no-subagents --prompt-cache --concurrency 6
+```
+
+Measured 2026-09-25 with deepagents 0.6.12 + Claude Opus 5.5 (`anthropic/claude-opus-5.5`
+via an OpenRouter-compatible gateway, reasoning `default`), `--compact-at-tokens 128000
+--no-subagents --prompt-cache`. One row per task version; "runs" is how many runs of that
+version were made, "compactions" lists the count per run. Every run of every task passed.
+
+The 2026-09-25 runs addressed these same tasks under the previous ids `long_01_*` … `long_20_*`.
+The current versions of tasks 398 and 405 were measured 2026-09-29 in the same
+configuration through another gateway, with `--isolation none` on macOS; their traces
+show no reads outside the task workspace.
+
+| Task | What has to be read | Runs | Compactions | Peak prompt |
+| --- | --- | ---: | --- | ---: |
+| task_392_manuscript_continuity | 18-chapter novel vs. a character bible | 2 | 6, 5 | 127K |
+| task_393_intranet_multihop | 340-page intranet, dated orders | 2 | 1, 7 | 127K |
+| task_394_review_annotation | 800 LLM-paraphrased reviews + guidelines | 2 | 3, 5 | 127K |
+| task_395_homework_grading | 90 students' code, e-mails, rubric | 1 | 1 | 125K |
+| task_396_parish_genealogy | 1,456 parish register records | 2 | 1, 1 | 128K |
+| task_397_conference_schedule | 327 paraphrased letters, rules | 1 | 8 | 127K |
+| task_398_card_game_engine | 250 cards, errata, partly paraphrased rulings | 1 | 3 | 128K |
+| task_399_port_js_library | 4,200-line JS library → Python | 2 | 1, 1 | 127K |
+| task_400_sql_dialect_port | 70 legacy queries + dialect manual | 2 | 1, 3 | 119K |
+| task_401_review_comments | 158 review threads over a 5K-line project | 2 | 3, 1 | 128K |
+| task_402_changelog_semver | 238 commits + 251 paraphrased issue threads | 2 | 1, 3 | 120K |
+| task_403_binary_format_reverse | 205 paraphrased developer e-mails, samples | 1 | 8 context drops | 128K |
+| task_404_text_adventure | encrypted 91-location quest | 3 | 0, 1, 1 | 128K |
+| task_405_paper_reproduce | methods, appendices, paraphrased query log, CSVs | 1 | 6 | 128K |
+| task_406_spreadsheet_audit | 17 formula sheets + model spec | 1 | 1 | 113K |
+| task_407_courier_routes | 280 paraphrased courier voice notes | 1 | 2 | 123K |
+| task_408_legacy_feature | 78-module legacy app + feature spec | 2 | 1, 1 | 125K |
+| task_409_procurement_datasheets | 183 datasheets, price lists, 45 requests | 2 | 1, 1 | 124K |
+| task_410_recipe_nutrition | 155 recipes, measures, nutrition table | 2 | 1, 1 | 124K |
+| task_411_math_solutions_check | 150 step-by-step student solutions | 2 | 3, 3 | 133K |
+
+A task with one compaction and a peak near 128K compacts in some runs and not in
+others (task 404 did not in one of three runs).
+
+`run-openrouter` options added for this suite:
+
+- `--compact-at-tokens N` — deepagents summarizes once a prompt reaches N
+  **provider tokens** (usage of the last model call plus an estimate of what was
+  appended since). deepagents' own counter assumes ~4 characters per token and
+  undercounts Russian tool output and tool schemas: on one trace its count was
+  55–69K while the real prompt was 125K.
+- `--no-subagents` — drop the auto-added general-purpose subagent (`task` tool).
+- `--prompt-cache` — ask the gateway to cache the prompt prefix (top-level
+  `cache_control`; cuts cost ~20× for Anthropic models, inputs unchanged).
+- `OPENROUTER_MAX_RETRIES` — per-request retries for 429/5xx (default 2).
+- `HARNESS_BENCH_TRACE_DIR` — dump the full message history of every task.
+
+Result JSON gains `agent_peak_input_tokens`, `agent_compactions` and
+`agent_cost_usd` when observable.
+
+## Tool-reflection wave (tasks 412–431)
+
+Twenty tasks (`harness_bench/reflect_tasks/tNN_*.py`, ids `task_412_*` …
+`task_431_*`) in which the agent works a small stateful service through a closed
+client in `tools/<name>`, documented in `docs/<name>.md`. The service deviates from its
+documentation in ways that show up only in its responses: an ambiguous refusal for
+correct arguments (an order below a supplier minimum, an over-limit charge), an `"ok"`
+that did less than asked (a partial batch, a capped booking, a backordered line), a
+gateway timeout that did apply the write, an undocumented field or hint (`next_cursor`,
+`quota_remaining`, `--consistent`). Each task also has a mid-course surprise that
+invalidates the plan after the agent has acted (stock recounted, a card replaced, a fee
+tier changing), and a tight success condition. Following the documentation literally
+fails; reading what the tool returned and re-planning passes.
+
+The client journals every call with an HMAC chain; the verifier replays the journal
+through the same service from its initial state and checks the result, so editing the
+service's state files gains nothing. The suite is selected with `--suite reflect` (or by
+id) and is part of `ALL_TASKS` as of task-set v0.18.0. The earlier `reflect_NN_*`
+ids remain aliases that resolve to the new scored ids. The default runtime guard
+is 3600 s, with no agent step cap. Explicit finite settings retain the 1800 s
+timeout floor and 400-step recursion floor. Use `--to-task 411` to select only the previous task range;
+that is a partial run under the current task-set version.
+
+```bash
+# self-check without a model: untouched fails, gold passes, near misses fail,
+# the verifier ignores the state file and rejects an altered journal
+uv run python scripts/check_reflect_tasks.py
+uv run python -m harness_bench run-openrouter --suite reflect --attempts 2 --model <model>
+```
+
+### Historical pre-publication calibration
+
+The table below was measured before the October 2026 IAM and wiki fixes and retains
+its original `reflect_NN_*` labels. It is not a measurement of the corrected v0.18.0
+wave, and the old results must not be relabelled as new-version scores.
+
+Calibration, 2026-09-30, two attempts per task, `run-openrouter` in the bwrap sandbox
+(GigaChat: native `run` with `deepagents-gigachat` 0.0.4); passed attempts out of two:
+
+| task | GigaChat 3.5 xxxB (internal version) | gpt-oss-120b | Qwen3.6-35B-A3B | Claude Haiku 4.5 | DeepSeek V4.1 Flash Uncensored FP8 (high) | GPT-6 Luna (high) | Claude Opus 5.5 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| reflect_01_supplier_minimum | 0/2 | 0/2 | 1/2 | 1/2 | 2/2 | 2/2 | 1/2 |
+| reflect_02_crm_pagination | 0/2 | 0/2 | 2/2 | 1/2 | 2/2 | 1/2 | 2/2 |
+| reflect_03_batch_partial | 0/2 | 0/2 | 2/2 | 2/2 | 2/2 | 2/2 | 2/2 |
+| reflect_04_api_throttle | 0/2 | 0/2 | 0/2 | 1/2 | 0/2 | 2/2 | 0/2 |
+| reflect_05_pay_units | 0/2 | 0/2 | 2/2 | 2/2 | 2/2 | 2/2 | 2/2 |
+| reflect_06_transfer_fees | 1/2 | 0/2 | 1/2 | 2/2 | 0/2 | 2/2 | 0/2 |
+| reflect_07_ticket_timeout_dupes | 0/2 | 0/2 | 1/2 | 1/2 | 2/2 | 2/2 | 2/2 |
+| reflect_08_storage_async_delete | 0/2 | 0/2 | 0/2 | 1/2 | 2/2 | 2/2 | 2/2 |
+| reflect_09_wiki_optimistic_lock | 0/2 | 0/2 | 0/2 | 0/2 | 2/2 | 1/2 | 2/2 |
+| reflect_10_catalog_case_search | 0/2 | 0/2 | 2/2 | 0/2 | 2/2 | 2/2 | 2/2 |
+| reflect_11_calendar_timezone | 0/2 | 0/2 | 2/2 | 0/2 | 0/2 | 0/2 | 2/2 |
+| reflect_12_rooms_duration_cap | 0/2 | 0/2 | 2/2 | 1/2 | 2/2 | 2/2 | 1/2 |
+| reflect_13_payments_split_limits | 0/2 | 0/2 | 2/2 | 0/2 | 2/2 | 2/2 | 2/2 |
+| reflect_14_shipping_weight_codes | 0/2 | 0/2 | 2/2 | 1/2 | 2/2 | 2/2 | 2/2 |
+| reflect_15_kv_eventual | 0/2 | 0/2 | 0/2 | 0/2 | 1/2 | 0/2 | 2/2 |
+| reflect_16_report_deprecated_flag | 0/2 | 0/2 | 0/2 | 1/2 | 2/2 | 1/2 | 2/2 |
+| reflect_17_geocode_quota | 0/2 | 0/2 | 2/2 | 0/2 | 2/2 | 1/2 | 1/2 |
+| reflect_18_mail_bounce | 0/2 | 0/2 | 1/2 | 0/2 | 2/2 | 2/2 | 2/2 |
+| reflect_19_orders_backorder | 0/2 | 0/2 | 0/2 | 1/2 | 0/2 | 1/2 | 1/2 |
+| reflect_20_admin_elevation | 0/2 | 0/2 | 0/2 | 0/2 | 1/2 | 2/2 | 0/2 |
+| **total** | **1/40** | **0/40** | **22/40** | **15/40** | **30/40** | **31/40** | **30/40*\* |
 
 ## Harbor export
 
@@ -518,8 +1351,9 @@ benchmark flow:
 uv run python -m harness_bench export-harbor \
     --output harbor_dataset --task task_06_toggle_debug --clean
 
-# Full dataset export
-uv run python -m harness_bench export-harbor --output harbor_dataset --clean
+# Export the supported tasks; wave 19 has no Harbor host-service adapter yet
+uv run python -m harness_bench export-harbor --output harbor_dataset \
+    --from-task 1 --to-task 431 --clean
 ```
 
 Each exported Harbor task contains:
@@ -533,22 +1367,87 @@ Each exported Harbor task contains:
 The Docker image contains only task setup and runtime dependencies. The
 benchmark registry / gold data is copied into Harbor `solution/` and `tests/`
 payloads, so normal agents do not get the gold answers baked into the image.
+The exported agent timeout also respects task floors: 3600 s for ordinary and
+reflection tasks, and 7200 s for long-context tasks.
 
-Local no-Docker execution remains the canonical development loop:
-`run`, `run-cli`, `run-pure`, `run-openrouter`, `verify-gold`,
-`verify-task`, and `apply-gold` all run directly on the host. Docker is only
-needed when invoking Harbor's own local runner.
+`run-cli` and `run-openrouter` default to a separate Linux bubblewrap sandbox
+for each task agent. Fixture setup and verification stay in the host parent;
+the worker sees its workspace, private scratch/home, and allowlisted runtime
+files. It cannot read the host benchmark registry, gold data or old workspaces.
+Bubblewrap (`bwrap`) must be installed on the runner. `--isolation none` retains
+host execution for diagnostics. `run-openrouter --rli --isolation none` instead
+runs every tool and the verifier inside an RLI session (`harness_bench.rli_backend`);
+the image registered via `rli/register.py` must contain the same task-set version.
+The native GigaChat `run` / `run-pure` commands still execute on the host.
+Selections containing wave 19 are rejected by these native paths, by
+`--isolation none`, by RLI and by Harbor export before an agent is started.
+Use the isolated CLI/OpenRouter worker for wave 19, or explicitly select earlier
+tasks. Docker is only needed when invoking Harbor's own local runner.
+
+For custom CLI dependencies, pass `--sandbox-manifest runtime.json` containing
+`{"runtime_paths": ["/absolute/trusted/runtime"]}`. Allowlist package directories
+or exact launcher/config files; do not mount benchmark/data roots. The native
+OpenRouter worker automatically mounts its Python environment and exactly five
+runtime source files: `deepagents_worker.py`, `openrouter_agent.py`,
+`chat_openai.py`, `agent_stats.py` and `runtime_limits.py`. Installed
+`harness_bench` task packages are masked. Editable
+runtime dependencies outside the environment need an explicit manifest entry.
+Network access remains available for the configured model endpoint. Set
+`OPENROUTER_REASONING_EFFORT=medium` (or another model-supported level) to
+explicitly select reasoning effort for the native OpenRouter worker; retain
+`--forward-reasoning-history` when measuring reasoning models.
+Some models accept `reasoning_effort` together with tools only on the Responses
+API (on 2026-09-29 `openai/gpt-6-luna` rejected every level except `none` on Chat
+Completions); `--responses-api` switches the worker to it, sends the effort as
+`reasoning.effort` and replays the encrypted reasoning items on every turn.
+
+Both isolated runners save each execution under `RESULT.json.artifacts/` (or
+`--artifacts-dir DIR`): the prompt, stdout/stderr, execution metadata, and native
+traces found before workspace cleanup, plus full regular-file snapshots of the
+private scratch/home (including native session databases/configs). Symlink escapes
+are skipped. Files of at least 1 MiB are copied into verified SHA256 objects
+outside the sandbox and then hardlinked into each archived task; live source
+files are never hardlinked. `content_objects.json` records every object reference.
+Artifact execution directories have mode 0700. The OpenRouter worker additionally emits
+model inputs/outputs, tool events, complete final history and usage. These are
+client-side records. For an external session-aware wire recorder, set
+`HBF_WIRE_BASE_URL=http://127.0.0.1:PORT/RUN/HARNESS`. Each physical execution
+gets its own `.../EXECUTION/v1` endpoint in `HBF_API_BASE` and
+`OPENROUTER_BASE_URL`; its metadata records the matching `wire_session`.
+The recorder must forward that route to the original model endpoint without
+changing request or response bodies. Wire recording is opt-in.
+
+A timeout is a scored failure for its execution, even when a later resume
+reruns the task. Wave 19's timely, fully verified host submission
+remains a pass even if its final reply/process timed out. Infrastructure failures
+are separately marked and may be retried on the same model; every retry and
+explicit `--rerun-on-fail` keeps execution history. There is no automatic PROM
+model fallback. Any infrastructure failure makes `measurement_valid=false`,
+`pass_rate=null` and a nonzero exit even with `--allow-task-failures`. Token/step
+coverage fields distinguish missing telemetry from measured zero. Use a fresh
+JSON filename when migrating old unisolated runs; resume refuses to mix them
+with the isolated worker settings. Resume also rejects a different task-set
+version or wave 19 runtime/contract hash. Use a fresh JSON for v0.19.1 and retain
+old v0.19.0 results with their original protocol and score.
 
 ## Results
 
-The published results table (full 351-task set, `v0.13.0`) is kept at the top of
-this README. Only one run per harness + model setup is listed; superseded and
-older-task-set (313-task) runs are not carried over.
+The results tables are kept at the top of this README. The current task set is
+v0.19.1 (471 tasks); no model results for this revision are published yet.
+Published v0.19.0 results and the v0.18.0 (431 tasks), v0.17.0 (411 tasks) and
+v0.16.0 (391 tasks) tables remain historical, with their original protocols and
+scores; they are not measurements of the current revision. Only one run per harness + model setup is
+listed; superseded and older-task-set runs are not carried over (the last
+v0.13.0 table is kept in a collapsed section for reference only).
 
 ### Scoring rules
 
 - A task that hits the per-task wall-clock timeout or hangs counts as a
   normal fail: it stays in the denominator and gets no partial credit.
+  In v0.19.1 wave 19, a timely host-recorded `submit`/`finish` that passes the
+  full verifier earns credit even if the subsequent final reply/process times
+  out. A file without submission, a late submission or a wrong answer still
+  fails. Historical v0.19.0 timeout outcomes are not rescored under this rule.
 - Transient infrastructure errors are **not** model failures. If a task dies
   on a network failure or an API infrastructure response (HTTP 5xx, 429,
   `529 Overloaded`, connection reset, gateway timeout) rather than on the
@@ -562,7 +1461,7 @@ older-task-set (313-task) runs are not carried over.
 1. In one of the task modules (`tasks.py`, `tasks_extra.py`,
    `tasks_more.py`, `tasks_hard.py`, `tasks_extreme.py`,
    `tasks_diagnostic.py`, `tasks_memory.py`, `tasks_skills.py`,
-   `tasks_tbench_lite.py`, `tasks_cli.py` — pick the one that fits
+   `tasks_tbench_lite.py`, `tasks_cli.py`, `long_tasks/` — pick the one that fits
    the wave / difficulty) describe a `Task(...)` — id, prompt,
    `setup_files`, `gold_files`, `verifier`.
 2. Wire it into the corresponding module's `*_TASKS` list — it gets

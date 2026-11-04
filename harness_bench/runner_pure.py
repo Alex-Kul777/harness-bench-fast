@@ -30,6 +30,12 @@ from harness_bench.runner import (
     invoke_agent_with_stats,
     normalize_json_output_path,
 )
+from harness_bench.runtime_limits import (
+    DEFAULT_TASK_TIMEOUT_SECONDS,
+    effective_recursion_limit,
+    langgraph_recursion_limit,
+    prompt_with_execution_budget,
+)
 from harness_bench.tasks import ALL_TASKS, get_task
 
 
@@ -44,7 +50,7 @@ def _ensure_credentials() -> None:
     )
 
 
-def build_agent(workspace: Path, *, recursion_limit: int = 80) -> Any:
+def build_agent(workspace: Path, *, recursion_limit: int = 0) -> Any:
     """Build stock deepagents agent without the deepagents-gigachat profile.
 
     `deepagents` discovers harness profiles through entry points. If
@@ -64,6 +70,7 @@ def build_agent(workspace: Path, *, recursion_limit: int = 80) -> Any:
         root_dir=workspace,
         virtual_mode=True,
         inherit_env=True,
+        timeout=DEFAULT_TASK_TIMEOUT_SECONDS,
     )
     model = ProfilelessGigaChat(
         model=os.getenv("GIGACHAT_MODEL", "GigaChat-3-Ultra"),
@@ -74,7 +81,7 @@ def build_agent(workspace: Path, *, recursion_limit: int = 80) -> Any:
         verify_ssl_certs=os.getenv("GIGACHAT_VERIFY_SSL_CERTS", "false").lower()
         not in ("false", "0", "no"),
         profanity_check=False,
-        timeout=600,
+        timeout=float(os.getenv("HARNESS_BENCH_REQUEST_TIMEOUT", str(DEFAULT_TASK_TIMEOUT_SECONDS))),
         max_retries=20,
         retry_backoff_factor=1.0,
         retry_on_status_codes=(403, 429, 500, 502, 503, 504),
@@ -89,15 +96,18 @@ def build_agent(workspace: Path, *, recursion_limit: int = 80) -> Any:
     agent = create_deep_agent(
         model=model, backend=backend, memory=memory_sources, skills=skill_sources
     )
-    return agent.with_config({"recursion_limit": recursion_limit})
+    return agent.with_config({"recursion_limit": langgraph_recursion_limit(recursion_limit)})
 
 
 def run_task(
     task: Task,
     *,
     keep_workspace: bool = False,
-    recursion_limit: int = 80,
+    recursion_limit: int = 0,
 ) -> TaskRun:
+    if getattr(task, "requires_trusted_service", False):
+        raise ValueError(f"{task.id} requires the CLI runner with --isolation bwrap; native execution cannot isolate its trusted service")
+    recursion_limit = effective_recursion_limit(recursion_limit, getattr(task, "min_recursion_limit", None))
     workspace_keepalive: TemporaryDirectory | None = None
     try:
         if keep_workspace:
@@ -113,10 +123,13 @@ def run_task(
         stats = AgentRunStatsCollector()
         try:
             agent = build_agent(workspace_path, recursion_limit=recursion_limit)
+            started = time.monotonic()
             invocation_result = invoke_agent_with_stats(
                 agent,
-                {"messages": [{"role": "user", "content": task.prompt}]},
+                {"messages": [{"role": "user", "content": prompt_with_execution_budget(task.prompt, recursion_limit=recursion_limit)}]},
                 stats,
+                min_timeout_seconds=getattr(task, "min_timeout_seconds", None),
+                max_timeout_seconds=getattr(task, "max_timeout_seconds", None),
             )
         except Exception as exc:  # noqa: BLE001 — log and surface as task failure
             run = _agent_exception_task_run(
@@ -145,12 +158,15 @@ def run_all(
     task_ids: list[str] | None = None,
     *,
     keep_workspace: bool = False,
-    recursion_limit: int = 80,
+    recursion_limit: int = 0,
     concurrency: int = 1,
     attempts: int = 1,
     json_output: str | Path | None = None,
     rerun_on_fail: bool = False,
 ) -> list[TaskRun]:
+    targets = [get_task(tid) for tid in task_ids] if task_ids else list(ALL_TASKS)
+    if any(getattr(task, "requires_trusted_service", False) for task in targets):
+        raise ValueError("Selected tasks require the CLI runner with --isolation bwrap; native execution is unsupported")
     _load_env_from_dotenv()
     _ensure_credentials()
     json_output = normalize_json_output_path(json_output)
@@ -158,7 +174,6 @@ def run_all(
     if attempts < 1:
         raise ValueError("attempts must be positive")
 
-    targets = [get_task(tid) for tid in task_ids] if task_ids else list(ALL_TASKS)
     results = _resume_results(
         json_output,
         targets,

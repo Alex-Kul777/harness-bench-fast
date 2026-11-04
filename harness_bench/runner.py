@@ -14,13 +14,28 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any
 
-from harness_bench.core import Task, VerifyResult
+from harness_bench.agent_stats import AgentRunStatsCollector as AgentRunStatsCollector
+from harness_bench.agent_stats import _add_usage_counts as _add_usage_counts
+from harness_bench.agent_stats import agent_stats_from_result as agent_stats_from_result
+from harness_bench.core import Task, VerifyResult, effective_task_timeout
+from harness_bench.feasibility_tasks.pair_metrics import compute_pair_metrics
 from harness_bench.metrics import PassMetric, compute_pass_metrics
+from harness_bench.runtime_limits import (
+    DEFAULT_TASK_TIMEOUT_SECONDS,
+    effective_recursion_limit,
+    langgraph_recursion_limit,
+    prompt_with_execution_budget,
+)
 from harness_bench.tasks import ALL_TASKS, get_task
 from harness_bench.versioning import TASK_SET_VERSION, TASK_WAVES, TaskWave, task_number
 
 DEFAULT_JOBS_DIR = Path("jobs")
 """Default directory for CLI-specified benchmark JSON/checkpoint files."""
+
+_HARNESS_PROFILE_LOCK = threading.Lock()
+_HARNESS_PROFILE_REGISTERED = False
+"""Guards the one-shot `deepagents-gigachat` profile registration (see
+`_ensure_harness_profile`)."""
 
 _AGENT_METRIC_FIELDS = (
     "agent_steps",
@@ -31,15 +46,14 @@ _AGENT_METRIC_FIELDS = (
     "agent_input_tokens",
     "agent_output_tokens",
     "agent_total_tokens",
+    "agent_peak_input_tokens",
+    "agent_compactions",
 )
 
 _RESULTS_JSON_COMMAND: str | None = None
 
-# Per-task wall-clock cap. The benchmark requires that no single task run longer
-# than this; a model whose request hangs on a dead socket, or that loops just
-# under the recursion cap, must not be able to freeze the whole run. Override
-# with the ``HARNESS_BENCH_TASK_TIMEOUT`` env var (seconds).
-DEFAULT_TASK_TIMEOUT_SECONDS = 600.0
+# Sanitary wall-clock guard against a hung request or an endless agent loop.
+# Override with ``HARNESS_BENCH_TASK_TIMEOUT`` (seconds); task floors still apply.
 
 
 class TaskTimeoutError(Exception):
@@ -47,7 +61,7 @@ class TaskTimeoutError(Exception):
 
 
 def _task_timeout_seconds() -> float:
-    """Per-task wall-clock timeout in seconds (env override, else 10 minutes)."""
+    """Per-task wall-clock timeout in seconds (env override, else one hour)."""
     raw = os.getenv("HARNESS_BENCH_TASK_TIMEOUT")
     if raw:
         try:
@@ -84,6 +98,7 @@ def _agent_exception_task_run(
             message=str(exc),
             elapsed_seconds=elapsed_seconds,
             workspace=workspace,
+            failure_kind="timeout",
         )
     if _is_graph_recursion_error(exc):
         return TaskRun(
@@ -123,6 +138,14 @@ class TaskRun:
     agent_input_tokens: int | None = None
     agent_output_tokens: int | None = None
     agent_total_tokens: int | None = None
+    # Largest prompt of a single model call, auto-compactions the harness
+    # performed, and gateway-reported spend (OpenRouter-style `usage.cost`).
+    # Only runners that can observe them fill these in.
+    agent_peak_input_tokens: int | None = None
+    agent_compactions: int | None = None
+    agent_cost_usd: float | None = None
+    failure_kind: str | None = None
+    execution_history: list[dict[str, Any]] | None = None
 
 
 def _load_env_from_dotenv() -> None:
@@ -161,15 +184,15 @@ def _is_cli_timeout_error(error: Any) -> bool:
 
 
 def _payload_reruns_on_continue(item: dict[str, Any]) -> bool:
-    if item.get("rerun_on_continue") is True:
-        return True
-    if item.get("failure_kind") == "timeout":
-        return True
-    return _is_cli_timeout_error(item.get("error"))
+    # Legacy timeout rows carried rerun_on_continue=True. A timeout is a scored
+    # model attempt and must not gain another attempt just because we resumed.
+    if item.get("failure_kind") == "timeout" or _is_cli_timeout_error(item.get("error")):
+        return False
+    return item.get("failure_kind") == "infrastructure"
 
 
 def _task_run_reruns_on_continue(run: TaskRun) -> bool:
-    return _is_cli_timeout_error(run.error)
+    return run.failure_kind == "infrastructure"
 
 
 def set_results_json_command(command: str | None) -> None:
@@ -214,6 +237,7 @@ def task_run_from_payload(item: dict[str, Any], *, attempts: int | None = None) 
     }
     error = item.get("error")
     message = item.get("message")
+    cost = item.get("agent_cost_usd")
     return TaskRun(
         task_id=task_id,
         passed=bool(item.get("passed")),
@@ -222,6 +246,9 @@ def task_run_from_payload(item: dict[str, Any], *, attempts: int | None = None) 
         error=error if isinstance(error, str) else None,
         attempt=attempt,
         attempts=attempts or saved_attempts,
+        agent_cost_usd=float(cost) if isinstance(cost, int | float) else None,
+        failure_kind=item.get("failure_kind") or ("timeout" if _is_cli_timeout_error(error) else None),
+        execution_history=item.get("execution_history"),
         **metric_values,
     )
 
@@ -231,8 +258,13 @@ def load_results_json(
     *,
     attempts: int | None = None,
     include_rerun_on_continue: bool = True,
+    require_current_version: bool = False,
 ) -> list[TaskRun]:
-    """Load a previously written benchmark JSON report back into ``TaskRun`` rows."""
+    """Load report rows; resuming requires the current task-set protocol.
+
+    Read-only analysis may still load historical or unversioned reports. A
+    runner must opt into the version check before retaining or rewriting rows.
+    """
     result_path = Path(path)
     try:
         payload = json.loads(result_path.read_text(encoding="utf-8"))
@@ -240,6 +272,13 @@ def load_results_json(
         raise ValueError(f"{result_path} is not valid JSON: {exc}") from exc
     if not isinstance(payload, dict) or not isinstance(payload.get("tasks"), list):
         raise ValueError(f"{result_path} does not look like a harness-bench results JSON")
+    if require_current_version and payload.get("task_set_version") != TASK_SET_VERSION:
+        version = payload.get("task_set_version")
+        raise ValueError(
+            f"Cannot resume {result_path}: task_set_version is {version!r}, "
+            f"but the current task-set protocol is {TASK_SET_VERSION!r}. "
+            "Use a new --json-output file; historical results must not be relabeled."
+        )
     runs = []
     for item in payload["tasks"]:
         if not isinstance(item, dict):
@@ -266,6 +305,7 @@ def _resume_results(
         json_output_path,
         attempts=attempts,
         include_rerun_on_continue=False,
+        require_current_version=True,
     )
     by_key: dict[tuple[str, int], TaskRun] = {}
     for run in loaded:
@@ -322,177 +362,26 @@ def _task_attempts_payload(
     ]
 
 
-def _usage_token_counts(usage: Any) -> tuple[int | None, int | None, int | None]:
-    if not isinstance(usage, dict):
-        return None, None, None
-
-    input_tokens = (
-        _coerce_int(usage.get("input_tokens"))
-        or _coerce_int(usage.get("prompt_tokens"))
-        or _coerce_int(usage.get("prompt_eval_count"))
-    )
-    # Anthropic (Claude Code) bills cached context under separate cache fields;
-    # `input_tokens` is only the fresh, non-cached delta. Fold the cache reads
-    # and cache creation back in so token totals reflect the real context size.
-    cache_tokens = (_coerce_int(usage.get("cache_read_input_tokens")) or 0) + (
-        _coerce_int(usage.get("cache_creation_input_tokens")) or 0
-    )
-    if cache_tokens:
-        input_tokens = (input_tokens or 0) + cache_tokens
-    output_tokens = (
-        _coerce_int(usage.get("output_tokens"))
-        or _coerce_int(usage.get("completion_tokens"))
-        or _coerce_int(usage.get("eval_count"))
-    )
-    total_tokens = _coerce_int(usage.get("total_tokens"))
-    if total_tokens is None and (input_tokens is not None or output_tokens is not None):
-        total_tokens = (input_tokens or 0) + (output_tokens or 0)
-    return input_tokens, output_tokens, total_tokens
 
 
-def _add_usage_counts(stats: dict[str, int], usage: Any) -> None:
-    input_tokens, output_tokens, total_tokens = _usage_token_counts(usage)
-    if input_tokens is not None:
-        stats["agent_input_tokens"] = stats.get("agent_input_tokens", 0) + input_tokens
-    if output_tokens is not None:
-        stats["agent_output_tokens"] = stats.get("agent_output_tokens", 0) + output_tokens
-    if total_tokens is not None:
-        stats["agent_total_tokens"] = stats.get("agent_total_tokens", 0) + total_tokens
-
-
-def _message_role(message: Any) -> str | None:
-    role = getattr(message, "type", None) or getattr(message, "role", None)
-    if isinstance(message, dict):
-        role = message.get("type") or message.get("role")
-    return role if isinstance(role, str) else None
-
-
-def _message_tool_calls(message: Any) -> list[Any]:
-    tool_calls = getattr(message, "tool_calls", None)
-    if isinstance(message, dict):
-        tool_calls = message.get("tool_calls", tool_calls)
-    return tool_calls if isinstance(tool_calls, list) else []
-
-
-def _tool_call_name(tool_call: Any) -> str:
-    if isinstance(tool_call, dict):
-        name = tool_call.get("name") or tool_call.get("function", {}).get("name")
-        return name if isinstance(name, str) else ""
-    name = getattr(tool_call, "name", "")
-    return name if isinstance(name, str) else ""
-
-
-def _message_usage(message: Any) -> list[Any]:
-    usages: list[Any] = []
-    usage_metadata = getattr(message, "usage_metadata", None)
-    if isinstance(message, dict):
-        usage_metadata = message.get("usage_metadata", usage_metadata)
-    if usage_metadata:
-        usages.append(usage_metadata)
-
-    response_metadata = getattr(message, "response_metadata", None)
-    if isinstance(message, dict):
-        response_metadata = message.get("response_metadata", response_metadata)
-    if isinstance(response_metadata, dict):
-        for key in ("token_usage", "usage", "usage_metadata"):
-            if response_metadata.get(key):
-                usages.append(response_metadata[key])
-    return usages
-
-
-def agent_stats_from_result(invocation_result: Any) -> dict[str, int]:
-    """Best-effort step/token extraction from a LangGraph/deepagents result."""
-    stats: dict[str, int] = {}
-    if not isinstance(invocation_result, dict):
-        return stats
-
-    messages = invocation_result.get("messages")
-    if not isinstance(messages, list):
-        return stats
-
-    events = len(messages)
-    steps = 0
-    tool_calls = 0
-    shell_commands = 0
-    llm_calls = 0
-    for message in messages:
-        role = _message_role(message)
-        if role not in ("human", "user", "system"):
-            steps += 1
-        calls = _message_tool_calls(message)
-        if calls:
-            tool_calls += len(calls)
-            llm_calls += 1
-            for call in calls:
-                if _tool_call_name(call) == "execute":
-                    shell_commands += 1
-        elif role in ("ai", "assistant"):
-            llm_calls += 1
-        for usage in _message_usage(message):
-            _add_usage_counts(stats, usage)
-
-    stats["agent_events"] = events
-    stats["agent_steps"] = steps
-    stats["agent_tool_calls"] = tool_calls
-    stats["agent_shell_commands"] = shell_commands
-    stats["agent_llm_calls"] = llm_calls
-    return stats
-
-
-class AgentRunStatsCollector:
-    """LangChain callback collector for token usage emitted during agent runs."""
-
-    def __init__(self) -> None:
-        self.stats: dict[str, int] = {}
-
-    def as_callback(self) -> Any:
-        try:
-            from langchain_core.callbacks import BaseCallbackHandler
-        except ImportError:
-            return None
-
-        outer = self
-
-        class _Handler(BaseCallbackHandler):
-            def on_llm_end(self, response: Any, **_kwargs: Any) -> None:
-                outer.stats["agent_llm_calls"] = outer.stats.get("agent_llm_calls", 0) + 1
-                llm_output = getattr(response, "llm_output", None)
-                if isinstance(llm_output, dict):
-                    _add_usage_counts(outer.stats, llm_output.get("token_usage"))
-                    _add_usage_counts(outer.stats, llm_output.get("usage"))
-                for generations in getattr(response, "generations", []) or []:
-                    for generation in generations:
-                        message = getattr(generation, "message", None)
-                        if message is not None:
-                            for usage in _message_usage(message):
-                                _add_usage_counts(outer.stats, usage)
-
-        return _Handler()
-
-    def merged(self, invocation_result: Any | None = None) -> dict[str, int]:
-        stats = dict(self.stats)
-        if invocation_result is not None:
-            for key, value in agent_stats_from_result(invocation_result).items():
-                if (
-                    key.startswith("agent_")
-                    and key.endswith("_tokens")
-                    or key == "agent_llm_calls"
-                ):
-                    stats[key] = max(stats.get(key, 0), value)
-                else:
-                    stats[key] = value
-        return stats
-
-
-def invoke_agent_with_stats(agent: Any, payload: dict[str, Any], stats: AgentRunStatsCollector) -> Any:
+def invoke_agent_with_stats(
+    agent: Any,
+    payload: dict[str, Any],
+    stats: AgentRunStatsCollector,
+    *,
+    min_timeout_seconds: float | None = None,
+    max_timeout_seconds: float | None = None,
+) -> Any:
     """Invoke the agent under the per-task wall-clock timeout.
 
-    The invocation runs in a daemon thread and is joined for at most
-    ``_task_timeout_seconds()``. On timeout the caller is freed and a
+    The invocation runs in a daemon thread and is joined for the configured
+    timeout clamped to the task floor and ceiling. On timeout the caller is freed and a
     ``TaskTimeoutError`` is raised (recorded as a normal task failure); the
     orphaned daemon thread cannot block process exit. This is what stops one
     hung request — e.g. a dead socket with no read-timeout — from freezing the
-    whole run, which is a benchmark requirement.
+    whole run, which is a benchmark requirement. The timed-out thread may still
+    run or write files; its result is never verified. Use the isolated CLI
+    runner when process-tree termination is required.
     """
     callbacks = [cb] if (cb := stats.as_callback()) is not None else None
 
@@ -506,7 +395,9 @@ def invoke_agent_with_stats(agent: Any, payload: dict[str, Any], stats: AgentRun
                 raise
             return agent.invoke(payload)
 
-    timeout = _task_timeout_seconds()
+    timeout = effective_task_timeout(
+        _task_timeout_seconds(), min_timeout_seconds, max_timeout_seconds
+    )
     box: dict[str, Any] = {}
 
     def _worker() -> None:
@@ -514,11 +405,14 @@ def invoke_agent_with_stats(agent: Any, payload: dict[str, Any], stats: AgentRun
             box["result"] = _call()
         except BaseException as exc:  # noqa: BLE001 — re-raised in the caller thread
             box["error"] = exc
+        finally:
+            box["finished"] = time.monotonic()
 
     thread = threading.Thread(target=_worker, name="hb-agent-invoke", daemon=True)
+    started = time.monotonic()
     thread.start()
     thread.join(timeout)
-    if thread.is_alive():
+    if thread.is_alive() or box["finished"] - started > timeout:
         raise TaskTimeoutError(f"task exceeded the {timeout:.0f}s per-task timeout")
     if "error" in box:
         raise box["error"]
@@ -546,7 +440,35 @@ def _task_run_with_agent_stats(
     )
 
 
-def build_agent(workspace: Path, *, recursion_limit: int = 80) -> Any:
+def _ensure_harness_profile(workspace: Path) -> None:
+    """Register the optional `deepagents-gigachat` profile, point it at `workspace`.
+
+    Registration is explicit so editable/local installs behave like entry-point
+    installs, and it happens **once per process**: `register_harness_profile`
+    merges additively, so registering per task stacks another lazily-resolved
+    middleware layer on the `gigachat` key every time. The resolved content
+    stays identical, but each layer adds a frame to the resolution that runs on
+    every agent build, and past ~450 registrations it exhausts Python's stack —
+    every later task then dies with `RecursionError` before reaching the model.
+    A full-set run survives by luck; `--attempts 16` does not.
+
+    Only the workspace pointer is per task: middleware reads it to tell a memory
+    task from an ordinary one.
+    """
+    try:
+        from deepagents_gigachat import register_harness, set_workspace_path
+    except ImportError:
+        return
+
+    global _HARNESS_PROFILE_REGISTERED
+    with _HARNESS_PROFILE_LOCK:
+        if not _HARNESS_PROFILE_REGISTERED:
+            register_harness()
+            _HARNESS_PROFILE_REGISTERED = True
+    set_workspace_path(workspace)
+
+
+def build_agent(workspace: Path, *, recursion_limit: int = 0) -> Any:
     """Build a deep agent backed by GigaChat and rooted at `workspace`.
 
     Imports happen here so `--gold` / `list` modes can run without GigaChat
@@ -556,21 +478,13 @@ def build_agent(workspace: Path, *, recursion_limit: int = 80) -> Any:
     from deepagents.backends import LocalShellBackend
     from langchain_gigachat import GigaChat
 
-    # The deepagents-gigachat harness profile is optional. When installed,
-    # register it explicitly so editable/local installs work the same way as
-    # entry-point installs and so AgentsMdInjectMiddleware knows this task's
-    # workspace. Without it the agent runs on stock deepagents defaults.
-    try:
-        from deepagents_gigachat import register_harness, set_workspace_path
-        register_harness()
-        set_workspace_path(workspace)
-    except ImportError:
-        pass
+    _ensure_harness_profile(workspace)
 
     backend = LocalShellBackend(
         root_dir=workspace,
         virtual_mode=True,
         inherit_env=True,
+        timeout=DEFAULT_TASK_TIMEOUT_SECONDS,
     )
     model = GigaChat(
         model=os.getenv("GIGACHAT_MODEL", "GigaChat-3-Ultra"),
@@ -581,7 +495,7 @@ def build_agent(workspace: Path, *, recursion_limit: int = 80) -> Any:
         verify_ssl_certs=os.getenv("GIGACHAT_VERIFY_SSL_CERTS", "false").lower()
         not in ("false", "0", "no"),
         profanity_check=False,
-        timeout=600,
+        timeout=float(os.getenv("HARNESS_BENCH_REQUEST_TIMEOUT", str(DEFAULT_TASK_TIMEOUT_SECONDS))),
         # Transient backend errors (403/429/5xx from IFT endpoint under
         # concurrency) are not "the model misbehaving" — they're rate-limit /
         # connectivity blips. Retry transparently so the agent trace survives.
@@ -604,7 +518,7 @@ def build_agent(workspace: Path, *, recursion_limit: int = 80) -> Any:
     agent = create_deep_agent(
         model=model, backend=backend, memory=memory_sources, skills=skill_sources
     )
-    return agent.with_config({"recursion_limit": recursion_limit})
+    return agent.with_config({"recursion_limit": langgraph_recursion_limit(recursion_limit)})
 
 
 def _ensure_credentials() -> None:
@@ -622,7 +536,7 @@ def run_task(
     task: Task,
     *,
     keep_workspace: bool = False,
-    recursion_limit: int = 80,
+    recursion_limit: int = 0,
 ) -> TaskRun:
     """Run a single task end-to-end and return its outcome.
 
@@ -630,8 +544,11 @@ def run_task(
         task: The benchmark task to execute.
         keep_workspace: When `True`, the temp workspace directory is not
             deleted after the run — handy for debugging a failure.
-        recursion_limit: Cap on agent loop iterations.
+        recursion_limit: Optional cap on agent loop iterations; 0 means unlimited.
     """
+    if getattr(task, "requires_trusted_service", False):
+        raise ValueError(f"{task.id} requires the CLI runner with --isolation bwrap; native execution cannot isolate its trusted service")
+    recursion_limit = effective_recursion_limit(recursion_limit, getattr(task, "min_recursion_limit", None))
     workspace_keepalive: TemporaryDirectory | None = None
     try:
         if keep_workspace:
@@ -645,10 +562,13 @@ def run_task(
         stats = AgentRunStatsCollector()
         try:
             agent = build_agent(workspace_path, recursion_limit=recursion_limit)
+            started = time.monotonic()
             invocation_result = invoke_agent_with_stats(
                 agent,
-                {"messages": [{"role": "user", "content": task.prompt}]},
+                {"messages": [{"role": "user", "content": prompt_with_execution_budget(task.prompt, recursion_limit=recursion_limit)}]},
                 stats,
+                min_timeout_seconds=getattr(task, "min_timeout_seconds", None),
+                max_timeout_seconds=getattr(task, "max_timeout_seconds", None),
             )
         except Exception as exc:  # noqa: BLE001 — log and surface as task failure
             run = _agent_exception_task_run(
@@ -677,7 +597,7 @@ def run_all(
     task_ids: list[str] | None = None,
     *,
     keep_workspace: bool = False,
-    recursion_limit: int = 80,
+    recursion_limit: int = 0,
     concurrency: int = 1,
     attempts: int = 1,
     json_output: str | Path | None = None,
@@ -693,6 +613,9 @@ def run_all(
     task in completion order. The returned list is sorted by task id so the
     summary block is deterministic regardless of completion order.
     """
+    targets = [get_task(tid) for tid in task_ids] if task_ids else list(ALL_TASKS)
+    if any(getattr(task, "requires_trusted_service", False) for task in targets):
+        raise ValueError("Selected tasks require the CLI runner with --isolation bwrap; native execution is unsupported")
     _load_env_from_dotenv()
     _ensure_credentials()
     json_output = normalize_json_output_path(json_output)
@@ -700,7 +623,6 @@ def run_all(
     if attempts < 1:
         raise ValueError("attempts must be positive")
 
-    targets = [get_task(tid) for tid in task_ids] if task_ids else list(ALL_TASKS)
     results = _resume_results(
         json_output,
         targets,
@@ -834,13 +756,16 @@ def summarize(
     """Print a pass/fail summary block at the end of a run."""
     total = len(results)
     passed = sum(1 for r in results if r.passed)
+    invalid = any(r.failure_kind == "infrastructure" for r in results)
+    if invalid:
+        print("INVALID MEASUREMENT: infrastructure failures; counts below are diagnostic only.")
     print()
     print("=" * 64)
     repeated_task_ids = len(_task_results_by_id(results)) < len(results)
     repeated_attempts = repeated_task_ids or any(r.attempts != 1 for r in results)
     label = "Passed attempts" if repeated_attempts else "Passed"
     print(f"{label}: {passed}/{total}")
-    metrics = compute_pass_metrics(results, pass_at_ks=pass_at_ks, pass_hat_ks=pass_hat_ks)
+    metrics = {} if invalid else compute_pass_metrics(results, pass_at_ks=pass_at_ks, pass_hat_ks=pass_hat_ks)
     if metrics:
         print()
         print("Metrics:")
@@ -852,6 +777,18 @@ def summarize(
         print("Per-wave breakdown:")
         for line in wave_table:
             print(f"  {line}")
+    pair_metrics = compute_pair_metrics(results)
+    if pair_metrics is not None:
+        print()
+        print("Wave 19 strict pairs (both halves within the same attempt):")
+        for cohort in pair_metrics["cohorts"]:
+            score = cohort["score"]
+            percentage = "invalid" if score is None else f"{score:.1%}"
+            print(
+                f"  Attempt {cohort['attempt']}: "
+                f"{cohort['passed_pairs']}/{cohort['total_pairs']} ({percentage}); "
+                f"incomplete {cohort['incomplete_pairs']}"
+            )
     if include_failures and passed < total:
         print()
         print("Failures:")
@@ -991,6 +928,40 @@ def _sum_run_metric(results: list[TaskRun], field: str) -> int:
     return sum(value for run in results if isinstance(value := getattr(run, field), int))
 
 
+def _wave19_task_metrics(task_id: str, message: str) -> dict[str, Any] | None:
+    """Extract verifier telemetry without changing its message or task score."""
+    from harness_bench.feasibility_tasks import FEASIBILITY_PAIRS
+
+    if not any(task_id in halves for halves in FEASIBILITY_PAIRS.values()):
+        return None
+    if not isinstance(message, str) or len(message) > 262_144:
+        return None
+
+    def reject_constant(value: str) -> None:
+        raise ValueError(f"non-finite JSON value: {value}")
+
+    def unique_keys(items: list[tuple[str, Any]]) -> dict[str, Any]:
+        result: dict[str, Any] = {}
+        for key, value in items:
+            if key in result:
+                raise ValueError("duplicate JSON key")
+            result[key] = value
+        return result
+
+    try:
+        text = message.lstrip()
+        decoded, end = json.JSONDecoder(
+            parse_constant=reject_constant, object_pairs_hook=unique_keys
+        ).raw_decode(text)
+        suffix = text[end:].strip()
+        if suffix and not suffix.startswith("| CLI exit="):
+            return None
+        metrics = decoded.get("wave19") if isinstance(decoded, dict) else None
+        return metrics if isinstance(metrics, dict) and metrics else None
+    except (ValueError, RecursionError):
+        return None
+
+
 def results_to_payload(
     results: list[TaskRun],
     *,
@@ -1031,19 +1002,34 @@ def results_to_payload(
             "agent_output_tokens": r.agent_output_tokens,
             "agent_total_tokens": r.agent_total_tokens,
         }
+        for optional in ("agent_peak_input_tokens", "agent_compactions", "agent_cost_usd"):
+            if (value := getattr(r, optional)) is not None:
+                task_payload[optional] = value
+        kind = r.failure_kind or ("timeout" if _is_cli_timeout_error(r.error) else None)
+        if kind:
+            task_payload["failure_kind"] = kind
+        if r.execution_history is not None:
+            task_payload["execution_history"] = r.execution_history
+            task_payload["executions"] = sum(not item.get("resume") for item in r.execution_history)
         if _task_run_reruns_on_continue(r):
-            task_payload["failure_kind"] = "timeout"
             task_payload["rerun_on_continue"] = True
+        if (task_metrics := _wave19_task_metrics(r.task_id, r.message)) is not None:
+            task_payload["task_metrics"] = task_metrics
         tasks_payload.append(task_payload)
+    infrastructure = sum(r.failure_kind == "infrastructure" for r in results)
     payload: dict[str, Any] = {"task_set_version": TASK_SET_VERSION}
     result_command = command if command is not None else _RESULTS_JSON_COMMAND
     if result_command:
         payload["command"] = result_command
     payload.update(
         {
+            "measurement_valid": infrastructure == 0,
+            "infrastructure_failures": infrastructure,
             "total": total,
             "passed": passed,
-            "pass_rate": (passed / total) if total else 0.0,
+            "pass_rate": None if infrastructure else ((passed / total) if total else 0.0),
+            "step_metric_coverage": sum(r.agent_steps is not None for r in results),
+            "token_metric_coverage": sum(r.agent_total_tokens is not None for r in results),
             "steps": _sum_run_metric(results, "agent_steps"),
             "tokens": _sum_run_metric(results, "agent_total_tokens"),
             "tasks": tasks_payload,
@@ -1053,6 +1039,9 @@ def results_to_payload(
         payload["run_status"] = "interrupted"
         payload["interrupted"] = True
         payload["interrupted_attempts"] = interrupted_attempts
+    pair_metrics = compute_pair_metrics(results)
+    if pair_metrics is not None:
+        payload["feasibility_pairs"] = pair_metrics
     return payload
 
 
@@ -1130,11 +1119,15 @@ def verify_gold(task_ids: list[str] | None = None) -> list[TaskRun]:
     for task in targets:
         with TemporaryDirectory(prefix=f"hb_gold_{task.id}_") as tmp:
             ws = Path(tmp)
-            task.setup(ws)
-            task.apply_gold(ws)
-            start = time.monotonic()
-            outcome: VerifyResult = task.verify(ws)
-            elapsed = time.monotonic() - start
+            try:
+                task.setup(ws)
+                task.apply_gold(ws)
+                start = time.monotonic()
+                outcome: VerifyResult = task.verify(ws)
+                elapsed = time.monotonic() - start
+            finally:
+                if cleanup := getattr(task, "cleanup", None):
+                    cleanup(ws)
         run = TaskRun(
             task_id=task.id,
             passed=outcome.passed,

@@ -20,6 +20,14 @@ import json
 from pathlib import Path
 
 from harness_bench.core import Task, VerifyResult
+from harness_bench.feasibility_tasks import FEASIBILITY_TASKS
+from harness_bench.general_hard import GENERAL_HARD_TASKS
+from harness_bench.general_hard.composite_tasks import (
+    COMPOSITE_CALIBRATION_TASKS,
+    COMPOSITE_HARD_TASKS,
+)
+from harness_bench.long_tasks import LONG_TASKS
+from harness_bench.reflect_tasks import REFLECT_TASKS
 from harness_bench.tasks_adversarial import ADVERSARIAL_TASKS
 from harness_bench.tasks_agentic import AGENTIC_TASKS
 from harness_bench.tasks_cli import CLI_TASKS
@@ -45,6 +53,7 @@ from harness_bench.verifiers import (
     python_callable_returns,
     python_runs,
 )
+from harness_bench.versioning import task_number
 
 # ---------------------------------------------------------------------------
 # 1. create_hello_py
@@ -831,9 +840,39 @@ ALL_TASKS: list[Task] = [
     *ADVERSARIAL_TASKS,
     *TBENCH_LITE_TASKS,
     *CLI_TASKS,
+    *LONG_TASKS,
+    *REFLECT_TASKS,
+    *FEASIBILITY_TASKS,
+    *GENERAL_HARD_TASKS,
+    *COMPOSITE_CALIBRATION_TASKS,
 ]
 
+# Canonical scored ids; retain the pre-publication reflection names as aliases.
 _TASK_INDEX: dict[str, Task] = {t.id: t for t in ALL_TASKS}
+_TASK_INDEX.update({
+    f"reflect_{int(t.id.split('_')[1]) - 411:02d}_{t.id.split('_', 2)[2]}": t
+    for t in REFLECT_TASKS
+})
+
+# Public suites are fixed memberships, not open-ended numeric partitions.
+# Keep calibration controls addressable in the unchanged historical registry.
+LIGHT_TASKS = [t for t in ALL_TASKS if 1 <= task_number(t.id) <= 391]
+MEDIUM_HISTORICAL_TASKS = [t for t in ALL_TASKS if 392 <= task_number(t.id) <= 471]
+MEDIUM_TASKS = [*MEDIUM_HISTORICAL_TASKS, *COMPOSITE_HARD_TASKS]
+
+# These suites select tasks already included in the default registry.
+SUITES: dict[str, list[Task]] = {
+    "default": ALL_TASKS,
+    "light": LIGHT_TASKS,
+    "medium": MEDIUM_TASKS,
+    "medium-historical80": MEDIUM_HISTORICAL_TASKS,
+    "long": LONG_TASKS,
+    "reflect": REFLECT_TASKS,
+    "feasibility": FEASIBILITY_TASKS,
+    "general-hard": GENERAL_HARD_TASKS,
+    "composite-hard": COMPOSITE_HARD_TASKS,
+    "composite-hard-calibration": COMPOSITE_CALIBRATION_TASKS,
+}
 
 
 def get_task(task_id: str) -> Task:

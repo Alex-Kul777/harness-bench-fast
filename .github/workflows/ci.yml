@@ -32,6 +32,22 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Prepare Linux verifier isolation
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap
+          # Ephemeral CI runner: allow bwrap's unprivileged user namespace.
+          if [ -e /proc/sys/kernel/apparmor_restrict_unprivileged_userns ]; then
+            sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+          fi
+          bwrap --unshare-user --unshare-net --ro-bind / / --proc /proc --dev /dev -- /usr/bin/true
+
       - name: Install dependencies
         run: uv sync --dev
 
@@ -40,6 +56,9 @@ jobs:
 
       - name: Run tests
         run: uv run pytest
+
+      - name: Check leaderboard selection
+        run: node tests/test_leaderboard.cjs
 
       - name: Verify harness gold solutions
         run: uv run python .github/scripts/verify_gold_with_annotations.py
