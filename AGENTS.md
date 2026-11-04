@@ -75,3 +75,10 @@ for 90 tasks. Light is frozen at IDs 1–391. Historical result scopes and score
 remain available; missing current Medium coverage does not earn a zero. Report selected-ten rescoring separately by actual harness,
 model, effort, protocol and budget; it is adaptive selection, not a fresh run.
 Missing coverage is unmeasured. Never combine graph-step and model-request caps.
+
+## Agent skills
+
+Before any benchmark work in this repo (running models, new waves, runner fixes,
+upstream merges), read `.agents/skills/harness-bench-fast/SKILL.md` and follow it.
+It covers model onboarding, per-wave timeouts, the wave19 host service, runner
+health checks, subagent runs, and the definition of done.
