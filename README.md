@@ -1,5 +1,16 @@
 # harness-bench
 
+<!-- FORK:BEGIN -->
+> **Форк [Alex-Kul777](https://github.com/Alex-Kul777)** к harness-bench-fast: добавляем прогоны
+> Pi / OpenClaw / Hermes и волну 19. Подробности — в [`FORK.md`](FORK.md) и
+> [`docs/fork-results.md`](docs/fork-results.md).
+>
+> - Shot List: лучший OpenClaw + DeepSeek-V4.1-Flash — **50/52 (96.2%)**
+> - Wave 19: Pi + DeepSeek V4.1 Flash — **36/40 (90.0%)**
+>
+> *EN: This is the Alex-Kul777 fork adding Pi / OpenClaw / Hermes runs and wave 19 — see [`FORK.md`](FORK.md) and [`docs/fork-results.md`](docs/fork-results.md).*
+<!-- FORK:END -->
+
 [Live leaderboard and benchmark results](https://ai-forever.github.io/harness-bench-fast/)
 
 **Medium continuation · wave 21 / task-set v0.21.3: ten selected coupled workflows.** Use
@@ -99,32 +110,10 @@ Historical task set: **471 tasks, `task-set v0.19.1`**. Tasks 432–471 remain *
 
 No model results on v0.19.1 have been recorded yet. Published v0.19.0 results and earlier wave 19 calibration retain their original protocols, budgets, denominators and scores; they are not measurements of v0.19.1. The result sections below and linked measurement pages remain historical records.
 
-## Wave 19 feasibility — Pi + DeepSeek V4.1 Flash (task-set v0.21.3, 2026-11-04)
+## Wave 19 — наши прогоны
 
-A fresh local measurement of **wave 19 (tasks 432–471, 40 tasks in 20 matched
-pairs)** on the **Pi** runner with **DeepSeek V4.1 Flash**: **36/40 (90.0%)**,
-95% Wilson interval **76.9–96.0%**. One run (k=1), 94 minutes, **2,748 steps**,
-2,238 tool calls, 9.57M input + 2.17M output tokens (incl. 1.44M reasoning),
-**≈3,923 ₽**. No infrastructure failures; a per-task timeout or hang counts as a
-normal fail.
-
-| Configuration | Wave 19 (432–471) | 95% Wilson | Source |
-| --- | --- | --- | --- |
-| **Pi + DeepSeek V4.1 Flash** (this run) | **36/40 (90.0%)** | 76.9–96.0% | this run |
-| Codex CLI 0.160.1 + DeepSeek V4.1 Flash (high) | 31/40 (77.5%) | 62.5–87.7% | upstream |
-| Claude Code 2.1.300 + DeepSeek V4.1 Flash (high) | 30/40 (75.0%) | 59.8–85.8% | upstream |
-| OpenClaw 2026.9.6 + DeepSeek V4.1 Flash (high) | 28/40 (70.0%) | 54.6–81.9% | upstream |
-| DeepAgents (previous full run) + DeepSeek V4.1 Flash (high) | 27/40 (67.5%) | — | upstream |
-| pi-mono 0.73.1 + DeepSeek V4.1 Flash (high) | 26/40 (65.0%) | 49.5–77.9% | upstream |
-
-Upstream rows are the OpenRouter DeepSeek V4.1 Flash (reasoning high) columns of
-the [native harness wave 19 comparison](docs/harness-wave19.html). Our row is a
-separate Pi-harness run on the same frozen wave and task contracts, so it is not
-directly comparable row-for-row; the **+10/40 over upstream pi-mono (26/40)** is
-notable and **not independently validated yet** — possible causes are
-runner/settings differences (recursion limit, reasoning-history forwarding, max
-tokens) or model/version drift. Provisional until reproduced. Raw run:
-[`runs/pi_deepseek_v41flash_wave19_20261104.json`](runs/pi_deepseek_v41flash_wave19_20261104.json).
+Форк-замер wave 19 (Pi + DeepSeek V4.1 Flash, 36/40, 90.0%) и сравнение с upstream перенесены в
+[`FORK.md`](FORK.md) и [`docs/fork-results.md`](docs/fork-results.md#wave-19-432471--наш-прогон).
 
 ## GigaChat 3.5 Ultra Reasoning (PROM) (2026-10-21)
 
