@@ -58,6 +58,44 @@ EXCLUDE_KEYWORDS = ("part2", "rerun", "pilot", "smoke", "diag", "sample")
 DASH = "\u2014"
 COST_UNIT = "\u20bd"  # ₽
 
+# --- lint: canonical columns in the fork's result tables -------------------
+LINT_FILES = [REPO_ROOT / "FORK.md", DOC_PATH]
+REQUIRED_COLUMNS = ["Harness", "Profile", "Model", "Result", "%", "Time", "Steps", "Tokens"]
+
+
+def _is_results_header(cells: list[str]) -> bool:
+    low = [c.lower() for c in cells]
+    return "model" in low and "result" in low
+
+
+def _missing_columns(cells: list[str]) -> list[str]:
+    missing: list[str] = []
+    for req in REQUIRED_COLUMNS:
+        if req == "Tokens":
+            ok = any(c.lower().startswith("tokens") for c in cells)
+        else:
+            ok = any(c.lower() == req.lower() for c in cells)
+        if not ok:
+            missing.append(req)
+    return missing
+
+
+def lint_docs() -> list[tuple[str, int, list[str]]]:
+    problems: list[tuple[str, int, list[str]]] = []
+    for path in LINT_FILES:
+        if not path.exists():
+            continue
+        for lineno, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+            stripped = line.strip()
+            if not stripped.startswith("|"):
+                continue
+            cells = [c.strip() for c in stripped.strip("|").split("|")]
+            if _is_results_header(cells):
+                missing = _missing_columns(cells)
+                if missing:
+                    problems.append((path.name, lineno, missing))
+    return problems
+
 
 def classify_suite(stem: str) -> str | None:
     if "wave19_full_" in stem:
@@ -222,6 +260,17 @@ def splice(doc: str, block: str) -> str:
 
 
 def main(argv: list[str]) -> int:
+    if "--lint" in argv:
+        problems = lint_docs()
+        if problems:
+            for name, lineno, missing in problems:
+                print(
+                    f"{name}:{lineno}: result table missing columns: {', '.join(missing)}",
+                    file=sys.stderr,
+                )
+            return 1
+        print("lint: all result tables have canonical columns")
+        return 0
     check = "--check" in argv
     rows = build_rows()
     block = render_block(rows)
