@@ -113,7 +113,7 @@ upstream-таблицы.
 | Wave 19 | `results/wave19_full_ds41flash.json`, `results/sample_wave19.json` |
 | Wave 19 диагностика | `results/diag_wave19.json`, `results/diag_wave19_fixc.json` |
 | Light (391) JSON | `results/{glm52,hermes,oc}_full_391.json`, `runs/*_full391_v016.json` |
-| Доки форка | `docs/ADR-001-shot-list.md`, `docs/CONTEXT.md` |
+| Доки форка | `docs/adr/0001-shot-list.md`, `GLOSSARY.md` |
 | Скилл | `.agents/skills/harness-bench-fast/SKILL.md` |
 
 **Merge-guard.** При конфликте с upstream эти файлы — «keep ours». Основной `README.md`

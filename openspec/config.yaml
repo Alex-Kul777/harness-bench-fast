@@ -8,6 +8,9 @@ context: |
   Our artifacts (FORK.md, docs/fork-results.md, README banner) are merge-guarded
   against upstream; benchmark methodology and upstream rows stay in README.md.
   Capabilities today: benchmark-runs, result-reporting, agent-integration.
+  Process split: OpenSpec owns behavioural change (deltas + validate + archive);
+  the mattpocock engineering flow (grilling, research, diagnosing-bugs, review,
+  retro) is the thinking shell around it. See docs/adr/0002-openspec-vs-engineering-flow.md.
 
 # Per-artifact rules (optional)
 rules:

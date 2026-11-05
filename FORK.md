@@ -80,7 +80,7 @@ Pi-раннер на той же замороженной волне, поэто
 | Shot-list отчёты (наши) | `results/{pi,oc,hermes}_shotlist_*.json`, `docs/{oc,hermes}_shotlist_*.html` |
 | Wave 19 прогоны | `results/wave19_full_ds41flash.json`, `runs/pi_deepseek_v41flash_wave19_20261104.json` |
 | Полные Light-прогоны (391) | `results/{glm52,hermes,oc}_full_391.json`, `runs/*_full391_v016.json` |
-| Доки форка | `docs/ADR-001-shot-list.md`, `docs/CONTEXT.md` |
+| Доки форка | `docs/adr/0001-shot-list.md`, `GLOSSARY.md` |
 | Скилл агента | `.agents/skills/harness-bench-fast/SKILL.md` |
 
 ## Как это поддерживать

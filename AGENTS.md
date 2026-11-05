@@ -83,9 +83,34 @@ upstream merges), read `.agents/skills/harness-bench-fast/SKILL.md` and follow i
 It covers model onboarding, per-wave timeouts, the wave19 host service, runner
 health checks, subagent runs, and the definition of done.
 
+### Issue tracker
+
+Issues for this repo live in GitHub Issues on the hub repo
+`Alex-Kul777/openclaw-workspace` (the fork's own Issues are disabled).
+See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Five canonical triage roles, each label string equal to its role name
+(`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`).
+See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: `GLOSSARY.md` at the repo root plus ADRs under `docs/adr/`.
+See `docs/agents/domain.md`.
+
+### Engineering flow
+
+The thinking/flow skills from `mattpocock/skills` are installed globally
+(`~/.openclaw/shared-skills/`). For behavioural changes in this repo the spec
+source of truth is OpenSpec (below), not `to-spec`/`to-tickets`. The split is
+recorded in `docs/adr/0002-openspec-vs-engineering-flow.md`.
+
 ## 📐 OpenSpec (spec-driven)
 
 В этом репо внедрён OpenSpec (пилот). Спеки — в `openspec/`, workflow-скилл —
 `.agents/skills/openspec-workflow/SKILL.md`. Любое изменение поведения идёт через
 `openspec/changes/<id>/` (proposal → specs-дельта → design → tasks) с ревью до кода.
 CLI: `npx -y @fission-ai/openspec@1.16.0`. CI: `.github/workflows/openspec-validate.yml`.
+Граница со скиллами mattpocock flow — в `docs/adr/0002-openspec-vs-engineering-flow.md`.

@@ -676,7 +676,7 @@ a tie, not a ranking — models near the ceiling are much more stable.
 The shot list is a stratified sample of 52 tasks (~13% of 391) selected for
 fast iteration — ~4-7 min vs ~15-35 min for a full run. It preserves all 13
 wave capabilities and prioritises discrimination power based on 12 published
-runs (see [`docs/ADR-001`](docs/ADR-001-shot-list.md) for the decision record
+runs (see [`ADR-0001`](docs/adr/0001-shot-list.md) for the decision record
 and [`shot_list.txt`](shot_list.txt) for the task list).
 
 `Time` is wall-clock minutes for the 52 tasks. `Steps` and `Tokens` are shown
