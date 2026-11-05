@@ -74,14 +74,14 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 
 Wave 19 — 40 задач в 20 парах (feasibility). Наш замер — Pi + DeepSeek V4.1 Flash.
 
-| Конфигурация | Wave 19 | 95% Wilson | Источник |
-| --- | --- | --- | --- |
-| **Pi + DeepSeek V4.1 Flash** | **36/40 (90.0%)** | 76.9–96.0% | `runs/pi_deepseek_v41flash_wave19_20261104.json` |
-| Codex CLI 0.160.1 + DeepSeek V4.1 Flash (high) | 31/40 (77.5%) | 62.5–87.7% | upstream |
-| Claude Code 2.1.300 + DeepSeek V4.1 Flash (high) | 30/40 (75.0%) | 59.8–85.8% | upstream |
-| OpenClaw 2026.9.6 + DeepSeek V4.1 Flash (high) | 28/40 (70.0%) | 54.6–81.9% | upstream |
-| DeepAgents (previous full run) + DeepSeek V4.1 Flash (high) | 27/40 (67.5%) | — | upstream |
-| pi-mono 0.73.1 + DeepSeek V4.1 Flash (high) | 26/40 (65.0%) | 49.5–77.9% | upstream |
+| Harness | Profile | Model | Result | % | Time | Steps | Tokens (cost) | Источник |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
+| **Pi** | — | DeepSeek V4.1 Flash | **36/40** | **90.0%** | 174.8m | 2 748 | 48 463 320 (3 923₽) | `runs/pi_deepseek_v41flash_wave19_20261104.json` |
+| Codex CLI 0.160.1 | reasoning: high | DeepSeek V4.1 Flash | 31/40 | 77.5% | — | — | — | upstream |
+| Claude Code 2.1.300 | reasoning: high | DeepSeek V4.1 Flash | 30/40 | 75.0% | — | — | — | upstream |
+| OpenClaw 2026.9.6 | reasoning: high | DeepSeek V4.1 Flash | 28/40 | 70.0% | — | — | — | upstream |
+| DeepAgents (previous full run) | reasoning: high | DeepSeek V4.1 Flash | 27/40 | 67.5% | — | — | — | upstream |
+| pi-mono 0.73.1 | reasoning: high | DeepSeek V4.1 Flash | 26/40 | 65.0% | — | — | — | upstream |
 
 Детали прогона: k=1, 94 мин, 2 748 шагов, 2 238 tool-calls,
 9.57M вход + 2.17M выход (вкл. 1.44M reasoning), ≈3 923 ₽; инфраструктурных сбоев нет.
@@ -94,13 +94,13 @@ Wave 19 — 40 задач в 20 парах (feasibility). Наш замер — 
 Наши полные прогоны Light (задачи 1–391). Значения — из наших JSON; это **не** пересчёт
 upstream-таблицы.
 
-| Harness | Profile | Model | Result | % | JSON |
-| --- | --- | --- | ---: | ---: | --- |
-| Hermes | MCP off | GLM-5.2 | 387/391 | 99.0% | `results/hermes_full_391.json` |
-| Pi | high | GLM-5.2 | 385/391 | 98.5% | `runs/pi_glm52_high_full391_v016.json` |
-| OpenClaw | — | GLM-5.2 | 378/391 | 96.7% | `results/oc_full_391.json` |
-| Hermes | MCP off | GLM-5.2 | — | — | `runs/hermes_glm52_mcpoff_full391_v016.json` |
-| OpenClaw | — | GLM-5.2 | — | — | `runs/openclaw_glm52_full391_v016.json` |
+| Harness | Profile | Model | Result | % | Time | Steps | Tokens (cost) | JSON |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
+| Hermes | MCP off | GLM-5.2 | 387/391 | 99.0% | 404.6m | — | 31 770 687 (7 775₽) | `results/hermes_full_391.json` |
+| Pi | high | GLM-5.2 | 385/391 | 98.5% | — | — | — | `runs/pi_glm52_high_full391_v016.json` |
+| OpenClaw | — | GLM-5.2 | 378/391 | 96.7% | 1473.3m | — | 0 (0₽) | `results/oc_full_391.json` |
+| Hermes | MCP off | GLM-5.2 | — | — | — | — | — | `runs/hermes_glm52_mcpoff_full391_v016.json` |
+| OpenClaw | — | GLM-5.2 | — | — | — | — | — | `runs/openclaw_glm52_full391_v016.json` |
 
 > Прочерк — прогон сохранён как сырой `runs/*_v016.json`; актуальная сводка берётся из `results/`.
 

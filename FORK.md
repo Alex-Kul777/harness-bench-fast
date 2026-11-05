@@ -35,14 +35,14 @@ upstream-строки) — остаётся в основном [`README.md`](RE
 Инфраструктурных сбоев нет; таймаут = обычный fail. Сырой прогон:
 [`runs/pi_deepseek_v41flash_wave19_20261104.json`](runs/pi_deepseek_v41flash_wave19_20261104.json).
 
-| Конфигурация | Wave 19 (432–471) | 95% Wilson | Источник |
-| --- | --- | --- | --- |
-| **Pi + DeepSeek V4.1 Flash** (наш прогон) | **36/40 (90.0%)** | 76.9–96.0% | этот форк |
-| Codex CLI 0.160.1 + DeepSeek V4.1 Flash (high) | 31/40 (77.5%) | 62.5–87.7% | upstream |
-| Claude Code 2.1.300 + DeepSeek V4.1 Flash (high) | 30/40 (75.0%) | 59.8–85.8% | upstream |
-| OpenClaw 2026.9.6 + DeepSeek V4.1 Flash (high) | 28/40 (70.0%) | 54.6–81.9% | upstream |
-| DeepAgents (previous full run) + DeepSeek V4.1 Flash (high) | 27/40 (67.5%) | — | upstream |
-| pi-mono 0.73.1 + DeepSeek V4.1 Flash (high) | 26/40 (65.0%) | 49.5–77.9% | upstream |
+| Harness | Profile | Model | Result | % | Time | Steps | Tokens (cost) | Источник |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
+| **Pi** | — | DeepSeek V4.1 Flash | **36/40** | **90.0%** | 174.8m | 2 748 | 48 463 320 (3 923₽) | этот форк |
+| Codex CLI 0.160.1 | reasoning: high | DeepSeek V4.1 Flash | 31/40 | 77.5% | — | — | — | upstream |
+| Claude Code 2.1.300 | reasoning: high | DeepSeek V4.1 Flash | 30/40 | 75.0% | — | — | — | upstream |
+| OpenClaw 2026.9.6 | reasoning: high | DeepSeek V4.1 Flash | 28/40 | 70.0% | — | — | — | upstream |
+| DeepAgents (previous full run) | reasoning: high | DeepSeek V4.1 Flash | 27/40 | 67.5% | — | — | — | upstream |
+| pi-mono 0.73.1 | reasoning: high | DeepSeek V4.1 Flash | 26/40 | 65.0% | — | — | — | upstream |
 
 Upstream-строки — колонки OpenRouter DeepSeek V4.1 Flash (reasoning high) из
 [native harness wave 19 comparison](docs/harness-wave19.html). Наш прогон — отдельный
