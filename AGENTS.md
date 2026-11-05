@@ -82,3 +82,10 @@ Before any benchmark work in this repo (running models, new waves, runner fixes,
 upstream merges), read `.agents/skills/harness-bench-fast/SKILL.md` and follow it.
 It covers model onboarding, per-wave timeouts, the wave19 host service, runner
 health checks, subagent runs, and the definition of done.
+
+## 📐 OpenSpec (spec-driven)
+
+В этом репо внедрён OpenSpec (пилот). Спеки — в `openspec/`, workflow-скилл —
+`.agents/skills/openspec-workflow/SKILL.md`. Любое изменение поведения идёт через
+`openspec/changes/<id>/` (proposal → specs-дельта → design → tasks) с ревью до кода.
+CLI: `npx -y @fission-ai/openspec@1.16.0`. CI: `.github/workflows/openspec-validate.yml`.

@@ -1,0 +1,19 @@
+name: openspec-validate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Validate OpenSpec
+        run: npx -y @fission-ai/openspec@1.16.0 validate --all --strict
+      - name: Checking fork results block
+        run: python3 scripts/build_fork_results.py --check

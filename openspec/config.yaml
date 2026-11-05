@@ -1,0 +1,18 @@
+schema: spec-driven
+
+# Project context for OpenSpec artifacts and workflows.
+context: |
+  Repo: harness-bench-fast fork (Alex-Kul777) of ai-forever/harness-bench-fast.
+  Fork-layer docs are Russian-first; spec prose MAY be Russian but MUST keep the
+  English keywords SHALL / WHEN / THEN so `openspec validate --strict` passes.
+  Our artifacts (FORK.md, docs/fork-results.md, README banner) are merge-guarded
+  against upstream; benchmark methodology and upstream rows stay in README.md.
+  Capabilities today: benchmark-runs, result-reporting, agent-integration.
+
+# Per-artifact rules (optional)
+rules:
+  proposal:
+    - State what is out of scope.
+    - Link the Workboard card id when one exists.
+  tasks:
+    - Include a QA/verification task for any user-facing result.
