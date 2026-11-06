@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import shlex
 import sys
 from collections.abc import Sequence
@@ -34,6 +35,7 @@ from harness_bench.runner import (
     normalize_json_output_path,
     run_all,
     set_results_json_command,
+    set_results_json_harness_version,
     summarize,
     verify_gold,
 )
@@ -856,6 +858,14 @@ def build_parser() -> argparse.ArgumentParser:
                        help="Per-task allowlisted Linux sandbox (default: bwrap); none is diagnostic only.")
     p_cli.add_argument("--sandbox-manifest", type=Path, help="JSON runtime_paths allowlist for custom CLI dependencies")
     p_cli.add_argument("--artifacts-dir", type=Path, help="Persistent per-execution stdout, stderr, prompts and native traces")
+    p_cli.add_argument(
+        "--harness-version",
+        default=None,
+        help=(
+            "Harness (CLI) version recorded in the results JSON as harness_version, "
+            "e.g. 'pi-mono 0.73.1'. Falls back to env HARNESS_BENCH_HARNESS_VERSION."
+        ),
+    )
     p_cli.set_defaults(func=_cmd_run_cli)
 
     for command in ("list", "run", "run-openrouter", "run-pure", "run-cli", "verify-gold"):
@@ -901,6 +911,9 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     _validate_task_range(parser, args)
     set_results_json_command(_command_for_argv(argv))
+    set_results_json_harness_version(
+        getattr(args, "harness_version", None) or os.environ.get("HARNESS_BENCH_HARNESS_VERSION")
+    )
     try:
         return int(args.func(args))
     except KeyboardInterrupt:
@@ -908,6 +921,7 @@ def main(argv: list[str] | None = None) -> int:
         return 130
     finally:
         set_results_json_command(None)
+        set_results_json_harness_version(None)
 
 
 if __name__ == "__main__":

@@ -201,6 +201,19 @@ def set_results_json_command(command: str | None) -> None:
     _RESULTS_JSON_COMMAND = command
 
 
+_RESULTS_JSON_HARNESS_VERSION: str | None = None
+
+
+def set_results_json_harness_version(version: str | None) -> None:
+    """Set the harness version recorded in subsequently written benchmark JSON files.
+
+    Recorded as top-level ``harness_version`` so result pages can show
+    ``harness version`` (e.g. ``pi-mono 0.73.1``), matching upstream.
+    """
+    global _RESULTS_JSON_HARNESS_VERSION
+    _RESULTS_JSON_HARNESS_VERSION = version
+
+
 def _timestamped_json_name() -> str:
     return f"{datetime.now():%Y%m%d_%H%M%S_%f}.json"
 
@@ -1021,6 +1034,8 @@ def results_to_payload(
     result_command = command if command is not None else _RESULTS_JSON_COMMAND
     if result_command:
         payload["command"] = result_command
+    if _RESULTS_JSON_HARNESS_VERSION:
+        payload["harness_version"] = _RESULTS_JSON_HARNESS_VERSION
     payload.update(
         {
             "measurement_valid": infrastructure == 0,
