@@ -17,4 +17,4 @@
 - [x] 4.1 Генерация → оба файла; `--check` → 0
 - [x] 4.2 3 наших строки (385/387/378), upstream-строк ≥ 90
 - [x] 4.3 `openspec validate --all --strict` → 0
-- [ ] 4.4 Live: `fork-light.html` 200 на GitHub Pages
+- [x] 4.4 Live: `fork-light.html` 200 на GitHub Pages
