@@ -117,6 +117,21 @@ WILSON_Z = 1.96
 
 SOURCE_BASE_URL = "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/"
 
+# ---- capability sample (docs/fork-sample.html + docs/fork-sample-results.json) --
+SAMPLE_MANIFEST = REPO_ROOT / "docs" / "fork-sample-manifest.json"
+SAMPLE_OUT_NAME = "fork-sample-results.json"
+SAMPLE_HTML_NAME = "fork-sample.html"
+SAMPLE_MANIFEST_NAME = "fork-sample-manifest.json"
+SAMPLE_CONFIG = {"harness": "Pi", "model": "DeepSeek-V4.1-Flash"}
+# Frozen allow-list of raw artifacts backing the sample (resolved in RESULT_DIRS order).
+SAMPLE_SOURCES = {
+    "long": ["pi_sample_long_20261106.json"],
+    "reflect": ["pi_sample_reflect_20261106.json", "pi_reflect_ds41flash_20261106.json"],
+    "feasibility": ["wave19_full_ds41flash.json"],
+}
+SAMPLE_INVALID_REASON = "timeout 2400 < wave floor 7200"
+SAMPLE_ADR = "adr/0003-capability-sample.md"
+
 
 def _override(stem: str, field: str) -> str | None:
     lower = stem.lower()
@@ -631,6 +646,294 @@ def task_note_cell(message, error) -> str:
     return cell + detail
 
 
+# ---- capability sample builder + renderer ------------------------------------
+
+
+def _resolve_result_path(name: str):
+    """First existing path for ``name`` across RESULT_DIRS (checkout first)."""
+    for directory in RESULT_DIRS:
+        candidate = directory / name
+        if candidate.is_file():
+            return candidate
+    return None
+
+
+def _load_json_lenient(path):
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f"[skip] {path.name}: unreadable ({exc})", file=sys.stderr)
+        return None
+
+
+def collect_sample_entries() -> dict:
+    """task_id -> first ``results[]`` entry across the frozen allow-list (in order)."""
+    entries: dict[str, dict] = {}
+    for wave in WAVE_ORDER:
+        for name in SAMPLE_SOURCES.get(wave, []):
+            path = _resolve_result_path(name)
+            if path is None:
+                print(f"[skip] sample source missing: {name}", file=sys.stderr)
+                continue
+            data = _load_json_lenient(path)
+            if not isinstance(data, dict):
+                continue
+            results = data.get("results")
+            if not isinstance(results, list):
+                continue
+            for entry in results:
+                if not isinstance(entry, dict):
+                    continue
+                task_id = entry.get("task_id")
+                if task_id is None:
+                    continue
+                entries.setdefault(str(task_id), entry)
+    return entries
+
+
+def _band_mix(tasks) -> str:
+    """Human band breakdown, e.g. 'ceiling \u00d73, boundary \u00d72'."""
+    order = ("ceiling", "boundary", "floor")
+    counts: dict[str, int] = {}
+    for task in tasks:
+        band = task.get("band") or "unknown"
+        counts[band] = counts.get(band, 0) + 1
+    parts = []
+    for band in list(order) + [b for b in counts if b not in order]:
+        if counts.get(band):
+            parts.append(f"{band} \u00d7{counts[band]}")
+    return ", ".join(parts) or "\u2014"
+
+
+def _sample_provenance() -> str:
+    parts = [f"{wave}={' + '.join(SAMPLE_SOURCES.get(wave, []))}" for wave in WAVE_ORDER]
+    return (
+        "Capability sample assembled from docs/fork-sample-manifest.json; per-task results "
+        "resolved from the frozen allow-list artifacts in results/ (checkout first, then "
+        "../results/), first matching task_id wins: " + "; ".join(parts) + "."
+    )
+
+
+def build_sample_model() -> dict:
+    manifest = _load_json_lenient(SAMPLE_MANIFEST)
+    if not isinstance(manifest, dict):
+        raise SystemExit(f"error: cannot read {SAMPLE_MANIFEST}")
+    entries = collect_sample_entries()
+
+    tasks: list[dict] = []
+    for item in manifest.get("tasks") or []:
+        if not isinstance(item, dict):
+            continue
+        wave = item.get("wave")
+        task_id = str(item.get("task_id") or "")
+        entry = entries.get(task_id)
+        invalid = wave == "long"
+        record = {
+            "number": item.get("number"),
+            "task_id": task_id,
+            "wave": wave,
+            "band": item.get("band"),
+            "passed": None,
+            "measured": False,
+            "elapsed_seconds": None,
+            "agent_steps": None,
+            "agent_total_tokens": None,
+            "invalid": invalid,
+            "note": "",
+        }
+        if invalid:
+            record["invalid_reason"] = SAMPLE_INVALID_REASON
+        if entry is not None:
+            message = entry.get("message")
+            error = entry.get("error")
+            message = "" if message is None else str(message)
+            error = "" if error is None else str(error)
+            record["passed"] = bool(entry.get("passed"))
+            record["measured"] = True
+            record["elapsed_seconds"] = _num(entry.get("elapsed_seconds"))
+            record["agent_steps"] = _int(entry.get("agent_steps"))
+            record["agent_total_tokens"] = _int(entry.get("agent_total_tokens"))
+            record["note"] = task_reason(message, error)
+            record["_message"] = message
+            record["_error"] = error
+        tasks.append(record)
+
+    waves = []
+    for key in WAVE_ORDER:
+        wave_tasks = [t for t in tasks if t["wave"] == key]
+        info = {
+            "key": key,
+            "label": WAVES[key][0],
+            "task_range": WAVES[key][1],
+            "tasks": len(wave_tasks),
+            "passed": sum(1 for t in wave_tasks if t.get("passed")),
+            "invalid": key == "long",
+        }
+        if key == "long":
+            info["invalid_reason"] = SAMPLE_INVALID_REASON
+        waves.append(info)
+
+    return {
+        "generated_by": GENERATED_BY,
+        "id": manifest.get("id"),
+        "size": manifest.get("size"),
+        "config": dict(SAMPLE_CONFIG),
+        "provenance": _sample_provenance(),
+        "manifest": SAMPLE_MANIFEST_NAME,
+        "waves": waves,
+        "tasks": [{k: v for k, v in t.items() if not k.startswith("_")} for t in tasks],
+        "_tasks_full": tasks,
+    }
+
+
+def render_sample_json(model: dict) -> str:
+    clean = {key: value for key, value in model.items() if not key.startswith("_")}
+    return json.dumps(clean, ensure_ascii=False, indent=2) + "\n"
+
+
+def _sample_result_label(task: dict) -> str:
+    if task.get("invalid"):
+        return "invalid"
+    if not task.get("measured"):
+        return "not measured"
+    return "pass" if task.get("passed") else "fail"
+
+
+def render_sample_html(model: dict) -> str:
+    tasks = model.get("_tasks_full") or []
+    config = model.get("config") or {}
+    model_name = config.get("model") or "\u2014"
+    harness = config.get("harness") or "\u2014"
+    size = model.get("size")
+
+    # ---- waves summary ----
+    wave_rows = []
+    for wave in model["waves"]:
+        key = wave["key"]
+        wave_tasks = [t for t in tasks if t["wave"] == key]
+        mix = _band_mix(wave_tasks)
+        status = (
+            f"invalid ({SAMPLE_INVALID_REASON})"
+            if wave.get("invalid")
+            else "measured"
+        )
+        wave_rows.append(
+            "<tr>"
+            f'<td>{_esc(wave["label"])}<span class="harness">{_esc(wave["task_range"])}</span></td>'
+            f'<td class="numeric">{_esc(wave["tasks"])}</td>'
+            f'<td class="numeric">{_esc(wave["passed"])}</td>'
+            f'<td class="numeric">{_esc(fmt_percent(wave["passed"], wave["tasks"]))}</td>'
+            f"<td>{_esc(mix)}</td>"
+            f"<td>{_esc(status)}</td>"
+            "</tr>"
+        )
+    waves_table = (
+        '<div class="table-wrap"><table class="leaderboard-table"><thead><tr>'
+        '<th scope="col">Wave</th><th scope="col" class="numeric">Tasks</th>'
+        '<th scope="col" class="numeric">Passed</th><th scope="col" class="numeric">%</th>'
+        '<th scope="col">Band mix</th><th scope="col">Status</th>'
+        "</tr></thead><tbody>" + "".join(wave_rows) + "</tbody></table></div>"
+    )
+
+    # ---- per-task ----
+    task_rows = []
+    for task in tasks:
+        result = _sample_result_label(task)
+        note = task_note_cell(task.get("_message", ""), task.get("_error", ""))
+        task_rows.append(
+            "<tr>"
+            f'<td class="numeric">{_esc(task.get("number"))}</td>'
+            f'<td><code>{_esc(task.get("task_id"))}</code></td>'
+            f'<td>{_esc(task.get("wave"))}</td>'
+            f'<td>{_esc(task.get("band"))}</td>'
+            f'<td>{_esc(result)}</td>'
+            f'<td class="numeric">{_esc(fmt_seconds(task.get("elapsed_seconds")))}</td>'
+            f'<td class="numeric">{_esc(fmt_compact(task.get("agent_steps")))}</td>'
+            f'<td class="numeric">{_esc(fmt_compact(task.get("agent_total_tokens")))}</td>'
+            f'<td>{note}</td>'
+            "</tr>"
+        )
+    tasks_table = (
+        '<div class="table-wrap"><table class="leaderboard-table"><thead><tr>'
+        '<th scope="col" class="numeric">#</th><th scope="col">Task</th>'
+        '<th scope="col">Wave</th><th scope="col">Band</th><th scope="col">Result</th>'
+        '<th scope="col" class="numeric">Time (s)</th><th scope="col" class="numeric">Steps</th>'
+        '<th scope="col" class="numeric">Tokens</th><th scope="col">Note</th>'
+        "</tr></thead><tbody>" + "".join(task_rows) + "</tbody></table></div>"
+    )
+
+    # ---- sources / links ----
+    source_items = []
+    for wave in WAVE_ORDER:
+        for name in SAMPLE_SOURCES.get(wave, []):
+            url = SOURCE_BASE_URL + urllib.parse.quote(name)
+            source_items.append(
+                f'<li>{_esc(wave)}: <a href="{_esc(url)}"><code>{_esc(name)}</code></a></li>'
+            )
+    sources_section = (
+        '<section aria-label="Sources"><h2>Sources</h2>'
+        '<p class="coverage-note">Frozen allow-list artifacts aggregated into this sample '
+        "(checkout <code>results/</code> first, then <code>../results/</code>).</p>"
+        '<ul class="run-sources">' + "".join(source_items) + "</ul></section>"
+    )
+
+    description = (
+        f"Cost-bounded capability sample ({size} tasks = 25% of the Medium 80 suite, 392-471) "
+        f"run by {harness} on {model_name}: long context, tool reflection and feasibility."
+    )
+
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{_esc(description)}">
+  <title>Capability sample ({_esc(size)}) \u00b7 Fork \u00b7 harness_bench_fast</title>
+  <link rel="stylesheet" href="landing.css">
+  <style>.task-detail pre{{max-height:320px;overflow:auto;white-space:pre-wrap;word-break:break-word}}</style>
+</head>
+<body>
+  <header>
+    <a class="brand" href="index.html">harness_bench_fast<span class="brand-dot">.</span></a>
+    <nav aria-label="Primary"><a href="fork-medium90.html">Fork results</a> <a href="{SAMPLE_MANIFEST_NAME}">Manifest</a></nav>
+  </header>
+  <main>
+    <section class="intro">
+      <p class="eyebrow">Fork \u00b7 capability sample \u00b7 25% of Medium 80 (392\u2013471)</p>
+      <h1>Capability sample ({_esc(size)})</h1>
+      <p class="lead">{_esc(model_name)} on {_esc(harness)} \u00b7 {_esc(size)} tasks drawn from the Medium 80 suite (392\u2013471). Tasks are stratified by band from published per-config outcomes (ceiling 3/3, boundary 1\u20132/3, floor 0/3); the cost-weighted wave split is long 3 / reflect 5 / feasibility 12.</p>
+      <p class="coverage-note">Source of truth: <a href="{SAMPLE_MANIFEST_NAME}">fork-sample-manifest.json</a> \u00b7 rule: <a href="{_esc(SAMPLE_ADR)}">ADR-0003</a> \u00b7 <a href="fork-medium90.html">Fork results \u2192</a></p>
+    </section>
+
+    <section aria-label="Waves">
+      <h2>Waves</h2>
+      <p class="coverage-note">The long wave was measured with a 2400s timeout, below its 7200s floor, so it is marked <strong>invalid</strong> rather than failed.</p>
+      {waves_table}
+    </section>
+
+    <section aria-label="Tasks">
+      <h2>Tasks</h2>
+      <p class="coverage-note">Per-task outcome for each of the {_esc(size)} manifest tasks. An unmeasured task is not a failure \u2014 it simply has no recorded result yet.</p>
+      {tasks_table}
+    </section>
+
+    {sources_section}
+
+    <p class="fine-print">Static page generated by <code>scripts/build_fork_pages.py</code> from the frozen allow-list artifacts in <code>results/</code>. Times are wall-clock seconds; tokens are compact recorded totals. <strong>invalid</strong> means the wave timeout was below its floor (the measurement is not a fair capability signal), not a normal fail. An unmeasured task is not a failure. <a href="{SAMPLE_MANIFEST_NAME}">Manifest</a> \u00b7 <a href="fork-medium90.html">\u2190 Back to fork results</a></p>
+  </main>
+  <footer><span>No LLM judge. Every task is checked mechanically.</span><a href="fork-medium90.html">Fork Medium 80 \u2192</a></footer>
+</body>
+</html>
+"""
+
+
+def write_sample_outputs(model: dict, text: str, out_dir: Path) -> None:
+    json_path = out_dir / SAMPLE_OUT_NAME
+    html_path = out_dir / SAMPLE_HTML_NAME
+    json_path.write_text(text, encoding="utf-8")
+    html_path.write_text(render_sample_html(model), encoding="utf-8")
+
+
 # ---- per-run detail page renderer --------------------------------------------
 
 def _source_item(name: str) -> str:
@@ -827,14 +1130,22 @@ def main(argv: list[str]) -> int:
         current = None
     out_path.parent.mkdir(parents=True, exist_ok=True)
     pages = write_pages(model, out_path.parent)
+
+    sample_model = build_sample_model()
+    write_sample_outputs(sample_model, render_sample_json(sample_model), out_path.parent)
+    sample_note = f"{SAMPLE_OUT_NAME} + {SAMPLE_HTML_NAME} regenerated"
+
     if current == text:
         print(
             f"{out_path.name}: already up to date ({len(model['rows'])} rows); "
-            f"{len(pages)} detail page(s) regenerated"
+            f"{len(pages)} detail page(s) regenerated; {sample_note}"
         )
         return 0
     out_path.write_text(text, encoding="utf-8")
-    print(f"{out_path.name}: written ({len(model['rows'])} rows); {len(pages)} detail page(s)")
+    print(
+        f"{out_path.name}: written ({len(model['rows'])} rows); "
+        f"{len(pages)} detail page(s); {sample_note}"
+    )
     return 0
 
 

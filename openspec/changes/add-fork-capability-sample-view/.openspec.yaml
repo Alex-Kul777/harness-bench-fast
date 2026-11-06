@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-11-06
+goal: "Publish the 25% capability sample (20 tasks) as its own view:
+  manifest-driven data + static page, long marked invalid."

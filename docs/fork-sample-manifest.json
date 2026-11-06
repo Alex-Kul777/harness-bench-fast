@@ -1,0 +1,180 @@
+{
+  "id": "capability-sample-medium",
+  "size": 20,
+  "share": "25% of 80 Medium tasks (392-471)",
+  "created": "2026-11-06",
+  "created_by": "project-a-agent",
+  "rule": "Stratified by task band from published per-config outcomes (codex/miniswe/claudecode medium90): ceiling=3/3, boundary=1-2/3, floor=0/3. Cost-weighted wave split long 3 / reflect 5 / feasibility 12 (ADR-0003). Within feasibility: boundary first (most discriminative) + ceiling (wiring), spread across 432-471; no floor exists in feasibility. Reserve: long 407.",
+  "provenance": "derived from docs/{codex,miniswe,claudecode}-*-medium90-*.json",
+  "notes": "long sample run is INVALID (timeout 2400 < wave floor 7200); long floor anchors 392,398,403; reserve 407.",
+  "waves": {
+    "long": [
+      392,
+      398,
+      403
+    ],
+    "reflect": [
+      412,
+      415,
+      422,
+      426,
+      430
+    ],
+    "feasibility": [
+      432,
+      436,
+      441,
+      444,
+      446,
+      448,
+      454,
+      457,
+      460,
+      468,
+      469,
+      471
+    ]
+  },
+  "tasks": [
+    {
+      "number": 392,
+      "task_id": "task_392_manuscript_continuity",
+      "wave": "long",
+      "band": "floor",
+      "passed_by_configs": 0
+    },
+    {
+      "number": 398,
+      "task_id": "task_398_card_game_engine",
+      "wave": "long",
+      "band": "floor",
+      "passed_by_configs": 0
+    },
+    {
+      "number": 403,
+      "task_id": "task_403_binary_format_reverse",
+      "wave": "long",
+      "band": "floor",
+      "passed_by_configs": 0
+    },
+    {
+      "number": 412,
+      "task_id": "task_412_supplier_minimum",
+      "wave": "reflect",
+      "band": "ceiling",
+      "passed_by_configs": 3
+    },
+    {
+      "number": 415,
+      "task_id": "task_415_api_throttle",
+      "wave": "reflect",
+      "band": "boundary",
+      "passed_by_configs": 2
+    },
+    {
+      "number": 422,
+      "task_id": "task_422_calendar_timezone",
+      "wave": "reflect",
+      "band": "ceiling",
+      "passed_by_configs": 3
+    },
+    {
+      "number": 426,
+      "task_id": "task_426_kv_eventual",
+      "wave": "reflect",
+      "band": "ceiling",
+      "passed_by_configs": 3
+    },
+    {
+      "number": 430,
+      "task_id": "task_430_orders_backorder",
+      "wave": "reflect",
+      "band": "boundary",
+      "passed_by_configs": 2
+    },
+    {
+      "number": 432,
+      "task_id": "task_432_clock_contract",
+      "wave": "feasibility",
+      "band": "ceiling",
+      "passed_by_configs": 3
+    },
+    {
+      "number": 436,
+      "task_id": "task_436_search_capabilities",
+      "wave": "feasibility",
+      "band": "boundary",
+      "passed_by_configs": 1
+    },
+    {
+      "number": 441,
+      "task_id": "task_441_stateless_contract",
+      "wave": "feasibility",
+      "band": "boundary",
+      "passed_by_configs": 2
+    },
+    {
+      "number": 444,
+      "task_id": "task_444_stateless_contract",
+      "wave": "feasibility",
+      "band": "ceiling",
+      "passed_by_configs": 3
+    },
+    {
+      "number": 446,
+      "task_id": "task_446_archive_transfer",
+      "wave": "feasibility",
+      "band": "boundary",
+      "passed_by_configs": 2
+    },
+    {
+      "number": 448,
+      "task_id": "task_448_aggregate_identifiability",
+      "wave": "feasibility",
+      "band": "boundary",
+      "passed_by_configs": 2
+    },
+    {
+      "number": 454,
+      "task_id": "task_454_search_boundary",
+      "wave": "feasibility",
+      "band": "boundary",
+      "passed_by_configs": 2
+    },
+    {
+      "number": 457,
+      "task_id": "task_457_search_pool",
+      "wave": "feasibility",
+      "band": "ceiling",
+      "passed_by_configs": 3
+    },
+    {
+      "number": 460,
+      "task_id": "task_460_replication_cut",
+      "wave": "feasibility",
+      "band": "boundary",
+      "passed_by_configs": 2
+    },
+    {
+      "number": 468,
+      "task_id": "task_468_diagnostic_queries",
+      "wave": "feasibility",
+      "band": "boundary",
+      "passed_by_configs": 2
+    },
+    {
+      "number": 469,
+      "task_id": "task_469_deployment_matching",
+      "wave": "feasibility",
+      "band": "ceiling",
+      "passed_by_configs": 3
+    },
+    {
+      "number": 471,
+      "task_id": "task_471_clock_contract",
+      "wave": "feasibility",
+      "band": "boundary",
+      "passed_by_configs": 2
+    }
+  ]
+}
