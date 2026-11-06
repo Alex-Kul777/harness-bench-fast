@@ -43,6 +43,40 @@ MODEL_TOKENS = (
     ("ds41flash", "DeepSeek-V4.1-Flash"), ("glm53", "GLM-5.3"), ("glm52", "GLM-5.2"),
     ("qwen36", "Qwen3.6-35B-A3B"), ("oss120b", "GPT-OSS-120B"),
 )
+
+# Upstream writes the reasoning level inside the Model cell, e.g.
+# "Claude Haiku 5.5 (OpenRouter) (default)". We mirror that by surfacing our
+# profile's reasoning token: "thinking: off" -> "(thinking: off)", "high" -> "(high)".
+# Non-reasoning profiles (e.g. "MCP off") get no suffix.
+REASON_LEVELS = ("high", "medium", "low", "minimal")
+
+
+def _reasoning_suffix(profile):
+    p = (profile or "").strip()
+    if not p or p == DASH:
+        return ""
+    if p.startswith("thinking") or p in REASON_LEVELS:
+        return f"({p})"
+    return ""
+
+
+def _with_reasoning(model, profile):
+    suffix = _reasoning_suffix(profile)
+    return f"{model} {suffix}".strip() if suffix else model
+
+
+def _harness_version(data):
+    """Harness version, if the run artifact records it (upstream writes
+    'pi-mono 0.73.1'; our artifacts currently do not record it)."""
+    for k in ("harness_version", "openclaw_version", "cli_version", "runner_version"):
+        v = (data or {}).get(k)
+        if v:
+            return str(v)
+    return None
+
+
+def _with_version(harness, version):
+    return f"{harness} {version}" if version else harness
 PROFILE_RULES = (("thinking_off", "thinking: off"), ("mcpoff", "MCP off"))
 EXCLUDE = ("part2", "rerun", "smoke", "sample", "diag", "pilot")
 
@@ -208,7 +242,8 @@ def _from_summary_file(harness, profile, model, path: Path, source="ours", date_
     if rate is None and s.get("passed") is not None and s.get("total"):
         rate = s["passed"] / s["total"]
     date = _date_from_sessions(d) or _date_from_name(path.name) or date_hint
-    row = _row(harness, _with_date(profile, date), model,
+    row = _row(_with_version(harness, _harness_version(d)), _with_date(profile, date),
+               _with_reasoning(model, profile),
                s.get("passed", d.get("passed")), s.get("total", d.get("total")),
                rate, s.get("total_seconds"), s.get("total_steps", d.get("steps")),
                s.get("total_tokens", d.get("tokens")), s.get("estimated_cost_rub"),
@@ -266,7 +301,9 @@ def ours_medium():
         waves = {k: {"passed": (suites.get(k) or {}).get("passed"),
                      "total": (suites.get(k) or {}).get("total")} for k, _ in WAVE_LABELS}
         date = _date_from_source_files(r.get("sources"))
-        out.append(_row(r.get("harness"), _with_date(r.get("profile"), date), r.get("model"),
+        out.append(_row(_with_version(r.get("harness"), _harness_version(r)),
+                        _with_date(r.get("profile"), date),
+                        _with_reasoning(r.get("model"), r.get("profile")),
                         passed, total, (passed / total) if total else None, u.get("seconds"),
                         u.get("steps"), u.get("tokens"), u.get("cost_rub"), ver, "ours", waves,
                         detail=r.get("details_url")))

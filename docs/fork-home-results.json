@@ -25,7 +25,7 @@
         {
           "harness": "Pi",
           "profile": "thinking: off (2026-08-17)",
-          "model": "GLM-5.2",
+          "model": "GLM-5.2 (thinking: off)",
           "result": "49/52",
           "pct": "94.2%",
           "time": "102.8m",
@@ -67,7 +67,7 @@
         {
           "harness": "OpenClaw",
           "profile": "thinking: off (2026-08-12)",
-          "model": "GLM-5.2",
+          "model": "GLM-5.2 (thinking: off)",
           "result": "47/52",
           "pct": "90.4%",
           "time": "231.9m",
@@ -81,7 +81,7 @@
         {
           "harness": "Hermes",
           "profile": "thinking: off (2026-08-13)",
-          "model": "GLM-5.2",
+          "model": "GLM-5.2 (thinking: off)",
           "result": "46/52",
           "pct": "88.5%",
           "time": "68.5m",
@@ -342,7 +342,7 @@
         {
           "harness": "Pi",
           "profile": "high",
-          "model": "GLM-5.2",
+          "model": "GLM-5.2 (high)",
           "result": "385/391",
           "pct": "—",
           "time": "—",
