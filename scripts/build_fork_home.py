@@ -188,13 +188,13 @@ def _date_from_source_files(names):
     return min(dates) if dates else None
 
 
-def _row(harness, profile, model, passed, total, rate, secs, steps, tokens, cost, version, source, waves=None):
+def _row(harness, profile, model, passed, total, rate, secs, steps, tokens, cost, version, source, waves=None, detail=None):
     return {
         "harness": harness or DASH, "profile": profile or DASH, "model": model or DASH,
         "result": f"{int(passed)}/{int(total)}" if passed is not None and total else DASH,
         "pct": _fmt_pct(rate), "time": _fmt_min(secs), "steps": _fmt_int(steps),
         "tokens_cost": _fmt_cost(tokens, cost), "version": version or DASH,
-        "source": source, "waves": waves,
+        "source": source, "waves": waves, "detail": detail,
     }
 
 
@@ -260,7 +260,8 @@ def ours_medium():
         date = _date_from_source_files(r.get("sources"))
         out.append(_row(r.get("harness"), _with_date(r.get("profile"), date), r.get("model"),
                         passed, total, (passed / total) if total else None, u.get("seconds"),
-                        u.get("steps"), u.get("tokens"), u.get("cost_rub"), ver, "ours", waves))
+                        u.get("steps"), u.get("tokens"), u.get("cost_rub"), ver, "ours", waves,
+                        detail=r.get("details_url")))
     return out
 
 
@@ -300,7 +301,7 @@ def _raw_row(harness, profile, model, result, pct, time, steps, tokens_cost, ver
     return {"harness": harness or DASH, "profile": profile or DASH, "model": model or DASH,
             "result": result or DASH, "pct": pct or DASH, "time": time or DASH,
             "steps": steps or DASH, "tokens_cost": tokens_cost or DASH,
-            "version": version or DASH, "source": source, "waves": None}
+            "version": version or DASH, "source": source, "waves": None, "detail": None}
 
 
 def upstream_shotlist():
@@ -361,9 +362,13 @@ def build():
 def _rows_html(rows):
     tr = []
     for r in rows:
+        d = r.get("detail")
+        attrs = f' class="detail-row" data-detail="{html.escape(d)}"' if d else ""
+        harness = (f'<a href="{html.escape(d)}">{html.escape(r["harness"])}</a>'
+                   if d else html.escape(r['harness']))
         tr.append(
-            "<tr>"
-            f"<td>{html.escape(r['harness'])}</td>"
+            f"<tr{attrs}>"
+            f"<td>{harness}</td>"
             f"<td>{html.escape(r['profile'])}</td>"
             f"<td>{html.escape(r['model'])}</td>"
             f'<td class="numeric">{html.escape(r["result"])}</td>'
@@ -440,6 +445,8 @@ STYLE = """<style>
   tr.group td{background:rgba(127,127,127,.12);font-size:.92em}
   [data-suite-panel][hidden]{display:none}
   .wave-breakdown{margin-top:.6rem}
+  tr[data-detail]{cursor:pointer}
+  tr[data-detail]:hover td{background:rgba(127,127,127,.08)}
   .filters{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;margin:.9rem 0}
   .filters .search{display:flex;gap:.5rem;align-items:center}
   #row-count{font-size:.9em;opacity:.8}
@@ -481,6 +488,12 @@ SCRIPT = """<script>
   btns.forEach(function(b){b.addEventListener('click',function(){activate(b.dataset.suite);history.replaceState(null,'','#'+b.dataset.suite);});});
   window.addEventListener('hashchange',function(){activate(keyFromHash());});
   search.addEventListener('input',applyFilter);
+  document.querySelectorAll('tr[data-detail]').forEach(function(tr){
+    tr.addEventListener('click',function(e){
+      if(e.target.closest('a')) return;
+      location.href=tr.dataset.detail;
+    });
+  });
   activate(keyFromHash());
 })();
 </script>"""
