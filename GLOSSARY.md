@@ -33,8 +33,47 @@ for current agent capability. Bespoke CLI cfgctl is not understood.
 Full 391-task run: ~15-35 min, high confidence. Shot list: ~4-7 min,
 sufficient for regression testing and model comparison. 7-10x speedup.
 
+## Cost-bounded capability sample
+A stratified subset of the Medium waves run cheaply as a representative slice.
+Currently 25% of 80 tasks (392–471) = 20 tasks; spans ceiling + floor anchors.
+Distinct from the Light "Shot List" (which is v0.16.0, tasks 1–391).
+
+## Task band (by published outcomes)
+- **Ceiling** — passed by every available configuration (3/3). Capability proof / wiring.
+- **Boundary** — passed by some (1–2/3). Most discriminative.
+- **Floor** — passed by none (0/3). Capability limit.
+Bands are read "by available configs" only (docs/<model>-medium90-*.json: codex,
+miniswe, claudecode); a different config set can move a task between bands.
+
+## Cost-weighted stratification
+Allocating the sample quota across waves by **cost**, not wave size: the expensive
+long wave gets a smaller share so the floor anchors do not inflate spend.
+
+## Umbrella suite "Medium (392–471)"
+One suite covering long 20 + reflection 20 + feasibility 40, so the fork table keeps
+a single denominator. Registered in `scripts/build_fork_results.py`.
+
+## Step cap (graph supersteps)
+A hard limit on LangGraph supersteps (model + tool nodes), via `recursion_limit`;
+0 = unlimited. Native to the deepagents runner, **not yet wired into the Pi
+runner**. Acts as a runaway guard, not proportional savings.
+
+## Sanitary timeout
+Wall-clock per-task guard (`--timeout`; `DEFAULT_TASK_TIMEOUT_SECONDS = 3600`).
+Kills the container on expiry; a coarse cost proxy. A task's `min_timeout_seconds`
+can raise the effective value.
+
+## Partial measurement
+A wave measured on fewer tasks than its full size; recorded as
+`measurement: "partial"` and never rendered as 0/N.
+
+## Wilson interval
+95% score interval for a binomial proportion (z = 1.96), computed per wave. It
+describes **task outcomes**, not repeat variability (k = 1).
+
 ## Relationships
 - Shot List = smoke(5) + high-discrim(18) + mid-discrim(25) + low-discrim(4)
 - Wave coverage: all 13 waves have >= 2 tasks in shot list
 - Discrimination Power determines shot list membership
-- Refresh at task-set version bumps
+- Capability sample = cost-weighted slice of the Medium waves, stratified by Task band
+- Umbrella suite gives the capability sample a single denominator
