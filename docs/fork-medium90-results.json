@@ -30,7 +30,7 @@
       "harness": "Pi",
       "model": "DeepSeek-V4.1-Flash",
       "profile": null,
-      "runs": 2,
+      "runs": 4,
       "suites": {
         "long": {
           "passed": 3,
@@ -43,7 +43,17 @@
             "max": 3571.2
           }
         },
-        "reflect": null,
+        "reflect": {
+          "passed": 16,
+          "total": 20,
+          "measurement": "complete",
+          "duration": {
+            "n": 20,
+            "mean": 508.0,
+            "median": 393.8,
+            "max": 1301.9
+          }
+        },
         "feasibility": {
           "passed": 36,
           "total": 40,
@@ -57,15 +67,19 @@
         }
       },
       "usage": {
-        "seconds": 17835.9,
-        "steps": 4033,
-        "tokens": 110404974,
-        "cost_rub": 7188.5
+        "seconds": 27995.7,
+        "steps": 5493,
+        "tokens": 128478705,
+        "cost_rub": 8511.1
       },
       "wilson": {
         "long": [
           0.557,
           0.881
+        ],
+        "reflect": [
+          0.714,
+          0.789
         ],
         "feasibility": [
           0.85,
@@ -74,6 +88,8 @@
       },
       "sources": [
         "pi_pilot_long3_20261105.json",
+        "pi_reflect_ds41flash_20261106.json",
+        "pi_reflect_ds41flash_b_20261106.json",
         "wave19_full_ds41flash.json"
       ]
     }
@@ -110,6 +126,13 @@
       }
     ],
     "reflect": [
+      {
+        "label": "Pi (ours)",
+        "n": 20,
+        "mean": 508.0,
+        "median": 393.8,
+        "max": 1301.9
+      },
       {
         "label": "Codex + DeepSeek",
         "n": 20,
