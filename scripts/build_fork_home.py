@@ -351,22 +351,48 @@ STYLE = """<style>
   tr.group td{background:rgba(127,127,127,.12);font-size:.92em}
   [data-suite-panel][hidden]{display:none}
   .wave-breakdown{margin-top:.6rem}
+  .filters{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;margin:.9rem 0}
+  .filters .search{display:flex;gap:.5rem;align-items:center}
+  #row-count{font-size:.9em;opacity:.8}
 </style>"""
 
 SCRIPT = """<script>
 (function(){
   var btns=[].slice.call(document.querySelectorAll('.suite-switch button'));
   var panels=[].slice.call(document.querySelectorAll('[data-suite-panel]'));
-  function activate(key){
-    btns.forEach(function(b){b.setAttribute('aria-pressed', String(b.dataset.suite===key));});
-    panels.forEach(function(p){p.hidden=(p.dataset.suitePanel!==key);});
+  var search=document.getElementById('search');
+  var count=document.getElementById('row-count');
+  var empty=document.getElementById('empty');
+  function activePanel(){return document.querySelector('[data-suite-panel]:not([hidden])');}
+  function applyFilter(){
+    var panel=activePanel(); if(!panel) return;
+    var tbody=panel.querySelector('.table-wrap table.leaderboard-table tbody');
+    if(!tbody) return;
+    var rows=[].slice.call(tbody.querySelectorAll('tr'));
+    var q=(search.value||'').trim().toLocaleLowerCase();
+    var shown=0, curGroup=null, groupHas=new Map();
+    rows.forEach(function(r){
+      if(r.classList.contains('group')){curGroup=r; groupHas.set(r,false); return;}
+      var match=!q || r.textContent.toLocaleLowerCase().indexOf(q)>=0;
+      r.hidden=!match;
+      if(match){shown++; if(curGroup) groupHas.set(curGroup,true);}
+    });
+    rows.forEach(function(r){ if(r.classList.contains('group')) r.hidden=!groupHas.get(r); });
+    count.textContent = q ? (shown+' match'+(shown===1?'':'es')) : (shown+' rows');
+    empty.hidden = !(q && shown===0);
   }
-  btns.forEach(function(b){b.addEventListener('click',function(){
-    activate(b.dataset.suite); history.replaceState(null,'','#'+b.dataset.suite);
-  });});
-  var h=(location.hash||'').replace('#','');
-  var keys=btns.map(function(b){return b.dataset.suite;});
-  activate(keys.indexOf(h)>=0?h:keys[0]);
+  function activate(key){
+    btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.suite===key));});
+    panels.forEach(function(p){p.hidden=(p.dataset.suitePanel!==key);});
+    applyFilter();
+  }
+  function keyFromHash(){var h=(location.hash||'').replace('#','');
+    var keys=btns.map(function(b){return b.dataset.suite;});
+    return keys.indexOf(h)>=0?h:keys[0];}
+  btns.forEach(function(b){b.addEventListener('click',function(){activate(b.dataset.suite);history.replaceState(null,'','#'+b.dataset.suite);});});
+  window.addEventListener('hashchange',function(){activate(keyFromHash());});
+  search.addEventListener('input',applyFilter);
+  activate(keyFromHash());
 })();
 </script>"""
 
@@ -396,7 +422,12 @@ __STYLE__
       <button type="button" data-suite="light" aria-pressed="false"><strong>Light (391)</strong><span>frozen suite</span></button>
       <button type="button" data-suite="medium" aria-pressed="false"><strong>Medium (80)</strong><span>long · reflect · feasibility</span></button>
     </div>
+    <div class="filters">
+      <label class="search">Search model or harness<input id="search" type="search" placeholder="e.g. Pi, OpenClaw, DeepSeek" autocomplete="off"></label>
+      <span id="row-count" aria-live="polite"></span>
+    </div>
 __PANELS__
+    <p id="empty" role="status" hidden>No rows match your search.</p>
     <p class="fine-print">No LLM judge. Every task is checked mechanically. A dash means no measurement yet, not a failure. <code>Version</code> = task-set version for our runs, upstream <code>source_version</code> for upstream rows. <a href="../FORK.md">Fork index</a> · <a href="fork-results.md">Fork tables →</a></p>
   </main>
   <footer><span>No LLM judge. Every task is checked mechanically.</span><a href="../FORK.md">Fork index →</a></footer>
