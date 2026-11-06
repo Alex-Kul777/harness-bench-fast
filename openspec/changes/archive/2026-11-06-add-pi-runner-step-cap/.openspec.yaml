@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-11-06
+goal: Wire an optional step cap (recursion/step limit) into the Pi runner and
+  disclose the budget to the agent.
