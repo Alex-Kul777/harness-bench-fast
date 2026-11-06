@@ -19,7 +19,7 @@
           "tokens_cost": "2 814 749 (165₽)",
           "version": "0.16.0",
           "source": "ours",
-          "url": "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/oc_shotlist_ds41flash.json"
+          "waves": null
         },
         {
           "harness": "Pi",
@@ -32,7 +32,7 @@
           "tokens_cost": "1 913 439 (501₽)",
           "version": "—",
           "source": "ours",
-          "url": "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/pi_shotlist_glm52_thinking_off.json"
+          "waves": null
         },
         {
           "harness": "Pi",
@@ -45,7 +45,7 @@
           "tokens_cost": "1 438 179",
           "version": "—",
           "source": "ours",
-          "url": "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/pi_shotlist_ds41flash.json"
+          "waves": null
         },
         {
           "harness": "Pi",
@@ -58,7 +58,7 @@
           "tokens_cost": "1 764 093 (216₽)",
           "version": "—",
           "source": "ours",
-          "url": "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/pi_shotlist_glm53.json"
+          "waves": null
         },
         {
           "harness": "OpenClaw",
@@ -71,7 +71,7 @@
           "tokens_cost": "1 777 320 (1 793₽)",
           "version": "0.16.0",
           "source": "ours",
-          "url": "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/oc_shotlist_thinking_off.json"
+          "waves": null
         },
         {
           "harness": "Hermes",
@@ -84,7 +84,7 @@
           "tokens_cost": "6 209 159 (1 509₽)",
           "version": "—",
           "source": "ours",
-          "url": "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/hermes_shotlist_thinking_off.json"
+          "waves": null
         },
         {
           "harness": "OpenClaw",
@@ -97,7 +97,7 @@
           "tokens_cost": "1 955 767 (66₽)",
           "version": "0.16.0",
           "source": "ours",
-          "url": "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/oc_shotlist_glm53.json"
+          "waves": null
         },
         {
           "harness": "Pi",
@@ -110,7 +110,7 @@
           "tokens_cost": "1 318 346 (362₽)",
           "version": "—",
           "source": "ours",
-          "url": "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/pi_shotlist_qwen36.json"
+          "waves": null
         },
         {
           "harness": "OpenClaw",
@@ -123,7 +123,7 @@
           "tokens_cost": "2 109 433 (2 859₽)",
           "version": "0.16.0",
           "source": "ours",
-          "url": "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/oc_shotlist_qwen36.json"
+          "waves": null
         },
         {
           "harness": "Hermes",
@@ -136,7 +136,7 @@
           "tokens_cost": "6 961 237 (1 737₽)",
           "version": "—",
           "source": "ours",
-          "url": "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/hermes_shotlist_qwen36.json"
+          "waves": null
         },
         {
           "harness": "Hermes",
@@ -149,7 +149,7 @@
           "tokens_cost": "8 833 747 (2 171₽)",
           "version": "—",
           "source": "ours",
-          "url": "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/hermes_shotlist_oss120b.json"
+          "waves": null
         },
         {
           "harness": "OpenClaw",
@@ -162,7 +162,7 @@
           "tokens_cost": "1 261 870 (1 080₽)",
           "version": "0.16.0",
           "source": "ours",
-          "url": "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/oc_shotlist_oss120b.json"
+          "waves": null
         }
       ],
       "upstream": []
@@ -183,7 +183,7 @@
           "tokens_cost": "31 770 687 (7 775₽)",
           "version": "—",
           "source": "ours",
-          "url": "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/hermes_full_391.json"
+          "waves": null
         },
         {
           "harness": "Pi",
@@ -196,7 +196,7 @@
           "tokens_cost": "49 929 690",
           "version": "0.16.0",
           "source": "ours",
-          "url": "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/glm52_full_391.json"
+          "waves": null
         },
         {
           "harness": "OpenClaw",
@@ -209,7 +209,7 @@
           "tokens_cost": "0",
           "version": "0.16.0",
           "source": "ours",
-          "url": "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/oc_full_391.json"
+          "waves": null
         }
       ],
       "upstream": [
@@ -224,7 +224,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "dsh headless",
@@ -237,7 +237,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "free-code",
@@ -250,7 +250,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "GigaCode Universal Agent (gc-cli)",
@@ -263,7 +263,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "Universal Agent (gc-cli 0.4.0)",
@@ -276,7 +276,7 @@
           "tokens_cost": "—",
           "version": "0.19.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "GigaCode Universal Agent (gc-cli)",
@@ -289,7 +289,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "Hermes",
@@ -302,7 +302,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "OpenCode",
@@ -315,7 +315,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "Codex CLI",
@@ -328,7 +328,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "mini-SWE-agent",
@@ -341,7 +341,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "GigaCode Universal Agent (gc-cli)",
@@ -354,7 +354,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "Hermes",
@@ -367,7 +367,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "Codex CLI 0.160.1",
@@ -380,7 +380,7 @@
           "tokens_cost": "—",
           "version": "0.19.1",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "OpenCode",
@@ -393,7 +393,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "MultiTool CLI",
@@ -406,7 +406,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "mini-SWE-agent",
@@ -419,7 +419,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents (no profile)",
@@ -432,7 +432,7 @@
           "tokens_cost": "—",
           "version": "0.19.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "OpenClaw 2026.9.6",
@@ -445,7 +445,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "Brain (experimental)",
@@ -458,7 +458,7 @@
           "tokens_cost": "—",
           "version": "0.19.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "mini-SWE-agent",
@@ -471,7 +471,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "OpenHands",
@@ -484,7 +484,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "Hermes",
@@ -497,7 +497,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "Universal Agent (gc-cli 0.4.0)",
@@ -510,7 +510,7 @@
           "tokens_cost": "—",
           "version": "0.19.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents",
@@ -523,7 +523,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "dsh headless",
@@ -536,7 +536,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "OpenHands",
@@ -549,7 +549,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "mini-SWE-agent 2.4.6",
@@ -562,7 +562,7 @@
           "tokens_cost": "—",
           "version": "0.19.1",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents",
@@ -575,7 +575,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "free-code",
@@ -588,7 +588,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "pi-mono",
@@ -601,7 +601,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "OpenCode",
@@ -614,7 +614,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents (no profile)",
@@ -627,7 +627,7 @@
           "tokens_cost": "—",
           "version": "0.19.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents (no profile)",
@@ -640,7 +640,7 @@
           "tokens_cost": "—",
           "version": "0.19.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "Claude Code 2.1.300",
@@ -653,7 +653,7 @@
           "tokens_cost": "—",
           "version": "0.19.1",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "pi-mono 0.73.1",
@@ -666,7 +666,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "GigaCode Universal Agent (gc-cli)",
@@ -679,7 +679,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "DeepAgents 0.6.12",
@@ -692,7 +692,7 @@
           "tokens_cost": "—",
           "version": "0.19.1",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "MultiTool CLI",
@@ -705,7 +705,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "mini-SWE-agent",
@@ -718,7 +718,7 @@
           "tokens_cost": "—",
           "version": "0.19.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents",
@@ -731,7 +731,7 @@
           "tokens_cost": "—",
           "version": "0.19.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents",
@@ -744,7 +744,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "cowork",
@@ -757,7 +757,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "Codex CLI",
@@ -770,7 +770,7 @@
           "tokens_cost": "—",
           "version": "0.19.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "mini-SWE-agent",
@@ -783,7 +783,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents",
@@ -796,7 +796,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "DeepAgents 0.6.12",
@@ -809,7 +809,7 @@
           "tokens_cost": "—",
           "version": "0.19.1",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "OpenCode",
@@ -822,7 +822,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "OpenCode",
@@ -835,7 +835,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "OpenCode",
@@ -848,7 +848,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents (GigaChat profile)",
@@ -861,7 +861,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents (GigaChat profile)",
@@ -874,7 +874,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents (GigaChat profile)",
@@ -887,7 +887,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents",
@@ -900,7 +900,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents",
@@ -913,7 +913,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents",
@@ -926,7 +926,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "pi-mono",
@@ -939,7 +939,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "pi-mono",
@@ -952,7 +952,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "pi-mono 0.73.1",
@@ -965,7 +965,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents (no profile)",
@@ -978,7 +978,7 @@
           "tokens_cost": "—",
           "version": "0.19.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents (no profile)",
@@ -991,7 +991,7 @@
           "tokens_cost": "—",
           "version": "0.19.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents",
@@ -1004,7 +1004,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "mini-SWE-agent",
@@ -1017,7 +1017,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "mini-SWE-agent",
@@ -1030,7 +1030,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents (GigaChat profile)",
@@ -1043,7 +1043,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "maestro harness",
@@ -1056,7 +1056,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents (GigaChat profile)",
@@ -1069,7 +1069,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "Hermes",
@@ -1082,7 +1082,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "Hermes",
@@ -1095,7 +1095,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "pi-mono",
@@ -1108,7 +1108,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "mini-SWE-agent",
@@ -1121,7 +1121,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents (GigaChat profile)",
@@ -1134,7 +1134,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "mini-SWE-agent",
@@ -1147,7 +1147,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "pi-mono",
@@ -1160,7 +1160,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "mini-SWE-agent",
@@ -1173,7 +1173,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents",
@@ -1186,7 +1186,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents",
@@ -1199,7 +1199,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "OpenCode",
@@ -1212,7 +1212,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "DeepAgents 0.6.12",
@@ -1225,7 +1225,7 @@
           "tokens_cost": "—",
           "version": "0.19.1",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "pi-mono",
@@ -1238,7 +1238,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "OpenCode",
@@ -1251,7 +1251,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "pi-mono",
@@ -1264,7 +1264,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "OpenHands",
@@ -1277,7 +1277,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "OpenHands",
@@ -1290,7 +1290,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "Hermes",
@@ -1303,7 +1303,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "Hermes",
@@ -1316,7 +1316,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "OpenHands",
@@ -1329,7 +1329,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents (GigaChat profile)",
@@ -1342,7 +1342,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "Hermes",
@@ -1355,7 +1355,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "OpenCode",
@@ -1368,7 +1368,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents (GigaChat profile)",
@@ -1381,7 +1381,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "OpenCode",
@@ -1394,7 +1394,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents",
@@ -1407,7 +1407,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "deepagents",
@@ -1420,7 +1420,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "mini-SWE-agent",
@@ -1433,7 +1433,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "mini-SWE-agent",
@@ -1446,7 +1446,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         },
         {
           "harness": "Hermes",
@@ -1459,7 +1459,7 @@
           "tokens_cost": "—",
           "version": "0.18.0",
           "source": "upstream",
-          "url": null
+          "waves": null
         }
       ]
     },
@@ -1479,7 +1479,20 @@
           "tokens_cost": "128 478 705 (8 511₽)",
           "version": "v0.21.3",
           "source": "ours",
-          "url": "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/docs/fork-run-pi-deepseek-v4-1-flash.html"
+          "waves": {
+            "long": {
+              "passed": 3,
+              "total": 3
+            },
+            "reflect": {
+              "passed": 16,
+              "total": 20
+            },
+            "feasibility": {
+              "passed": 36,
+              "total": 40
+            }
+          }
         }
       ],
       "upstream": []

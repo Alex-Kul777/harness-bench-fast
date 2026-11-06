@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""Generate docs/fork.html + docs/fork-home-results.json — the single fork page.
+"""Generate docs/fork.html (tabbed) + docs/fork-home-results.json — the single fork page.
 
-One page with three suites (Shot List 52 / Light 391 / Medium 80), each a table
-with the unified canonical schema:
+One page, one dataset, three tabs: Shot List (52) / Light (391) / Medium (80).
+Each suite table uses exactly the canonical nine columns:
 
-    Harness · Profile · Model · Result · % · Time · Steps · Tokens (cost) · Version · Source
+    Harness · Profile · Model · Result · % · Time · Steps · Tokens (cost) · Version
 
-Our rows are read from the run JSONs (checkout ``results/`` first, then
-``../results/``; first name wins). Upstream comparison rows are attached where a
-machine-readable source exists (Light: ``docs/leaderboard-results.json``).
-``Version`` = task-set version for our rows, ``source_version`` for upstream.
+Ours vs upstream are separated by group header rows (not a column). The Medium
+wave breakdown (long / reflect / feasibility) lives in a collapsible <details>
+block so the main table keeps the nine columns. Tab state follows the URL hash
+(#shotlist / #light / #medium), so the old redirect stubs keep working.
 
 Usage:
     python3 scripts/build_fork_home.py            # write JSON + HTML
@@ -45,12 +45,12 @@ MODEL_TOKENS = (
 PROFILE_RULES = (("thinking_off", "thinking: off"), ("mcpoff", "MCP off"))
 EXCLUDE = ("part2", "rerun", "smoke", "sample", "diag", "pilot")
 
-# Our Light (391) runs — explicit allow-list (mirrors scripts/build_fork_light.py).
 OURS_LIGHT = [
     ("Hermes", "MCP off", "GLM-5.2", "results/hermes_full_391.json"),
     ("Pi", "high", "GLM-5.2", "results/glm52_full_391.json"),
     ("OpenClaw", "", "GLM-5.2", "results/oc_full_391.json"),
 ]
+WAVE_LABELS = (("long", "Long"), ("reflect", "Reflect"), ("feasibility", "Feasibility"))
 
 
 def _collect() -> dict[str, Path]:
@@ -62,21 +62,21 @@ def _collect() -> dict[str, Path]:
     return seen
 
 
-def _harness(stem: str) -> str:
+def _harness(stem):
     for pre, h in HARNESS_PREFIXES:
         if stem.startswith(pre):
             return h
     return DASH
 
 
-def _model(stem: str) -> str:
+def _model(stem):
     for tok, m in MODEL_TOKENS:
         if tok in stem:
             return m
     return DASH
 
 
-def _profile(stem: str) -> str:
+def _profile(stem):
     low = stem.lower()
     for tok, lab in PROFILE_RULES:
         if tok in low:
@@ -84,36 +84,36 @@ def _profile(stem: str) -> str:
     return ""
 
 
-def _fmt_int(n) -> str:
+def _fmt_int(n):
     return DASH if n in (None, "") else f"{int(round(n)):,}".replace(",", " ")
 
 
-def _fmt_pct(rate) -> str:
+def _fmt_pct(rate):
     return DASH if rate is None else f"{rate * 100:.1f}%"
 
 
-def _fmt_min(secs) -> str:
+def _fmt_min(secs):
     return DASH if secs is None else f"{float(secs) / 60:.1f}m"
 
 
-def _fmt_cost(tokens, cost) -> str:
+def _fmt_cost(tokens, cost):
     tok = _fmt_int(tokens)
     if cost:
         return f"{tok} ({float(cost):,.0f}".replace(",", " ") + f"{RUB})"
     return tok
 
 
-def _row(harness, profile, model, passed, total, rate, secs, steps, tokens, cost, version, source, url=None) -> dict:
+def _row(harness, profile, model, passed, total, rate, secs, steps, tokens, cost, version, source, waves=None):
     return {
         "harness": harness or DASH, "profile": profile or DASH, "model": model or DASH,
         "result": f"{int(passed)}/{int(total)}" if passed is not None and total else DASH,
         "pct": _fmt_pct(rate), "time": _fmt_min(secs), "steps": _fmt_int(steps),
         "tokens_cost": _fmt_cost(tokens, cost), "version": version or DASH,
-        "source": source, "url": url,
+        "source": source, "waves": waves,
     }
 
 
-def _from_summary_file(harness, profile, model, path: Path, source="ours", url=None) -> dict:
+def _from_summary_file(harness, profile, model, path: Path, source="ours"):
     d = json.loads(path.read_text(encoding="utf-8"))
     s = d.get("summary") or {}
     rate = s.get("pass_rate")
@@ -122,10 +122,10 @@ def _from_summary_file(harness, profile, model, path: Path, source="ours", url=N
     return _row(harness, profile, model, s.get("passed", d.get("passed")), s.get("total", d.get("total")),
                 rate, s.get("total_seconds"), s.get("total_steps", d.get("steps")),
                 s.get("total_tokens", d.get("tokens")), s.get("estimated_cost_rub"),
-                d.get("task_set_version"), source, url)
+                d.get("task_set_version"), source)
 
 
-def ours_shotlist() -> list[dict]:
+def ours_shotlist():
     out = []
     for name, path in _collect().items():
         if "_shotlist_" not in name:
@@ -134,13 +134,12 @@ def ours_shotlist() -> list[dict]:
         if any(k in low for k in EXCLUDE):
             continue
         stem = path.stem
-        url = "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/" + name
-        out.append(_from_summary_file(_harness(stem), _profile(stem), _model(stem), path, "ours", url))
+        out.append(_from_summary_file(_harness(stem), _profile(stem), _model(stem), path))
     out.sort(key=lambda r: -_pct_val(r["pct"]))
     return out
 
 
-def ours_light() -> list[dict]:
+def ours_light():
     out = []
     for harness, profile, model, rel in OURS_LIGHT:
         path = None
@@ -151,12 +150,11 @@ def ours_light() -> list[dict]:
                 break
         if path is None:
             raise SystemExit(f"missing light source: {rel}")
-        url = "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/" + rel
-        out.append(_from_summary_file(harness, profile, model, path, "ours", url))
+        out.append(_from_summary_file(harness, profile, model, path))
     return out
 
 
-def ours_medium() -> list[dict]:
+def ours_medium():
     if not MEDIUM_JSON.exists():
         return []
     d = json.loads(MEDIUM_JSON.read_text(encoding="utf-8"))
@@ -167,14 +165,15 @@ def ours_medium() -> list[dict]:
         passed = sum((s.get("passed") or 0) for s in suites.values())
         total = sum((s.get("total") or 0) for s in suites.values())
         u = r.get("usage") or {}
-        url = "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/docs/" + (r.get("details_url") or "")
+        waves = {k: {"passed": (suites.get(k) or {}).get("passed"),
+                     "total": (suites.get(k) or {}).get("total")} for k, _ in WAVE_LABELS}
         out.append(_row(r.get("harness"), r.get("profile"), r.get("model"), passed, total,
                         (passed / total) if total else None, u.get("seconds"), u.get("steps"),
-                        u.get("tokens"), u.get("cost_rub"), ver, "ours", url))
+                        u.get("tokens"), u.get("cost_rub"), ver, "ours", waves))
     return out
 
 
-def upstream_light() -> list[dict]:
+def upstream_light():
     if not LEADERBOARD.exists():
         return []
     d = json.loads(LEADERBOARD.read_text(encoding="utf-8"))
@@ -190,35 +189,29 @@ def upstream_light() -> list[dict]:
     return out
 
 
-def _pct_val(s: str) -> float:
+def _pct_val(s):
     try:
         return float(str(s).rstrip("%"))
     except ValueError:
         return -1.0
 
 
-def build() -> dict:
+def build():
     return {
         "generated_by": GENERATED_BY,
         "id": "fork-home",
         "version_semantics": "ours: task-set version · upstream: source_version",
         "suites": [
-            {"key": "shotlist", "label": "Shot List (52)", "tasks": 52,
-             "ours": ours_shotlist(), "upstream": []},
-            {"key": "light", "label": "Light (391)", "tasks": 391,
-             "ours": ours_light(), "upstream": upstream_light()},
-            {"key": "medium", "label": "Medium (80)", "tasks": 80,
-             "ours": ours_medium(), "upstream": []},
+            {"key": "shotlist", "label": "Shot List (52)", "tasks": 52, "ours": ours_shotlist(), "upstream": []},
+            {"key": "light", "label": "Light (391)", "tasks": 391, "ours": ours_light(), "upstream": upstream_light()},
+            {"key": "medium", "label": "Medium (80)", "tasks": 80, "ours": ours_medium(), "upstream": []},
         ],
     }
 
 
-def _rows_html(rows: list[dict]) -> str:
+def _rows_html(rows):
     tr = []
     for r in rows:
-        src = html.escape(r["source"])
-        if r.get("url"):
-            src = f'<a href="{html.escape(r["url"])}">{src}</a>'
         tr.append(
             "<tr>"
             f"<td>{html.escape(r['harness'])}</td>"
@@ -230,32 +223,107 @@ def _rows_html(rows: list[dict]) -> str:
             f'<td class="numeric">{html.escape(r["steps"])}</td>'
             f'<td class="numeric">{html.escape(r["tokens_cost"])}</td>'
             f"<td>{html.escape(r['version'])}</td>"
-            f"<td>{src}</td>"
             "</tr>"
         )
-    return "\n".join(tr) or f'<tr><td colspan="10">{DASH}</td></tr>'
+    return "\n".join(tr)
 
 
 HEAD = """<tr>
   <th scope="col">Harness</th><th scope="col">Profile</th><th scope="col">Model</th>
   <th scope="col" class="numeric">Result</th><th scope="col" class="numeric">%</th>
   <th scope="col" class="numeric">Time</th><th scope="col" class="numeric">Steps</th>
-  <th scope="col" class="numeric">Tokens (cost)</th><th scope="col">Version</th><th scope="col">Source</th>
+  <th scope="col" class="numeric">Tokens (cost)</th><th scope="col">Version</th>
 </tr>"""
+
+
+def _table(rows, group_ours="Our runs", group_up="Upstream comparison"):
+    parts = ['<table class="leaderboard-table"><thead>' + HEAD + '</thead><tbody>',
+             f'<tr class="group"><td colspan="9"><strong>{group_ours}</strong></td></tr>',
+             _rows_html(rows)]
+    parts.append('</tbody></table>')
+    return "\n".join(parts)
+
+
+def _table_groups(ours, upstream):
+    parts = ['<table class="leaderboard-table"><thead>' + HEAD + '</thead><tbody>',
+             '<tr class="group"><td colspan="9"><strong>Our runs</strong></td></tr>',
+             _rows_html(ours)]
+    if upstream:
+        parts.append('<tr class="group"><td colspan="9"><strong>Upstream comparison</strong></td></tr>')
+        parts.append(_rows_html(upstream))
+    parts.append('</tbody></table>')
+    return "\n".join(parts)
+
+
+def _waves_html(rows):
+    body = []
+    for r in rows:
+        w = r.get("waves") or {}
+        cells = []
+        for k, _ in WAVE_LABELS:
+            c = w.get(k) or {}
+            p, t = c.get("passed"), c.get("total")
+            cells.append(f'<td class="numeric">{f"{p}/{t}" if p is not None and t else DASH}</td>')
+        body.append(f"<tr><td>{html.escape(r['harness'])} · {html.escape(r['model'])}</td>" + "".join(cells) + "</tr>")
+    head = "".join(f'<th scope="col" class="numeric">{lab}</th>' for _, lab in WAVE_LABELS)
+    return (
+        '<details class="wave-breakdown"><summary>Wave breakdown (long / reflect / feasibility)</summary>'
+        '<div class="table-wrap"><table class="leaderboard-table"><thead>'
+        f'<tr><th scope="col">Configuration</th>{head}</tr></thead><tbody>'
+        + "\n".join(body) + "</tbody></table></div></details>"
+    )
+
+
+def _panel(suite):
+    key = suite["key"]
+    inner = _table_groups(suite["ours"], suite["upstream"]) if suite["upstream"] else _table(suite["ours"])
+    extra = _waves_html(suite["ours"]) if key == "medium" and suite["ours"] else ""
+    return (
+        f'      <section data-suite-panel="{key}" aria-label="{html.escape(suite["label"])}">\n'
+        f'        <div class="table-wrap">{inner}</div>\n'
+        + (extra + "\n" if extra else "")
+        + "      </section>"
+    )
+
+
+STYLE = """<style>
+  .suite-switch button[aria-pressed="true"]{font-weight:700;text-decoration:underline}
+  tr.group td{background:rgba(127,127,127,.12);font-size:.92em}
+  [data-suite-panel][hidden]{display:none}
+  .wave-breakdown{margin-top:.6rem}
+</style>"""
+
+SCRIPT = """<script>
+(function(){
+  var btns=[].slice.call(document.querySelectorAll('.suite-switch button'));
+  var panels=[].slice.call(document.querySelectorAll('[data-suite-panel]'));
+  function activate(key){
+    btns.forEach(function(b){b.setAttribute('aria-pressed', String(b.dataset.suite===key));});
+    panels.forEach(function(p){p.hidden=(p.dataset.suitePanel!==key);});
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){
+    activate(b.dataset.suite); history.replaceState(null,'','#'+b.dataset.suite);
+  });});
+  var h=(location.hash||'').replace('#','');
+  var keys=btns.map(function(b){return b.dataset.suite;});
+  activate(keys.indexOf(h)>=0?h:keys[0]);
+})();
+</script>"""
 
 PAGE = """<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Fork results for harness_bench_fast: our Shot List (52), Light (391) and Medium (80) runs, with upstream comparison. Mechanically verified.">
+  <meta name="description" content="Fork results for harness_bench_fast: Shot List (52), Light (391) and Medium (80) in one tabbed page. Mechanically verified.">
   <title>harness_bench_fast · Fork results</title>
   <link rel="stylesheet" href="landing.css">
+__STYLE__
 </head>
 <body>
   <header>
     <a class="brand" href="index.html">harness_bench_fast<span class="brand-dot">.</span></a>
-    <nav aria-label="Primary"><a href="../FORK.md">Fork index</a> <a href="#shotlist">Shot List (52)</a> <a href="#light">Light (391)</a> <a href="#medium">Medium (80)</a> <a href="fork-sample.html">Capability sample (20)</a></nav>
+    <nav aria-label="Primary"><a href="../FORK.md">Fork index</a> <a href="fork-sample.html">Capability sample (20)</a></nav>
   </header>
   <main>
     <section class="intro">
@@ -263,35 +331,29 @@ PAGE = """<!doctype html>
       <h1>Our runs.<br>Three suites, one page.</h1>
       <p class="lead">Our Pi / OpenClaw / Hermes runs on the frozen Shot List (52), Light (391) and Medium (80) suites. Real tasks, mechanically verified.</p>
     </section>
-__SECTIONS__
+    <div class="suite-switch" role="group" aria-label="Benchmark suite">
+      <button type="button" data-suite="shotlist" aria-pressed="true"><strong>Shot List (52)</strong><span>stratified sample</span></button>
+      <button type="button" data-suite="light" aria-pressed="false"><strong>Light (391)</strong><span>frozen suite</span></button>
+      <button type="button" data-suite="medium" aria-pressed="false"><strong>Medium (80)</strong><span>long · reflect · feasibility</span></button>
+    </div>
+__PANELS__
     <p class="fine-print">No LLM judge. Every task is checked mechanically. A dash means no measurement yet, not a failure. <code>Version</code> = task-set version for our runs, upstream <code>source_version</code> for upstream rows. <a href="../FORK.md">Fork index</a> · <a href="fork-results.md">Fork tables →</a></p>
   </main>
   <footer><span>No LLM judge. Every task is checked mechanically.</span><a href="../FORK.md">Fork index →</a></footer>
+__SCRIPT__
 </body>
 </html>
 """
 
 
-def _section(suite: dict) -> str:
-    parts = [f'    <section id="{suite["key"]}" aria-label="{html.escape(suite["label"])}">',
-             f'      <h2>{html.escape(suite["label"])}</h2>',
-             f'      <p class="coverage-note">Tasks {suite["tasks"]}. Our runs, plus upstream comparison where a machine-readable source exists.</p>',
-             '      <div class="table-wrap">',
-             '        <table class="leaderboard-table"><thead>' + HEAD + '</thead><tbody>',
-             _rows_html(suite["ours"])]
-    if suite["upstream"]:
-        parts.append('        </tbody><tbody>')
-        parts.append('          <tr><td colspan="10"><strong>Upstream comparison</strong></td></tr>')
-        parts.append(_rows_html(suite["upstream"]))
-    parts += ['        </tbody></table>', '      </div>', '    </section>']
-    return "\n".join(parts)
+def render_html(data):
+    return (PAGE
+            .replace("__STYLE__", STYLE)
+            .replace("__PANELS__", "\n".join(_panel(s) for s in data["suites"]))
+            .replace("__SCRIPT__", SCRIPT))
 
 
-def render_html(data: dict) -> str:
-    return PAGE.replace("__SECTIONS__", "\n".join(_section(s) for s in data["suites"]))
-
-
-def main(argv: list[str]) -> int:
+def main(argv):
     data = build()
     blob = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
     page = render_html(data)
