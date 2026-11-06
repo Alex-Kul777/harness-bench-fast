@@ -17,4 +17,4 @@
 - [x] 4.1 Генерация → оба файла; `--check` → 0
 - [x] 4.2 3 секции, наши+upstream строки, колонка Version
 - [x] 4.3 `openspec validate --all --strict` → 0
-- [ ] 4.4 Live: `fork.html` 200; старые URL не 404
+- [x] 4.4 Live: `fork.html` 200; старые URL не 404
