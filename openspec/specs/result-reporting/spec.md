@@ -117,3 +117,19 @@ feasibility 40), чтобы прогоны этих волн попадали в
 - **WHEN** в `results/` появляется JSON-прогон с именем волны long/reflect/feasibility
 - **THEN** `python3 scripts/build_fork_results.py` SHALL включить его строку в авто-блок
   под сюжетом `Medium (392–471)`
+
+### Requirement: Версионирование ассетов страницы
+
+Ассеты опубликованной форк-страницы (`docs/fork-medium90.html`) SHALL подключаться с
+query-версией (`…?v=<version>`), чтобы браузер не мог смешать устаревший закешированный
+`fork-results.js` со свежей разметкой.
+
+#### Scenario: Теги ассетов версионированы
+
+- **WHEN** страница `docs/fork-medium90.html` публикуется
+- **THEN** теги `<link>`/`<script>` SHALL содержать параметр `v`
+
+#### Scenario: Обновление ассетов
+
+- **WHEN** изменяется `docs/fork-results.js`
+- **THEN** версия `v` в теге SHALL быть обновлена, чтобы клиенты получили новый файл
