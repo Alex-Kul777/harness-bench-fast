@@ -64,6 +64,9 @@ publishing results. Load this skill before the run.
   (`-v <sock_dir>:<sock_dir>`, from `<workspace>/.svc/connection.json`); (b) install `python3` in the image.
   Re-run and require `submission_count >= 1`.
 - After editing the Pi runner: `python3 -m pytest tests/test_runner_pi_cleanup.py -q` — require green.
+- **Long runs must disable the exec-session lifetime**: a run over ~30 min is SIGTERM-killed at the default ~1800 s even when detached (`docker events` → `kill signal=15`, `die exitCode=143`). Launch with exec `timeoutSeconds=0` (or keep the session alive) for any wave whose tasks approach/past 30 min.
+- **Timeout floors are per task**: resolve via `effective_task_timeout(--timeout, task.min_timeout_seconds, task.max_timeout_seconds)` (`max(cfg, floor)`, clamped by max). Long wave floor = 7200 s, reflection = 1800 s, wave19 = 3600 s. A finite `--timeout` below a task floor is refused unless `--allow-below-floor` (then marked `comparable: false`).
+- **Per-task duration** for upstream waves lives in `docs/<model>-medium90-*.json` → `outcomes[].elapsed_seconds` (not in the published wave tables).
 
 ## Run in subagents
 One subagent per model run: exact command, cwd, `/tmp` progress log, "do not commit/push",
