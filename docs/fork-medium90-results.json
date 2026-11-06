@@ -35,13 +35,25 @@
         "long": {
           "passed": 3,
           "total": 3,
-          "measurement": "partial"
+          "measurement": "partial",
+          "duration": {
+            "n": 3,
+            "mean": 2449.8,
+            "median": 2174.5,
+            "max": 3571.2
+          }
         },
         "reflect": null,
         "feasibility": {
           "passed": 36,
           "total": 40,
-          "measurement": "complete"
+          "measurement": "complete",
+          "duration": {
+            "n": 40,
+            "mean": 262.2,
+            "median": 111.3,
+            "max": 3660.4
+          }
         }
       },
       "usage": {
@@ -65,5 +77,90 @@
         "wave19_full_ds41flash.json"
       ]
     }
-  ]
+  ],
+  "duration_by_wave": {
+    "long": [
+      {
+        "label": "Pi (ours)",
+        "n": 3,
+        "mean": 2449.8,
+        "median": 2174.5,
+        "max": 3571.2
+      },
+      {
+        "label": "Codex + DeepSeek",
+        "n": 20,
+        "mean": 1127.3,
+        "median": 991.6,
+        "max": 3236.6
+      },
+      {
+        "label": "mini-SWE + DeepSeek",
+        "n": 20,
+        "mean": 1837.4,
+        "median": 1542.0,
+        "max": 4593.8
+      },
+      {
+        "label": "Claude Code + Sonnet",
+        "n": 20,
+        "mean": 417.2,
+        "median": 20.9,
+        "max": 3391.4
+      }
+    ],
+    "reflect": [
+      {
+        "label": "Codex + DeepSeek",
+        "n": 20,
+        "mean": 160.6,
+        "median": 80.6,
+        "max": 1003.7
+      },
+      {
+        "label": "mini-SWE + DeepSeek",
+        "n": 20,
+        "mean": 228.4,
+        "median": 184.6,
+        "max": 743.4
+      },
+      {
+        "label": "Claude Code + Sonnet",
+        "n": 20,
+        "mean": 77.0,
+        "median": 62.9,
+        "max": 184.8
+      }
+    ],
+    "feasibility": [
+      {
+        "label": "Pi (ours)",
+        "n": 40,
+        "mean": 262.2,
+        "median": 111.3,
+        "max": 3660.4
+      },
+      {
+        "label": "Codex + DeepSeek",
+        "n": 40,
+        "mean": 161.6,
+        "median": 83.2,
+        "max": 1059.0
+      },
+      {
+        "label": "mini-SWE + DeepSeek",
+        "n": 40,
+        "mean": 271.2,
+        "median": 183.6,
+        "max": 1388.7
+      },
+      {
+        "label": "Claude Code + Sonnet",
+        "n": 40,
+        "mean": 91.4,
+        "median": 55.0,
+        "max": 430.4
+      }
+    ]
+  }
 }

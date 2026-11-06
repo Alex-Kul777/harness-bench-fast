@@ -1,0 +1,3 @@
+schema: spec-driven
+created: 2026-11-06
+goal: Resolve the Pi runner per-task timeout with task floors/ceilings and record it.

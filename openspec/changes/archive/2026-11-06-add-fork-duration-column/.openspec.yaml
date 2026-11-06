@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-11-06
+goal: Add a Duration column and a by-wave duration comparison joining our
+  per-task times with upstream medium90 measurements.

@@ -30,6 +30,7 @@ import html
 import json
 import math
 import re
+import statistics
 import sys
 import urllib.parse
 from pathlib import Path
@@ -59,6 +60,15 @@ WAVE_ORDER = ["long", "reflect", "feasibility"]
 
 # task_id integer -> wave (per design: 392-411 long, 412-431 reflect, 432-471 feasibility)
 TASK_ID_WAVES = ((392, 411, "long"), (412, 431, "reflect"), (432, 471, "feasibility"))
+
+# Frozen upstream medium90 snapshots with per-task elapsed_seconds (tasks 392-471).
+# Read-only: the generator never writes these files.
+UPSTREAM_DURATION_SOURCES = (
+    ("Codex + DeepSeek", "codex-deepseek-medium90-20261027.json"),
+    ("mini-SWE + DeepSeek", "miniswe-deepseek-medium90-20261027.json"),
+    ("Claude Code + Sonnet", "claudecode-sonnet-medium90-20261027.json"),
+)
+OURS_DURATION_LABEL = "Pi (ours)"
 
 REQUIRED_SUMMARY_FIELDS = (
     "passed",
@@ -217,6 +227,81 @@ def _int(value):
         return None
 
 
+def _finite_floats(values):
+    """Keep only finite floats from an iterable of possibly-missing numbers."""
+    out = []
+    for value in values:
+        num = _num(value)
+        if num is not None and math.isfinite(num):
+            out.append(num)
+    return out
+
+
+def duration_stats(values) -> dict | None:
+    """{n, mean, median, max} in seconds (1 dp) or None when nothing to measure."""
+    clean = _finite_floats(values)
+    if not clean:
+        return None
+    return {
+        "n": len(clean),
+        "mean": round(statistics.mean(clean), 1),
+        "median": round(statistics.median(clean), 1),
+        "max": round(max(clean), 1),
+    }
+
+
+def build_duration_by_wave(ours_durations: dict) -> dict:
+    """Per wave: ``Pi (ours)`` first, then each available upstream configuration.
+
+    A configuration with no measured task for a wave is omitted (never 0).
+    """
+    upstream = load_upstream_durations()
+    by_wave: dict[str, list] = {}
+    for wave in WAVE_ORDER:
+        entries: list[dict] = []
+        ours = duration_stats(ours_durations.get(wave, []))
+        if ours is not None:
+            entries.append({"label": OURS_DURATION_LABEL, **ours})
+        for label, _filename in UPSTREAM_DURATION_SOURCES:
+            stats = duration_stats(upstream.get(label, {}).get(wave, []))
+            if stats is not None:
+                entries.append({"label": label, **stats})
+        by_wave[wave] = entries
+    return by_wave
+
+
+def load_upstream_durations() -> dict:
+    """{label: {wave: [elapsed_seconds, ...]}} from the frozen upstream snapshots.
+
+    Only tasks in the Medium range (392-471) are kept; a task outside every wave
+    is ignored. Missing/unreadable files degrade to empty buckets.
+    """
+    docs_dir = REPO_ROOT / "docs"
+    result: dict[str, dict[str, list[float]]] = {}
+    for label, filename in UPSTREAM_DURATION_SOURCES:
+        buckets: dict[str, list[float]] = {wave: [] for wave in WAVE_ORDER}
+        path = docs_dir / filename
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            print(f"[skip] {filename}: unreadable ({exc})", file=sys.stderr)
+            result[label] = buckets
+            continue
+        outcomes = data.get("outcomes")
+        if isinstance(outcomes, list):
+            for entry in outcomes:
+                if not isinstance(entry, dict):
+                    continue
+                wave = classify_task_wave(entry.get("number"))
+                if wave is None:
+                    continue
+                seconds = _num(entry.get("elapsed_seconds"))
+                if seconds is not None and math.isfinite(seconds):
+                    buckets[wave].append(seconds)
+        result[label] = buckets
+    return result
+
+
 def _task_entry(entry: dict) -> dict | None:
     """Normalise one ``results[]`` entry; None when its task_id maps to no wave."""
     if not isinstance(entry, dict):
@@ -280,6 +365,7 @@ def build_model() -> dict:
                 "suites": {w: {"passed": 0, "total": 0} for w in WAVE_ORDER},
                 "usage": _empty_usage(),
                 "wave_usage": {w: _empty_usage() for w in WAVE_ORDER},
+                "durations": {w: [] for w in WAVE_ORDER},
                 "sources": [],
             },
         )
@@ -311,13 +397,21 @@ def build_model() -> dict:
                 normalised = _task_entry(entry)
                 if normalised is not None:
                     bucket.append(normalised)
+                # Per-task wall-clock time for this run's wave (ours).
+                if isinstance(entry, dict):
+                    seconds = _num(entry.get("elapsed_seconds"))
+                    if seconds is not None and math.isfinite(seconds):
+                        group["durations"][wave].append(seconds)
 
     rows: list[dict] = []
     page_details: dict[str, dict] = {}
+    ours_durations: dict[str, list[float]] = {w: [] for w in WAVE_ORDER}
     for (harness, model, profile), group in groups.items():
         suites: dict[str, object] = {}
         wilson: dict[str, list[float]] = {}
         for wave in WAVE_ORDER:
+            # Our per-task times pool across every measured run for this wave.
+            ours_durations[wave].extend(group["durations"][wave])
             agg = group["suites"][wave]
             if not _wave_present(group, wave):
                 # No run contributed to this wave => unmeasured (not a failure).
@@ -325,11 +419,15 @@ def build_model() -> dict:
                 continue
             expected = WAVES[wave][2]
             measurement = "partial" if agg["total"] < expected else "complete"
-            suites[wave] = {
+            suite = {
                 "passed": agg["passed"],
                 "total": agg["total"],
                 "measurement": measurement,
             }
+            duration = duration_stats(group["durations"][wave])
+            if duration is not None:
+                suite["duration"] = duration
+            suites[wave] = suite
             wilson[wave] = wilson_interval(agg["passed"], agg["total"])
 
         rid = row_id(harness, model, profile)
@@ -369,6 +467,8 @@ def build_model() -> dict:
         )
     )
 
+    duration_by_wave = build_duration_by_wave(ours_durations)
+
     return {
         "generated_by": GENERATED_BY,
         "task_set_version": TASK_SET_VERSION,
@@ -384,6 +484,7 @@ def build_model() -> dict:
             for key in WAVE_ORDER
         ],
         "rows": rows,
+        "duration_by_wave": duration_by_wave,
         "_page_details": page_details,
     }
 

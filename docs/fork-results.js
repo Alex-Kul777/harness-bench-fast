@@ -52,6 +52,51 @@ function formatDuration(seconds) {
   return (seconds / 60).toFixed(1) + "m";
 }
 
+// ---- duration column + duration-by-wave table (additive; degrade to '—') ------
+
+// Configuration labels shown in the Duration by wave table, in order.
+var DURATION_LABELS = ["Pi (ours)", "Codex + DeepSeek", "mini-SWE + DeepSeek", "Claude Code + Sonnet"];
+
+// Our mean seconds/task for one suite's duration block, or null when absent.
+function suiteDuration(row, waveKey) {
+  var suite = row && row.suites && row.suites[waveKey];
+  var d = suite && suite.duration;
+  if (!d || !Number.isFinite(d.mean) || !Number.isFinite(d.n) || d.n <= 0) return null;
+  return { mean: d.mean, n: d.n };
+}
+
+// Pooled mean seconds/task across a row's measured waves (weighted by n), or null.
+function rowDurationMean(row, waves) {
+  var sum = 0, count = 0;
+  (Array.isArray(waves) ? waves : []).forEach(function (w) {
+    var d = suiteDuration(row, w.key);
+    if (d) { sum += d.mean * d.n; count += d.n; }
+  });
+  if (!count) return null;
+  return sum / count;
+}
+
+// Mean seconds compactly: 2449.84 -> "2,450s"; '—' when not finite.
+function formatMeanSeconds(value) {
+  if (!Number.isFinite(value)) return "—";
+  return new Intl.NumberFormat("en-US").format(Math.round(value)) + "s";
+}
+
+// Duration-by-wave cell: "1,127s (n=20)" or '—'.
+function durationWaveCell(entry) {
+  if (!entry || !Number.isFinite(entry.mean) || !Number.isFinite(entry.n) || entry.n <= 0) return "—";
+  return formatMeanSeconds(entry.mean) + " (n=" + entry.n + ")";
+}
+
+// First duration entry with a given label for a wave, else null.
+function findDurationEntry(list, label) {
+  if (!Array.isArray(list)) return null;
+  for (var i = 0; i < list.length; i++) {
+    if (list[i] && list[i].label === label) return list[i];
+  }
+  return null;
+}
+
 // Canonical fork cell "Tokens (cost)": "110.4M (7 189₽)".
 function tokensCostCell(usage) {
   var tokens = formatUsage(usage, "tokens");
@@ -198,6 +243,11 @@ if (typeof module !== "undefined" && module.exports) {
     formatInterval: formatInterval,
     formatUsage: formatUsage,
     formatDuration: formatDuration,
+    rowDurationMean: rowDurationMean,
+    formatMeanSeconds: formatMeanSeconds,
+    durationWaveCell: durationWaveCell,
+    findDurationEntry: findDurationEntry,
+    DURATION_LABELS: DURATION_LABELS,
     formatCost: formatCost,
     tokensCostCell: tokensCostCell,
     wilson: wilson,
@@ -212,6 +262,7 @@ if (typeof document !== "undefined") {
     var matrixHead = document.getElementById("matrix-head");
     var matrixBody = document.getElementById("matrix-body");
     var resultsBody = document.getElementById("results-body");
+    var durationBody = document.getElementById("duration-by-wave-body");
     var search = document.getElementById("search");
     var empty = document.getElementById("empty");
     var rowCount = document.getElementById("row-count");
@@ -324,6 +375,11 @@ if (typeof document !== "undefined") {
         time.textContent = formatDuration(row.usage && row.usage.seconds);
         tr.append(time);
 
+        var duration = document.createElement("td");
+        duration.className = "numeric";
+        duration.textContent = formatMeanSeconds(rowDurationMean(row, waves));
+        tr.append(duration);
+
         var steps = document.createElement("td");
         steps.className = "numeric";
         steps.textContent = formatUsage(row.usage, "steps");
@@ -338,12 +394,34 @@ if (typeof document !== "undefined") {
       });
     }
 
+    // Duration by wave: one row per configuration, columns = measured waves.
+    function renderDurationByWave(payload) {
+      if (!durationBody) return;
+      clear(durationBody);
+      var byWave = payload && payload.duration_by_wave ? payload.duration_by_wave : {};
+      DURATION_LABELS.forEach(function (label) {
+        var tr = document.createElement("tr");
+        var name = document.createElement("td");
+        name.textContent = label;
+        tr.append(name);
+        waves.forEach(function (w) {
+          var td = document.createElement("td");
+          td.className = "numeric";
+          var entry = findDurationEntry(byWave[w.key], label);
+          td.textContent = entry ? durationWaveCell(entry) : "—";
+          tr.append(td);
+        });
+        durationBody.append(tr);
+      });
+    }
+
     function render() {
       if (!data) return;
       var value = search ? search.value : "";
       var list = buildResults(data.rows, waves, mediumTasks, value);
       renderMatrix(buildMatrix(data.rows, waves, value));
       renderResults(list);
+      renderDurationByWave(data);
       if (empty) {
         empty.hidden = list.length > 0;
         empty.textContent = "No fork results match your search.";
