@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import html
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -77,6 +78,8 @@ def _model(stem):
     for tok, m in MODEL_TOKENS:
         if tok in stem:
             return m
+    if "thinking_off" in stem.lower():
+        return "GLM-5.2"
     return DASH
 
 
@@ -107,6 +110,84 @@ def _fmt_cost(tokens, cost):
     return tok
 
 
+_SESSION_RE = re.compile(r"(\d{8})_")
+_NAME_DATE_RE = re.compile(r"(?<!\d)(20\d{2})(\d{2})(\d{2})(?!\d)")
+
+
+def _with_date(profile, date):
+    """Append a run date to a profile label, README-style: 'thinking: off (2026-11-04)'."""
+    if not date:
+        return profile
+    return f"{(profile or DASH)} ({date})"
+
+
+def _date_from_name(name):
+    m = _NAME_DATE_RE.search(name or "")
+    return f"{m.group(1)}-{m.group(2)}-{m.group(3)}" if m else None
+
+
+def _date_from_sessions(data):
+    dates = []
+    for key in ("tasks", "results"):
+        for t in (data.get(key) or []):
+            if not isinstance(t, dict):
+                continue
+            m = _SESSION_RE.match(t.get("session_id") or "")
+            if m:
+                dates.append(m.group(1))
+    if not dates:
+        return None
+    d = min(dates)
+    return f"{d[0:4]}-{d[4:6]}-{d[6:8]}"
+
+
+def _readme_our_dates():
+    """Map (harness, model) -> [(profile_text, date)] from the README shot-list table (our rows)."""
+    out = {}
+    if not README.exists():
+        return out
+    m = re.search(r"## Shot List Leaderboard \(52 tasks\)(.*?)(?=\n## )", README.read_text(encoding="utf-8"), re.S)
+    if not m:
+        return out
+    for line in m.group(1).splitlines():
+        if not line.strip().startswith("|"):
+            continue
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) < 8 or cells[0].lower() not in UPSTREAM_OURS:
+            continue
+        dm = re.search(r"\((\d{4}-\d{2}-\d{2})\)", cells[1])
+        out.setdefault((cells[0].lower(), cells[2].lower()), []).append((cells[1], dm.group(1) if dm else None))
+    return out
+
+
+def _readme_date_for(map_, harness, model, profile):
+    cands = map_.get(((harness or "").lower(), (model or "").lower()), [])
+    if profile:
+        for text, date in cands:
+            if profile.lower() in text.lower() and date:
+                return date
+    for _, date in cands:
+        if date:
+            return date
+    return None
+
+
+def _date_from_source_files(names):
+    dates = []
+    for n in names or []:
+        dates.append(_date_from_name(n))
+        for base in RESULT_DIRS:
+            p = base / n
+            if p.exists():
+                try:
+                    dates.append(_date_from_sessions(json.loads(p.read_text(encoding="utf-8"))))
+                except (OSError, json.JSONDecodeError):
+                    pass
+                break
+    dates = [d for d in dates if d]
+    return min(dates) if dates else None
+
+
 def _row(harness, profile, model, passed, total, rate, secs, steps, tokens, cost, version, source, waves=None):
     return {
         "harness": harness or DASH, "profile": profile or DASH, "model": model or DASH,
@@ -117,13 +198,15 @@ def _row(harness, profile, model, passed, total, rate, secs, steps, tokens, cost
     }
 
 
-def _from_summary_file(harness, profile, model, path: Path, source="ours"):
+def _from_summary_file(harness, profile, model, path: Path, source="ours", date_hint=None):
     d = json.loads(path.read_text(encoding="utf-8"))
     s = d.get("summary") or {}
     rate = s.get("pass_rate")
     if rate is None and s.get("passed") is not None and s.get("total"):
         rate = s["passed"] / s["total"]
-    return _row(harness, profile, model, s.get("passed", d.get("passed")), s.get("total", d.get("total")),
+    date = _date_from_sessions(d) or _date_from_name(path.name) or date_hint
+    return _row(harness, _with_date(profile, date), model,
+                s.get("passed", d.get("passed")), s.get("total", d.get("total")),
                 rate, s.get("total_seconds"), s.get("total_steps", d.get("steps")),
                 s.get("total_tokens", d.get("tokens")), s.get("estimated_cost_rub"),
                 d.get("task_set_version"), source)
@@ -131,6 +214,7 @@ def _from_summary_file(harness, profile, model, path: Path, source="ours"):
 
 def ours_shotlist():
     out = []
+    rmap = _readme_our_dates()
     for name, path in _collect().items():
         if "_shotlist_" not in name:
             continue
@@ -138,7 +222,9 @@ def ours_shotlist():
         if any(k in low for k in EXCLUDE):
             continue
         stem = path.stem
-        out.append(_from_summary_file(_harness(stem), _profile(stem), _model(stem), path))
+        harness, profile, model = _harness(stem), _profile(stem), _model(stem)
+        hint = _readme_date_for(rmap, harness, model, profile)
+        out.append(_from_summary_file(harness, profile, model, path, date_hint=hint))
     out.sort(key=lambda r: -_pct_val(r["pct"]))
     return out
 
@@ -171,9 +257,10 @@ def ours_medium():
         u = r.get("usage") or {}
         waves = {k: {"passed": (suites.get(k) or {}).get("passed"),
                      "total": (suites.get(k) or {}).get("total")} for k, _ in WAVE_LABELS}
-        out.append(_row(r.get("harness"), r.get("profile"), r.get("model"), passed, total,
-                        (passed / total) if total else None, u.get("seconds"), u.get("steps"),
-                        u.get("tokens"), u.get("cost_rub"), ver, "ours", waves))
+        date = _date_from_source_files(r.get("sources"))
+        out.append(_row(r.get("harness"), _with_date(r.get("profile"), date), r.get("model"),
+                        passed, total, (passed / total) if total else None, u.get("seconds"),
+                        u.get("steps"), u.get("tokens"), u.get("cost_rub"), ver, "ours", waves))
     return out
 
 
@@ -186,7 +273,8 @@ def upstream_light():
         lt = r.get("light")
         if not lt:
             continue
-        out.append(_row(r.get("harness"), "", r.get("model"), lt.get("passed"), lt.get("total"),
+        out.append(_row(r.get("harness"), _with_date("", r.get("measurement_date")), r.get("model"),
+                        lt.get("passed"), lt.get("total"),
                         (lt["passed"] / lt["total"]) if lt.get("total") else None,
                         None, None, None, None, r.get("source_version"), "upstream"))
     out.sort(key=lambda r: -_pct_val(r["pct"]))
@@ -249,7 +337,8 @@ def upstream_medium():
         md = r.get("medium")
         if not md:
             continue
-        out.append(_row(r.get("harness"), "", r.get("model"), md.get("passed"), md.get("total"),
+        out.append(_row(r.get("harness"), _with_date("", r.get("measurement_date")), r.get("model"),
+                        md.get("passed"), md.get("total"),
                         (md["passed"] / md["total"]) if md.get("total") else None,
                         None, None, None, None, r.get("source_version"), "upstream"))
     out.sort(key=lambda x: -_pct_val(x["pct"]))
