@@ -52,6 +52,10 @@ OURS_LIGHT = [
 ]
 WAVE_LABELS = (("long", "Long"), ("reflect", "Reflect"), ("feasibility", "Feasibility"))
 
+# Harnesses that are OUR runs; anything else in the README shot-list table is upstream.
+UPSTREAM_OURS = {"pi", "openclaw", "hermes"}
+README = REPO_ROOT / "README.md"
+
 
 def _collect() -> dict[str, Path]:
     seen: dict[str, Path] = {}
@@ -196,15 +200,71 @@ def _pct_val(s):
         return -1.0
 
 
+def _norm_cell(s):
+    """Tidy a raw markdown cell: bare dash -> em dash, strip space thousands."""
+    s = (s or "").strip()
+    if s in ("-", "\u2013", ""):
+        return DASH
+    return s.replace(",", " ")
+
+
+def _raw_row(harness, profile, model, result, pct, time, steps, tokens_cost, version, source):
+    return {"harness": harness or DASH, "profile": profile or DASH, "model": model or DASH,
+            "result": result or DASH, "pct": pct or DASH, "time": time or DASH,
+            "steps": steps or DASH, "tokens_cost": tokens_cost or DASH,
+            "version": version or DASH, "source": source, "waves": None}
+
+
+def upstream_shotlist():
+    """Upstream rows of the fork README shot-list table (our harnesses excluded)."""
+    if not README.exists():
+        return []
+    import re
+    txt = README.read_text(encoding="utf-8")
+    m = re.search(r"## Shot List Leaderboard \(52 tasks\)(.*?)(?=\n## )", txt, re.S)
+    if not m:
+        return []
+    out = []
+    for line in m.group(1).splitlines():
+        if not line.strip().startswith("|"):
+            continue
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) < 8 or cells[0].lower() == "harness" or set(cells[0]) <= set("-: "):
+            continue
+        if cells[0].lower() in UPSTREAM_OURS:
+            continue
+        out.append(_raw_row(cells[0], cells[1], cells[2], cells[3], cells[4],
+                            _norm_cell(cells[5]), _norm_cell(cells[6]), _norm_cell(cells[7]),
+                            DASH, "upstream"))
+    return out
+
+
+def upstream_medium():
+    """Upstream Medium (80) rows from the published leaderboard."""
+    if not LEADERBOARD.exists():
+        return []
+    d = json.loads(LEADERBOARD.read_text(encoding="utf-8"))
+    out = []
+    for r in d.get("rows", []):
+        md = r.get("medium")
+        if not md:
+            continue
+        out.append(_row(r.get("harness"), "", r.get("model"), md.get("passed"), md.get("total"),
+                        (md["passed"] / md["total"]) if md.get("total") else None,
+                        None, None, None, None, r.get("source_version"), "upstream"))
+    out.sort(key=lambda x: -_pct_val(x["pct"]))
+    return out
+
+
 def build():
     return {
         "generated_by": GENERATED_BY,
         "id": "fork-home",
         "version_semantics": "ours: task-set version · upstream: source_version",
         "suites": [
-            {"key": "shotlist", "label": "Shot List (52)", "tasks": 52, "ours": ours_shotlist(), "upstream": []},
+            {"key": "shotlist", "label": "Shot List (52)", "tasks": 52, "ours": ours_shotlist(), "upstream": upstream_shotlist()},
             {"key": "light", "label": "Light (391)", "tasks": 391, "ours": ours_light(), "upstream": upstream_light()},
-            {"key": "medium", "label": "Medium (80)", "tasks": 80, "ours": ours_medium(), "upstream": []},
+            {"key": "medium", "label": "Medium (80)", "tasks": 80, "ours": ours_medium(), "upstream": upstream_medium()},
         ],
     }
 
