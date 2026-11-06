@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-11-06
+goal: Per-config rows link to a run-detail page; add the canonical Time column
+  to the fork results page.

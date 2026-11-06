@@ -26,6 +26,7 @@
   "rows": [
     {
       "id": "pi-deepseek-v4-1-flash",
+      "details_url": "fork-run-pi-deepseek-v4-1-flash.html",
       "harness": "Pi",
       "model": "DeepSeek-V4.1-Flash",
       "profile": null,

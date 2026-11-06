@@ -46,6 +46,12 @@ function formatCost(value) {
   return new Intl.NumberFormat("en-US").format(Math.round(value)).replace(/,/g, " ") + "\u20bd";
 }
 
+// Duration in minutes: 17835.9 -> "297.3m"; '—' when not a finite number.
+function formatDuration(seconds) {
+  if (!Number.isFinite(seconds)) return "—";
+  return (seconds / 60).toFixed(1) + "m";
+}
+
 // Canonical fork cell "Tokens (cost)": "110.4M (7 189₽)".
 function tokensCostCell(usage) {
   var tokens = formatUsage(usage, "tokens");
@@ -191,6 +197,7 @@ if (typeof module !== "undefined" && module.exports) {
     overallInterval: overallInterval,
     formatInterval: formatInterval,
     formatUsage: formatUsage,
+    formatDuration: formatDuration,
     formatCost: formatCost,
     tokensCostCell: tokensCostCell,
     wilson: wilson,
@@ -268,9 +275,17 @@ if (typeof document !== "undefined") {
         tr.append(rank);
 
         var who = document.createElement("td");
-        var model = document.createElement("span");
-        model.textContent = row.model || "—";
-        who.append(model);
+        var modelText = row.model || "—";
+        if (row.details_url) {
+          var link = document.createElement("a");
+          link.href = row.details_url;
+          link.textContent = modelText;
+          who.append(link);
+        } else {
+          var model = document.createElement("span");
+          model.textContent = modelText;
+          who.append(model);
+        }
         var harness = document.createElement("span");
         harness.className = "harness";
         harness.textContent = row.harness || "—";
@@ -303,6 +318,11 @@ if (typeof document !== "undefined") {
         interval.className = "numeric";
         interval.textContent = formatInterval(entry.interval);
         tr.append(interval);
+
+        var time = document.createElement("td");
+        time.className = "numeric";
+        time.textContent = formatDuration(row.usage && row.usage.seconds);
+        tr.append(time);
 
         var steps = document.createElement("td");
         steps.className = "numeric";

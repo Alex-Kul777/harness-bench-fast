@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate docs/fork-medium90-results.json for the fork results pages.
+"""Generate docs/fork-medium90-results.json + docs/fork-run-<id>.html.
 
 Scans run JSON in ``<repo>/results`` (checkout wins) then ``<repo>/../results``
 (de-duplicated by file name), keeps only runs whose file-name stem belongs to one
@@ -7,23 +7,31 @@ of the Medium umbrella waves, aggregates them per (harness, model, profile) and
 writes the *frozen* schema from
 ``openspec/changes/add-fork-results-pages/design.md``.
 
+On write (not ``--check`` / ``--json``) it also (re)generates one static
+per-run detail page ``docs/fork-run-<id>.html`` per row, per
+``openspec/changes/add-fork-run-details/design.md``: waves, per-task entries
+(from each run's top-level ``results`` array) and sources. Every dynamic text
+value is HTML-escaped.
+
 Waves (umbrella suite "Medium (392-471)"):
     long        392-411  20 tasks   (stem token "long")
     reflect     412-431  20 tasks   (stem token "reflect")
     feasibility 432-471  40 tasks   (stem token "feasibility" or "wave19")
 
 Usage:
-    python3 scripts/build_fork_pages.py                 # write docs/fork-medium90-results.json
-    python3 scripts/build_fork_pages.py --check         # exit 1 if the file is stale
+    python3 scripts/build_fork_pages.py                 # write JSON + detail pages
+    python3 scripts/build_fork_pages.py --check         # exit 1 if the JSON is stale
     python3 scripts/build_fork_pages.py --json          # print the JSON to stdout
     python3 scripts/build_fork_pages.py --out PATH      # write/compare against PATH
 """
 from __future__ import annotations
 
+import html
 import json
 import math
 import re
 import sys
+import urllib.parse
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -48,6 +56,9 @@ WAVES = {
     "feasibility": ("Feasibility", "432\u2013471", 40),
 }
 WAVE_ORDER = ["long", "reflect", "feasibility"]
+
+# task_id integer -> wave (per design: 392-411 long, 412-431 reflect, 432-471 feasibility)
+TASK_ID_WAVES = ((392, 411, "long"), (412, 431, "reflect"), (432, 471, "feasibility"))
 
 REQUIRED_SUMMARY_FIELDS = (
     "passed",
@@ -94,6 +105,8 @@ RUN_META_OVERRIDES = {
 
 WILSON_Z = 1.96
 
+SOURCE_BASE_URL = "https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/"
+
 
 def _override(stem: str, field: str) -> str | None:
     lower = stem.lower()
@@ -111,6 +124,18 @@ def classify_wave(stem: str) -> str | None:
         return "reflect"
     if "feasibility" in lower or "wave19" in lower:
         return "feasibility"
+    return None
+
+
+def classify_task_wave(task_id) -> str | None:
+    """Map a task_id (e.g. 'task_393_intranet_multihop') to a wave, else None."""
+    match = re.search(r"\d+", str(task_id))
+    if match is None:
+        return None
+    number = int(match.group())
+    for low, high, wave in TASK_ID_WAVES:
+        if low <= number <= high:
+            return wave
     return None
 
 
@@ -174,8 +199,51 @@ def row_id(harness, model, profile) -> str:
     return "-".join(parts) if parts else "unknown"
 
 
+def _num(value):
+    if value is None:
+        return None
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _int(value):
+    if value is None:
+        return None
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _task_entry(entry: dict) -> dict | None:
+    """Normalise one ``results[]`` entry; None when its task_id maps to no wave."""
+    if not isinstance(entry, dict):
+        return None
+    task_id = entry.get("task_id")
+    wave = classify_task_wave(task_id)
+    if wave is None:
+        return None
+    message = entry.get("message")
+    return {
+        "task_id": str(task_id),
+        "wave": wave,
+        "passed": bool(entry.get("passed")),
+        "message": "" if message is None else str(message),
+        "elapsed_seconds": _num(entry.get("elapsed_seconds")),
+        "agent_steps": _int(entry.get("agent_steps")),
+        "agent_total_tokens": _int(entry.get("agent_total_tokens")),
+    }
+
+
+def _empty_usage() -> dict:
+    return {"seconds": 0.0, "steps": 0, "tokens": 0, "cost_rub": 0.0}
+
+
 def build_model() -> dict:
     groups: dict[tuple, dict] = {}
+    tasks_by_id: dict[str, list] = {}
 
     for name, path in collect_paths().items():
         stem = path.stem
@@ -209,7 +277,8 @@ def build_model() -> dict:
             key,
             {
                 "suites": {w: {"passed": 0, "total": 0} for w in WAVE_ORDER},
-                "usage": {"seconds": 0.0, "steps": 0, "tokens": 0, "cost_rub": 0.0},
+                "usage": _empty_usage(),
+                "wave_usage": {w: _empty_usage() for w in WAVE_ORDER},
                 "sources": [],
             },
         )
@@ -222,9 +291,28 @@ def build_model() -> dict:
         usage["steps"] += int(summary.get("total_steps") or 0)
         usage["tokens"] += int(summary.get("total_tokens") or 0)
         usage["cost_rub"] += float(summary.get("estimated_cost_rub") or 0.0)
+
+        # Per-wave usage: each run file belongs to exactly one wave (by stem).
+        wu = group["wave_usage"][wave]
+        wu["seconds"] += float(summary.get("total_seconds") or 0.0)
+        wu["steps"] += int(summary.get("total_steps") or 0)
+        wu["tokens"] += int(summary.get("total_tokens") or 0)
+        wu["cost_rub"] += float(summary.get("estimated_cost_rub") or 0.0)
+
         group["sources"].append(name)
 
+        # Per-task entries from the run's top-level ``results`` array.
+        results = data.get("results")
+        if isinstance(results, list):
+            rid = row_id(harness, model, classify_profile(stem))
+            bucket = tasks_by_id.setdefault(rid, [])
+            for entry in results:
+                normalised = _task_entry(entry)
+                if normalised is not None:
+                    bucket.append(normalised)
+
     rows: list[dict] = []
+    page_details: dict[str, dict] = {}
     for (harness, model, profile), group in groups.items():
         suites: dict[str, object] = {}
         wilson: dict[str, list[float]] = {}
@@ -243,9 +331,11 @@ def build_model() -> dict:
             }
             wilson[wave] = wilson_interval(agg["passed"], agg["total"])
 
+        rid = row_id(harness, model, profile)
         rows.append(
             {
-                "id": row_id(harness, model, profile),
+                "id": rid,
+                "details_url": f"fork-run-{rid}.html",
                 "harness": harness,
                 "model": model,
                 "profile": profile,
@@ -261,6 +351,13 @@ def build_model() -> dict:
                 "sources": sorted(group["sources"]),
             }
         )
+        page_details[rid] = {
+            "tasks": sorted(
+                tasks_by_id.get(rid, []),
+                key=lambda t: (WAVE_ORDER.index(t["wave"]), t["task_id"]),
+            ),
+            "wave_usage": group["wave_usage"],
+        }
 
     rows.sort(
         key=lambda r: (
@@ -286,6 +383,7 @@ def build_model() -> dict:
             for key in WAVE_ORDER
         ],
         "rows": rows,
+        "_page_details": page_details,
     }
 
 
@@ -294,8 +392,223 @@ def _wave_present(group: dict, wave: str) -> bool:
     return agg["total"] > 0 or agg["passed"] > 0
 
 
+# ---- formatting helpers (mirror docs/fork-results.js conventions) -------------
+
+def fmt_compact(value) -> str:
+    """1321 -> '1,321'; 48463320 -> '48.46M'; None -> em dash."""
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return "\u2014"
+    for divisor, suffix in ((1_000_000_000, "B"), (1_000_000, "M")):
+        if abs(number) >= divisor:
+            text = f"{number / divisor:.2f}".rstrip("0").rstrip(".")
+            return text + suffix
+    return f"{int(round(number)):,}"
+
+
+def fmt_cost(value) -> str:
+    """7188.5 -> '7 189\u20bd'."""
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return "\u2014"
+    return f"{int(round(number)):,}".replace(",", " ") + "\u20bd"
+
+
+def fmt_duration(seconds) -> str:
+    """17835.9 -> '297.3m'."""
+    try:
+        number = float(seconds)
+    except (TypeError, ValueError):
+        return "\u2014"
+    return f"{number / 60:.1f}m"
+
+
+def fmt_seconds(value) -> str:
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return "\u2014"
+    return f"{number:.1f}"
+
+
+def fmt_percent(passed, total) -> str:
+    if not total:
+        return "\u2014"
+    return f"{100 * passed / total:.1f}%"
+
+
+def fmt_interval(range_value) -> str:
+    if not isinstance(range_value, list) or len(range_value) < 2:
+        return "\u2014"
+    return f"{100 * range_value[0]:.1f}\u2013{100 * range_value[1]:.1f}%"
+
+
+def fmt_tokens_cost(tokens, cost) -> str:
+    return f"{fmt_compact(tokens)} ({fmt_cost(cost)})"
+
+
+def _esc(value) -> str:
+    return html.escape("" if value is None else str(value), quote=True)
+
+
+# ---- per-run detail page renderer --------------------------------------------
+
+def _source_item(name: str) -> str:
+    safe = _esc(name)
+    if (REPO_ROOT / "results" / name).is_file():
+        url = SOURCE_BASE_URL + urllib.parse.quote(name)
+        return f'<li><a href="{_esc(url)}"><code>{safe}</code></a></li>'
+    return f"<li><code>{safe}</code></li>"
+
+
+def render_run_page(row: dict, details: dict) -> str:
+    model_name = row.get("model") or "\u2014"
+    harness = row.get("harness") or "\u2014"
+    profile = row.get("profile")
+    runs = int(row.get("runs") or 0)
+
+    title_text = f"{model_name} \u2014 {harness}"
+    if profile:
+        title_text += f" ({profile})"
+
+    measured_waves = [w for w in WAVE_ORDER if row["suites"].get(w)]
+    wave_count = len(measured_waves)
+
+    # ---- Waves table ----
+    wave_usage = details.get("wave_usage", {})
+    wave_rows = []
+    for wave in WAVE_ORDER:
+        suite = row["suites"].get(wave)
+        if not suite:
+            continue
+        label, task_range, _expected = WAVES[wave]
+        usage = wave_usage.get(wave) or {}
+        wave_rows.append(
+            "<tr>"
+            f'<td>{_esc(label)}<span class="harness">{_esc(task_range)}</span></td>'
+            f'<td class="numeric">{_esc(suite["total"])}</td>'
+            f'<td class="numeric">{_esc(suite["passed"])}</td>'
+            f'<td class="numeric">{_esc(fmt_percent(suite["passed"], suite["total"]))}</td>'
+            f'<td class="numeric">{_esc(fmt_interval(row["wilson"].get(wave)))}</td>'
+            f'<td class="numeric">{_esc(fmt_duration(usage.get("seconds")))}</td>'
+            f'<td class="numeric">{_esc(fmt_compact(usage.get("steps")))}</td>'
+            f'<td class="numeric">{_esc(fmt_tokens_cost(usage.get("tokens"), usage.get("cost_rub")))}</td>'
+            "</tr>"
+        )
+    if wave_rows:
+        waves_table = (
+            '<div class="table-wrap"><table class="leaderboard-table"><thead><tr>'
+            '<th scope="col">Wave</th><th scope="col" class="numeric">Tasks</th>'
+            '<th scope="col" class="numeric">Passed</th><th scope="col" class="numeric">%</th>'
+            '<th scope="col" class="numeric">95% Wilson</th><th scope="col" class="numeric">Time</th>'
+            '<th scope="col" class="numeric">Steps</th><th scope="col" class="numeric">Tokens (cost)</th>'
+            "</tr></thead><tbody>" + "".join(wave_rows) + "</tbody></table></div>"
+        )
+    else:
+        waves_table = '<p id="empty">No measured waves for this run.</p>'
+
+    # ---- Tasks table ----
+    tasks = details.get("tasks") or []
+    if tasks:
+        task_rows = []
+        for task in tasks:
+            message = task.get("message") or ""
+            note = message if len(message) <= 120 else message[:119] + "\u2026"
+            result = "pass" if task.get("passed") else "fail"
+            task_rows.append(
+                "<tr>"
+                f'<td>{_esc(task.get("task_id"))}</td>'
+                f'<td>{_esc(WAVES[task["wave"]][0])}</td>'
+                f'<td>{_esc(result)}</td>'
+                f'<td class="numeric">{_esc(fmt_seconds(task.get("elapsed_seconds")))}</td>'
+                f'<td class="numeric">{_esc(fmt_compact(task.get("agent_steps")))}</td>'
+                f'<td class="numeric">{_esc(fmt_compact(task.get("agent_total_tokens")))}</td>'
+                f'<td>{_esc(note)}</td>'
+                "</tr>"
+            )
+        tasks_section = (
+            '<section aria-label="Tasks"><h2>Tasks</h2>'
+            '<p class="coverage-note">Per-task outcome of every recorded task run for this configuration.</p>'
+            '<div class="table-wrap"><table class="leaderboard-table"><thead><tr>'
+            '<th scope="col">Task</th><th scope="col">Wave</th><th scope="col">Result</th>'
+            '<th scope="col" class="numeric">Time (s)</th><th scope="col" class="numeric">Steps</th>'
+            '<th scope="col" class="numeric">Tokens</th><th scope="col">Note</th>'
+            "</tr></thead><tbody>" + "".join(task_rows) + "</tbody></table></div></section>"
+        )
+    else:
+        tasks_section = (
+            '<section aria-label="Tasks"><h2>Tasks</h2>'
+            '<p id="empty">No per-task entries were recorded for this configuration.</p></section>'
+        )
+
+    # ---- Sources ----
+    sources = row.get("sources") or []
+    source_items = "".join(_source_item(name) for name in sources) or "<li>\u2014</li>"
+    sources_section = (
+        '<section aria-label="Sources"><h2>Sources</h2>'
+        '<p class="coverage-note">Run artifacts aggregated into this row (checkout <code>results/</code> first, then <code>../results/</code>).</p>'
+        f'<ul class="run-sources">{source_items}</ul></section>'
+    )
+
+    description = f"Run details for {model_name} on {harness}" + (f" ({profile})" if profile else "") + ": waves, tasks and sources."
+
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{_esc(description)}">
+  <title>{_esc(title_text)} \u00b7 Fork run details</title>
+  <link rel="stylesheet" href="landing.css">
+</head>
+<body>
+  <header>
+    <a class="brand" href="index.html">harness_bench_fast<span class="brand-dot">.</span></a>
+    <nav aria-label="Primary"><a href="fork-medium90.html">\u2190 Fork Medium 80</a></nav>
+  </header>
+  <main>
+    <section class="intro">
+      <p class="eyebrow">Fork run details \u00b7 Medium 80 \u00b7 tasks 392\u2013471</p>
+      <h1>{_esc(title_text)}</h1>
+      <p class="lead">{_esc(runs)} {"run" if runs == 1 else "runs"} \u00b7 {_esc(wave_count)} {"wave" if wave_count == 1 else "waves"} measured</p>
+    </section>
+    <section aria-label="Waves">
+      <h2>Waves</h2>
+      <p class="coverage-note">Per-wave outcomes for this configuration. A wave that was not measured is omitted (not a failure).</p>
+      {waves_table}
+    </section>
+    {tasks_section}
+    {sources_section}
+    <p class="fine-print">Static page generated by <code>scripts/build_fork_pages.py</code> from saved run JSON in <code>results/</code>. Times are wall-clock minutes; tokens are compact recorded totals; <strong>Tokens (cost)</strong> adds an estimated spend in roubles (\u20bd) \u2014 an estimate, not a bill. An unmeasured wave is not a failure. <a href="fork-medium90.html">\u2190 Back to fork results</a></p>
+  </main>
+  <footer><span>No LLM judge. Every task is checked mechanically.</span><a href="fork-medium90.html">Fork Medium 80 \u2192</a></footer>
+</body>
+</html>
+"""
+
+
+def write_pages(model: dict, out_dir: Path) -> list[str]:
+    details = model.get("_page_details", {})
+    expected = set()
+    written: list[str] = []
+    for row in model["rows"]:
+        name = row["details_url"]
+        expected.add(name)
+        page = render_run_page(row, details.get(row["id"], {}))
+        (out_dir / name).write_text(page, encoding="utf-8")
+        written.append(name)
+    # Drop stale generated pages that no longer correspond to a row.
+    for stale in sorted(out_dir.glob("fork-run-*.html")):
+        if stale.name not in expected:
+            stale.unlink()
+    return written
+
+
 def render(model: dict) -> str:
-    return json.dumps(model, ensure_ascii=False, indent=2) + "\n"
+    clean = {key: value for key, value in model.items() if not key.startswith("_")}
+    return json.dumps(clean, ensure_ascii=False, indent=2) + "\n"
 
 
 def main(argv: list[str]) -> int:
@@ -333,12 +646,16 @@ def main(argv: list[str]) -> int:
         current = out_path.read_text(encoding="utf-8")
     except OSError:
         current = None
-    if current == text:
-        print(f"{out_path.name}: already up to date ({len(model['rows'])} rows)")
-        return 0
     out_path.parent.mkdir(parents=True, exist_ok=True)
+    pages = write_pages(model, out_path.parent)
+    if current == text:
+        print(
+            f"{out_path.name}: already up to date ({len(model['rows'])} rows); "
+            f"{len(pages)} detail page(s) regenerated"
+        )
+        return 0
     out_path.write_text(text, encoding="utf-8")
-    print(f"{out_path.name}: written ({len(model['rows'])} rows)")
+    print(f"{out_path.name}: written ({len(model['rows'])} rows); {len(pages)} detail page(s)")
     return 0
 
 
