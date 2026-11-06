@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-11-06
+goal: "Fork run-detail page: readable failed-task output (reason + collapsible
+  verifier JSON/error) instead of a truncated raw JSON note."

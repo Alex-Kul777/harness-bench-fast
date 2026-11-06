@@ -231,6 +231,7 @@ def _task_entry(entry: dict) -> dict | None:
         "wave": wave,
         "passed": bool(entry.get("passed")),
         "message": "" if message is None else str(message),
+        "error": "" if entry.get("error") is None else str(entry.get("error")),
         "elapsed_seconds": _num(entry.get("elapsed_seconds")),
         "agent_steps": _int(entry.get("agent_steps")),
         "agent_total_tokens": _int(entry.get("agent_total_tokens")),
@@ -453,6 +454,82 @@ def _esc(value) -> str:
     return html.escape("" if value is None else str(value), quote=True)
 
 
+def trunc(text) -> str:
+    """Frozen: keep s if len<=120, else s[:119] + ellipsis."""
+    s = "" if text is None else str(text)
+    return s if len(s) <= 120 else s[:119] + "\u2026"
+
+
+def _unwrap_single_key(obj):
+    """If obj is a single-key dict whose only value is a dict, return that inner dict."""
+    if isinstance(obj, dict) and len(obj) == 1:
+        only = next(iter(obj.values()))
+        if isinstance(only, dict):
+            return only
+    return obj
+
+
+def task_reason(message, error):
+    """Short, human-readable reason for a task row (frozen algorithm)."""
+    if error:
+        return error
+    m = (message or "").strip()
+    if not m.startswith("{"):
+        return trunc(m)
+    try:
+        obj = json.loads(m)
+    except Exception:
+        return trunc(m)
+    obj = _unwrap_single_key(obj)
+    if isinstance(obj, dict):
+        if isinstance(obj.get("reason"), str) and obj["reason"].strip():
+            return obj["reason"]
+        bits = [
+            f"{key}={obj[key]}"
+            for key in (
+                "decision_correct",
+                "response_correct",
+                "invalid_calls",
+                "extra_requests",
+                "status",
+                "submission_count",
+            )
+            if key in obj
+        ]
+        if bits:
+            return ", ".join(bits)
+    return trunc(m)
+
+
+def _message_obj(message):
+    """Return (obj, True) for parsed (unwrapped) JSON, else (None, False)."""
+    m = (message or "").strip()
+    if not m.startswith("{"):
+        return None, False
+    try:
+        obj = json.loads(m)
+    except Exception:
+        return None, False
+    return _unwrap_single_key(obj), True
+
+
+def task_note_cell(message, error) -> str:
+    """Escaped Note cell: reason plus a collapsible verifier output for fails."""
+    cell = _esc(task_reason(message, error))
+    if not (error or message.strip().startswith("{")):
+        return cell
+    obj, parsed = _message_obj(message)
+    pre_text = json.dumps(obj, ensure_ascii=False, indent=2) if parsed else message
+    detail = (
+        '<details class="task-detail"><summary>output</summary>'
+        f"<pre>{_esc(pre_text)}</pre>"
+    )
+    if error:
+        detail += f"<p>error: {_esc(error)}</p>"
+    detail += "</details>"
+    return cell + detail
+
+
 # ---- per-run detail page renderer --------------------------------------------
 
 def _source_item(name: str) -> str:
@@ -515,7 +592,7 @@ def render_run_page(row: dict, details: dict) -> str:
         task_rows = []
         for task in tasks:
             message = task.get("message") or ""
-            note = message if len(message) <= 120 else message[:119] + "\u2026"
+            error = task.get("error") or ""
             result = "pass" if task.get("passed") else "fail"
             task_rows.append(
                 "<tr>"
@@ -525,7 +602,7 @@ def render_run_page(row: dict, details: dict) -> str:
                 f'<td class="numeric">{_esc(fmt_seconds(task.get("elapsed_seconds")))}</td>'
                 f'<td class="numeric">{_esc(fmt_compact(task.get("agent_steps")))}</td>'
                 f'<td class="numeric">{_esc(fmt_compact(task.get("agent_total_tokens")))}</td>'
-                f'<td>{_esc(note)}</td>'
+                f'<td>{task_note_cell(message, error)}</td>'
                 "</tr>"
             )
         tasks_section = (
@@ -562,6 +639,7 @@ def render_run_page(row: dict, details: dict) -> str:
   <meta name="description" content="{_esc(description)}">
   <title>{_esc(title_text)} \u00b7 Fork run details</title>
   <link rel="stylesheet" href="landing.css">
+  <style>.task-detail pre{{max-height:320px;overflow:auto;white-space:pre-wrap;word-break:break-word}}</style>
 </head>
 <body>
   <header>
