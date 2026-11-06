@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Fork results for harness_bench_fast Medium 80 (tasks 392-471): long context, tool reflection and feasibility. Mechanically verified; unmeasured waves are not failures.">
+  <title>harness_bench_fast · Fork Medium 80</title>
+  <link rel="stylesheet" href="landing.css">
+  <script src="fork-results.js" defer></script>
+</head>
+<body>
+  <header>
+    <a class="brand" href="index.html">harness_bench_fast<span class="brand-dot">.</span></a>
+    <nav aria-label="Primary"><a href="../FORK.md">Fork index</a></nav>
+  </header>
+  <main>
+    <section class="intro">
+      <p class="eyebrow">Fork results · Medium 80 · tasks 392–471</p>
+      <h1>How well does your<br>agent get things done?</h1>
+      <p class="lead">Our Pi / OpenClaw / Hermes runs on the 80-task Medium suite — long context, tool reflection and feasibility. Real tasks, mechanically verified.</p>
+    </section>
+
+    <section aria-label="Fork benchmark results">
+      <div class="suite-switch" role="group" aria-label="Benchmark suite">
+        <button type="button" data-suite="medium80" aria-pressed="true"><strong>Medium 80 (392-471)</strong><span>long context, reflection &amp; feasibility</span></button>
+      </div>
+      <div class="results-heading"><h2 id="suite-title">harness_bench_fast fork · Medium 80</h2><span id="row-count" aria-live="polite"></span></div>
+      <p id="coverage-note" class="coverage-note" aria-live="polite">Tasks 392–471. Loading fork measurements…</p>
+      <div class="filters">
+        <label class="search">Search model or harness<input id="search" type="search" placeholder="e.g. Pi, OpenClaw, DeepSeek" autocomplete="off"></label>
+      </div>
+
+      <h2>Harness × wave</h2>
+      <p class="coverage-note">Passed per wave for each harness. A dash means the wave was not measured for that harness, not that it failed.</p>
+      <div class="table-wrap">
+        <table><thead id="matrix-head"></thead><tbody id="matrix-body"></tbody></table>
+      </div>
+
+      <h2>Per-configuration results</h2>
+      <p class="coverage-note">95% Wilson intervals describe task outcomes, not repeat variability. A single run per configuration does not establish repeat-based statistical significance.</p>
+      <div class="table-wrap">
+        <table class="leaderboard-table"><thead><tr><th scope="col">#</th><th scope="col">Model / harness</th><th scope="col" class="numeric">Long</th><th scope="col" class="numeric">Reflect</th><th scope="col" class="numeric">Feasibility</th><th scope="col" class="numeric">Overall</th><th scope="col" class="numeric">95% interval</th><th scope="col" class="numeric">Steps</th><th scope="col" class="numeric">Tokens</th></tr></thead><tbody id="results-body"></tbody></table>
+      </div>
+      <p id="empty" role="status" hidden>No fork results match your search.</p>
+
+      <p class="fine-print">No LLM judge. Every task is checked mechanically. An unmeasured wave is not a failure — it simply has no measurement yet — and a <strong>partial</strong> result means only a sampled subset of that wave was run. Scores compare complete agent configurations, not models alone. <a href="../FORK.md">Fork index</a> · <a href="fork-results.md">Fork tables →</a></p>
+      <details class="usage-guide"><summary>About steps and tokens</summary><p>Totals cover the measured tasks in each row, including failed tasks. Steps are tool calls where native traces are available; raw counters follow the harness's own accounting. Tokens are recorded input + output usage, including reported cache usage; reasoning is not added twice. These are token counts, not a monetary bill. A dash means no usable total for this subset.</p></details>
+      <noscript><p>Enable JavaScript to view the fork results, or read the static <a href="fork-results.md">fork tables</a>.</p></noscript>
+    </section>
+  </main>
+  <footer><span>No LLM judge. Every task is checked mechanically.</span><a href="../FORK.md">Fork index →</a></footer>
+</body>
+</html>

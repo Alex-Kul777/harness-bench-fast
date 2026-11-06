@@ -19,6 +19,7 @@ upstream-строки) — остаётся в основном [`README.md`](RE
 
 - 📊 **Детальные таблицы форка:** [`docs/fork-results.md`](docs/fork-results.md)
 - 🔬 **Live-лейаут:** <https://ai-forever.github.io/harness-bench-fast/>
+- 🧭 **Наша форк-страница результатов:** <https://alex-kul777.github.io/harness-bench-fast/fork-medium90.html> (данные: `docs/fork-medium90-results.json`)
 - ⬆️ **Upstream:** <https://github.com/ai-forever/harness-bench-fast>
 - 🧾 **Артефакты прогонов:** `results/` (JSON-отчёты), `runs/` (полные прогоны), `docs/*.html` (HTML-отчёты)
 

@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-11-06
+goal: Publish fork run results as an upstream-style static page + data JSON, and
+  enable GitHub Pages.

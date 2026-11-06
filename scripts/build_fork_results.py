@@ -49,10 +49,11 @@ SUITES = {
     "shotlist": ("Shot List (52)", 0),
     "full_391": ("Light (391)", 1),
     "wave19_full": ("Wave 19 (40)", 2),
+    "medium_392_471": ("Medium (392-471)", 3),
 }
 SUITE_ORDER = {name: order for name, order in SUITES.values()}
 
-INCLUDE_RE = re.compile(r"(_shotlist_|_full_391|wave19_full_)")
+INCLUDE_RE = re.compile(r"(_shotlist_|_full_391|wave19|long|reflect|feasibility)")
 EXCLUDE_KEYWORDS = ("part2", "rerun", "pilot", "smoke", "diag", "sample")
 
 DASH = "\u2014"
@@ -104,6 +105,9 @@ def classify_suite(stem: str) -> str | None:
         return "Light (391)"
     if "_shotlist_" in stem:
         return "Shot List (52)"
+    lower = stem.lower()
+    if "long" in lower or "reflect" in lower or "feasibility" in lower or "wave19" in lower:
+        return "Medium (392-471)"
     return None
 
 
