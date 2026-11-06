@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-11-06
+goal: Version the fork results page assets so a published page never mixes a
+  stale cached script with fresh headers.
