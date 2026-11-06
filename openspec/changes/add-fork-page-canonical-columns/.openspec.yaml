@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-11-06
+goal: Fork results page must show the canonical fork columns Profile and Tokens
+  (cost); add these to the result-reporting spec.

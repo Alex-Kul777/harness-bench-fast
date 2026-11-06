@@ -39,12 +39,12 @@
       <h2>Per-configuration results</h2>
       <p class="coverage-note">95% Wilson intervals describe task outcomes, not repeat variability. A single run per configuration does not establish repeat-based statistical significance.</p>
       <div class="table-wrap">
-        <table class="leaderboard-table"><thead><tr><th scope="col">#</th><th scope="col">Model / harness</th><th scope="col" class="numeric">Long</th><th scope="col" class="numeric">Reflect</th><th scope="col" class="numeric">Feasibility</th><th scope="col" class="numeric">Overall</th><th scope="col" class="numeric">95% interval</th><th scope="col" class="numeric">Steps</th><th scope="col" class="numeric">Tokens</th></tr></thead><tbody id="results-body"></tbody></table>
+        <table class="leaderboard-table"><thead><tr><th scope="col">#</th><th scope="col">Model / harness</th><th scope="col">Profile</th><th scope="col" class="numeric">Long</th><th scope="col" class="numeric">Reflect</th><th scope="col" class="numeric">Feasibility</th><th scope="col" class="numeric">Overall</th><th scope="col" class="numeric">95% interval</th><th scope="col" class="numeric">Steps</th><th scope="col" class="numeric">Tokens (cost)</th></tr></thead><tbody id="results-body"></tbody></table>
       </div>
       <p id="empty" role="status" hidden>No fork results match your search.</p>
 
       <p class="fine-print">No LLM judge. Every task is checked mechanically. An unmeasured wave is not a failure — it simply has no measurement yet — and a <strong>partial</strong> result means only a sampled subset of that wave was run. Scores compare complete agent configurations, not models alone. <a href="../FORK.md">Fork index</a> · <a href="fork-results.md">Fork tables →</a></p>
-      <details class="usage-guide"><summary>About steps and tokens</summary><p>Totals cover the measured tasks in each row, including failed tasks. Steps are tool calls where native traces are available; raw counters follow the harness's own accounting. Tokens are recorded input + output usage, including reported cache usage; reasoning is not added twice. These are token counts, not a monetary bill. A dash means no usable total for this subset.</p></details>
+      <details class="usage-guide"><summary>About steps, tokens and cost</summary><p>Totals cover the measured tasks in each row, including failed tasks. Steps are tool calls where native traces are available; raw counters follow the harness's own accounting. Tokens are recorded input + output usage, including reported cache usage; reasoning is not added twice. <strong>Tokens (cost)</strong> adds an estimated spend in roubles (₽) from <code>usage.cost_rub</code> — an estimate, not a bill. A dash means no usable total for this subset.</p></details>
       <noscript><p>Enable JavaScript to view the fork results, or read the static <a href="fork-results.md">fork tables</a>.</p></noscript>
     </section>
   </main>

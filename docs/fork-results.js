@@ -40,6 +40,21 @@ function formatUsage(usage, metric) {
   return compact(usage[metric]);
 }
 
+// Estimated roubles: 7188.5 -> "7 189₽". Blank when unavailable.
+function formatCost(value) {
+  if (!Number.isFinite(value)) return "—";
+  return new Intl.NumberFormat("en-US").format(Math.round(value)).replace(/,/g, " ") + "\u20bd";
+}
+
+// Canonical fork cell "Tokens (cost)": "110.4M (7 189₽)".
+function tokensCostCell(usage) {
+  var tokens = formatUsage(usage, "tokens");
+  if (usage && Number.isFinite(usage.cost_rub)) {
+    return tokens + " (" + formatCost(usage.cost_rub) + ")";
+  }
+  return tokens;
+}
+
 // 95% Wilson interval for a binomial proportion (z = 1.96).
 function wilson(passed, total) {
   if (!Number.isFinite(passed) || !Number.isFinite(total) || total <= 0) return null;
@@ -176,6 +191,8 @@ if (typeof module !== "undefined" && module.exports) {
     overallInterval: overallInterval,
     formatInterval: formatInterval,
     formatUsage: formatUsage,
+    formatCost: formatCost,
+    tokensCostCell: tokensCostCell,
     wilson: wilson,
     compact: compact
   };
@@ -256,12 +273,13 @@ if (typeof document !== "undefined") {
         who.append(model);
         var harness = document.createElement("span");
         harness.className = "harness";
-        var runs = Number.isFinite(row.runs) ? row.runs : 1;
-        harness.textContent = (row.harness || "—") +
-          (row.profile ? " · " + row.profile : "") +
-          " · " + runs + (runs === 1 ? " run" : " runs");
+        harness.textContent = row.harness || "—";
         who.append(harness);
         tr.append(who);
+
+        var profile = document.createElement("td");
+        profile.textContent = row.profile || "—";
+        tr.append(profile);
 
         waves.forEach(function (w) {
           var td = document.createElement("td");
@@ -286,12 +304,15 @@ if (typeof document !== "undefined") {
         interval.textContent = formatInterval(entry.interval);
         tr.append(interval);
 
-        ["steps", "tokens"].forEach(function (metric) {
-          var td = document.createElement("td");
-          td.className = "numeric";
-          td.textContent = formatUsage(row.usage, metric);
-          tr.append(td);
-        });
+        var steps = document.createElement("td");
+        steps.className = "numeric";
+        steps.textContent = formatUsage(row.usage, "steps");
+        tr.append(steps);
+
+        var tokens = document.createElement("td");
+        tokens.className = "numeric";
+        tokens.textContent = tokensCostCell(row.usage);
+        tr.append(tokens);
 
         resultsBody.append(tr);
       });
