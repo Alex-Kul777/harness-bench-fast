@@ -51,6 +51,9 @@ OURS_LIGHT = [
     ("Pi", "high", "GLM-5.2", "results/glm52_full_391.json"),
     ("OpenClaw", "", "GLM-5.2", "results/oc_full_391.json"),
 ]
+
+# (detail_filename, suite_key, row, run_data) collected while building; written on run.
+_DETAIL_JOBS: list = []
 WAVE_LABELS = (("long", "Long"), ("reflect", "Reflect"), ("feasibility", "Feasibility"))
 
 # Harnesses that are OUR runs; anything else in the README shot-list table is upstream.
@@ -198,18 +201,21 @@ def _row(harness, profile, model, passed, total, rate, secs, steps, tokens, cost
     }
 
 
-def _from_summary_file(harness, profile, model, path: Path, source="ours", date_hint=None):
+def _from_summary_file(harness, profile, model, path: Path, source="ours", date_hint=None, suite=None, detail=None):
     d = json.loads(path.read_text(encoding="utf-8"))
     s = d.get("summary") or {}
     rate = s.get("pass_rate")
     if rate is None and s.get("passed") is not None and s.get("total"):
         rate = s["passed"] / s["total"]
     date = _date_from_sessions(d) or _date_from_name(path.name) or date_hint
-    return _row(harness, _with_date(profile, date), model,
-                s.get("passed", d.get("passed")), s.get("total", d.get("total")),
-                rate, s.get("total_seconds"), s.get("total_steps", d.get("steps")),
-                s.get("total_tokens", d.get("tokens")), s.get("estimated_cost_rub"),
-                d.get("task_set_version"), source)
+    row = _row(harness, _with_date(profile, date), model,
+               s.get("passed", d.get("passed")), s.get("total", d.get("total")),
+               rate, s.get("total_seconds"), s.get("total_steps", d.get("steps")),
+               s.get("total_tokens", d.get("tokens")), s.get("estimated_cost_rub"),
+               d.get("task_set_version"), source, detail=detail)
+    if detail:
+        _DETAIL_JOBS.append((detail, suite, row, d))
+    return row
 
 
 def ours_shotlist():
@@ -224,7 +230,8 @@ def ours_shotlist():
         stem = path.stem
         harness, profile, model = _harness(stem), _profile(stem), _model(stem)
         hint = _readme_date_for(rmap, harness, model, profile)
-        out.append(_from_summary_file(harness, profile, model, path, date_hint=hint))
+        out.append(_from_summary_file(harness, profile, model, path, date_hint=hint,
+                                      suite="shotlist", detail=f"fork-detail-{path.stem}.html"))
     out.sort(key=lambda r: -_pct_val(r["pct"]))
     return out
 
@@ -240,7 +247,8 @@ def ours_light():
                 break
         if path is None:
             raise SystemExit(f"missing light source: {rel}")
-        out.append(_from_summary_file(harness, profile, model, path))
+        out.append(_from_summary_file(harness, profile, model, path,
+                                      suite="light", detail=f"fork-detail-{path.stem}.html"))
     return out
 
 
@@ -546,6 +554,90 @@ def render_html(data):
             .replace("__SCRIPT__", SCRIPT))
 
 
+DETAIL_PAGE = """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>__TITLE__</title>
+  <link rel="stylesheet" href="landing.css">
+  <style>.msg pre{white-space:pre-wrap;word-break:break-word;max-height:280px;overflow:auto;margin:.3rem 0 0}</style>
+</head>
+<body>
+  <header>
+    <a class="brand" href="index.html">harness_bench_fast<span class="brand-dot">.</span></a>
+    <nav aria-label="Primary"><a href="fork.html#__SUITE__">\u2190 Fork results</a></nav>
+  </header>
+  <main>
+    <section class="intro">
+      <p class="eyebrow">Fork run detail</p>
+      <h1>__H1__</h1>
+      <p class="lead">__META__</p>
+    </section>
+    <h2>Tasks (__N__)</h2>
+    <div class="table-wrap">
+      <table class="leaderboard-table"><thead><tr>
+        <th scope="col" class="numeric">#</th><th scope="col">Task</th><th scope="col">Result</th>
+        <th scope="col" class="numeric">Seconds</th><th scope="col" class="numeric">Tokens</th><th scope="col">Message</th>
+      </tr></thead><tbody>
+__ROWS__
+      </tbody></table>
+    </div>
+    <p class="fine-print">No LLM judge. Every task is checked mechanically. Source: <code>__SRC__</code>. <a href="fork.html#__SUITE__">\u2190 Back to fork results</a></p>
+  </main>
+</body>
+</html>
+"""
+
+
+def _task_message(msg):
+    text = str(msg or "").strip()
+    if not text:
+        return DASH
+    short = text if len(text) <= 120 else text[:120] + "\u2026"
+    if len(text) <= 120:
+        return html.escape(short)
+    return (f'<details class="msg"><summary>{html.escape(short)}</summary>'
+            f"<pre>{html.escape(text)}</pre></details>")
+
+
+def render_detail(suite, row, data):
+    tasks = [t for t in (data.get("tasks") or data.get("results") or []) if isinstance(t, dict)]
+    body = []
+    for i, t in enumerate(tasks, 1):
+        p = t.get("passed")
+        res = "PASS" if p in (True, 1) else ("FAIL" if p in (False, 0) else DASH)
+        secs = t.get("elapsed_seconds")
+        toks = t.get("agent_total_tokens", t.get("tokens"))
+        body.append(
+            "<tr>"
+            f'<td class="numeric">{i}</td>'
+            f"<td>{html.escape(str(t.get('task_id') or t.get('id') or DASH))}</td>"
+            f"<td>{res}</td>"
+            f'<td class="numeric">{DASH if secs is None else f"{float(secs):.1f}"}</td>'
+            f'<td class="numeric">{_fmt_int(toks)}</td>'
+            f"<td>{_task_message(t.get('message') or t.get('error'))}</td>"
+            "</tr>"
+        )
+    meta = " \u00b7 ".join([
+        f"Profile: {html.escape(row['profile'])}",
+        f"Version: {html.escape(row['version'])}",
+        f"Result: {html.escape(row['result'])} ({html.escape(row['pct'])})",
+        f"Time: {html.escape(row['time'])}",
+        f"Steps: {html.escape(row['steps'])}",
+        f"Tokens (cost): {html.escape(row['tokens_cost'])}",
+    ])
+    src = row.get("source_file") or ""
+    return (DETAIL_PAGE
+            .replace("__TITLE__", html.escape(f"{row['harness']} \u00b7 {row['model']} \u00b7 fork run"))
+            .replace("__H1__", html.escape(f"{row['harness']} \u00b7 {row['model']}"))
+            .replace("__META__", meta)
+            .replace("__N__", str(len(tasks)))
+            .replace("__ROWS__", "\n".join(body) or f'<tr><td colspan="6">{DASH}</td></tr>')
+            .replace("__SRC__", html.escape(src))
+            .replace("__SUITE__", html.escape(suite or "")))
+
+
 def main(argv):
     data = build()
     blob = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
@@ -560,8 +652,12 @@ def main(argv):
         return 0
     OUT_JSON.write_text(blob, encoding="utf-8")
     OUT_HTML.write_text(page, encoding="utf-8")
+    n = 0
+    for detail, suite, row, d in _DETAIL_JOBS:
+        (DOCS / detail).write_text(render_detail(suite, row, d), encoding="utf-8")
+        n += 1
     counts = ", ".join(f"{s['label']}: {len(s['ours'])}+{len(s['upstream'])}" for s in data["suites"])
-    print(f"wrote {OUT_JSON.name} + {OUT_HTML.name} ({counts})")
+    print(f"wrote {OUT_JSON.name} + {OUT_HTML.name} + {n} detail page(s) ({counts})")
     return 0
 
 

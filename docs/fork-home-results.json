@@ -20,7 +20,7 @@
           "version": "0.16.0",
           "source": "ours",
           "waves": null,
-          "detail": null
+          "detail": "fork-detail-oc_shotlist_ds41flash.html"
         },
         {
           "harness": "Pi",
@@ -34,7 +34,7 @@
           "version": "—",
           "source": "ours",
           "waves": null,
-          "detail": null
+          "detail": "fork-detail-pi_shotlist_glm52_thinking_off.html"
         },
         {
           "harness": "Pi",
@@ -48,7 +48,7 @@
           "version": "—",
           "source": "ours",
           "waves": null,
-          "detail": null
+          "detail": "fork-detail-pi_shotlist_ds41flash.html"
         },
         {
           "harness": "Pi",
@@ -62,7 +62,7 @@
           "version": "—",
           "source": "ours",
           "waves": null,
-          "detail": null
+          "detail": "fork-detail-pi_shotlist_glm53.html"
         },
         {
           "harness": "OpenClaw",
@@ -76,7 +76,7 @@
           "version": "0.16.0",
           "source": "ours",
           "waves": null,
-          "detail": null
+          "detail": "fork-detail-oc_shotlist_thinking_off.html"
         },
         {
           "harness": "Hermes",
@@ -90,7 +90,7 @@
           "version": "—",
           "source": "ours",
           "waves": null,
-          "detail": null
+          "detail": "fork-detail-hermes_shotlist_thinking_off.html"
         },
         {
           "harness": "OpenClaw",
@@ -104,7 +104,7 @@
           "version": "0.16.0",
           "source": "ours",
           "waves": null,
-          "detail": null
+          "detail": "fork-detail-oc_shotlist_glm53.html"
         },
         {
           "harness": "Pi",
@@ -118,7 +118,7 @@
           "version": "—",
           "source": "ours",
           "waves": null,
-          "detail": null
+          "detail": "fork-detail-pi_shotlist_qwen36.html"
         },
         {
           "harness": "OpenClaw",
@@ -132,7 +132,7 @@
           "version": "0.16.0",
           "source": "ours",
           "waves": null,
-          "detail": null
+          "detail": "fork-detail-oc_shotlist_qwen36.html"
         },
         {
           "harness": "Hermes",
@@ -146,7 +146,7 @@
           "version": "—",
           "source": "ours",
           "waves": null,
-          "detail": null
+          "detail": "fork-detail-hermes_shotlist_qwen36.html"
         },
         {
           "harness": "Hermes",
@@ -160,7 +160,7 @@
           "version": "—",
           "source": "ours",
           "waves": null,
-          "detail": null
+          "detail": "fork-detail-hermes_shotlist_oss120b.html"
         },
         {
           "harness": "OpenClaw",
@@ -174,7 +174,7 @@
           "version": "0.16.0",
           "source": "ours",
           "waves": null,
-          "detail": null
+          "detail": "fork-detail-oc_shotlist_oss120b.html"
         }
       ],
       "upstream": [
@@ -337,7 +337,7 @@
           "version": "—",
           "source": "ours",
           "waves": null,
-          "detail": null
+          "detail": "fork-detail-hermes_full_391.html"
         },
         {
           "harness": "Pi",
@@ -351,7 +351,7 @@
           "version": "0.16.0",
           "source": "ours",
           "waves": null,
-          "detail": null
+          "detail": "fork-detail-glm52_full_391.html"
         },
         {
           "harness": "OpenClaw",
@@ -365,7 +365,7 @@
           "version": "0.16.0",
           "source": "ours",
           "waves": null,
-          "detail": null
+          "detail": "fork-detail-oc_full_391.html"
         }
       ],
       "upstream": [
