@@ -464,6 +464,120 @@ def sample_rows():
     return out
 
 
+# ---- upstream restricted to OUR covered Medium subset -------------------------
+_TASK_NUM_RE = re.compile(r"task_(\d+)")
+
+
+def _task_numbers(data):
+    nums = set()
+    for t in (data.get("results") or data.get("tasks") or []):
+        if not isinstance(t, dict):
+            continue
+        n = t.get("number")
+        if n is None:
+            m = _TASK_NUM_RE.search(str(t.get("task_id") or ""))
+            n = int(m.group(1)) if m else None
+        if n is not None:
+            nums.add(int(n))
+    return nums
+
+
+def _covered_task_numbers():
+    """Union of task numbers across our Medium aggregate row's source runs."""
+    if not MEDIUM_JSON.exists():
+        return set()
+    d = json.loads(MEDIUM_JSON.read_text(encoding="utf-8"))
+    nums = set()
+    for r in d.get("rows", []):
+        for name in (r.get("sources") or []):
+            for base in RESULT_DIRS:
+                p = base / name
+                if p.exists():
+                    with contextlib.suppress(OSError, json.JSONDecodeError):
+                        nums |= _task_numbers(json.loads(p.read_text(encoding="utf-8")))
+                    break
+    return nums
+
+
+def _outcome_map(path):
+    if not path.exists():
+        return None
+    d = json.loads(path.read_text(encoding="utf-8"))
+    m = {}
+    for o in d.get("outcomes") or []:
+        n = o.get("number")
+        if n is None:
+            mm = _TASK_NUM_RE.search(str(o.get("task_id") or ""))
+            n = int(mm.group(1)) if mm else None
+        if n is not None:
+            m[int(n)] = bool(o.get("passed"))
+    return m or None
+
+
+def _haiku_maps():
+    out = {}
+    p = DOCS / "haiku-medium90.json"
+    if not p.exists():
+        return out
+    d = json.loads(p.read_text(encoding="utf-8"))
+    for r in d.get("rows") or []:
+        m = {}
+        for t in r.get("tasks") or []:
+            n = t.get("number")
+            if n is None:
+                mm = _TASK_NUM_RE.search(str(t.get("task_id") or ""))
+                n = int(mm.group(1)) if mm else None
+            if n is not None:
+                m[int(n)] = bool(t.get("passed"))
+        out[r.get("harness")] = m or None
+    return out
+
+
+def upstream_subset_rows():
+    """Upstream Medium-board configs scored on exactly the tasks WE covered.
+
+    Per-task outcomes are published only for some configs (codex/miniswe/
+    claudecode outcome files + the two haiku rows); the Qwen/GPT-OSS small
+    models expose aggregates only, so they are listed with a dash.
+    """
+    cov = _covered_task_numbers()
+    if not cov:
+        return []
+    haiku = _haiku_maps()
+    configs = (
+        ("Codex CLI 0.164.0", "DeepSeek V4.1 Flash 1017 UNCENSORED (high)", _outcome_map(DOCS / "codex-deepseek-medium90-20261027.json")),
+        ("mini-SWE-agent 2.4.6", "DeepSeek V4.1 Flash 1017 UNCENSORED (high)", _outcome_map(DOCS / "miniswe-deepseek-medium90-20261027.json")),
+        ("mini-SWE-agent 2.4.6", "Claude Haiku 5.5 (default)", haiku.get("mini-SWE-agent 2.4.6")),
+        ("DeepAgents 0.6.12", "Claude Haiku 5.5 (default)", haiku.get("DeepAgents 0.6.12")),
+        ("Claude Code 2.1.300", "Claude Sonnet 5.5 (high)", _outcome_map(DOCS / "claudecode-sonnet-medium90-20261027.json")),
+        ("DeepAgents 0.6.12", "Qwen 3.8 27B (default)", None),
+        ("DeepAgents 0.6.12", "Qwen 3.6 35B A3B (default)", None),
+        ("DeepAgents 0.6.12", "GPT-OSS 20B (default)", None),
+    )
+    rows = []
+    for harness, model, m in configs:
+        n = len(cov & set(m)) if m else 0
+        if n:
+            passed = sum(1 for k in cov if m.get(k))
+            rows.append({
+                "kind": "upstream", "harness": harness, "profile": DASH, "model": model,
+                "subset": f"\u0442\u0435 \u0436\u0435 {n} \u0437\u0430\u0434\u0430\u0447",
+                "result": f"{passed}/{n}", "pct": f"{100 * passed / n:.1f}%",
+                "coverage": f"{n}/90", "time": DASH, "tokens_cost": DASH,
+                "status": "upstream (subset)",
+            })
+        else:
+            rows.append({
+                "kind": "upstream", "harness": harness, "profile": DASH, "model": model,
+                "subset": f"\u043d\u0430\u0448\u0438 {len(cov)} \u0437\u0430\u0434\u0430\u0447",
+                "result": DASH, "pct": DASH, "coverage": DASH,
+                "time": DASH, "tokens_cost": DASH,
+                "status": "upstream \u00b7 \u043d\u0435\u0442 per-task",
+            })
+    rows.sort(key=lambda r: -_pct_val(r["pct"]))
+    return rows
+
+
 def build():
     return {
         "generated_by": GENERATED_BY,
@@ -473,7 +587,7 @@ def build():
             {"key": "shotlist", "label": "Shot List (52)", "tasks": 52, "ours": ours_shotlist(), "upstream": upstream_shotlist()},
             {"key": "light", "label": "Light (391)", "tasks": 391, "ours": ours_light(), "upstream": upstream_light()},
             {"key": "medium", "label": "Medium (90)", "tasks": 90, "ours": ours_medium(), "upstream": upstream_medium()},
-            {"key": "medium-sample", "label": "Medium sample", "tasks": 0, "ours": sample_rows(), "upstream": []},
+            {"key": "medium-sample", "label": "Medium sample", "tasks": 0, "ours": sample_rows(), "upstream": upstream_subset_rows()},
         ],
     }
 
@@ -556,7 +670,7 @@ SAMPLE_HEAD = """<tr>
 </tr>"""
 
 
-def _sample_table(rows):
+def _sample_rows_html(rows):
     tr = []
     for r in rows:
         d = r.get("detail")
@@ -577,9 +691,19 @@ def _sample_table(rows):
             f"<td>{html.escape(r['status'])}</td>"
             "</tr>"
         )
-    return ('<table class="leaderboard-table"><thead>' + SAMPLE_HEAD + '</thead><tbody>'
-            '<tr class="group"><td colspan="10"><strong>Our subsets (truncated vs the full 90)</strong></td></tr>'
-            + "\n".join(tr) + "</tbody></table>")
+    return "\n".join(tr)
+
+
+def _sample_table(rows, upstream=None):
+    parts = ['<table class="leaderboard-table"><thead>' + SAMPLE_HEAD + '</thead><tbody>',
+             '<tr class="group"><td colspan="10"><strong>Our subsets (truncated vs the full 90)</strong></td></tr>',
+             _sample_rows_html(rows)]
+    if upstream:
+        parts.append('<tr class="group"><td colspan="10"><strong>Upstream on the same tasks '
+                     '(restricted to our covered subset)</strong></td></tr>')
+        parts.append(_sample_rows_html(upstream))
+    parts.append("</tbody></table>")
+    return "\n".join(parts)
 
 
 def _panel(suite):
@@ -589,14 +713,16 @@ def _panel(suite):
             '<p class="coverage-note">Наши <strong>урезанные</strong> Medium-наборы: суммарный '
             'охват прогнанных задач и пилоты. Знаменатель — полный Medium (90); '
             'в колонке <code>Coverage</code> видно, что покрытие неполное '
-            '(например 66/90 и 13/90). Источник пилота: '
+            '(например 66/90 и 13/90). Нижняя группа — <strong>апстрим-конфиги, пересчитанные на точно '
+            'тех же задачах, что прогнали мы</strong> (наши 66), т.е. сколько из наших задач решил апстрим. '
+            'Источник пилота: '
             '<a href="fork-medium-pilot-manifest.json">fork-medium-pilot-manifest.json</a> · '
             '<a href="fork.html#medium">Полные 90 →</a></p>'
         )
         return (
             f'      <section data-suite-panel="{key}" aria-label="{html.escape(suite["label"])}">\n'
             f'        {note}\n'
-            f'        <div class="table-wrap">{_sample_table(suite["ours"])}</div>\n'
+            f'        <div class="table-wrap">{_sample_table(suite["ours"], suite.get("upstream"))}</div>\n'
             "      </section>"
         )
     inner = _table_groups(suite["ours"], suite["upstream"]) if suite["upstream"] else _table(suite["ours"])

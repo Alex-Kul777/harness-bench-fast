@@ -1958,7 +1958,112 @@
           "detail": null
         }
       ],
-      "upstream": []
+      "upstream": [
+        {
+          "kind": "upstream",
+          "harness": "Codex CLI 0.164.0",
+          "profile": "—",
+          "model": "DeepSeek V4.1 Flash 1017 UNCENSORED (high)",
+          "subset": "те же 66 задач",
+          "result": "57/66",
+          "pct": "86.4%",
+          "coverage": "66/90",
+          "time": "—",
+          "tokens_cost": "—",
+          "status": "upstream (subset)"
+        },
+        {
+          "kind": "upstream",
+          "harness": "mini-SWE-agent 2.4.6",
+          "profile": "—",
+          "model": "DeepSeek V4.1 Flash 1017 UNCENSORED (high)",
+          "subset": "те же 66 задач",
+          "result": "56/66",
+          "pct": "84.8%",
+          "coverage": "66/90",
+          "time": "—",
+          "tokens_cost": "—",
+          "status": "upstream (subset)"
+        },
+        {
+          "kind": "upstream",
+          "harness": "mini-SWE-agent 2.4.6",
+          "profile": "—",
+          "model": "Claude Haiku 5.5 (default)",
+          "subset": "те же 66 задач",
+          "result": "54/66",
+          "pct": "81.8%",
+          "coverage": "66/90",
+          "time": "—",
+          "tokens_cost": "—",
+          "status": "upstream (subset)"
+        },
+        {
+          "kind": "upstream",
+          "harness": "DeepAgents 0.6.12",
+          "profile": "—",
+          "model": "Claude Haiku 5.5 (default)",
+          "subset": "те же 66 задач",
+          "result": "50/66",
+          "pct": "75.8%",
+          "coverage": "66/90",
+          "time": "—",
+          "tokens_cost": "—",
+          "status": "upstream (subset)"
+        },
+        {
+          "kind": "upstream",
+          "harness": "Claude Code 2.1.300",
+          "profile": "—",
+          "model": "Claude Sonnet 5.5 (high)",
+          "subset": "те же 66 задач",
+          "result": "48/66",
+          "pct": "72.7%",
+          "coverage": "66/90",
+          "time": "—",
+          "tokens_cost": "—",
+          "status": "upstream (subset)"
+        },
+        {
+          "kind": "upstream",
+          "harness": "DeepAgents 0.6.12",
+          "profile": "—",
+          "model": "Qwen 3.8 27B (default)",
+          "subset": "наши 66 задач",
+          "result": "—",
+          "pct": "—",
+          "coverage": "—",
+          "time": "—",
+          "tokens_cost": "—",
+          "status": "upstream · нет per-task"
+        },
+        {
+          "kind": "upstream",
+          "harness": "DeepAgents 0.6.12",
+          "profile": "—",
+          "model": "Qwen 3.6 35B A3B (default)",
+          "subset": "наши 66 задач",
+          "result": "—",
+          "pct": "—",
+          "coverage": "—",
+          "time": "—",
+          "tokens_cost": "—",
+          "status": "upstream · нет per-task"
+        },
+        {
+          "kind": "upstream",
+          "harness": "DeepAgents 0.6.12",
+          "profile": "—",
+          "model": "GPT-OSS 20B (default)",
+          "subset": "наши 66 задач",
+          "result": "—",
+          "pct": "—",
+          "coverage": "—",
+          "time": "—",
+          "tokens_cost": "—",
+          "status": "upstream · нет per-task"
+        }
+      ]
     }
   ]
 }
