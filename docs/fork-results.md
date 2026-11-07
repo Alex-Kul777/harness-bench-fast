@@ -7,7 +7,7 @@
 Upstream-методика и upstream-строки — в [`../README.md`](../README.md).
 
 > **EN:** This file holds the fork's own results (Pi / OpenClaw / Hermes harnesses, wave 19).
-> Russian-first; see `../FORK.md` for the short index.
+> Russian-first; see `../FORK.md` for the short index. 🇬🇧 English mirror: [`fork-results.en.md`](fork-results.en.md).
 
 Наши **Medium**-наборы — на единой странице форка:
 [`docs/fork.html#medium`](fork.html#medium) — полные **90** задач (с пометкой `partial` для
@@ -29,7 +29,7 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 Руками не редактировать — правь скрипт/JSON и пересобирай.
 
 <!-- FORK:RESULTS:BEGIN -->
-Автосинк: 22 прогонов
+Автосинк: 25 прогонов
 
 | Harness | Suite | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
@@ -46,6 +46,9 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 | OpenClaw | Shot List (52) | — | GPT-OSS-120B | 17/52 | 32.7% | 205.2m | — | 1 261 870 (1 080₽) |
 | OpenClaw | Shot List (52) | — | Qwen3.6-35B-A3B | 40/52 | 76.9% | 195.2m | — | 2 109 433 (2 859₽) |
 | OpenClaw | Light (391) | — | — | 378/391 | 96.7% | 1473.3m | — | 0 (0₽) |
+| Pi | Shot List (52) | — | — | 35/52 | 67.3% | 15.8m | 1 116 | 3 041 748 (356₽) |
+| Pi | Shot List (52) | thinking: high | — | 34/52 | 65.4% | 33.8m | 1 160 | 3 796 473 (407₽) |
+| Pi | Shot List (52) | thinking: medium | — | 34/52 | 65.4% | 19.2m | 1 176 | 2 974 629 (385₽) |
 | Pi | Shot List (52) | — | DeepSeek-V4.1-Flash | 49/52 | 94.2% | 21.3m | 330 | 1 438 179 (—) |
 | Pi | Shot List (52) | thinking: off | GLM-5.2 (thinking: off) | 49/52 | 94.2% | 102.8m | 388 | 1 913 439 (501₽) |
 | Pi | Shot List (52) | — | GLM-5.3 | 49/52 | 94.2% | 64.9m | 349 | 1 764 093 (216₽) |

@@ -16,8 +16,12 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from fork_i18n import t  # noqa: E402
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DOC_PATH = REPO_ROOT / "docs" / "fork-results.md"
+DOC_EN_PATH = REPO_ROOT / "docs" / "fork-results.en.md"
 
 BEGIN_MARKER = "<!-- FORK:RESULTS:BEGIN -->"
 END_MARKER = "<!-- FORK:RESULTS:END -->"
@@ -71,7 +75,7 @@ DASH = "\u2014"
 COST_UNIT = "\u20bd"  # ₽
 
 # --- lint: canonical columns in the fork's result tables -------------------
-LINT_FILES = [REPO_ROOT / "FORK.md", DOC_PATH]
+LINT_FILES = [REPO_ROOT / "FORK.md", REPO_ROOT / "FORK.en.md", DOC_PATH, DOC_EN_PATH]
 REQUIRED_COLUMNS = ["Harness", "Profile", "Model", "Result", "%", "Time", "Steps", "Tokens"]
 
 
@@ -245,9 +249,9 @@ def build_rows() -> list[dict]:
     return rows
 
 
-def render_block(rows: list[dict]) -> str:
+def render_block(rows: list[dict], locale: str = "ru") -> str:
     lines = [
-        f"\u0410\u0432\u0442\u043e\u0441\u0438\u043d\u043a: {len(rows)} \u043f\u0440\u043e\u0433\u043e\u043d\u043e\u0432",
+        t(locale, "autosync_header", n=len(rows)),
         "",
         "| Harness | Suite | Profile | Model | Result | % | Time | Steps | Tokens (cost) |",
         "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |",
@@ -268,11 +272,11 @@ def render_block(rows: list[dict]) -> str:
     return "\n".join(lines)
 
 
-def splice(doc: str, block: str) -> str:
+def splice(doc: str, block: str, path: Path = DOC_PATH) -> str:
     begin = doc.find(BEGIN_MARKER)
     end = doc.find(END_MARKER)
     if begin == -1 or end == -1 or end < begin:
-        raise SystemExit(f"error: markers not found in {DOC_PATH}")
+        raise SystemExit(f"error: markers not found in {path}")
     head = doc[: begin + len(BEGIN_MARKER)]
     tail = doc[end:]
     return f"{head}\n{block}\n{tail}"
@@ -292,26 +296,28 @@ def main(argv: list[str]) -> int:
         return 0
     check = "--check" in argv
     rows = build_rows()
-    block = render_block(rows)
-    try:
-        doc = DOC_PATH.read_text(encoding="utf-8")
-    except OSError as exc:
-        print(f"error: cannot read {DOC_PATH}: {exc}", file=sys.stderr)
-        return 2
-
-    updated = splice(doc, block)
+    stale: list[str] = []
+    for path, locale in ((DOC_PATH, "ru"), (DOC_EN_PATH, "en")):
+        block = render_block(rows, locale)
+        try:
+            doc = path.read_text(encoding="utf-8")
+        except OSError as exc:
+            print(f"error: cannot read {path}: {exc}", file=sys.stderr)
+            return 2
+        updated = splice(doc, block, path)
+        if check:
+            if updated != doc:
+                stale.append(path.name)
+        elif updated != doc:
+            path.write_text(updated, encoding="utf-8")
+            print(f"{path.name}: updated ({len(rows)} runs)")
+        else:
+            print(f"{path.name}: already up to date ({len(rows)} runs)")
     if check:
-        if updated == doc:
-            print(f"{DOC_PATH.name}: up to date ({len(rows)} runs)")
-            return 0
-        print(f"{DOC_PATH.name}: STALE — run: python3 scripts/build_fork_results.py")
-        return 1
-
-    if updated == doc:
-        print(f"{DOC_PATH.name}: already up to date ({len(rows)} runs)")
-        return 0
-    DOC_PATH.write_text(updated, encoding="utf-8")
-    print(f"{DOC_PATH.name}: updated ({len(rows)} runs)")
+        if stale:
+            print("STALE: " + ", ".join(stale) + " \u2014 run: python3 scripts/build_fork_results.py")
+            return 1
+        print(f"up to date ({len(rows)} runs)")
     return 0
 
 

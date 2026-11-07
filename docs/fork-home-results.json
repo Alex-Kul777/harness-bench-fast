@@ -191,6 +191,48 @@
           "detail": "fork-detail-hermes_shotlist_qwen36.html"
         },
         {
+          "harness": "Pi",
+          "profile": "— (2026-11-07)",
+          "model": "—",
+          "result": "35/52",
+          "pct": "67.3%",
+          "time": "15.8m",
+          "steps": "1 116",
+          "tokens_cost": "3 041 748 (356₽)",
+          "version": "—",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-pi_shotlist_giga35_reasoning_low_20261107.html"
+        },
+        {
+          "harness": "Pi",
+          "profile": "thinking: high (2026-11-07)",
+          "model": "— (thinking: high)",
+          "result": "34/52",
+          "pct": "65.4%",
+          "time": "33.8m",
+          "steps": "1 160",
+          "tokens_cost": "3 796 473 (407₽)",
+          "version": "—",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-pi_shotlist_giga35_reasoning_high_20261107.html"
+        },
+        {
+          "harness": "Pi",
+          "profile": "thinking: medium (2026-11-07)",
+          "model": "— (thinking: medium)",
+          "result": "34/52",
+          "pct": "65.4%",
+          "time": "19.2m",
+          "steps": "1 176",
+          "tokens_cost": "2 974 629 (385₽)",
+          "version": "—",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-pi_shotlist_giga35_reasoning_medium_20261107.html"
+        },
+        {
           "harness": "Hermes",
           "profile": "— (2026-08-13)",
           "model": "GPT-OSS-120B",
@@ -1934,13 +1976,16 @@
           "harness": "Pi",
           "profile": "—",
           "model": "DeepSeek-V4.1-Flash",
-          "subset": "наши прогнанные: 66 из 90",
+          "subset_key": "subset_our_runs",
+          "subset_args": {
+            "n": 66
+          },
           "result": "55/66",
           "pct": "83.3%",
           "coverage": "66/90",
           "time": "755.3m",
           "tokens_cost": "206 712 383 (11 310₽)",
-          "status": "partial",
+          "status_key": "status_partial",
           "detail": "fork-run-pi-deepseek-v4-1-flash.html"
         },
         {
@@ -1948,13 +1993,16 @@
           "harness": "Pi",
           "profile": "—",
           "model": "GigaChat 3 Pro",
-          "subset": "пилот: 13 из 90 (урезанный)",
+          "subset_key": "subset_pilot",
+          "subset_args": {
+            "n": 13
+          },
           "result": "0/13",
           "pct": "0.0%",
           "coverage": "13/90",
           "time": "—",
           "tokens_cost": "—",
-          "status": "pilot (truncated)",
+          "status_key": "status_pilot",
           "detail": null
         }
       ],
@@ -1964,104 +2012,128 @@
           "harness": "Codex CLI 0.164.0",
           "profile": "—",
           "model": "DeepSeek V4.1 Flash 1017 UNCENSORED (high)",
-          "subset": "те же 66 задач",
+          "subset_key": "subset_same_tasks",
+          "subset_args": {
+            "n": 66
+          },
           "result": "57/66",
           "pct": "86.4%",
           "coverage": "66/90",
           "time": "—",
           "tokens_cost": "—",
-          "status": "upstream (subset)"
+          "status_key": "status_upstream_subset"
         },
         {
           "kind": "upstream",
           "harness": "mini-SWE-agent 2.4.6",
           "profile": "—",
           "model": "DeepSeek V4.1 Flash 1017 UNCENSORED (high)",
-          "subset": "те же 66 задач",
+          "subset_key": "subset_same_tasks",
+          "subset_args": {
+            "n": 66
+          },
           "result": "56/66",
           "pct": "84.8%",
           "coverage": "66/90",
           "time": "—",
           "tokens_cost": "—",
-          "status": "upstream (subset)"
+          "status_key": "status_upstream_subset"
         },
         {
           "kind": "upstream",
           "harness": "mini-SWE-agent 2.4.6",
           "profile": "—",
           "model": "Claude Haiku 5.5 (default)",
-          "subset": "те же 66 задач",
+          "subset_key": "subset_same_tasks",
+          "subset_args": {
+            "n": 66
+          },
           "result": "54/66",
           "pct": "81.8%",
           "coverage": "66/90",
           "time": "—",
           "tokens_cost": "—",
-          "status": "upstream (subset)"
+          "status_key": "status_upstream_subset"
         },
         {
           "kind": "upstream",
           "harness": "DeepAgents 0.6.12",
           "profile": "—",
           "model": "Claude Haiku 5.5 (default)",
-          "subset": "те же 66 задач",
+          "subset_key": "subset_same_tasks",
+          "subset_args": {
+            "n": 66
+          },
           "result": "50/66",
           "pct": "75.8%",
           "coverage": "66/90",
           "time": "—",
           "tokens_cost": "—",
-          "status": "upstream (subset)"
+          "status_key": "status_upstream_subset"
         },
         {
           "kind": "upstream",
           "harness": "Claude Code 2.1.300",
           "profile": "—",
           "model": "Claude Sonnet 5.5 (high)",
-          "subset": "те же 66 задач",
+          "subset_key": "subset_same_tasks",
+          "subset_args": {
+            "n": 66
+          },
           "result": "48/66",
           "pct": "72.7%",
           "coverage": "66/90",
           "time": "—",
           "tokens_cost": "—",
-          "status": "upstream (subset)"
+          "status_key": "status_upstream_subset"
         },
         {
           "kind": "upstream",
           "harness": "DeepAgents 0.6.12",
           "profile": "—",
           "model": "Qwen 3.8 27B (default)",
-          "subset": "наши 66 задач",
+          "subset_key": "subset_our_tasks",
+          "subset_args": {
+            "n": 66
+          },
           "result": "—",
           "pct": "—",
           "coverage": "—",
           "time": "—",
           "tokens_cost": "—",
-          "status": "upstream · нет per-task"
+          "status_key": "status_upstream_notask"
         },
         {
           "kind": "upstream",
           "harness": "DeepAgents 0.6.12",
           "profile": "—",
           "model": "Qwen 3.6 35B A3B (default)",
-          "subset": "наши 66 задач",
+          "subset_key": "subset_our_tasks",
+          "subset_args": {
+            "n": 66
+          },
           "result": "—",
           "pct": "—",
           "coverage": "—",
           "time": "—",
           "tokens_cost": "—",
-          "status": "upstream · нет per-task"
+          "status_key": "status_upstream_notask"
         },
         {
           "kind": "upstream",
           "harness": "DeepAgents 0.6.12",
           "profile": "—",
           "model": "GPT-OSS 20B (default)",
-          "subset": "наши 66 задач",
+          "subset_key": "subset_our_tasks",
+          "subset_args": {
+            "n": 66
+          },
           "result": "—",
           "pct": "—",
           "coverage": "—",
           "time": "—",
           "tokens_cost": "—",
-          "status": "upstream · нет per-task"
+          "status_key": "status_upstream_notask"
         }
       ]
     }

@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Fork results for harness_bench_fast: Shot List (52), Light (391) and Medium (80) in one tabbed page. Mechanically verified.">
-  <title>harness_bench_fast · Fork results</title>
+  <meta name="description" content="Результаты форка harness_bench_fast: Shot List (52), Light (391) и Medium (90) на одной странице с табами. Механически проверено.">
+  <title>harness_bench_fast · Результаты форка</title>
   <link rel="stylesheet" href="landing.css">
 <style>
   .suite-switch button[aria-pressed="true"]{font-weight:700;text-decoration:underline}
@@ -21,22 +21,22 @@
 <body>
   <header>
     <a class="brand" href="index.html">harness_bench_fast<span class="brand-dot">.</span></a>
-    <nav aria-label="Primary"><a href="../FORK.md">Fork index</a> <a href="fork-sample.html">Capability sample (20)</a></nav>
+    <nav aria-label="Primary"><a href="../FORK.md">Индекс форка</a> <a href="fork-sample.html">Capability sample (20)</a> <a class="lang-switch" href="fork.en.html" title="Switch to English">EN</a></nav>
   </header>
   <main>
     <section class="intro">
-      <p class="eyebrow">Fork results · our runs</p>
-      <h1>Our runs.<br>Three suites, one page.</h1>
-      <p class="lead">Our Pi / OpenClaw / Hermes runs on the frozen Shot List (52), Light (391) and Medium (80) suites. Real tasks, mechanically verified.</p>
+      <p class="eyebrow">Результаты форка · наши прогоны</p>
+      <h1>Наши прогоны.<br>Три набора, одна страница.</h1>
+      <p class="lead">Наши прогоны Pi / OpenClaw / Hermes на замороженных наборах Shot List (52), Light (391) и Medium (90). Реальные задачи, механически проверено.</p>
     </section>
     <div class="suite-switch" role="group" aria-label="Benchmark suite">
-      <button type="button" data-suite="shotlist" aria-pressed="true"><strong>Shot List (52)</strong><span>stratified sample</span></button>
-      <button type="button" data-suite="light" aria-pressed="false"><strong>Light (391)</strong><span>frozen suite</span></button>
+      <button type="button" data-suite="shotlist" aria-pressed="true"><strong>Shot List (52)</strong><span>стратифицированная выборка</span></button>
+      <button type="button" data-suite="light" aria-pressed="false"><strong>Light (391)</strong><span>замороженный набор</span></button>
       <button type="button" data-suite="medium" aria-pressed="false"><strong>Medium (90)</strong><span>long · reflect · feasibility · wave21</span></button>
-      <button type="button" data-suite="medium-sample" aria-pressed="false"><strong>Medium sample</strong><span>our subsets · truncated</span></button>
+      <button type="button" data-suite="medium-sample" aria-pressed="false"><strong>Medium sample</strong><span>наши урезанные · truncated</span></button>
     </div>
     <div class="filters">
-      <label class="search">Search model or harness<input id="search" type="search" placeholder="e.g. Pi, OpenClaw, DeepSeek" autocomplete="off"></label>
+      <label class="search">Поиск по модели или харнессу<input id="search" type="search" placeholder="напр. Pi, OpenClaw, DeepSeek" autocomplete="off"></label>
       <span id="row-count" aria-live="polite"></span>
     </div>
       <section data-suite-panel="shotlist" aria-label="Shot List (52)">
@@ -46,7 +46,7 @@
   <th scope="col" class="numeric">Time</th><th scope="col" class="numeric">Steps</th>
   <th scope="col" class="numeric">Tokens (cost)</th><th scope="col">Version</th>
 </tr></thead><tbody>
-<tr class="group"><td colspan="9"><strong>Our runs</strong></td></tr>
+<tr class="group"><td colspan="9"><strong>Наши прогоны</strong></td></tr>
 <tr class="detail-row" data-detail="fork-detail-oc_shotlist_ds41flash_medium_20261107.html"><td><a href="fork-detail-oc_shotlist_ds41flash_medium_20261107.html">OpenClaw OpenClaw 2026.10.9 (8b18b55)</a></td><td>thinking: medium (2026-11-07)</td><td>DeepSeek-V4.1-Flash (thinking: medium)</td><td class="numeric">52/52</td><td class="numeric">100.0%</td><td class="numeric">40.6m</td><td class="numeric">—</td><td class="numeric">2 935 013 (148₽)</td><td>0.16.0</td></tr>
 <tr class="detail-row" data-detail="fork-detail-oc_shotlist_ds41flash_high_20261107.html"><td><a href="fork-detail-oc_shotlist_ds41flash_high_20261107.html">OpenClaw OpenClaw 2026.10.9 (8b18b55)</a></td><td>thinking: high (2026-11-07)</td><td>DeepSeek-V4.1-Flash (thinking: high)</td><td class="numeric">51/52</td><td class="numeric">98.1%</td><td class="numeric">40.3m</td><td class="numeric">—</td><td class="numeric">2 926 226 (141₽)</td><td>0.16.0</td></tr>
 <tr class="detail-row" data-detail="fork-detail-oc_shotlist_ds41flash.html"><td><a href="fork-detail-oc_shotlist_ds41flash.html">OpenClaw</a></td><td>— (2026-11-07)</td><td>DeepSeek-V4.1-Flash</td><td class="numeric">50/52</td><td class="numeric">96.2%</td><td class="numeric">47.3m</td><td class="numeric">—</td><td class="numeric">2 814 749 (165₽)</td><td>0.16.0</td></tr>
@@ -60,10 +60,13 @@
 <tr class="detail-row" data-detail="fork-detail-pi_shotlist_qwen36.html"><td><a href="fork-detail-pi_shotlist_qwen36.html">Pi</a></td><td>— (2026-08-17)</td><td>Qwen3.6-35B-A3B</td><td class="numeric">42/52</td><td class="numeric">80.8%</td><td class="numeric">18.5m</td><td class="numeric">327</td><td class="numeric">1 318 346 (362₽)</td><td>—</td></tr>
 <tr class="detail-row" data-detail="fork-detail-oc_shotlist_qwen36.html"><td><a href="fork-detail-oc_shotlist_qwen36.html">OpenClaw</a></td><td>— (2026-08-17)</td><td>Qwen3.6-35B-A3B</td><td class="numeric">40/52</td><td class="numeric">76.9%</td><td class="numeric">195.2m</td><td class="numeric">—</td><td class="numeric">2 109 433 (2 859₽)</td><td>0.16.0</td></tr>
 <tr class="detail-row" data-detail="fork-detail-hermes_shotlist_qwen36.html"><td><a href="fork-detail-hermes_shotlist_qwen36.html">Hermes</a></td><td>— (2026-08-17)</td><td>Qwen3.6-35B-A3B</td><td class="numeric">36/52</td><td class="numeric">69.2%</td><td class="numeric">38.6m</td><td class="numeric">301</td><td class="numeric">6 961 237 (1 737₽)</td><td>—</td></tr>
+<tr class="detail-row" data-detail="fork-detail-pi_shotlist_giga35_reasoning_low_20261107.html"><td><a href="fork-detail-pi_shotlist_giga35_reasoning_low_20261107.html">Pi</a></td><td>— (2026-11-07)</td><td>—</td><td class="numeric">35/52</td><td class="numeric">67.3%</td><td class="numeric">15.8m</td><td class="numeric">1 116</td><td class="numeric">3 041 748 (356₽)</td><td>—</td></tr>
+<tr class="detail-row" data-detail="fork-detail-pi_shotlist_giga35_reasoning_high_20261107.html"><td><a href="fork-detail-pi_shotlist_giga35_reasoning_high_20261107.html">Pi</a></td><td>thinking: high (2026-11-07)</td><td>— (thinking: high)</td><td class="numeric">34/52</td><td class="numeric">65.4%</td><td class="numeric">33.8m</td><td class="numeric">1 160</td><td class="numeric">3 796 473 (407₽)</td><td>—</td></tr>
+<tr class="detail-row" data-detail="fork-detail-pi_shotlist_giga35_reasoning_medium_20261107.html"><td><a href="fork-detail-pi_shotlist_giga35_reasoning_medium_20261107.html">Pi</a></td><td>thinking: medium (2026-11-07)</td><td>— (thinking: medium)</td><td class="numeric">34/52</td><td class="numeric">65.4%</td><td class="numeric">19.2m</td><td class="numeric">1 176</td><td class="numeric">2 974 629 (385₽)</td><td>—</td></tr>
 <tr class="detail-row" data-detail="fork-detail-hermes_shotlist_oss120b.html"><td><a href="fork-detail-hermes_shotlist_oss120b.html">Hermes</a></td><td>— (2026-08-13)</td><td>GPT-OSS-120B</td><td class="numeric">28/52</td><td class="numeric">53.8%</td><td class="numeric">37.9m</td><td class="numeric">427</td><td class="numeric">8 833 747 (2 171₽)</td><td>—</td></tr>
 <tr class="detail-row" data-detail="fork-detail-oc_shotlist_oss120b.html"><td><a href="fork-detail-oc_shotlist_oss120b.html">OpenClaw</a></td><td>— (2026-08-13)</td><td>GPT-OSS-120B</td><td class="numeric">17/52</td><td class="numeric">32.7%</td><td class="numeric">205.2m</td><td class="numeric">—</td><td class="numeric">1 261 870 (1 080₽)</td><td>0.16.0</td></tr>
 <tr class="detail-row" data-detail="fork-detail-pi_shotlist_gigachat3pro.html"><td><a href="fork-detail-pi_shotlist_gigachat3pro.html">Pi</a></td><td>— (2026-11-07)</td><td>GigaChat 3 Pro</td><td class="numeric">16/52</td><td class="numeric">30.8%</td><td class="numeric">25.7m</td><td class="numeric">2 034</td><td class="numeric">12 883 705 (230₽)</td><td>—</td></tr>
-<tr class="group"><td colspan="9"><strong>Upstream comparison</strong></td></tr>
+<tr class="group"><td colspan="9"><strong>Апстрим для сравнения</strong></td></tr>
 <tr><td>Kimi CLI</td><td>— (2026-08-08)</td><td>Kimi K3</td><td class="numeric">51/52</td><td class="numeric">98.1%</td><td class="numeric">61.8m</td><td class="numeric">—</td><td class="numeric">—</td><td>—</td></tr>
 <tr><td>Claude Code CLI</td><td>— (2026-07-29)</td><td>Claude Haiku 4.5</td><td class="numeric">47/52</td><td class="numeric">90.4%</td><td class="numeric">46.7m</td><td class="numeric">367</td><td class="numeric">38 310 340</td><td>—</td></tr>
 <tr><td>opencode</td><td>— (2026-07-29)</td><td>GLM-5.2 (self-hosted)</td><td class="numeric">40/52</td><td class="numeric">76.9%</td><td class="numeric">63.2m</td><td class="numeric">—</td><td class="numeric">—</td><td>—</td></tr>
@@ -83,11 +86,11 @@
   <th scope="col" class="numeric">Time</th><th scope="col" class="numeric">Steps</th>
   <th scope="col" class="numeric">Tokens (cost)</th><th scope="col">Version</th>
 </tr></thead><tbody>
-<tr class="group"><td colspan="9"><strong>Our runs</strong></td></tr>
+<tr class="group"><td colspan="9"><strong>Наши прогоны</strong></td></tr>
 <tr class="detail-row" data-detail="fork-detail-hermes_full_391.html"><td><a href="fork-detail-hermes_full_391.html">Hermes</a></td><td>MCP off (2026-08-09)</td><td>GLM-5.2</td><td class="numeric">387/391</td><td class="numeric">99.0%</td><td class="numeric">404.6m</td><td class="numeric">—</td><td class="numeric">31 770 687 (7 775₽)</td><td>—</td></tr>
 <tr class="detail-row" data-detail="fork-detail-glm52_full_391.html"><td><a href="fork-detail-glm52_full_391.html">Pi</a></td><td>high</td><td>GLM-5.2 (high)</td><td class="numeric">385/391</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">4 536</td><td class="numeric">49 929 690</td><td>0.16.0</td></tr>
 <tr class="detail-row" data-detail="fork-detail-oc_full_391.html"><td><a href="fork-detail-oc_full_391.html">OpenClaw</a></td><td>—</td><td>GLM-5.2</td><td class="numeric">378/391</td><td class="numeric">96.7%</td><td class="numeric">1473.3m</td><td class="numeric">—</td><td class="numeric">0</td><td>0.16.0</td></tr>
-<tr class="group"><td colspan="9"><strong>Upstream comparison</strong></td></tr>
+<tr class="group"><td colspan="9"><strong>Апстрим для сравнения</strong></td></tr>
 <tr><td>pi-mono</td><td>—</td><td>DeepSeek V4.1 Flash Uncensored FP8 (high)</td><td class="numeric">391/391</td><td class="numeric">100.0%</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td>0.18.0</td></tr>
 <tr><td>dsh headless</td><td>—</td><td>DeepSeek V4.1 Flash Uncensored FP8 (high)</td><td class="numeric">390/391</td><td class="numeric">99.7%</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td>0.18.0</td></tr>
 <tr><td>free-code</td><td>—</td><td>DeepSeek V4.1 Flash Uncensored FP8 (high)</td><td class="numeric">389/391</td><td class="numeric">99.6%</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td>0.18.0</td></tr>
@@ -193,9 +196,9 @@
   <th scope="col" class="numeric">Time</th><th scope="col" class="numeric">Steps</th>
   <th scope="col" class="numeric">Tokens (cost)</th><th scope="col">Version</th>
 </tr></thead><tbody>
-<tr class="group"><td colspan="9"><strong>Our runs</strong></td></tr>
+<tr class="group"><td colspan="9"><strong>Наши прогоны</strong></td></tr>
 <tr class="detail-row" data-detail="fork-run-pi-deepseek-v4-1-flash.html"><td><a href="fork-run-pi-deepseek-v4-1-flash.html">Pi</a></td><td>— (2026-11-05)</td><td>DeepSeek-V4.1-Flash</td><td class="numeric">55/66 (partial 66/90)</td><td class="numeric">83.3%</td><td class="numeric">755.3m</td><td class="numeric">7 143</td><td class="numeric">206 712 383 (11 310₽)</td><td>v0.21.3</td></tr>
-<tr class="group"><td colspan="9"><strong>Upstream comparison</strong></td></tr>
+<tr class="group"><td colspan="9"><strong>Апстрим для сравнения</strong></td></tr>
 <tr><td>Codex CLI 0.164.0</td><td>—</td><td>DeepSeek V4.1 Flash 1017 UNCENSORED (high)</td><td class="numeric">78/90</td><td class="numeric">86.7%</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td>0.21.3</td></tr>
 <tr><td>mini-SWE-agent 2.4.6</td><td>—</td><td>DeepSeek V4.1 Flash 1017 UNCENSORED (high)</td><td class="numeric">70/90</td><td class="numeric">77.8%</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td>0.21.3</td></tr>
 <tr><td>mini-SWE-agent 2.4.6</td><td>—</td><td>Claude Haiku 5.5 (default)</td><td class="numeric">63/90</td><td class="numeric">70.0%</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td>0.21.3</td></tr>
@@ -205,10 +208,10 @@
 <tr><td>DeepAgents 0.6.12</td><td>—</td><td>Qwen 3.6 35B A3B (default)</td><td class="numeric">29/90</td><td class="numeric">32.2%</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td>0.19.1</td></tr>
 <tr><td>DeepAgents 0.6.12</td><td>—</td><td>GPT-OSS 20B (default)</td><td class="numeric">0/90</td><td class="numeric">0.0%</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td>0.19.1</td></tr>
 </tbody></table></div>
-<details class="wave-breakdown"><summary>Wave breakdown (long / reflect / feasibility)</summary><div class="table-wrap"><table class="leaderboard-table"><thead><tr><th scope="col">Configuration</th><th scope="col" class="numeric">Long</th><th scope="col" class="numeric">Reflect</th><th scope="col" class="numeric">Feasibility</th><th scope="col" class="numeric">Wave 21</th></tr></thead><tbody><tr><td>Pi · DeepSeek-V4.1-Flash</td><td class="numeric">3/6</td><td class="numeric">16/20</td><td class="numeric">36/40</td><td class="numeric">—</td></tr></tbody></table></div></details>
+<details class="wave-breakdown"><summary>Разбивка по волнам (long / reflect / feasibility)</summary><div class="table-wrap"><table class="leaderboard-table"><thead><tr><th scope="col">Конфигурация</th><th scope="col" class="numeric">Long</th><th scope="col" class="numeric">Reflect</th><th scope="col" class="numeric">Feasibility</th><th scope="col" class="numeric">Wave 21</th></tr></thead><tbody><tr><td>Pi · DeepSeek-V4.1-Flash</td><td class="numeric">3/6</td><td class="numeric">16/20</td><td class="numeric">36/40</td><td class="numeric">—</td></tr></tbody></table></div></details>
       </section>
       <section data-suite-panel="medium-sample" aria-label="Medium sample">
-        <p class="coverage-note">Наши <strong>урезанные</strong> Medium-наборы: суммарный охват прогнанных задач и пилоты. Знаменатель — полный Medium (90); в колонке <code>Coverage</code> видно, что покрытие неполное (например 66/90 и 13/90). Нижняя группа — <strong>апстрим-конфиги, пересчитанные на точно тех же задачах, что прогнали мы</strong> (наши 66), т.е. сколько из наших задач решил апстрим. Источник пилота: <a href="fork-medium-pilot-manifest.json">fork-medium-pilot-manifest.json</a> · <a href="fork.html#medium">Полные 90 →</a></p>
+        <p class="coverage-note">Наши <strong>урезанные</strong> Medium-наборы: суммарный охват прогнанных задач и пилоты. Знаменатель — полный Medium (90); в колонке <code>Coverage</code> видно, что покрытие неполное (например 66/90 и 13/90). Нижняя группа — <strong>апстрим-конфиги, пересчитанные на точно тех же задачах, что прогнали мы</strong> (наши 66), т.е. сколько из наших задач решил апстрим. <a href="fork-medium-pilot-manifest.json">fork-medium-pilot-manifest.json</a> · <a href="fork.html#medium">Полные 90 →</a></p>
         <div class="table-wrap"><table class="leaderboard-table"><thead><tr>
   <th scope="col">Harness</th><th scope="col">Profile</th><th scope="col">Model</th>
   <th scope="col">Subset</th><th scope="col" class="numeric">Result</th>
@@ -216,24 +219,24 @@
   <th scope="col" class="numeric">Time</th><th scope="col" class="numeric">Tokens (cost)</th>
   <th scope="col">Status</th>
 </tr></thead><tbody>
-<tr class="group"><td colspan="10"><strong>Our subsets (truncated vs the full 90)</strong></td></tr>
+<tr class="group"><td colspan="10"><strong>Наши урезанные наборы (относительно полных 90)</strong></td></tr>
 <tr class="detail-row" data-detail="fork-run-pi-deepseek-v4-1-flash.html"><td><a href="fork-run-pi-deepseek-v4-1-flash.html">Pi</a></td><td>—</td><td>DeepSeek-V4.1-Flash</td><td>наши прогнанные: 66 из 90</td><td class="numeric">55/66</td><td class="numeric">83.3%</td><td class="numeric">66/90</td><td class="numeric">755.3m</td><td class="numeric">206 712 383 (11 310₽)</td><td>partial</td></tr>
-<tr><td>Pi</td><td>—</td><td>GigaChat 3 Pro</td><td>пилот: 13 из 90 (урезанный)</td><td class="numeric">0/13</td><td class="numeric">0.0%</td><td class="numeric">13/90</td><td class="numeric">—</td><td class="numeric">—</td><td>pilot (truncated)</td></tr>
-<tr class="group"><td colspan="10"><strong>Upstream on the same tasks (restricted to our covered subset)</strong></td></tr>
-<tr><td>Codex CLI 0.164.0</td><td>—</td><td>DeepSeek V4.1 Flash 1017 UNCENSORED (high)</td><td>те же 66 задач</td><td class="numeric">57/66</td><td class="numeric">86.4%</td><td class="numeric">66/90</td><td class="numeric">—</td><td class="numeric">—</td><td>upstream (subset)</td></tr>
-<tr><td>mini-SWE-agent 2.4.6</td><td>—</td><td>DeepSeek V4.1 Flash 1017 UNCENSORED (high)</td><td>те же 66 задач</td><td class="numeric">56/66</td><td class="numeric">84.8%</td><td class="numeric">66/90</td><td class="numeric">—</td><td class="numeric">—</td><td>upstream (subset)</td></tr>
-<tr><td>mini-SWE-agent 2.4.6</td><td>—</td><td>Claude Haiku 5.5 (default)</td><td>те же 66 задач</td><td class="numeric">54/66</td><td class="numeric">81.8%</td><td class="numeric">66/90</td><td class="numeric">—</td><td class="numeric">—</td><td>upstream (subset)</td></tr>
-<tr><td>DeepAgents 0.6.12</td><td>—</td><td>Claude Haiku 5.5 (default)</td><td>те же 66 задач</td><td class="numeric">50/66</td><td class="numeric">75.8%</td><td class="numeric">66/90</td><td class="numeric">—</td><td class="numeric">—</td><td>upstream (subset)</td></tr>
-<tr><td>Claude Code 2.1.300</td><td>—</td><td>Claude Sonnet 5.5 (high)</td><td>те же 66 задач</td><td class="numeric">48/66</td><td class="numeric">72.7%</td><td class="numeric">66/90</td><td class="numeric">—</td><td class="numeric">—</td><td>upstream (subset)</td></tr>
-<tr><td>DeepAgents 0.6.12</td><td>—</td><td>Qwen 3.8 27B (default)</td><td>наши 66 задач</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td>upstream · нет per-task</td></tr>
-<tr><td>DeepAgents 0.6.12</td><td>—</td><td>Qwen 3.6 35B A3B (default)</td><td>наши 66 задач</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td>upstream · нет per-task</td></tr>
-<tr><td>DeepAgents 0.6.12</td><td>—</td><td>GPT-OSS 20B (default)</td><td>наши 66 задач</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td>upstream · нет per-task</td></tr>
+<tr><td>Pi</td><td>—</td><td>GigaChat 3 Pro</td><td>пилот: 13 из 90 (урезанный)</td><td class="numeric">0/13</td><td class="numeric">0.0%</td><td class="numeric">13/90</td><td class="numeric">—</td><td class="numeric">—</td><td>пилот (урезанный)</td></tr>
+<tr class="group"><td colspan="10"><strong>Апстрим на тех же задачах (только наш покрытый набор)</strong></td></tr>
+<tr><td>Codex CLI 0.164.0</td><td>—</td><td>DeepSeek V4.1 Flash 1017 UNCENSORED (high)</td><td>те же 66 задач</td><td class="numeric">57/66</td><td class="numeric">86.4%</td><td class="numeric">66/90</td><td class="numeric">—</td><td class="numeric">—</td><td>апстрим (подмножество)</td></tr>
+<tr><td>mini-SWE-agent 2.4.6</td><td>—</td><td>DeepSeek V4.1 Flash 1017 UNCENSORED (high)</td><td>те же 66 задач</td><td class="numeric">56/66</td><td class="numeric">84.8%</td><td class="numeric">66/90</td><td class="numeric">—</td><td class="numeric">—</td><td>апстрим (подмножество)</td></tr>
+<tr><td>mini-SWE-agent 2.4.6</td><td>—</td><td>Claude Haiku 5.5 (default)</td><td>те же 66 задач</td><td class="numeric">54/66</td><td class="numeric">81.8%</td><td class="numeric">66/90</td><td class="numeric">—</td><td class="numeric">—</td><td>апстрим (подмножество)</td></tr>
+<tr><td>DeepAgents 0.6.12</td><td>—</td><td>Claude Haiku 5.5 (default)</td><td>те же 66 задач</td><td class="numeric">50/66</td><td class="numeric">75.8%</td><td class="numeric">66/90</td><td class="numeric">—</td><td class="numeric">—</td><td>апстрим (подмножество)</td></tr>
+<tr><td>Claude Code 2.1.300</td><td>—</td><td>Claude Sonnet 5.5 (high)</td><td>те же 66 задач</td><td class="numeric">48/66</td><td class="numeric">72.7%</td><td class="numeric">66/90</td><td class="numeric">—</td><td class="numeric">—</td><td>апстрим (подмножество)</td></tr>
+<tr><td>DeepAgents 0.6.12</td><td>—</td><td>Qwen 3.8 27B (default)</td><td>наши 66 задач</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td>апстрим · нет per-task</td></tr>
+<tr><td>DeepAgents 0.6.12</td><td>—</td><td>Qwen 3.6 35B A3B (default)</td><td>наши 66 задач</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td>апстрим · нет per-task</td></tr>
+<tr><td>DeepAgents 0.6.12</td><td>—</td><td>GPT-OSS 20B (default)</td><td>наши 66 задач</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td class="numeric">—</td><td>апстрим · нет per-task</td></tr>
 </tbody></table></div>
       </section>
-    <p id="empty" role="status" hidden>No rows match your search.</p>
-    <p class="fine-print">No LLM judge. Every task is checked mechanically. A dash means no measurement yet, not a failure. <code>Version</code> = task-set version for our runs, upstream <code>source_version</code> for upstream rows. <a href="../FORK.md">Fork index</a> · <a href="fork-results.md">Fork tables →</a></p>
+    <p id="empty" role="status" hidden>Нет строк по запросу.</p>
+    <p class="fine-print">Без LLM-судьи. Каждая задача проверена механически. Прочерк — нет замера, а не провал. <code>Version</code> = версия тасксета для наших прогонов, <code>source_version</code> апстрима — для upstream-строк. <a href="../FORK.md">Индекс форка</a> · <a href="fork-results.md">Таблицы форка →</a></p>
   </main>
-  <footer><span>No LLM judge. Every task is checked mechanically.</span><a href="../FORK.md">Fork index →</a></footer>
+  <footer><span>Без LLM-судьи. Каждая задача проверена механически.</span><a href="../FORK.md">Индекс форка →</a></footer>
 <script>
 (function(){
   var btns=[].slice.call(document.querySelectorAll('.suite-switch button'));
@@ -279,5 +282,6 @@
   activate(keyFromHash());
 })();
 </script>
+<script>document.querySelectorAll('a.lang-switch').forEach(function(a){if(location.hash)a.href+=location.hash;});</script>
 </body>
 </html>

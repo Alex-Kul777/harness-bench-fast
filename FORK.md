@@ -13,6 +13,8 @@ on conflict against upstream.
 
 # Форк `harness-bench-fast` — наши результаты 🔵
 
+> 🇬🇧 English mirror: [`FORK.en.md`](FORK.en.md).
+
 Этот файл — **входная точка форка**. Здесь только наш слой: прогоны Pi / OpenClaw /
 Hermes и замеры wave 19. Всё, что относится к самому бенчмарку (тасксеты, методика,
 upstream-строки) — остаётся в основном [`README.md`](README.md) и не дублируется здесь.

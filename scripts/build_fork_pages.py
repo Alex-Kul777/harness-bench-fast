@@ -35,6 +35,9 @@ import sys
 import urllib.parse
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from fork_i18n import DEFAULT_LOCALE, LOCALES, locale_filename, other_locale, t  # noqa: E402
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUT = REPO_ROOT / "docs" / "fork-medium90-results.json"
 
@@ -812,7 +815,7 @@ def _sample_result_label(task: dict) -> str:
     return "pass" if task.get("passed") else "fail"
 
 
-def render_sample_html(model: dict) -> str:
+def render_sample_html(model: dict, locale: str = DEFAULT_LOCALE) -> str:
     tasks = model.get("_tasks_full") or []
     config = model.get("config") or {}
     model_name = config.get("model") or "\u2014"
@@ -823,12 +826,12 @@ def render_sample_html(model: dict) -> str:
     wave_rows = []
     for wave in model["waves"]:
         key = wave["key"]
-        wave_tasks = [t for t in tasks if t["wave"] == key]
+        wave_tasks = [w for w in tasks if w["wave"] == key]
         mix = _band_mix(wave_tasks)
         status = (
-            f"invalid ({SAMPLE_INVALID_REASON})"
+            t(locale, "status_invalid", reason=SAMPLE_INVALID_REASON)
             if wave.get("invalid")
-            else "measured"
+            else t(locale, "status_measured")
         )
         wave_rows.append(
             "<tr>"
@@ -884,9 +887,8 @@ def render_sample_html(model: dict) -> str:
                 f'<li>{_esc(wave)}: <a href="{_esc(url)}"><code>{_esc(name)}</code></a></li>'
             )
     sources_section = (
-        '<section aria-label="Sources"><h2>Sources</h2>'
-        '<p class="coverage-note">Frozen allow-list artifacts aggregated into this sample '
-        "(checkout <code>results/</code> first, then <code>../results/</code>).</p>"
+        f'<section aria-label="Sources"><h2>{_esc(t(locale, "sample_sources_title"))}</h2>'
+        f'<p class="coverage-note">{t(locale, "sample_sources_note")}</p>'
         '<ul class="run-sources">' + "".join(source_items) + "</ul></section>"
     )
 
@@ -895,56 +897,64 @@ def render_sample_html(model: dict) -> str:
         f"run by {harness} on {model_name}: long context, tool reflection and feasibility."
     )
 
+    fork_href = f"{locale_filename('fork', locale)}.html#medium"
+    switch = locale_filename(SAMPLE_HTML_NAME[:-5], other_locale(locale)) + ".html"
     return f"""<!doctype html>
-<html lang="en">
+<html lang="{_esc(t(locale, 'html_lang'))}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="{_esc(description)}">
-  <title>Capability sample ({_esc(size)}) \u00b7 Fork \u00b7 harness_bench_fast</title>
+  <title>{_esc(t(locale, 'sample_title', n=size))}</title>
   <link rel="stylesheet" href="landing.css">
   <style>.task-detail pre{{max-height:320px;overflow:auto;white-space:pre-wrap;word-break:break-word}}</style>
 </head>
 <body>
   <header>
     <a class="brand" href="index.html">harness_bench_fast<span class="brand-dot">.</span></a>
-    <nav aria-label="Primary"><a href="fork.html#medium">Fork results</a> <a href="{SAMPLE_MANIFEST_NAME}">Manifest</a></nav>
+    <nav aria-label="Primary"><a href="{fork_href}">{_esc(t(locale, 'nav_fork_results'))}</a> <a href="{SAMPLE_MANIFEST_NAME}">{_esc(t(locale, 'nav_manifest'))}</a> <a class="lang-switch" href="{switch}" title="{_esc(t(locale, 'lang_switch_title'))}">{_esc(t(locale, 'lang_switch'))}</a></nav>
   </header>
   <main>
     <section class="intro">
-      <p class="eyebrow">Fork \u00b7 capability sample \u00b7 25% of Medium 80 (392\u2013471)</p>
-      <h1>Capability sample ({_esc(size)})</h1>
-      <p class="lead">{_esc(model_name)} on {_esc(harness)} \u00b7 {_esc(size)} tasks drawn from the Medium 80 suite (392\u2013471). Tasks are stratified by band from published per-config outcomes (ceiling 3/3, boundary 1\u20132/3, floor 0/3); the cost-weighted wave split is long 3 / reflect 5 / feasibility 12.</p>
-      <p class="coverage-note">Source of truth: <a href="{SAMPLE_MANIFEST_NAME}">fork-sample-manifest.json</a> \u00b7 rule: <a href="{_esc(SAMPLE_ADR)}">ADR-0003</a> \u00b7 <a href="fork.html#medium">Fork results \u2192</a></p>
+      <p class="eyebrow">{_esc(t(locale, 'sample_eyebrow'))}</p>
+      <h1>{_esc(t(locale, 'sample_h1', n=size))}</h1>
+      <p class="lead">{_esc(t(locale, 'sample_lead', model=model_name, harness=harness, n=size))}</p>
+      <p class="coverage-note">{t(locale, 'sample_rule_note', manifest=SAMPLE_MANIFEST_NAME, adr=SAMPLE_ADR)} · <a href="{fork_href}">{_esc(t(locale, 'nav_fork_results'))} \u2192</a></p>
     </section>
 
     <section aria-label="Waves">
-      <h2>Waves</h2>
-      <p class="coverage-note">The long wave was measured with a 2400s timeout, below its 7200s floor, so it is marked <strong>invalid</strong> rather than failed.</p>
+      <h2>{_esc(t(locale, 'sample_waves_title'))}</h2>
+      <p class="coverage-note">{t(locale, 'sample_waves_note')}</p>
       {waves_table}
     </section>
 
     <section aria-label="Tasks">
-      <h2>Tasks</h2>
-      <p class="coverage-note">Per-task outcome for each of the {_esc(size)} manifest tasks. An unmeasured task is not a failure \u2014 it simply has no recorded result yet.</p>
+      <h2>{_esc(t(locale, 'sample_tasks_title'))}</h2>
+      <p class="coverage-note">{t(locale, 'sample_tasks_note', n=size)}</p>
       {tasks_table}
     </section>
 
     {sources_section}
 
-    <p class="fine-print">Static page generated by <code>scripts/build_fork_pages.py</code> from the frozen allow-list artifacts in <code>results/</code>. Times are wall-clock seconds; tokens are compact recorded totals. <strong>invalid</strong> means the wave timeout was below its floor (the measurement is not a fair capability signal), not a normal fail. An unmeasured task is not a failure. <a href="{SAMPLE_MANIFEST_NAME}">Manifest</a> \u00b7 <a href="fork.html#medium">\u2190 Back to fork results</a></p>
+    <p class="fine-print">{t(locale, 'sample_fine_print')} <a href="{SAMPLE_MANIFEST_NAME}">{_esc(t(locale, 'nav_manifest'))}</a> · <a href="{fork_href}">\u2190 {_esc(t(locale, 'nav_fork_results'))}</a></p>
   </main>
-  <footer><span>No LLM judge. Every task is checked mechanically.</span><a href="fork.html#medium">Fork Medium 80 \u2192</a></footer>
+  <footer><span>{_esc(t(locale, 'footer_note'))}</span><a href="{fork_href}">{_esc(t(locale, 'sample_footer_link'))}</a></footer>
+  <script>document.querySelectorAll('a.lang-switch').forEach(function(a){{if(location.hash)a.href+=location.hash;}});</script>
 </body>
 </html>
 """
 
 
 def write_sample_outputs(model: dict, text: str, out_dir: Path) -> None:
-    json_path = out_dir / SAMPLE_OUT_NAME
-    html_path = out_dir / SAMPLE_HTML_NAME
-    json_path.write_text(text, encoding="utf-8")
-    html_path.write_text(render_sample_html(model), encoding="utf-8")
+    (out_dir / SAMPLE_OUT_NAME).write_text(text, encoding="utf-8")
+    for loc in LOCALES:
+        name = locale_filename(SAMPLE_HTML_NAME[:-5], loc) + ".html"
+        (out_dir / name).write_text(render_sample_html(model, loc), encoding="utf-8")
+
+
+def _run_page_names(row: dict) -> list[str]:
+    base = row["details_url"][:-5] if row["details_url"].endswith(".html") else row["details_url"]
+    return [locale_filename(base, loc) + ".html" for loc in LOCALES]
 
 
 # ---- per-run detail page renderer --------------------------------------------
@@ -957,7 +967,7 @@ def _source_item(name: str) -> str:
     return f"<li><code>{safe}</code></li>"
 
 
-def render_run_page(row: dict, details: dict) -> str:
+def render_run_page(row: dict, details: dict, locale: str = DEFAULT_LOCALE) -> str:
     model_name = row.get("model") or "\u2014"
     harness = row.get("harness") or "\u2014"
     profile = row.get("profile")
@@ -1001,7 +1011,7 @@ def render_run_page(row: dict, details: dict) -> str:
             "</tr></thead><tbody>" + "".join(wave_rows) + "</tbody></table></div>"
         )
     else:
-        waves_table = '<p id="empty">No measured waves for this run.</p>'
+        waves_table = f'<p id="empty">{_esc(t(locale, "run_waves_empty"))}</p>'
 
     # ---- Tasks table ----
     tasks = details.get("tasks") or []
@@ -1023,8 +1033,8 @@ def render_run_page(row: dict, details: dict) -> str:
                 "</tr>"
             )
         tasks_section = (
-            '<section aria-label="Tasks"><h2>Tasks</h2>'
-            '<p class="coverage-note">Per-task outcome of every recorded task run for this configuration.</p>'
+            f'<section aria-label="Tasks"><h2>{_esc(t(locale, "run_tasks_title"))}</h2>'
+            f'<p class="coverage-note">{_esc(t(locale, "run_tasks_note"))}</p>'
             '<div class="table-wrap"><table class="leaderboard-table"><thead><tr>'
             '<th scope="col">Task</th><th scope="col">Wave</th><th scope="col">Result</th>'
             '<th scope="col" class="numeric">Time (s)</th><th scope="col" class="numeric">Steps</th>'
@@ -1033,52 +1043,58 @@ def render_run_page(row: dict, details: dict) -> str:
         )
     else:
         tasks_section = (
-            '<section aria-label="Tasks"><h2>Tasks</h2>'
-            '<p id="empty">No per-task entries were recorded for this configuration.</p></section>'
+            f'<section aria-label="Tasks"><h2>{_esc(t(locale, "run_tasks_title"))}</h2>'
+            f'<p id="empty">{_esc(t(locale, "run_tasks_empty"))}</p></section>'
         )
 
     # ---- Sources ----
     sources = row.get("sources") or []
     source_items = "".join(_source_item(name) for name in sources) or "<li>\u2014</li>"
     sources_section = (
-        '<section aria-label="Sources"><h2>Sources</h2>'
-        '<p class="coverage-note">Run artifacts aggregated into this row (checkout <code>results/</code> first, then <code>../results/</code>).</p>'
+        f'<section aria-label="Sources"><h2>{_esc(t(locale, "run_sources_title"))}</h2>'
+        f'<p class="coverage-note">{t(locale, "run_sources_note")}</p>'
         f'<ul class="run-sources">{source_items}</ul></section>'
     )
 
     description = f"Run details for {model_name} on {harness}" + (f" ({profile})" if profile else "") + ": waves, tasks and sources."
 
+    base = row["details_url"][:-5] if row["details_url"].endswith(".html") else row["details_url"]
+    switch = locale_filename(base, other_locale(locale)) + ".html"
+    fork_href = f"{locale_filename('fork', locale)}.html#medium"
+    run_word = t(locale, "run_word_plural" if runs != 1 else "run_word")
+    wave_word = t(locale, "wave_word_plural" if wave_count != 1 else "wave_word")
     return f"""<!doctype html>
-<html lang="en">
+<html lang="{_esc(t(locale, 'html_lang'))}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="{_esc(description)}">
-  <title>{_esc(title_text)} \u00b7 Fork run details</title>
+  <title>{_esc(t(locale, 'run_title', title=title_text))}</title>
   <link rel="stylesheet" href="landing.css">
   <style>.task-detail pre{{max-height:320px;overflow:auto;white-space:pre-wrap;word-break:break-word}}</style>
 </head>
 <body>
   <header>
     <a class="brand" href="index.html">harness_bench_fast<span class="brand-dot">.</span></a>
-    <nav aria-label="Primary"><a href="fork.html#medium">\u2190 Fork Medium 80</a></nav>
+    <nav aria-label="Primary"><a href="{fork_href}">{_esc(t(locale, 'run_back_medium'))}</a> <a class="lang-switch" href="{switch}" title="{_esc(t(locale, 'lang_switch_title'))}">{_esc(t(locale, 'lang_switch'))}</a></nav>
   </header>
   <main>
     <section class="intro">
-      <p class="eyebrow">Fork run details \u00b7 Medium 80 \u00b7 tasks 392\u2013471</p>
+      <p class="eyebrow">{_esc(t(locale, 'run_eyebrow'))}</p>
       <h1>{_esc(title_text)}</h1>
-      <p class="lead">{_esc(runs)} {"run" if runs == 1 else "runs"} \u00b7 {_esc(wave_count)} {"wave" if wave_count == 1 else "waves"} measured</p>
+      <p class="lead">{_esc(t(locale, 'run_lead', runs=runs, run_word=_esc(run_word), waves=wave_count, wave_word=_esc(wave_word)))}</p>
     </section>
     <section aria-label="Waves">
-      <h2>Waves</h2>
-      <p class="coverage-note">Per-wave outcomes for this configuration. A wave that was not measured is omitted (not a failure).</p>
+      <h2>{_esc(t(locale, 'run_waves_title'))}</h2>
+      <p class="coverage-note">{_esc(t(locale, 'run_waves_note'))}</p>
       {waves_table}
     </section>
     {tasks_section}
     {sources_section}
-    <p class="fine-print">Static page generated by <code>scripts/build_fork_pages.py</code> from saved run JSON in <code>results/</code>. Times are wall-clock minutes; tokens are compact recorded totals; <strong>Tokens (cost)</strong> adds an estimated spend in roubles (\u20bd) \u2014 an estimate, not a bill. An unmeasured wave is not a failure. <a href="fork.html#medium">\u2190 Back to fork results</a></p>
+    <p class="fine-print">{t(locale, 'run_fine_print')} <a href="{fork_href}">\u2190 {_esc(t(locale, 'nav_fork_results'))}</a></p>
   </main>
-  <footer><span>No LLM judge. Every task is checked mechanically.</span><a href="fork.html#medium">Fork Medium 80 \u2192</a></footer>
+  <footer><span>{_esc(t(locale, 'footer_note'))}</span><a href="{fork_href}">{_esc(t(locale, 'sample_footer_link'))}</a></footer>
+  <script>document.querySelectorAll('a.lang-switch').forEach(function(a){{if(location.hash)a.href+=location.hash;}});</script>
 </body>
 </html>
 """
@@ -1089,11 +1105,11 @@ def write_pages(model: dict, out_dir: Path) -> list[str]:
     expected = set()
     written: list[str] = []
     for row in model["rows"]:
-        name = row["details_url"]
-        expected.add(name)
-        page = render_run_page(row, details.get(row["id"], {}))
-        (out_dir / name).write_text(page, encoding="utf-8")
-        written.append(name)
+        for loc in LOCALES:
+            name = locale_filename(row["details_url"][:-5] if row["details_url"].endswith(".html") else row["details_url"], loc) + ".html"
+            expected.add(name)
+            (out_dir / name).write_text(render_run_page(row, details.get(row["id"], {}), loc), encoding="utf-8")
+            written.append(name)
     # Drop stale generated pages that no longer correspond to a row.
     for stale in sorted(out_dir.glob("fork-run-*.html")):
         if stale.name not in expected:
@@ -1131,8 +1147,26 @@ def main(argv: list[str]) -> int:
             current = out_path.read_text(encoding="utf-8")
         except OSError:
             current = None
+        stale: list[str] = []
         if current != text:
-            print(f"{out_path.name}: STALE \u2014 run: python3 scripts/build_fork_pages.py")
+            stale.append(out_path.name)
+        details = model.get("_page_details", {})
+        for row in model["rows"]:
+            for loc in LOCALES:
+                name = locale_filename(row["details_url"][:-5] if row["details_url"].endswith(".html") else row["details_url"], loc) + ".html"
+                want = render_run_page(row, details.get(row["id"], {}), loc)
+                p = out_path.parent / name
+                if not p.exists() or p.read_text(encoding="utf-8") != want:
+                    stale.append(name)
+        sample_model = build_sample_model()
+        for loc in LOCALES:
+            name = locale_filename(SAMPLE_HTML_NAME[:-5], loc) + ".html"
+            want = render_sample_html(sample_model, loc)
+            p = out_path.parent / name
+            if not p.exists() or p.read_text(encoding="utf-8") != want:
+                stale.append(name)
+        if stale:
+            print("STALE: " + ", ".join(sorted(set(stale))) + " \u2014 run: python3 scripts/build_fork_pages.py")
             return 1
         print(f"{out_path.name}: up to date ({len(model['rows'])} rows)")
         return 0

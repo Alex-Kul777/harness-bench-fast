@@ -24,6 +24,9 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from fork_i18n import DEFAULT_LOCALE, LOCALES, locale_filename, other_locale, t  # noqa: E402
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DOCS = REPO_ROOT / "docs"
 OUT_JSON = DOCS / "fork-home-results.json"
@@ -432,13 +435,14 @@ def sample_rows():
                 "harness": r.get("harness") or DASH,
                 "profile": r.get("profile") or DASH,
                 "model": r.get("model") or DASH,
-                "subset": f"\u043d\u0430\u0448\u0438 \u043f\u0440\u043e\u0433\u043d\u0430\u043d\u043d\u044b\u0435: {total} \u0438\u0437 90",
+                "subset_key": "subset_our_runs",
+                "subset_args": {"n": total},
                 "result": f"{passed}/{total}",
                 "pct": f"{100 * passed / total:.1f}%",
                 "coverage": f"{total}/90",
                 "time": _fmt_min(u.get("seconds")),
                 "tokens_cost": _fmt_cost(u.get("tokens"), u.get("cost_rub")),
-                "status": "partial" if total < 90 else "complete",
+                "status_key": "status_partial" if total < 90 else "status_complete",
                 "detail": r.get("details_url"),
             })
     if PILOT_MANIFEST.exists():
@@ -452,13 +456,14 @@ def sample_rows():
             "harness": cfg.get("harness") or DASH,
             "profile": cfg.get("profile") or DASH,
             "model": cfg.get("model") or DASH,
-            "subset": f"\u043f\u0438\u043b\u043e\u0442: {man.get('size')} \u0438\u0437 90 (\u0443\u0440\u0435\u0437\u0430\u043d\u043d\u044b\u0439)",
+            "subset_key": "subset_pilot",
+            "subset_args": {"n": man.get("size")},
             "result": f"{passed}/{total}",
             "pct": f"{100 * passed / total:.1f}%" if total else DASH,
             "coverage": f"{total}/90",
             "time": DASH,
             "tokens_cost": DASH,
-            "status": "pilot (truncated)",
+            "status_key": "status_pilot",
             "detail": None,
         })
     return out
@@ -561,18 +566,18 @@ def upstream_subset_rows():
             passed = sum(1 for k in cov if m.get(k))
             rows.append({
                 "kind": "upstream", "harness": harness, "profile": DASH, "model": model,
-                "subset": f"\u0442\u0435 \u0436\u0435 {n} \u0437\u0430\u0434\u0430\u0447",
+                "subset_key": "subset_same_tasks", "subset_args": {"n": n},
                 "result": f"{passed}/{n}", "pct": f"{100 * passed / n:.1f}%",
                 "coverage": f"{n}/90", "time": DASH, "tokens_cost": DASH,
-                "status": "upstream (subset)",
+                "status_key": "status_upstream_subset",
             })
         else:
             rows.append({
                 "kind": "upstream", "harness": harness, "profile": DASH, "model": model,
-                "subset": f"\u043d\u0430\u0448\u0438 {len(cov)} \u0437\u0430\u0434\u0430\u0447",
+                "subset_key": "subset_our_tasks", "subset_args": {"n": len(cov)},
                 "result": DASH, "pct": DASH, "coverage": DASH,
                 "time": DASH, "tokens_cost": DASH,
-                "status": "upstream \u00b7 \u043d\u0435\u0442 per-task",
+                "status_key": "status_upstream_notask",
             })
     rows.sort(key=lambda r: -_pct_val(r["pct"]))
     return rows
@@ -623,40 +628,40 @@ HEAD = """<tr>
 </tr>"""
 
 
-def _table(rows, group_ours="Our runs", group_up="Upstream comparison"):
+def _table(rows, group_ours):
     parts = ['<table class="leaderboard-table"><thead>' + HEAD + '</thead><tbody>',
-             f'<tr class="group"><td colspan="9"><strong>{group_ours}</strong></td></tr>',
+             f'<tr class="group"><td colspan="9"><strong>{html.escape(group_ours)}</strong></td></tr>',
              _rows_html(rows)]
     parts.append('</tbody></table>')
     return "\n".join(parts)
 
 
-def _table_groups(ours, upstream):
+def _table_groups(ours, upstream, g_ours, g_up):
     parts = ['<table class="leaderboard-table"><thead>' + HEAD + '</thead><tbody>',
-             '<tr class="group"><td colspan="9"><strong>Our runs</strong></td></tr>',
+             f'<tr class="group"><td colspan="9"><strong>{html.escape(g_ours)}</strong></td></tr>',
              _rows_html(ours)]
     if upstream:
-        parts.append('<tr class="group"><td colspan="9"><strong>Upstream comparison</strong></td></tr>')
+        parts.append(f'<tr class="group"><td colspan="9"><strong>{html.escape(g_up)}</strong></td></tr>')
         parts.append(_rows_html(upstream))
     parts.append('</tbody></table>')
     return "\n".join(parts)
 
 
-def _waves_html(rows):
+def _waves_html(rows, locale=DEFAULT_LOCALE):
     body = []
     for r in rows:
         w = r.get("waves") or {}
         cells = []
         for k, _ in WAVE_LABELS:
             c = w.get(k) or {}
-            p, t = c.get("passed"), c.get("total")
-            cells.append(f'<td class="numeric">{f"{p}/{t}" if p is not None and t else DASH}</td>')
+            p, tot = c.get("passed"), c.get("total")
+            cells.append(f'<td class="numeric">{f"{p}/{tot}" if p is not None and tot else DASH}</td>')
         body.append(f"<tr><td>{html.escape(r['harness'])} · {html.escape(r['model'])}</td>" + "".join(cells) + "</tr>")
     head = "".join(f'<th scope="col" class="numeric">{lab}</th>' for _, lab in WAVE_LABELS)
     return (
-        '<details class="wave-breakdown"><summary>Wave breakdown (long / reflect / feasibility)</summary>'
+        f'<details class="wave-breakdown"><summary>{html.escape(t(locale, "waves_summary"))}</summary>'
         '<div class="table-wrap"><table class="leaderboard-table"><thead>'
-        f'<tr><th scope="col">Configuration</th>{head}</tr></thead><tbody>'
+        f'<tr><th scope="col">{html.escape(t(locale, "wave_col_config"))}</th>{head}</tr></thead><tbody>'
         + "\n".join(body) + "</tbody></table></div></details>"
     )
 
@@ -670,63 +675,58 @@ SAMPLE_HEAD = """<tr>
 </tr>"""
 
 
-def _sample_rows_html(rows):
+def _sample_rows_html(rows, locale=DEFAULT_LOCALE):
     tr = []
     for r in rows:
         d = r.get("detail")
         attrs = f' class="detail-row" data-detail="{html.escape(d)}"' if d else ""
         harness = (f'<a href="{html.escape(d)}">{html.escape(r["harness"])}</a>'
                    if d else html.escape(r["harness"]))
+        subset = t(locale, r["subset_key"], **(r.get("subset_args") or {}))
+        status = t(locale, r["status_key"])
         tr.append(
             f"<tr{attrs}>"
             f"<td>{harness}</td>"
             f"<td>{html.escape(r['profile'])}</td>"
             f"<td>{html.escape(r['model'])}</td>"
-            f"<td>{html.escape(r['subset'])}</td>"
+            f"<td>{html.escape(subset)}</td>"
             f'<td class="numeric">{html.escape(r["result"])}</td>'
             f'<td class="numeric">{html.escape(r["pct"])}</td>'
             f'<td class="numeric">{html.escape(r["coverage"])}</td>'
             f'<td class="numeric">{html.escape(r["time"])}</td>'
             f'<td class="numeric">{html.escape(r["tokens_cost"])}</td>'
-            f"<td>{html.escape(r['status'])}</td>"
+            f"<td>{html.escape(status)}</td>"
             "</tr>"
         )
     return "\n".join(tr)
 
 
-def _sample_table(rows, upstream=None):
+def _sample_table(rows, upstream=None, locale=DEFAULT_LOCALE):
     parts = ['<table class="leaderboard-table"><thead>' + SAMPLE_HEAD + '</thead><tbody>',
-             '<tr class="group"><td colspan="10"><strong>Our subsets (truncated vs the full 90)</strong></td></tr>',
-             _sample_rows_html(rows)]
+             f'<tr class="group"><td colspan="10"><strong>{html.escape(t(locale, "group_sample_ours"))}</strong></td></tr>',
+             _sample_rows_html(rows, locale)]
     if upstream:
-        parts.append('<tr class="group"><td colspan="10"><strong>Upstream on the same tasks '
-                     '(restricted to our covered subset)</strong></td></tr>')
-        parts.append(_sample_rows_html(upstream))
+        parts.append(f'<tr class="group"><td colspan="10"><strong>{html.escape(t(locale, "group_sample_upstream"))}</strong></td></tr>')
+        parts.append(_sample_rows_html(upstream, locale))
     parts.append("</tbody></table>")
     return "\n".join(parts)
 
 
-def _panel(suite):
+def _panel(suite, locale=DEFAULT_LOCALE):
     key = suite["key"]
     if key == "medium-sample":
-        note = (
-            '<p class="coverage-note">Наши <strong>урезанные</strong> Medium-наборы: суммарный '
-            'охват прогнанных задач и пилоты. Знаменатель — полный Medium (90); '
-            'в колонке <code>Coverage</code> видно, что покрытие неполное '
-            '(например 66/90 и 13/90). Нижняя группа — <strong>апстрим-конфиги, пересчитанные на точно '
-            'тех же задачах, что прогнали мы</strong> (наши 66), т.е. сколько из наших задач решил апстрим. '
-            'Источник пилота: '
-            '<a href="fork-medium-pilot-manifest.json">fork-medium-pilot-manifest.json</a> · '
-            '<a href="fork.html#medium">Полные 90 →</a></p>'
-        )
+        note = f'<p class="coverage-note">{t(locale, "note_sample")} '
+        note += ('<a href="fork-medium-pilot-manifest.json">fork-medium-pilot-manifest.json</a> · '
+                 f'<a href="{locale_filename("fork", locale)}.html#medium">{t(locale, "link_full_90")}</a></p>')
         return (
             f'      <section data-suite-panel="{key}" aria-label="{html.escape(suite["label"])}">\n'
             f'        {note}\n'
-            f'        <div class="table-wrap">{_sample_table(suite["ours"], suite.get("upstream"))}</div>\n'
+            f'        <div class="table-wrap">{_sample_table(suite["ours"], suite.get("upstream"), locale)}</div>\n'
             "      </section>"
         )
-    inner = _table_groups(suite["ours"], suite["upstream"]) if suite["upstream"] else _table(suite["ours"])
-    extra = _waves_html(suite["ours"]) if key == "medium" and suite["ours"] else ""
+    inner = (_table_groups(suite["ours"], suite["upstream"], t(locale, "group_our_runs"), t(locale, "group_upstream"))
+             if suite["upstream"] else _table(suite["ours"], t(locale, "group_our_runs")))
+    extra = _waves_html(suite["ours"], locale) if key == "medium" and suite["ours"] else ""
     return (
         f'      <section data-suite-panel="{key}" aria-label="{html.escape(suite["label"])}">\n'
         f'        <div class="table-wrap">{inner}</div>\n'
@@ -793,57 +793,85 @@ SCRIPT = """<script>
 })();
 </script>"""
 
-PAGE = """<!doctype html>
-<html lang="en">
+PAGE_HEAD = """<!doctype html>
+<html lang="__LANG__">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Fork results for harness_bench_fast: Shot List (52), Light (391) and Medium (80) in one tabbed page. Mechanically verified.">
-  <title>harness_bench_fast · Fork results</title>
+  <meta name="description" content="__DESC__">
+  <title>__TITLE__</title>
   <link rel="stylesheet" href="landing.css">
 __STYLE__
 </head>
 <body>
   <header>
     <a class="brand" href="index.html">harness_bench_fast<span class="brand-dot">.</span></a>
-    <nav aria-label="Primary"><a href="../FORK.md">Fork index</a> <a href="fork-sample.html">Capability sample (20)</a></nav>
+    <nav aria-label="Primary"><a href="__FORKMD__">__FORK_INDEX__</a> <a href="__SAMPLE__">__CAP_SAMPLE__</a> <a class="lang-switch" href="__SWITCH__" title="__SWITCH_TITLE__">__SWITCH_LABEL__</a></nav>
   </header>
   <main>
     <section class="intro">
-      <p class="eyebrow">Fork results · our runs</p>
-      <h1>Our runs.<br>Three suites, one page.</h1>
-      <p class="lead">Our Pi / OpenClaw / Hermes runs on the frozen Shot List (52), Light (391) and Medium (80) suites. Real tasks, mechanically verified.</p>
+      <p class="eyebrow">__EYEBROW__</p>
+      <h1>__H1__</h1>
+      <p class="lead">__LEAD__</p>
     </section>
     <div class="suite-switch" role="group" aria-label="Benchmark suite">
-      <button type="button" data-suite="shotlist" aria-pressed="true"><strong>Shot List (52)</strong><span>stratified sample</span></button>
-      <button type="button" data-suite="light" aria-pressed="false"><strong>Light (391)</strong><span>frozen suite</span></button>
-      <button type="button" data-suite="medium" aria-pressed="false"><strong>Medium (90)</strong><span>long · reflect · feasibility · wave21</span></button>
-      <button type="button" data-suite="medium-sample" aria-pressed="false"><strong>Medium sample</strong><span>our subsets · truncated</span></button>
+      <button type="button" data-suite="shotlist" aria-pressed="true"><strong>Shot List (52)</strong><span>__TAB_SHOTLIST_SUB__</span></button>
+      <button type="button" data-suite="light" aria-pressed="false"><strong>Light (391)</strong><span>__TAB_LIGHT_SUB__</span></button>
+      <button type="button" data-suite="medium" aria-pressed="false"><strong>Medium (90)</strong><span>__TAB_MEDIUM_SUB__</span></button>
+      <button type="button" data-suite="medium-sample" aria-pressed="false"><strong>Medium sample</strong><span>__TAB_MEDIUM_SAMPLE_SUB__</span></button>
     </div>
     <div class="filters">
-      <label class="search">Search model or harness<input id="search" type="search" placeholder="e.g. Pi, OpenClaw, DeepSeek" autocomplete="off"></label>
+      <label class="search">__SEARCH_LABEL__<input id="search" type="search" placeholder="__SEARCH_PH__" autocomplete="off"></label>
       <span id="row-count" aria-live="polite"></span>
     </div>
 __PANELS__
-    <p id="empty" role="status" hidden>No rows match your search.</p>
-    <p class="fine-print">No LLM judge. Every task is checked mechanically. A dash means no measurement yet, not a failure. <code>Version</code> = task-set version for our runs, upstream <code>source_version</code> for upstream rows. <a href="../FORK.md">Fork index</a> · <a href="fork-results.md">Fork tables →</a></p>
+    <p id="empty" role="status" hidden>__EMPTY__</p>
+    <p class="fine-print">__FINE__ <a href="__FORKMD__">__FORK_INDEX__</a> · <a href="__TABLES__">__FORK_TABLES__</a></p>
   </main>
-  <footer><span>No LLM judge. Every task is checked mechanically.</span><a href="../FORK.md">Fork index →</a></footer>
+  <footer><span>__FOOTER_NOTE__</span><a href="__FORKMD__">__FOOTER_LINK__</a></footer>
 __SCRIPT__
+<script>document.querySelectorAll('a.lang-switch').forEach(function(a){if(location.hash)a.href+=location.hash;});</script>
 </body>
 </html>
 """
 
 
-def render_html(data):
-    return (PAGE
+def render_html(data, locale=DEFAULT_LOCALE):
+    other = other_locale(locale)
+    fork_md = "../FORK.en.md" if locale == "en" else "../FORK.md"
+    return (PAGE_HEAD
+            .replace("__LANG__", t(locale, "html_lang"))
+            .replace("__DESC__", html.escape(t(locale, "home_desc")))
+            .replace("__TITLE__", html.escape(t(locale, "home_title")))
             .replace("__STYLE__", STYLE)
-            .replace("__PANELS__", "\n".join(_panel(s) for s in data["suites"]))
+            .replace("__FORKMD__", fork_md)
+            .replace("__FORK_INDEX__", html.escape(t(locale, "fork_index")))
+            .replace("__SAMPLE__", locale_filename("fork-sample", locale) + ".html")
+            .replace("__CAP_SAMPLE__", html.escape(t(locale, "capability_sample")))
+            .replace("__SWITCH__", locale_filename("fork", other) + ".html")
+            .replace("__SWITCH_TITLE__", html.escape(t(locale, "lang_switch_title")))
+            .replace("__SWITCH_LABEL__", html.escape(t(locale, "lang_switch")))
+            .replace("__EYEBROW__", html.escape(t(locale, "home_eyebrow")))
+            .replace("__H1__", t(locale, "home_h1"))
+            .replace("__LEAD__", html.escape(t(locale, "home_lead")))
+            .replace("__TAB_SHOTLIST_SUB__", html.escape(t(locale, "tab_shotlist_sub")))
+            .replace("__TAB_LIGHT_SUB__", html.escape(t(locale, "tab_light_sub")))
+            .replace("__TAB_MEDIUM_SUB__", html.escape(t(locale, "tab_medium_sub")))
+            .replace("__TAB_MEDIUM_SAMPLE_SUB__", html.escape(t(locale, "tab_medium_sample_sub")))
+            .replace("__SEARCH_LABEL__", html.escape(t(locale, "search_label")))
+            .replace("__SEARCH_PH__", html.escape(t(locale, "search_placeholder")))
+            .replace("__PANELS__", "\n".join(_panel(s, locale) for s in data["suites"]))
+            .replace("__EMPTY__", html.escape(t(locale, "empty_search")))
+            .replace("__FINE__", t(locale, "home_fine_print"))
+            .replace("__TABLES__", locale_filename("fork-results", locale) + ".md")
+            .replace("__FORK_TABLES__", html.escape(t(locale, "link_fork_tables")))
+            .replace("__FOOTER_NOTE__", html.escape(t(locale, "footer_note")))
+            .replace("__FOOTER_LINK__", html.escape(t(locale, "footer_link")))
             .replace("__SCRIPT__", SCRIPT))
 
 
-DETAIL_PAGE = """<!doctype html>
-<html lang="en">
+DETAIL_HEAD = """<!doctype html>
+<html lang="__LANG__">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -854,98 +882,113 @@ DETAIL_PAGE = """<!doctype html>
 <body>
   <header>
     <a class="brand" href="index.html">harness_bench_fast<span class="brand-dot">.</span></a>
-    <nav aria-label="Primary"><a href="fork.html#__SUITE__">\u2190 Fork results</a></nav>
+    <nav aria-label="Primary"><a href="__BACK_FORK__">__BACK_LABEL__</a> <a class="lang-switch" href="__SWITCH__" title="__SWITCH_TITLE__">__SWITCH_LABEL__</a></nav>
   </header>
   <main>
     <section class="intro">
-      <p class="eyebrow">Fork run detail</p>
+      <p class="eyebrow">__EYEBROW__</p>
       <h1>__H1__</h1>
       <p class="lead">__META__</p>
     </section>
-    <h2>Tasks (__N__)</h2>
+    <h2>__H2__</h2>
     <div class="table-wrap">
       <table class="leaderboard-table"><thead><tr>
-        <th scope="col" class="numeric">#</th><th scope="col">Task</th><th scope="col">Result</th>
-        <th scope="col" class="numeric">Seconds</th><th scope="col" class="numeric">Tokens</th><th scope="col">Message</th>
+        <th scope="col" class="numeric">#</th><th scope="col">__TH_TASK__</th><th scope="col">__TH_RESULT__</th>
+        <th scope="col" class="numeric">__TH_SECONDS__</th><th scope="col" class="numeric">__TH_TOKENS__</th><th scope="col">__TH_MESSAGE__</th>
       </tr></thead><tbody>
 __ROWS__
       </tbody></table>
     </div>
-    <p class="fine-print">No LLM judge. Every task is checked mechanically. Source: <code>__SRC__</code>. <a href="fork.html#__SUITE__">\u2190 Back to fork results</a></p>
+    <p class="fine-print">__FINE__ <code>__SRC__</code>. <a href="__BACK_FORK__">__BACK_LABEL__</a></p>
   </main>
 </body>
 </html>
 """
 
 
-def _task_message(msg):
-    text = str(msg or "").strip()
-    if not text:
-        return DASH
-    short = text if len(text) <= 120 else text[:120] + "\u2026"
-    if len(text) <= 120:
-        return html.escape(short)
-    return (f'<details class="msg"><summary>{html.escape(short)}</summary>'
-            f"<pre>{html.escape(text)}</pre></details>")
-
-
-def render_detail(suite, row, data):
-    tasks = [t for t in (data.get("tasks") or data.get("results") or []) if isinstance(t, dict)]
+def render_detail(suite, row, data, base, locale=DEFAULT_LOCALE):
+    tasks = [x for x in (data.get("tasks") or data.get("results") or []) if isinstance(x, dict)]
     body = []
-    for i, t in enumerate(tasks, 1):
-        p = t.get("passed")
+    for i, task in enumerate(tasks, 1):
+        p = task.get("passed")
         res = "PASS" if p in (True, 1) else ("FAIL" if p in (False, 0) else DASH)
-        secs = t.get("elapsed_seconds")
-        toks = t.get("agent_total_tokens", t.get("tokens"))
+        secs = task.get("elapsed_seconds")
+        toks = task.get("agent_total_tokens", task.get("tokens"))
         body.append(
             "<tr>"
             f'<td class="numeric">{i}</td>'
-            f"<td>{html.escape(str(t.get('task_id') or t.get('id') or DASH))}</td>"
+            f"<td>{html.escape(str(task.get('task_id') or task.get('id') or DASH))}</td>"
             f"<td>{res}</td>"
             f'<td class="numeric">{DASH if secs is None else f"{float(secs):.1f}"}</td>'
             f'<td class="numeric">{_fmt_int(toks)}</td>'
-            f"<td>{_task_message(t.get('message') or t.get('error'))}</td>"
+            f"<td>{_task_message(task.get('message') or task.get('error'))}</td>"
             "</tr>"
         )
     meta = " \u00b7 ".join([
-        f"Profile: {html.escape(row['profile'])}",
-        f"Version: {html.escape(row['version'])}",
-        f"Result: {html.escape(row['result'])} ({html.escape(row['pct'])})",
-        f"Time: {html.escape(row['time'])}",
-        f"Steps: {html.escape(row['steps'])}",
-        f"Tokens (cost): {html.escape(row['tokens_cost'])}",
+        f"{t(locale, 'detail_meta_profile')}: {html.escape(row['profile'])}",
+        f"{t(locale, 'detail_meta_version')}: {html.escape(row['version'])}",
+        f"{t(locale, 'detail_meta_result')}: {html.escape(row['result'])} ({html.escape(row['pct'])})",
+        f"{t(locale, 'detail_meta_time')}: {html.escape(row['time'])}",
+        f"{t(locale, 'detail_meta_steps')}: {html.escape(row['steps'])}",
+        f"{t(locale, 'detail_meta_tokens_cost')}: {html.escape(row['tokens_cost'])}",
     ])
     src = row.get("source_file") or ""
-    return (DETAIL_PAGE
-            .replace("__TITLE__", html.escape(f"{row['harness']} \u00b7 {row['model']} \u00b7 fork run"))
+    back = f"{locale_filename('fork', locale)}.html#{suite or ''}"
+    switch = locale_filename(base, other_locale(locale)) + ".html"
+    return (DETAIL_HEAD
+            .replace("__LANG__", t(locale, "html_lang"))
+            .replace("__TITLE__", html.escape(f"{row['harness']} \u00b7 {row['model']} \u00b7 {t(locale, 'detail_title_suffix')}"))
+            .replace("__EYEBROW__", html.escape(t(locale, "detail_eyebrow")))
             .replace("__H1__", html.escape(f"{row['harness']} \u00b7 {row['model']}"))
             .replace("__META__", meta)
-            .replace("__N__", str(len(tasks)))
+            .replace("__H2__", html.escape(t(locale, "detail_h2", n=len(tasks))))
+            .replace("__TH_TASK__", html.escape(t(locale, "detail_th_task")))
+            .replace("__TH_RESULT__", html.escape(t(locale, "detail_th_result")))
+            .replace("__TH_SECONDS__", html.escape(t(locale, "detail_th_seconds")))
+            .replace("__TH_TOKENS__", html.escape(t(locale, "detail_th_tokens")))
+            .replace("__TH_MESSAGE__", html.escape(t(locale, "detail_th_message")))
             .replace("__ROWS__", "\n".join(body) or f'<tr><td colspan="6">{DASH}</td></tr>')
+            .replace("__FINE__", t(locale, "detail_fine_print"))
             .replace("__SRC__", html.escape(src))
-            .replace("__SUITE__", html.escape(suite or "")))
+            .replace("__BACK_FORK__", back)
+            .replace("__BACK_LABEL__", html.escape(t(locale, "detail_back")))
+            .replace("__SWITCH__", switch)
+            .replace("__SWITCH_TITLE__", html.escape(t(locale, "lang_switch_title")))
+            .replace("__SWITCH_LABEL__", html.escape(t(locale, "lang_switch"))))
 
 
 def main(argv):
     data = build()
     blob = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
-    page = render_html(data)
+    pages = {loc: render_html(data, loc) for loc in LOCALES}
+    details: dict[str, str] = {}
+    for loc in LOCALES:
+        for detail, suite, row, d in _DETAIL_JOBS:
+            base = detail[:-5] if detail.endswith(".html") else detail
+            name = locale_filename(base, loc) + ".html"
+            details[name] = render_detail(suite, row, data, base, loc)
     if "--check" in argv:
-        stale = [p.name for p, want in ((OUT_JSON, blob), (OUT_HTML, page))
-                 if not p.exists() or p.read_text(encoding="utf-8") != want]
+        stale = [OUT_JSON.name] if not OUT_JSON.exists() or OUT_JSON.read_text(encoding="utf-8") != blob else []
+        for loc in LOCALES:
+            p = DOCS / (locale_filename("fork", loc) + ".html")
+            if not p.exists() or p.read_text(encoding="utf-8") != pages[loc]:
+                stale.append(p.name)
+        for name, text in details.items():
+            p = DOCS / name
+            if not p.exists() or p.read_text(encoding="utf-8") != text:
+                stale.append(name)
         if stale:
-            print("stale: " + ", ".join(stale))
+            print("stale: " + ", ".join(sorted(set(stale))))
             return 1
         print("up to date")
         return 0
     OUT_JSON.write_text(blob, encoding="utf-8")
-    OUT_HTML.write_text(page, encoding="utf-8")
-    n = 0
-    for detail, suite, row, d in _DETAIL_JOBS:
-        (DOCS / detail).write_text(render_detail(suite, row, d), encoding="utf-8")
-        n += 1
+    for loc in LOCALES:
+        (DOCS / (locale_filename("fork", loc) + ".html")).write_text(pages[loc], encoding="utf-8")
+    for name, text in details.items():
+        (DOCS / name).write_text(text, encoding="utf-8")
     counts = ", ".join(f"{s['label']}: {len(s['ours'])}+{len(s['upstream'])}" for s in data["suites"])
-    print(f"wrote {OUT_JSON.name} + {OUT_HTML.name} + {n} detail page(s) ({counts})")
+    print(f"wrote {OUT_JSON.name} + fork[-.en].html + {len(details)} detail page(s) ({counts})")
     return 0
 
 

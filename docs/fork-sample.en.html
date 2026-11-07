@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Cost-bounded capability sample (20 tasks = 25% of the Medium 80 suite, 392-471) run by Pi on DeepSeek-V4.1-Flash: long context, tool reflection and feasibility.">
+  <title>Capability sample (20) · Fork · harness_bench_fast</title>
+  <link rel="stylesheet" href="landing.css">
+  <style>.task-detail pre{max-height:320px;overflow:auto;white-space:pre-wrap;word-break:break-word}</style>
+</head>
+<body>
+  <header>
+    <a class="brand" href="index.html">harness_bench_fast<span class="brand-dot">.</span></a>
+    <nav aria-label="Primary"><a href="fork.en.html#medium">Fork results</a> <a href="fork-sample-manifest.json">Manifest</a> <a class="lang-switch" href="fork-sample.html" title="Переключить на русский">RU</a></nav>
+  </header>
+  <main>
+    <section class="intro">
+      <p class="eyebrow">Fork · capability sample · 25% of Medium 80 (392–471)</p>
+      <h1>Capability sample (20)</h1>
+      <p class="lead">DeepSeek-V4.1-Flash on Pi · 20 tasks drawn from the Medium 80 suite (392–471). Tasks are stratified by band from published per-config outcomes (ceiling 3/3, boundary 1–2/3, floor 0/3); the cost-weighted wave split is long 3 / reflect 5 / feasibility 12.</p>
+      <p class="coverage-note">Source of truth: <a href="fork-sample-manifest.json">fork-sample-manifest.json</a> · rule: <a href="adr/0003-capability-sample.md">ADR-0003</a> · <a href="fork.en.html#medium">Fork results →</a></p>
+    </section>
+
+    <section aria-label="Waves">
+      <h2>Waves</h2>
+      <p class="coverage-note">The long wave was measured with a 2400s timeout, below its 7200s floor, so it is marked <strong>invalid</strong> rather than failed.</p>
+      <div class="table-wrap"><table class="leaderboard-table"><thead><tr><th scope="col">Wave</th><th scope="col" class="numeric">Tasks</th><th scope="col" class="numeric">Passed</th><th scope="col" class="numeric">%</th><th scope="col">Band mix</th><th scope="col">Status</th></tr></thead><tbody><tr><td>Long context<span class="harness">392–411</span></td><td class="numeric">3</td><td class="numeric">0</td><td class="numeric">0.0%</td><td>floor ×3</td><td>invalid (timeout 2400 &lt; wave floor 7200)</td></tr><tr><td>Tool reflection<span class="harness">412–431</span></td><td class="numeric">5</td><td class="numeric">4</td><td class="numeric">80.0%</td><td>ceiling ×3, boundary ×2</td><td>measured</td></tr><tr><td>Feasibility<span class="harness">432–471</span></td><td class="numeric">12</td><td class="numeric">12</td><td class="numeric">100.0%</td><td>ceiling ×4, boundary ×8</td><td>measured</td></tr></tbody></table></div>
+    </section>
+
+    <section aria-label="Tasks">
+      <h2>Tasks</h2>
+      <p class="coverage-note">Per-task outcome for each of the 20 manifest tasks. An unmeasured task is not a failure — it simply has no recorded result yet.</p>
+      <div class="table-wrap"><table class="leaderboard-table"><thead><tr><th scope="col" class="numeric">#</th><th scope="col">Task</th><th scope="col">Wave</th><th scope="col">Band</th><th scope="col">Result</th><th scope="col" class="numeric">Time (s)</th><th scope="col" class="numeric">Steps</th><th scope="col" class="numeric">Tokens</th><th scope="col">Note</th></tr></thead><tbody><tr><td class="numeric">392</td><td><code>task_392_manuscript_continuity</code></td><td>long</td><td>floor</td><td>invalid</td><td class="numeric">2461.7</td><td class="numeric">108</td><td class="numeric">4.18M</td><td>timed out after 2400s<details class="task-detail"><summary>output</summary><pre>нет файла errors.csv</pre><p>error: timed out after 2400s</p></details></td></tr><tr><td class="numeric">398</td><td><code>task_398_card_game_engine</code></td><td>long</td><td>floor</td><td>invalid</td><td class="numeric">2462.4</td><td class="numeric">226</td><td class="numeric">8.12M</td><td>timed out after 2400s<details class="task-detail"><summary>output</summary><pre>партии: верно 0/100, нужно не меньше 95. Примеры: партия 1: исключение AttributeError: module &#x27;engine&#x27; has no attribute &#x27;simulate&#x27;; партия 2: исключение AttributeError: module &#x27;engine&#x27; has no attribute &#x27;simulate&#x27;; партия 3: исключение AttributeError: module &#x27;engine&#x27; has no attribute &#x27;simulate&#x27;; партия 4: исключение AttributeError: module &#x27;engine&#x27; has no attribute &#x27;simulate&#x27;; партия 5: исключение AttributeError: module &#x27;engine&#x27; has no attribute &#x27;simulate&#x27;</pre><p>error: timed out after 2400s</p></details></td></tr><tr><td class="numeric">403</td><td><code>task_403_binary_format_reverse</code></td><td>long</td><td>floor</td><td>invalid</td><td class="numeric">2461.3</td><td class="numeric">254</td><td class="numeric">9.58M</td><td>timed out after 2400s<details class="task-detail"><summary>output</summary><pre>нет файла vtl_decode.py</pre><p>error: timed out after 2400s</p></details></td></tr><tr><td class="numeric">412</td><td><code>task_412_supplier_minimum</code></td><td>reflect</td><td>ceiling</td><td>pass</td><td class="numeric">907.8</td><td class="numeric">100</td><td class="numeric">1.5M</td><td>service state matches the goal</td></tr><tr><td class="numeric">415</td><td><code>task_415_api_throttle</code></td><td>reflect</td><td>boundary</td><td>pass</td><td class="numeric">195.7</td><td class="numeric">48</td><td class="numeric">192,921</td><td>service state matches the goal</td></tr><tr><td class="numeric">422</td><td><code>task_422_calendar_timezone</code></td><td>reflect</td><td>ceiling</td><td>fail</td><td class="numeric">960.3</td><td class="numeric">55</td><td class="numeric">898,242</td><td>timed out after 900s<details class="task-detail"><summary>output</summary><pre>meeting &#x27;Интервью: бэкенд&#x27; starts at the wrong moment</pre><p>error: timed out after 900s</p></details></td></tr><tr><td class="numeric">426</td><td><code>task_426_kv_eventual</code></td><td>reflect</td><td>ceiling</td><td>pass</td><td class="numeric">656.9</td><td class="numeric">52</td><td class="numeric">501,225</td><td>service state matches the goal</td></tr><tr><td class="numeric">430</td><td><code>task_430_orders_backorder</code></td><td>reflect</td><td>boundary</td><td>pass</td><td class="numeric">741.9</td><td class="numeric">132</td><td class="numeric">1.81M</td><td>service state matches the goal</td></tr><tr><td class="numeric">432</td><td><code>task_432_clock_contract</code></td><td>feasibility</td><td>ceiling</td><td>pass</td><td class="numeric">51.5</td><td class="numeric">48</td><td class="numeric">442,215</td><td>decision_correct=True, response_correct=True, extra_requests=0, status=impossible, submission_count=1<details class="task-detail"><summary>output</summary><pre>{
+  &quot;decision_correct&quot;: true,
+  &quot;extra_requests&quot;: 0,
+  &quot;response_correct&quot;: true,
+  &quot;status&quot;: &quot;impossible&quot;,
+  &quot;submission_count&quot;: 1
+}</pre></details></td></tr><tr><td class="numeric">436</td><td><code>task_436_search_capabilities</code></td><td>feasibility</td><td>boundary</td><td>pass</td><td class="numeric">93.6</td><td class="numeric">40</td><td class="numeric">572,487</td><td>valid strategy<details class="task-detail"><summary>output</summary><pre>{
+  &quot;decision&quot;: &quot;stop&quot;,
+  &quot;decision_correct&quot;: true,
+  &quot;declared_probability&quot;: [
+    67039,
+    70878
+  ],
+  &quot;diagnostic_requests&quot;: 1,
+  &quot;extra_requests&quot;: 0,
+  &quot;io_used&quot;: 1,
+  &quot;max_success_probability&quot;: [
+    67039,
+    70878
+  ],
+  &quot;probability_error&quot;: [
+    0,
+    1
+  ],
+  &quot;query_count&quot;: 1,
+  &quot;reason&quot;: &quot;valid strategy&quot;,
+  &quot;search_requests&quot;: 0,
+  &quot;strategy_correct&quot;: true,
+  &quot;strategy_reason&quot;: &quot;valid strategy&quot;,
+  &quot;success_basis&quot;: &quot;strategy&quot;,
+  &quot;target_found&quot;: false
+}</pre></details></td></tr><tr><td class="numeric">441</td><td><code>task_441_stateless_contract</code></td><td>feasibility</td><td>boundary</td><td>pass</td><td class="numeric">76.9</td><td class="numeric">60</td><td class="numeric">593,340</td><td>decision_correct=True, response_correct=True, extra_requests=0, status=solved, submission_count=1<details class="task-detail"><summary>output</summary><pre>{
+  &quot;decision_correct&quot;: true,
+  &quot;extra_requests&quot;: 0,
+  &quot;response_correct&quot;: true,
+  &quot;status&quot;: &quot;solved&quot;,
+  &quot;submission_count&quot;: 1
+}</pre></details></td></tr><tr><td class="numeric">444</td><td><code>task_444_stateless_contract</code></td><td>feasibility</td><td>ceiling</td><td>pass</td><td class="numeric">37.7</td><td class="numeric">36</td><td class="numeric">226,026</td><td>decision_correct=True, response_correct=True, extra_requests=0, status=impossible, submission_count=1<details class="task-detail"><summary>output</summary><pre>{
+  &quot;decision_correct&quot;: true,
+  &quot;extra_requests&quot;: 0,
+  &quot;response_correct&quot;: true,
+  &quot;status&quot;: &quot;impossible&quot;,
+  &quot;submission_count&quot;: 1
+}</pre></details></td></tr><tr><td class="numeric">446</td><td><code>task_446_archive_transfer</code></td><td>feasibility</td><td>boundary</td><td>pass</td><td class="numeric">135.1</td><td class="numeric">72</td><td class="numeric">956,418</td><td>decision_correct=True, response_correct=True, extra_requests=0, status=impossible, submission_count=1<details class="task-detail"><summary>output</summary><pre>{
+  &quot;decision_correct&quot;: true,
+  &quot;extra_requests&quot;: 0,
+  &quot;response_correct&quot;: true,
+  &quot;status&quot;: &quot;impossible&quot;,
+  &quot;submission_count&quot;: 1
+}</pre></details></td></tr><tr><td class="numeric">448</td><td><code>task_448_aggregate_identifiability</code></td><td>feasibility</td><td>boundary</td><td>pass</td><td class="numeric">259.2</td><td class="numeric">112</td><td class="numeric">2.14M</td><td>decision_correct=True, response_correct=True, extra_requests=0, status=solved, submission_count=1<details class="task-detail"><summary>output</summary><pre>{
+  &quot;decision_correct&quot;: true,
+  &quot;extra_requests&quot;: 0,
+  &quot;response_correct&quot;: true,
+  &quot;status&quot;: &quot;solved&quot;,
+  &quot;submission_count&quot;: 1
+}</pre></details></td></tr><tr><td class="numeric">454</td><td><code>task_454_search_boundary</code></td><td>feasibility</td><td>boundary</td><td>pass</td><td class="numeric">200.2</td><td class="numeric">88</td><td class="numeric">1.5M</td><td>valid strategy<details class="task-detail"><summary>output</summary><pre>{
+  &quot;decision&quot;: &quot;search&quot;,
+  &quot;decision_correct&quot;: true,
+  &quot;declared_probability&quot;: [
+    142265,
+    148412
+  ],
+  &quot;diagnostic_requests&quot;: 0,
+  &quot;extra_requests&quot;: 0,
+  &quot;io_used&quot;: 55,
+  &quot;max_success_probability&quot;: [
+    142265,
+    148412
+  ],
+  &quot;probability_error&quot;: [
+    0,
+    1
+  ],
+  &quot;query_count&quot;: 41,
+  &quot;reason&quot;: &quot;valid strategy&quot;,
+  &quot;search_requests&quot;: 12,
+  &quot;strategy_correct&quot;: true,
+  &quot;strategy_reason&quot;: &quot;valid strategy&quot;,
+  &quot;success_basis&quot;: &quot;verified_find&quot;,
+  &quot;target_found&quot;: true
+}</pre></details></td></tr><tr><td class="numeric">457</td><td><code>task_457_search_pool</code></td><td>feasibility</td><td>ceiling</td><td>pass</td><td class="numeric">66.8</td><td class="numeric">32</td><td class="numeric">406,236</td><td>valid strategy<details class="task-detail"><summary>output</summary><pre>{
+  &quot;decision&quot;: &quot;stop&quot;,
+  &quot;decision_correct&quot;: true,
+  &quot;declared_probability&quot;: [
+    88321,
+    127636
+  ],
+  &quot;diagnostic_requests&quot;: 0,
+  &quot;extra_requests&quot;: 0,
+  &quot;io_used&quot;: 0,
+  &quot;max_success_probability&quot;: [
+    88321,
+    127636
+  ],
+  &quot;probability_error&quot;: [
+    0,
+    1
+  ],
+  &quot;query_count&quot;: 0,
+  &quot;reason&quot;: &quot;valid strategy&quot;,
+  &quot;search_requests&quot;: 0,
+  &quot;strategy_correct&quot;: true,
+  &quot;strategy_reason&quot;: &quot;valid strategy&quot;,
+  &quot;success_basis&quot;: &quot;strategy&quot;,
+  &quot;target_found&quot;: false
+}</pre></details></td></tr><tr><td class="numeric">460</td><td><code>task_460_replication_cut</code></td><td>feasibility</td><td>boundary</td><td>pass</td><td class="numeric">163.2</td><td class="numeric">76</td><td class="numeric">1.72M</td><td>decision_correct=True, response_correct=True, extra_requests=0, status=budget_exceeded, submission_count=1<details class="task-detail"><summary>output</summary><pre>{
+  &quot;decision_correct&quot;: true,
+  &quot;extra_requests&quot;: 0,
+  &quot;response_correct&quot;: true,
+  &quot;status&quot;: &quot;budget_exceeded&quot;,
+  &quot;submission_count&quot;: 1
+}</pre></details></td></tr><tr><td class="numeric">468</td><td><code>task_468_diagnostic_queries</code></td><td>feasibility</td><td>boundary</td><td>pass</td><td class="numeric">125.0</td><td class="numeric">72</td><td class="numeric">1.04M</td><td>decision_correct=True, response_correct=True, extra_requests=0, status=impossible, submission_count=1<details class="task-detail"><summary>output</summary><pre>{
+  &quot;decision_correct&quot;: true,
+  &quot;extra_requests&quot;: 0,
+  &quot;response_correct&quot;: true,
+  &quot;status&quot;: &quot;impossible&quot;,
+  &quot;submission_count&quot;: 1
+}</pre></details></td></tr><tr><td class="numeric">469</td><td><code>task_469_deployment_matching</code></td><td>feasibility</td><td>ceiling</td><td>pass</td><td class="numeric">68.2</td><td class="numeric">56</td><td class="numeric">572,220</td><td>decision_correct=True, response_correct=True, extra_requests=0, status=impossible, submission_count=1<details class="task-detail"><summary>output</summary><pre>{
+  &quot;decision_correct&quot;: true,
+  &quot;extra_requests&quot;: 0,
+  &quot;response_correct&quot;: true,
+  &quot;status&quot;: &quot;impossible&quot;,
+  &quot;submission_count&quot;: 1
+}</pre></details></td></tr><tr><td class="numeric">471</td><td><code>task_471_clock_contract</code></td><td>feasibility</td><td>boundary</td><td>pass</td><td class="numeric">118.7</td><td class="numeric">76</td><td class="numeric">1.17M</td><td>decision_correct=True, response_correct=True, extra_requests=0, status=solved, submission_count=1<details class="task-detail"><summary>output</summary><pre>{
+  &quot;decision_correct&quot;: true,
+  &quot;extra_requests&quot;: 0,
+  &quot;response_correct&quot;: true,
+  &quot;status&quot;: &quot;solved&quot;,
+  &quot;submission_count&quot;: 1
+}</pre></details></td></tr></tbody></table></div>
+    </section>
+
+    <section aria-label="Sources"><h2>Sources</h2><p class="coverage-note">Frozen allow-list artifacts aggregated into this sample (checkout <code>results/</code> first, then <code>../results/</code>).</p><ul class="run-sources"><li>long: <a href="https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/pi_sample_long_20261106.json"><code>pi_sample_long_20261106.json</code></a></li><li>reflect: <a href="https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/pi_sample_reflect_20261106.json"><code>pi_sample_reflect_20261106.json</code></a></li><li>reflect: <a href="https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/pi_reflect_ds41flash_20261106.json"><code>pi_reflect_ds41flash_20261106.json</code></a></li><li>feasibility: <a href="https://github.com/Alex-Kul777/harness-bench-fast/blob/main/results/wave19_full_ds41flash.json"><code>wave19_full_ds41flash.json</code></a></li></ul></section>
+
+    <p class="fine-print">Static page generated by <code>scripts/build_fork_pages.py</code> from the frozen allow-list artifacts in <code>results/</code>. Times are wall-clock seconds; tokens are compact recorded totals. <strong>invalid</strong> means the wave timeout was below its floor (the measurement is not a fair capability signal), not a normal fail. An unmeasured task is not a failure. <a href="fork-sample-manifest.json">Manifest</a> · <a href="fork.en.html#medium">← Fork results</a></p>
+  </main>
+  <footer><span>No LLM judge. Every task is checked mechanically.</span><a href="fork.en.html#medium">Fork Medium 80 →</a></footer>
+  <script>document.querySelectorAll('a.lang-switch').forEach(function(a){if(location.hash)a.href+=location.hash;});</script>
+</body>
+</html>
