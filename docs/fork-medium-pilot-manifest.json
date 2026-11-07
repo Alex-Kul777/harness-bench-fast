@@ -1,0 +1,41 @@
+{
+  "id": "medium-pilot-gigachat3pro",
+  "size": 13,
+  "share": "13 of 90 Medium tasks (cost-bounded stratified pilot subset; long 2 + reflect 5 + feasibility 6)",
+  "created": "2026-11-07",
+  "created_by": "project-a-agent",
+  "rule": "Cost-bounded stratified subset from published per-config outcomes (codex/miniswe/claudecode medium90): bands ceiling=3/3, boundary=1-2/3, floor=0/3. Long quota reduced to 2 (all floor tasks live in long, the most expensive wave). wave21 (composite-hard) excluded from the pilot. Includes >=1 floor and >=1 ceiling anchor.",
+  "provenance": "Per-task outcomes from docs/{codex-deepseek,miniswe-deepseek,claudecode-sonnet}-medium90-20261027.json",
+  "config": {"harness": "Pi", "model": "GigaChat 3 Pro", "profile": ""},
+  "sources": [
+    "pi_pilot_gigachat3pro_sub1_20261107.json",
+    "pi_pilot_gigachat3pro_sub2_20261107.json",
+    "pi_pilot_gigachat3pro_sub3_20261107.json"
+  ],
+  "waves": [
+    {"key": "long", "label": "Long context", "task_range": "392-411", "tasks": 2},
+    {"key": "reflect", "label": "Tool reflection", "task_range": "412-431", "tasks": 5},
+    {"key": "feasibility", "label": "Feasibility", "task_range": "432-471", "tasks": 6}
+  ],
+  "tasks": [
+    {"number": 392, "task_id": "task_392_manuscript_continuity", "wave": "long", "band": "floor"},
+    {"number": 399, "task_id": "task_399_port_js_library", "wave": "long", "band": "ceiling"},
+    {"number": 414, "task_id": "task_414_batch_partial", "wave": "reflect", "band": "ceiling"},
+    {"number": 429, "task_id": "task_429_mail_bounce", "wave": "reflect", "band": "ceiling"},
+    {"number": 423, "task_id": "task_423_rooms_duration_cap", "wave": "reflect", "band": "boundary"},
+    {"number": 430, "task_id": "task_430_orders_backorder", "wave": "reflect", "band": "boundary"},
+    {"number": 420, "task_id": "task_420_wiki_optimistic_lock", "wave": "reflect", "band": "boundary"},
+    {"number": 434, "task_id": "task_434_universal_compressor", "wave": "feasibility", "band": "ceiling"},
+    {"number": 449, "task_id": "task_449_search_capabilities", "wave": "feasibility", "band": "ceiling"},
+    {"number": 446, "task_id": "task_446_archive_transfer", "wave": "feasibility", "band": "boundary"},
+    {"number": 458, "task_id": "task_458_deployment_matching", "wave": "feasibility", "band": "boundary"},
+    {"number": 443, "task_id": "task_443_search_count", "wave": "feasibility", "band": "boundary"},
+    {"number": 471, "task_id": "task_471_clock_contract", "wave": "feasibility", "band": "boundary"}
+  ],
+  "results": [
+    {"source": "pi_pilot_gigachat3pro_sub1_20261107.json", "wave": "long", "passed": 0, "total": 2},
+    {"source": "pi_pilot_gigachat3pro_sub2_20261107.json", "wave": "reflect", "passed": 0, "total": 5},
+    {"source": "pi_pilot_gigachat3pro_sub3_20261107.json", "wave": "feasibility", "passed": 0, "total": 6}
+  ],
+  "notes": "Pilot run 2026-11-07 on Pi + GigaChat 3 Pro: 0/13 PASS. Interrupted once by a gateway restart; resumed from checkpoint. Files carry the 'pilot' token so the auto-sync table and the Medium aggregate never ingest them."
+}

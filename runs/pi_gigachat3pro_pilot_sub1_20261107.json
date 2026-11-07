@@ -1,0 +1,57 @@
+{
+  "results": [
+    {
+      "task_id": "task_399_port_js_library",
+      "passed": false,
+      "message": "нет пакета chronorule/ (chronorule/__init__.py)",
+      "elapsed_seconds": 10.31,
+      "error": null,
+      "timeout": 7200,
+      "comparable": true,
+      "workspace": null,
+      "agent_input_tokens": 48540,
+      "agent_output_tokens": 1512,
+      "agent_reasoning_tokens": 0,
+      "agent_total_tokens": 214164,
+      "agent_tool_calls": 12,
+      "agent_api_calls": 20,
+      "agent_steps": 20
+    },
+    {
+      "task_id": "task_392_manuscript_continuity",
+      "passed": false,
+      "message": "точность 0.0%, полнота 0.0% (строк в отчёте 7); нужно не меньше 90% и 90%",
+      "elapsed_seconds": 73.19,
+      "error": null,
+      "timeout": 7200,
+      "comparable": true,
+      "workspace": null,
+      "agent_input_tokens": 219546,
+      "agent_output_tokens": 9786,
+      "agent_reasoning_tokens": 0,
+      "agent_total_tokens": 12375156,
+      "agent_tool_calls": 243,
+      "agent_api_calls": 328,
+      "agent_steps": 328
+    }
+  ],
+  "summary": {
+    "total": 2,
+    "passed": 0,
+    "failed": 2,
+    "pass_rate": 0.0,
+    "total_seconds": 83.5,
+    "total_input_tokens": 268086,
+    "total_output_tokens": 11298,
+    "total_reasoning_tokens": 0,
+    "total_tokens": 12589320,
+    "total_steps": 348,
+    "total_tool_calls": 255,
+    "estimated_cost_rub": 72.6,
+    "timeout": 7200,
+    "task_timeouts": {
+      "task_399_port_js_library": 7200,
+      "task_392_manuscript_continuity": 7200
+    }
+  }
+}

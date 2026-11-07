@@ -1,7 +1,7 @@
 {
   "generated_by": "scripts/build_fork_pages.py",
   "task_set_version": "v0.21.3",
-  "medium_tasks": 80,
+  "medium_tasks": 90,
   "provenance": "Fork run artifacts scanned from results/ (checkout first) + ../results/, de-duplicated by file name; k=1 (no repeats per config); no infra failures recorded; partial = summed total < expected tasks for the wave.",
   "waves": [
     {
@@ -21,6 +21,12 @@
       "label": "Feasibility",
       "task_range": "432–471",
       "tasks": 40
+    },
+    {
+      "key": "composite_hard",
+      "label": "Composite hard (wave 21)",
+      "task_range": "512–530",
+      "tasks": 10
     }
   ],
   "rows": [
@@ -64,7 +70,8 @@
             "median": 111.3,
             "max": 3660.4
           }
-        }
+        },
+        "composite_hard": null
       },
       "usage": {
         "seconds": 45317.0,
@@ -184,6 +191,29 @@
         "mean": 91.4,
         "median": 55.0,
         "max": 430.4
+      }
+    ],
+    "composite_hard": [
+      {
+        "label": "Codex + DeepSeek",
+        "n": 10,
+        "mean": 272.4,
+        "median": 183.2,
+        "max": 900.1
+      },
+      {
+        "label": "mini-SWE + DeepSeek",
+        "n": 10,
+        "mean": 506.1,
+        "median": 439.8,
+        "max": 900.1
+      },
+      {
+        "label": "Claude Code + Sonnet",
+        "n": 10,
+        "mean": 208.2,
+        "median": 185.0,
+        "max": 385.1
       }
     ]
   }

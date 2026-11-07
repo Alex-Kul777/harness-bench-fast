@@ -43,7 +43,7 @@ RESULT_DIRS = [REPO_ROOT / "results", REPO_ROOT.parent / "results"]
 
 GENERATED_BY = "scripts/build_fork_pages.py"
 TASK_SET_VERSION = "v0.21.3"
-MEDIUM_TASKS = 80
+MEDIUM_TASKS = 90
 PROVENANCE = (
     "Fork run artifacts scanned from results/ (checkout first) + ../results/, "
     "de-duplicated by file name; k=1 (no repeats per config); no infra failures "
@@ -51,15 +51,24 @@ PROVENANCE = (
 )
 
 # key -> (label, task_range, expected tasks)
+# The fork's Medium suite is the full 90-task set: historical 80 (392-471) plus the
+# ten selected wave-21 coupled workflows (512-530).
 WAVES = {
     "long": ("Long context", "392\u2013411", 20),
     "reflect": ("Tool reflection", "412\u2013431", 20),
     "feasibility": ("Feasibility", "432\u2013471", 40),
+    "composite_hard": ("Composite hard (wave 21)", "512\u2013530", 10),
 }
-WAVE_ORDER = ["long", "reflect", "feasibility"]
+WAVE_ORDER = ["long", "reflect", "feasibility", "composite_hard"]
 
-# task_id integer -> wave (per design: 392-411 long, 412-431 reflect, 432-471 feasibility)
-TASK_ID_WAVES = ((392, 411, "long"), (412, 431, "reflect"), (432, 471, "feasibility"))
+# task_id integer -> wave (per design: 392-411 long, 412-431 reflect, 432-471
+# feasibility, 512-530 wave-21 composite-hard).
+TASK_ID_WAVES = (
+    (392, 411, "long"),
+    (412, 431, "reflect"),
+    (432, 471, "feasibility"),
+    (512, 530, "composite_hard"),
+)
 
 # Frozen upstream medium90 snapshots with per-task elapsed_seconds (tasks 392-471).
 # Read-only: the generator never writes these files.
@@ -143,6 +152,8 @@ def _override(stem: str, field: str) -> str | None:
 
 def classify_wave(stem: str) -> str | None:
     lower = stem.lower()
+    if "composite" in lower or "wave21" in lower:
+        return "composite_hard"
     if "long" in lower:
         return "long"
     if "reflect" in lower:
@@ -706,7 +717,7 @@ def _band_mix(tasks) -> str:
 
 
 def _sample_provenance() -> str:
-    parts = [f"{wave}={' + '.join(SAMPLE_SOURCES.get(wave, []))}" for wave in WAVE_ORDER]
+    parts = [f"{wave}={' + '.join(SAMPLE_SOURCES.get(wave, []))}" for wave in WAVE_ORDER if SAMPLE_SOURCES.get(wave)]
     return (
         "Capability sample assembled from docs/fork-sample-manifest.json; per-task results "
         "resolved from the frozen allow-list artifacts in results/ (checkout first, then "
@@ -761,6 +772,8 @@ def build_sample_model() -> dict:
     waves = []
     for key in WAVE_ORDER:
         wave_tasks = [t for t in tasks if t["wave"] == key]
+        if not wave_tasks:
+            continue
         info = {
             "key": key,
             "label": WAVES[key][0],

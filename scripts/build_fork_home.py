@@ -30,6 +30,8 @@ OUT_JSON = DOCS / "fork-home-results.json"
 OUT_HTML = DOCS / "fork.html"
 LEADERBOARD = DOCS / "leaderboard-results.json"
 MEDIUM_JSON = DOCS / "fork-medium90-results.json"
+MEDIUM90_JSON = DOCS / "medium90-results.json"
+PILOT_MANIFEST = DOCS / "fork-medium-pilot-manifest.json"
 
 GENERATED_BY = "scripts/build_fork_home.py"
 RESULT_DIRS = [REPO_ROOT / "results", REPO_ROOT.parent / "results"]
@@ -90,7 +92,7 @@ OURS_LIGHT = [
 
 # (detail_filename, suite_key, row, run_data) collected while building; written on run.
 _DETAIL_JOBS: list = []
-WAVE_LABELS = (("long", "Long"), ("reflect", "Reflect"), ("feasibility", "Feasibility"))
+WAVE_LABELS = (("long", "Long"), ("reflect", "Reflect"), ("feasibility", "Feasibility"), ("composite_hard", "Wave 21"))
 
 # Harnesses that are OUR runs; anything else in the README shot-list table is upstream.
 UPSTREAM_OURS = {"pi", "openclaw", "hermes"}
@@ -292,21 +294,27 @@ def ours_medium():
         return []
     d = json.loads(MEDIUM_JSON.read_text(encoding="utf-8"))
     ver = d.get("task_set_version")
+    suite_total = int(d.get("medium_tasks") or 90)
     out = []
     for r in d.get("rows", []):
         suites = r.get("suites") or {}
-        passed = sum((s.get("passed") or 0) for s in suites.values())
-        total = sum((s.get("total") or 0) for s in suites.values())
+        passed = sum(((s or {}).get("passed") or 0) for s in suites.values())
+        total = sum(((s or {}).get("total") or 0) for s in suites.values())
         u = r.get("usage") or {}
         waves = {k: {"passed": (suites.get(k) or {}).get("passed"),
                      "total": (suites.get(k) or {}).get("total")} for k, _ in WAVE_LABELS}
         date = _date_from_source_files(r.get("sources"))
-        out.append(_row(_with_version(r.get("harness"), _harness_version(r)),
-                        _with_date(r.get("profile"), date),
-                        _with_reasoning(r.get("model"), r.get("profile")),
-                        passed, total, (passed / total) if total else None, u.get("seconds"),
-                        u.get("steps"), u.get("tokens"), u.get("cost_rub"), ver, "ours", waves,
-                        detail=r.get("details_url")))
+        row = _row(_with_version(r.get("harness"), _harness_version(r)),
+                   _with_date(r.get("profile"), date),
+                   _with_reasoning(r.get("model"), r.get("profile")),
+                   passed, total, (passed / total) if total else None, u.get("seconds"),
+                   u.get("steps"), u.get("tokens"), u.get("cost_rub"), ver, "ours", waves,
+                   detail=r.get("details_url"))
+        # Truncation vs the full 90-task suite must stay visible in the Result cell.
+        row["coverage"] = f"{total}/{suite_total}"
+        if total and total < suite_total:
+            row["result"] = f"{passed}/{total} (partial {total}/{suite_total})"
+        out.append(row)
     return out
 
 
@@ -374,20 +382,74 @@ def upstream_shotlist():
 
 
 def upstream_medium():
-    """Upstream Medium (80) rows from the published leaderboard."""
-    if not LEADERBOARD.exists():
+    """Upstream Medium (90) rows from the published 90-task board.
+
+    Only complete (measured_tasks == 90) rows are taken, so the full-suite table
+    never mixes in partial 80/40-task measurements.
+    """
+    if not MEDIUM90_JSON.exists():
         return []
-    d = json.loads(LEADERBOARD.read_text(encoding="utf-8"))
+    d = json.loads(MEDIUM90_JSON.read_text(encoding="utf-8"))
     out = []
     for r in d.get("rows", []):
-        md = r.get("medium")
-        if not md:
+        if (r.get("measured_tasks") or 0) != 90:
             continue
-        out.append(_row(r.get("harness"), _with_date("", r.get("measurement_date")), r.get("model"),
-                        md.get("passed"), md.get("total"),
-                        (md["passed"] / md["total"]) if md.get("total") else None,
+        passed = r.get("observed_passed")
+        if passed is None:
+            continue
+        out.append(_row(r.get("harness"), _with_date("", None), r.get("model"),
+                        int(passed), 90, (int(passed) / 90),
                         None, None, None, None, r.get("source_version"), "upstream"))
     out.sort(key=lambda x: -_pct_val(x["pct"]))
+    return out
+
+
+def sample_rows():
+    """Our truncated Medium subsets + pilot mini-sets (coverage vs the full 90)."""
+    out = []
+    if MEDIUM_JSON.exists():
+        d = json.loads(MEDIUM_JSON.read_text(encoding="utf-8"))
+        for r in d.get("rows", []):
+            suites = r.get("suites") or {}
+            passed = sum(((s or {}).get("passed") or 0) for s in suites.values())
+            total = sum(((s or {}).get("total") or 0) for s in suites.values())
+            if not total:
+                continue
+            u = r.get("usage") or {}
+            out.append({
+                "kind": "coverage",
+                "harness": r.get("harness") or DASH,
+                "profile": r.get("profile") or DASH,
+                "model": r.get("model") or DASH,
+                "subset": f"\u043d\u0430\u0448\u0438 \u043f\u0440\u043e\u0433\u043d\u0430\u043d\u043d\u044b\u0435: {total} \u0438\u0437 90",
+                "result": f"{passed}/{total}",
+                "pct": f"{100 * passed / total:.1f}%",
+                "coverage": f"{total}/90",
+                "time": _fmt_min(u.get("seconds")),
+                "tokens_cost": _fmt_cost(u.get("tokens"), u.get("cost_rub")),
+                "status": "partial" if total < 90 else "complete",
+                "detail": r.get("details_url"),
+            })
+    if PILOT_MANIFEST.exists():
+        man = json.loads(PILOT_MANIFEST.read_text(encoding="utf-8"))
+        cfg = man.get("config") or {}
+        res = man.get("results") or []
+        passed = sum((x.get("passed") or 0) for x in res)
+        total = sum((x.get("total") or 0) for x in res)
+        out.append({
+            "kind": "pilot",
+            "harness": cfg.get("harness") or DASH,
+            "profile": cfg.get("profile") or DASH,
+            "model": cfg.get("model") or DASH,
+            "subset": f"\u043f\u0438\u043b\u043e\u0442: {man.get('size')} \u0438\u0437 90 (\u0443\u0440\u0435\u0437\u0430\u043d\u043d\u044b\u0439)",
+            "result": f"{passed}/{total}",
+            "pct": f"{100 * passed / total:.1f}%" if total else DASH,
+            "coverage": f"{total}/90",
+            "time": DASH,
+            "tokens_cost": DASH,
+            "status": "pilot (truncated)",
+            "detail": None,
+        })
     return out
 
 
@@ -399,7 +461,8 @@ def build():
         "suites": [
             {"key": "shotlist", "label": "Shot List (52)", "tasks": 52, "ours": ours_shotlist(), "upstream": upstream_shotlist()},
             {"key": "light", "label": "Light (391)", "tasks": 391, "ours": ours_light(), "upstream": upstream_light()},
-            {"key": "medium", "label": "Medium (80)", "tasks": 80, "ours": ours_medium(), "upstream": upstream_medium()},
+            {"key": "medium", "label": "Medium (90)", "tasks": 90, "ours": ours_medium(), "upstream": upstream_medium()},
+            {"key": "medium-sample", "label": "Medium sample", "tasks": 0, "ours": sample_rows(), "upstream": []},
         ],
     }
 
@@ -473,8 +536,58 @@ def _waves_html(rows):
     )
 
 
+SAMPLE_HEAD = """<tr>
+  <th scope="col">Harness</th><th scope="col">Profile</th><th scope="col">Model</th>
+  <th scope="col">Subset</th><th scope="col" class="numeric">Result</th>
+  <th scope="col" class="numeric">%</th><th scope="col" class="numeric">Coverage</th>
+  <th scope="col" class="numeric">Time</th><th scope="col" class="numeric">Tokens (cost)</th>
+  <th scope="col">Status</th>
+</tr>"""
+
+
+def _sample_table(rows):
+    tr = []
+    for r in rows:
+        d = r.get("detail")
+        attrs = f' class="detail-row" data-detail="{html.escape(d)}"' if d else ""
+        harness = (f'<a href="{html.escape(d)}">{html.escape(r["harness"])}</a>'
+                   if d else html.escape(r["harness"]))
+        tr.append(
+            f"<tr{attrs}>"
+            f"<td>{harness}</td>"
+            f"<td>{html.escape(r['profile'])}</td>"
+            f"<td>{html.escape(r['model'])}</td>"
+            f"<td>{html.escape(r['subset'])}</td>"
+            f'<td class="numeric">{html.escape(r["result"])}</td>'
+            f'<td class="numeric">{html.escape(r["pct"])}</td>'
+            f'<td class="numeric">{html.escape(r["coverage"])}</td>'
+            f'<td class="numeric">{html.escape(r["time"])}</td>'
+            f'<td class="numeric">{html.escape(r["tokens_cost"])}</td>'
+            f"<td>{html.escape(r['status'])}</td>"
+            "</tr>"
+        )
+    return ('<table class="leaderboard-table"><thead>' + SAMPLE_HEAD + '</thead><tbody>'
+            '<tr class="group"><td colspan="10"><strong>Our subsets (truncated vs the full 90)</strong></td></tr>'
+            + "\n".join(tr) + "</tbody></table>")
+
+
 def _panel(suite):
     key = suite["key"]
+    if key == "medium-sample":
+        note = (
+            '<p class="coverage-note">Наши <strong>урезанные</strong> Medium-наборы: суммарный '
+            'охват прогнанных задач и пилоты. Знаменатель — полный Medium (90); '
+            'в колонке <code>Coverage</code> видно, что покрытие неполное '
+            '(например 66/90 и 13/90). Источник пилота: '
+            '<a href="fork-medium-pilot-manifest.json">fork-medium-pilot-manifest.json</a> · '
+            '<a href="fork.html#medium">Полные 90 →</a></p>'
+        )
+        return (
+            f'      <section data-suite-panel="{key}" aria-label="{html.escape(suite["label"])}">\n'
+            f'        {note}\n'
+            f'        <div class="table-wrap">{_sample_table(suite["ours"])}</div>\n'
+            "      </section>"
+        )
     inner = _table_groups(suite["ours"], suite["upstream"]) if suite["upstream"] else _table(suite["ours"])
     extra = _waves_html(suite["ours"]) if key == "medium" and suite["ours"] else ""
     return (
@@ -567,7 +680,8 @@ __STYLE__
     <div class="suite-switch" role="group" aria-label="Benchmark suite">
       <button type="button" data-suite="shotlist" aria-pressed="true"><strong>Shot List (52)</strong><span>stratified sample</span></button>
       <button type="button" data-suite="light" aria-pressed="false"><strong>Light (391)</strong><span>frozen suite</span></button>
-      <button type="button" data-suite="medium" aria-pressed="false"><strong>Medium (80)</strong><span>long · reflect · feasibility</span></button>
+      <button type="button" data-suite="medium" aria-pressed="false"><strong>Medium (90)</strong><span>long · reflect · feasibility · wave21</span></button>
+      <button type="button" data-suite="medium-sample" aria-pressed="false"><strong>Medium sample</strong><span>our subsets · truncated</span></button>
     </div>
     <div class="filters">
       <label class="search">Search model or harness<input id="search" type="search" placeholder="e.g. Pi, OpenClaw, DeepSeek" autocomplete="off"></label>

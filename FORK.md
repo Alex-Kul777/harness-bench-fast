@@ -19,7 +19,9 @@ upstream-строки) — остаётся в основном [`README.md`](RE
 
 - 📊 **Детальные таблицы форка:** [`docs/fork-results.md`](docs/fork-results.md)
 - 🔬 **Live-лейаут:** <https://ai-forever.github.io/harness-bench-fast/>
-- 🧭 **Наша форк-страница результатов:** <https://alex-kul777.github.io/harness-bench-fast/fork.html> (табы Shot List / Light / Medium; данные: `docs/fork-home-results.json`, генератор `scripts/build_fork_home.py`)
+- 🧭 **Наша форк-страница результатов:** <https://alex-kul777.github.io/harness-bench-fast/fork.html> (табы Shot List / Light / **Medium (90)** / **Medium sample**; данные: `docs/fork-home-results.json`, генератор `scripts/build_fork_home.py`)
+  - `#medium` — полные **90** задач (historical 80 + wave21); наши строки помечены `partial`.
+  - `#medium-sample` — наш урезанный **семпл**: охват 66 из 90 + пилот GigaChat 3 Pro (13 из 90); манифест `docs/fork-medium-pilot-manifest.json`.
 - ⬆️ **Upstream:** <https://github.com/ai-forever/harness-bench-fast>
 - 🧾 **Артефакты прогонов:** `results/` (JSON-отчёты), `runs/` (полные прогоны), `docs/*.html` (HTML-отчёты)
 

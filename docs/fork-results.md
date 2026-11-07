@@ -9,6 +9,11 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 > **EN:** This file holds the fork's own results (Pi / OpenClaw / Hermes harnesses, wave 19).
 > Russian-first; see `../FORK.md` for the short index.
 
+Наши **Medium**-наборы — на единой странице форка:
+[`docs/fork.html#medium`](fork.html#medium) — полные **90** задач (с пометкой `partial` для
+неполного охвата) и [`docs/fork.html#medium-sample`](fork.html#medium-sample) — урезанный
+**семпл** (наш охват 66 + пилот 13; пилот: [`docs/fork-medium-pilot-manifest.json`](fork-medium-pilot-manifest.json)).
+
 ## Содержание
 - [Сводная таблица (автосинк)](#сводная-таблица-автосинк)
 - [Shot List (52 задачи) — наши строки](#shot-list-52-задачи--наши-строки)
