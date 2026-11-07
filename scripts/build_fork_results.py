@@ -18,6 +18,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from fork_i18n import t  # noqa: E402
+from fork_metrics import steps_from_json  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DOC_PATH = REPO_ROOT / "docs" / "fork-results.md"
@@ -233,7 +234,7 @@ def build_rows() -> list[dict]:
                 "result": fmt_result(summary.get("passed"), summary.get("total")),
                 "pct": fmt_pct(summary.get("pass_rate")),
                 "time": fmt_time(summary.get("total_seconds")),
-                "steps": fmt_int(summary.get("total_steps")),
+                "steps": fmt_int(steps_from_json(data)),
                 "tokens": fmt_int(summary.get("total_tokens")),
                 "cost": fmt_cost(summary.get("estimated_cost_rub")),
                 "_passed": summary.get("passed") or 0,

@@ -37,6 +37,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from fork_i18n import DEFAULT_LOCALE, LOCALES, locale_filename, other_locale, t  # noqa: E402
+from fork_metrics import steps_from_json  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUT = REPO_ROOT / "docs" / "fork-medium90-results.json"
@@ -413,14 +414,14 @@ def build_model() -> dict:
 
         usage = group["usage"]
         usage["seconds"] += float(summary.get("total_seconds") or 0.0)
-        usage["steps"] += int(summary.get("total_steps") or 0)
+        usage["steps"] += int(steps_from_json(data) or 0)
         usage["tokens"] += int(summary.get("total_tokens") or 0)
         usage["cost_rub"] += float(summary.get("estimated_cost_rub") or 0.0)
 
         # Per-wave usage: each run file belongs to exactly one wave (by stem).
         wu = group["wave_usage"][wave]
         wu["seconds"] += float(summary.get("total_seconds") or 0.0)
-        wu["steps"] += int(summary.get("total_steps") or 0)
+        wu["steps"] += int(steps_from_json(data) or 0)
         wu["tokens"] += int(summary.get("total_tokens") or 0)
         wu["cost_rub"] += float(summary.get("estimated_cost_rub") or 0.0)
 

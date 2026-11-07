@@ -36,14 +36,14 @@ Auto-sync: 28 runs
 | Hermes | Shot List (52) | — | GPT-OSS-120B | 28/52 | 53.8% | 37.9m | 427 | 8 833 747 (2 171₽) |
 | Hermes | Shot List (52) | — | Qwen3.6-35B-A3B | 36/52 | 69.2% | 38.6m | 301 | 6 961 237 (1 737₽) |
 | Hermes | Light (391) | — | — | 387/391 | 99.0% | 404.6m | — | 31 770 687 (7 775₽) |
-| OpenClaw | Shot List (52) | — | DeepSeek-V4.1-Flash | 50/52 | 96.2% | 47.3m | — | 2 814 749 (165₽) |
-| OpenClaw | Shot List (52) | thinking: high | DeepSeek-V4.1-Flash (thinking: high) | 51/52 | 98.1% | 40.3m | — | 2 926 226 (141₽) |
-| OpenClaw | Shot List (52) | thinking: medium | DeepSeek-V4.1-Flash (thinking: medium) | 52/52 | 100.0% | 40.6m | — | 2 935 013 (148₽) |
-| OpenClaw | Shot List (52) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 50/52 | 96.2% | 37.9m | — | 2 718 375 (133₽) |
-| OpenClaw | Shot List (52) | thinking: off | GLM-5.2 (thinking: off) | 47/52 | 90.4% | 231.9m | — | 1 777 320 (1 793₽) |
-| OpenClaw | Shot List (52) | — | GLM-5.3 | 44/52 | 84.6% | 46.1m | — | 1 955 767 (66₽) |
-| OpenClaw | Shot List (52) | — | GPT-OSS-120B | 17/52 | 32.7% | 205.2m | — | 1 261 870 (1 080₽) |
-| OpenClaw | Shot List (52) | — | Qwen3.6-35B-A3B | 40/52 | 76.9% | 195.2m | — | 2 109 433 (2 859₽) |
+| OpenClaw | Shot List (52) | — | DeepSeek-V4.1-Flash | 50/52 | 96.2% | 47.3m | 237 | 2 814 749 (165₽) |
+| OpenClaw | Shot List (52) | thinking: high | DeepSeek-V4.1-Flash (thinking: high) | 51/52 | 98.1% | 40.3m | 244 | 2 926 226 (141₽) |
+| OpenClaw | Shot List (52) | thinking: medium | DeepSeek-V4.1-Flash (thinking: medium) | 52/52 | 100.0% | 40.6m | 224 | 2 935 013 (148₽) |
+| OpenClaw | Shot List (52) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 50/52 | 96.2% | 37.9m | 244 | 2 718 375 (133₽) |
+| OpenClaw | Shot List (52) | thinking: off | GLM-5.2 (thinking: off) | 47/52 | 90.4% | 231.9m | 247 | 1 777 320 (1 793₽) |
+| OpenClaw | Shot List (52) | — | GLM-5.3 | 44/52 | 84.6% | 46.1m | 148 | 1 955 767 (66₽) |
+| OpenClaw | Shot List (52) | — | GPT-OSS-120B | 17/52 | 32.7% | 205.2m | 120 | 1 261 870 (1 080₽) |
+| OpenClaw | Shot List (52) | — | Qwen3.6-35B-A3B | 40/52 | 76.9% | 195.2m | 328 | 2 109 433 (2 859₽) |
 | OpenClaw | Light (391) | — | — | 378/391 | 96.7% | 1473.3m | — | 0 (0₽) |
 | Pi | Shot List (52) | — | DeepSeek-V4.1-Flash | 49/52 | 94.2% | 21.3m | 330 | 1 438 179 (—) |
 | Pi | Shot List (52) | thinking: off | GLM-5.2 (thinking: off) | 49/52 | 94.2% | 102.8m | 388 | 1 913 439 (501₽) |
