@@ -1,0 +1,50 @@
+{
+  "benchmark": "gigachat35-reasoning-3levels",
+  "status": "prepared",
+  "created": "2026-11-07",
+  "harness": "pi",
+  "runner": "run_pi_bench.py",
+  "model": {
+    "catalog_id": "ai-sage/GigaChat3.5-432B-A28B-Reasoning",
+    "display": "GigaChat 3.5 Reasoning",
+    "provider": "custom-foundation-models-api-cloud-ru",
+    "pi_model_ref": "cloud-ru/ai-sage/GigaChat3.5-432B-A28B-Reasoning",
+    "reasoning": true,
+    "context_window": 128000,
+    "max_tokens": 32768,
+    "registered_in": "~/pi-agent/models.json",
+    "thinking_level_map": {"off": null, "minimal": "low", "low": "low", "medium": "medium", "high": "high", "xhigh": "high", "max": "high"},
+    "compat": {"thinkingFormat": "openai", "supportsReasoningEffort": true, "supportsUsageInStreaming": true}
+  },
+  "reasoning_levels": ["low", "medium", "high"],
+  "reasoning_level_source": "Pi --thinking -> reasoning_effort (thinkingLevelMap)",
+  "suite": {
+    "name": "shot-list",
+    "tasks": 52,
+    "file": "harness-bench-fast/shot_list.txt"
+  },
+  "concurrency": 2,
+  "timeout_seconds": 660,
+  "driver": "harness-bench-fast/scripts/run_gigachat35_reasoning_3levels.sh",
+  "outputs": [
+    "results/pi_shotlist_giga35_reasoning_low_<date>.json",
+    "results/pi_shotlist_giga35_reasoning_medium_<date>.json",
+    "results/pi_shotlist_giga35_reasoning_high_<date>.json"
+  ],
+  "verification": {
+    "api_reachable": true,
+    "reasoning_effort_accepted": true,
+    "levels_differentiate": {
+      "probe": "strawberry/puzzle prompt, single turn",
+      "low": {"thinking_chars": 9255, "output_tokens": 2947},
+      "medium": {"thinking_chars": 32824, "output_tokens": 28},
+      "high": {"thinking_chars": 45497, "output_tokens": 16384, "note": "hit 16k cap pre-raise; maxTokens now 32768"}
+    }
+  },
+  "expected_rows": [
+    {"harness": "Pi", "model": "GigaChat 3.5 Reasoning", "thinking": "low"},
+    {"harness": "Pi", "model": "GigaChat 3.5 Reasoning", "thinking": "medium"},
+    {"harness": "Pi", "model": "GigaChat 3.5 Reasoning", "thinking": "high"}
+  ],
+  "publish": "fork table rows under Medium sample / Shot List; no publish until runs finish and checks pass"
+}
