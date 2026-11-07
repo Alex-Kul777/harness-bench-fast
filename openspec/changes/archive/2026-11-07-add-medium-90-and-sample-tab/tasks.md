@@ -13,4 +13,4 @@
 - [x] 3.1 `build_fork_results.py --check` / `--lint` → 0; `build_fork_home.py --check` → 0; `build_fork_pages.py --check` → 0
 - [x] 3.2 HTML: 4 таб-кнопки/панели; `#medium` ряд `55/66 (partial 66/90)`; `#medium-sample` ряды `66/90` + `13/90`
 - [x] 3.3 `openspec validate --all --strict` → 0
-- [ ] 3.4 Live: `fork.html#medium` и `#medium-sample` 200, активны нужные табы; старые URL 200
+- [x] 3.4 Live: `fork.html#medium` и `#medium-sample` 200, активны нужные табы; старые URL 200
