@@ -41,5 +41,5 @@
 
 ## 7. Архивация
 
-- [ ] 7.1 `openspec archive add-fork-bilingual-en-ru` после полного выполнения и verify
-- [ ] 7.2 Обновить merge-guard заметки/скилл `fork-doc-layering` при необходимости
+- [x] 7.1 `openspec archive add-fork-bilingual-en-ru` после полного выполнения и verify
+- [x] 7.2 Обновить merge-guard заметки/скилл `fork-doc-layering` при необходимости
