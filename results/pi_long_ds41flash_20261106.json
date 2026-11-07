@@ -1,0 +1,75 @@
+{
+  "results": [
+    {
+      "task_id": "task_392_manuscript_continuity",
+      "passed": false,
+      "message": "точность 71.0%, полнота 46.8% (строк в отчёте 31); нужно не меньше 90% и 90%",
+      "elapsed_seconds": 6313.1,
+      "error": null,
+      "timeout": 7200,
+      "comparable": true,
+      "workspace": null,
+      "agent_input_tokens": 2721089,
+      "agent_output_tokens": 742322,
+      "agent_reasoning_tokens": 688410,
+      "agent_total_tokens": 18847987,
+      "agent_tool_calls": 298,
+      "agent_api_calls": 390,
+      "agent_steps": 390
+    },
+    {
+      "task_id": "task_398_card_game_engine",
+      "passed": false,
+      "message": "партии: верно 50/100, нужно не меньше 95. Примеры: партия 1: исключение ValueError: 'Гривна' is not in list; партия 2: исключение ValueError: Cannot buy Грузчик: not enough coins (3 < 4); партия 3: расходится players[1].coins_total, players[2].coins_total, players[3].coins_total; партия 9: расходится players[0].score, players[0].glory, players[1].score, players[1].glory; партия 11: исключение KeyError: 'Таверна «Якорь»'",
+      "elapsed_seconds": 7261.99,
+      "error": "timed out after 7200s",
+      "timeout": 7200,
+      "comparable": true,
+      "workspace": null,
+      "agent_input_tokens": 1874654,
+      "agent_output_tokens": 578204,
+      "agent_reasoning_tokens": 375558,
+      "agent_total_tokens": 33677690,
+      "agent_tool_calls": 620,
+      "agent_api_calls": 793,
+      "agent_steps": 793
+    },
+    {
+      "task_id": "task_403_binary_format_reverse",
+      "passed": false,
+      "message": "скрытые файлы: верно 0/40 (0.0%), нужно не меньше 95%. Примеры: h01 (v2): результат расходится с эталоном; h02 (v2): результат расходится с эталоном; h03 (v1): результат расходится с эталоном; h04 (v2): результат расходится с эталоном; h05 (v3): результат расходится с эталоном",
+      "elapsed_seconds": 3746.21,
+      "error": null,
+      "timeout": 7200,
+      "comparable": true,
+      "workspace": null,
+      "agent_input_tokens": 1686802,
+      "agent_output_tokens": 404815,
+      "agent_reasoning_tokens": 265112,
+      "agent_total_tokens": 25708001,
+      "agent_tool_calls": 435,
+      "agent_api_calls": 467,
+      "agent_steps": 467
+    }
+  ],
+  "summary": {
+    "total": 3,
+    "passed": 0,
+    "failed": 3,
+    "pass_rate": 0.0,
+    "total_seconds": 17321.3,
+    "total_input_tokens": 6282545,
+    "total_output_tokens": 1725341,
+    "total_reasoning_tokens": 1329080,
+    "total_tokens": 78233678,
+    "total_steps": 1650,
+    "total_tool_calls": 1353,
+    "estimated_cost_rub": 2798.91,
+    "timeout": 7200,
+    "task_timeouts": {
+      "task_392_manuscript_continuity": 7200,
+      "task_398_card_game_engine": 7200,
+      "task_403_binary_format_reverse": 7200
+    }
+  }
+}
