@@ -708,6 +708,7 @@ Rows are sorted by pass count.
 | deepagents | none (2026-07-29) | GPT-OSS-120B | 13/52 | 25.0% | 10.1m | 262 | 2,915,334 |
 | Hermes | — (2026-08-13) | GPT-OSS-120B | 28/52 | 53.8% | 37.9m | 427 | 8,833,747 (2,171₽) |
 | OpenClaw | thinking: off (2026-08-13) | GPT-OSS-120B | 17/52 | 32.7% | 205.2m | 120 | 1,261,870 (1,080₽) |
+| Pi | — (2026-11-07) | GigaChat 3 Pro | 16/52 | 30.8% | 25.7m | 2,034 | 12,883,705 (230₽) |
 | deepagents | GigaChat (2026-07-29) | GigaChat 3 Lightning | 10/52 | 19.2% | 8.3m | 318 | 427,026 |
 
 The shot list separates models into clear tiers: \**>90%** (Kimi, Pi, Hermes,

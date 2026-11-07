@@ -40,7 +40,8 @@ HARNESS_PREFIXES = (
     ("pi_", "Pi"), ("oc_", "OpenClaw"),
 )
 MODEL_TOKENS = (
-    ("ds41flash", "DeepSeek-V4.1-Flash"), ("glm53", "GLM-5.3"), ("glm52", "GLM-5.2"),
+    ("ds41flash", "DeepSeek-V4.1-Flash"), ("gigachat3pro", "GigaChat 3 Pro"),
+    ("glm53", "GLM-5.3"), ("glm52", "GLM-5.2"),
     ("qwen36", "Qwen3.6-35B-A3B"), ("oss120b", "GPT-OSS-120B"),
 )
 
