@@ -192,8 +192,8 @@
         },
         {
           "harness": "Pi",
-          "profile": "— (2026-11-07)",
-          "model": "—",
+          "profile": "thinking: low (2026-11-07)",
+          "model": "GigaChat 3.5 Reasoning (thinking: low)",
           "result": "35/52",
           "pct": "67.3%",
           "time": "15.8m",
@@ -207,7 +207,7 @@
         {
           "harness": "Pi",
           "profile": "thinking: high (2026-11-07)",
-          "model": "— (thinking: high)",
+          "model": "GigaChat 3.5 Reasoning (thinking: high)",
           "result": "34/52",
           "pct": "65.4%",
           "time": "33.8m",
@@ -221,7 +221,7 @@
         {
           "harness": "Pi",
           "profile": "thinking: medium (2026-11-07)",
-          "model": "— (thinking: medium)",
+          "model": "GigaChat 3.5 Reasoning (thinking: medium)",
           "result": "34/52",
           "pct": "65.4%",
           "time": "19.2m",

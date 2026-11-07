@@ -47,6 +47,7 @@ HARNESS_PREFIXES = (
 )
 MODEL_TOKENS = (
     ("ds41flash", "DeepSeek-V4.1-Flash"), ("gigachat3pro", "GigaChat 3 Pro"),
+    ("giga35", "GigaChat 3.5 Reasoning"),
     ("glm53", "GLM-5.3"), ("glm52", "GLM-5.2"),
     ("qwen36", "Qwen3.6-35B-A3B"), ("oss120b", "GPT-OSS-120B"),
 )
@@ -87,7 +88,7 @@ def _with_version(harness, version):
 PROFILE_RULES = (("thinking_off", "thinking: off"), ("mcpoff", "MCP off"))
 # Reasoning-sweep artifacts end with ``_<level>_<YYYYMMDD>``; the level drives the
 # Profile cell and the ``(thinking: <level>)`` suffix on the Model cell.
-THINKING_LEVEL_RE = re.compile(r"_(off|medium|high)_\d{8}$")
+THINKING_LEVEL_RE = re.compile(r"_(off|low|medium|high)_\d{8}$")
 
 
 def _thinking_level(stem):

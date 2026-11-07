@@ -45,13 +45,13 @@ Auto-sync: 25 runs
 | OpenClaw | Shot List (52) | — | GPT-OSS-120B | 17/52 | 32.7% | 205.2m | — | 1 261 870 (1 080₽) |
 | OpenClaw | Shot List (52) | — | Qwen3.6-35B-A3B | 40/52 | 76.9% | 195.2m | — | 2 109 433 (2 859₽) |
 | OpenClaw | Light (391) | — | — | 378/391 | 96.7% | 1473.3m | — | 0 (0₽) |
-| Pi | Shot List (52) | — | — | 35/52 | 67.3% | 15.8m | 1 116 | 3 041 748 (356₽) |
-| Pi | Shot List (52) | thinking: high | — | 34/52 | 65.4% | 33.8m | 1 160 | 3 796 473 (407₽) |
-| Pi | Shot List (52) | thinking: medium | — | 34/52 | 65.4% | 19.2m | 1 176 | 2 974 629 (385₽) |
 | Pi | Shot List (52) | — | DeepSeek-V4.1-Flash | 49/52 | 94.2% | 21.3m | 330 | 1 438 179 (—) |
 | Pi | Shot List (52) | thinking: off | GLM-5.2 (thinking: off) | 49/52 | 94.2% | 102.8m | 388 | 1 913 439 (501₽) |
 | Pi | Shot List (52) | — | GLM-5.3 | 49/52 | 94.2% | 64.9m | 349 | 1 764 093 (216₽) |
 | Pi | Shot List (52) | — | GigaChat 3 Pro | 16/52 | 30.8% | 25.7m | 2 034 | 12 883 705 (230₽) |
+| Pi | Shot List (52) | thinking: high | GigaChat 3.5 Reasoning (thinking: high) | 34/52 | 65.4% | 33.8m | 1 160 | 3 796 473 (407₽) |
+| Pi | Shot List (52) | thinking: low | GigaChat 3.5 Reasoning (thinking: low) | 35/52 | 67.3% | 15.8m | 1 116 | 3 041 748 (356₽) |
+| Pi | Shot List (52) | thinking: medium | GigaChat 3.5 Reasoning (thinking: medium) | 34/52 | 65.4% | 19.2m | 1 176 | 2 974 629 (385₽) |
 | Pi | Shot List (52) | — | Qwen3.6-35B-A3B | 42/52 | 80.8% | 18.5m | 327 | 1 318 346 (362₽) |
 | Pi | Medium (392-471) | — | DeepSeek-V4.1-Flash | 11/15 | 73.3% | 137.3m | 1 124 | 15 124 377 (1 055₽) |
 | Pi | Medium (392-471) | — | DeepSeek-V4.1-Flash | 5/5 | 100.0% | 32.0m | 336 | 2 949 354 (268₽) |

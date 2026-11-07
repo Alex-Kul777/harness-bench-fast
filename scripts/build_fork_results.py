@@ -41,6 +41,7 @@ HARNESS_PREFIXES = (
 MODEL_TOKENS = (
     ("ds41flash", "DeepSeek-V4.1-Flash"),
     ("gigachat3pro", "GigaChat 3 Pro"),
+    ("giga35", "GigaChat 3.5 Reasoning"),
     ("glm53", "GLM-5.3"),
     ("glm52", "GLM-5.2"),
     ("qwen36", "Qwen3.6-35B-A3B"),
@@ -52,7 +53,7 @@ THINKING_OFF_MODEL = "GLM-5.2 (thinking: off)"
 # Our reasoning-sweep artifacts end with ``_<level>_<YYYYMMDD>`` (e.g.
 # ``oc_shotlist_ds41flash_high_20261107``); the level belongs in the Model cell
 # and in the Profile column.
-THINKING_LEVEL_RE = re.compile(r"_(off|medium|high)_\d{8}$")
+THINKING_LEVEL_RE = re.compile(r"_(off|low|medium|high)_\d{8}$")
 
 
 def _thinking_level(stem: str) -> str | None:
