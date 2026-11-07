@@ -17,6 +17,7 @@ Usage:
 """
 from __future__ import annotations
 
+import contextlib
 import html
 import json
 import re
@@ -217,10 +218,8 @@ def _date_from_source_files(names):
         for base in RESULT_DIRS:
             p = base / n
             if p.exists():
-                try:
+                with contextlib.suppress(OSError, json.JSONDecodeError):
                     dates.append(_date_from_sessions(json.loads(p.read_text(encoding="utf-8"))))
-                except (OSError, json.JSONDecodeError):
-                    pass
                 break
     dates = [d for d in dates if d]
     return min(dates) if dates else None
