@@ -45,6 +45,16 @@ MODEL_TOKENS = (
 THINKING_OFF_SUFFIX = "thinking_off"
 THINKING_OFF_MODEL = "GLM-5.2 (thinking: off)"
 
+# Our reasoning-sweep artifacts end with ``_<level>_<YYYYMMDD>`` (e.g.
+# ``oc_shotlist_ds41flash_high_20261107``); the level belongs in the Model cell
+# and in the Profile column.
+THINKING_LEVEL_RE = re.compile(r"_(off|medium|high)_\d{8}$")
+
+
+def _thinking_level(stem: str) -> str | None:
+    m = THINKING_LEVEL_RE.search(stem)
+    return m.group(1) if m else None
+
 # suite key -> (display name, sort order)
 SUITES = {
     "shotlist": ("Shot List (52)", 0),
@@ -122,9 +132,10 @@ def classify_harness(stem: str) -> str | None:
 def classify_model(stem: str) -> str | None:
     if THINKING_OFF_SUFFIX in stem:
         return THINKING_OFF_MODEL
+    level = _thinking_level(stem)
     for token, model in MODEL_TOKENS:
         if token in stem:
-            return model
+            return f"{model} (thinking: {level})" if level else model
     return None
 
 
@@ -135,6 +146,9 @@ PROFILE_RULES = (
 
 
 def classify_profile(stem: str) -> str | None:
+    level = _thinking_level(stem)
+    if level:
+        return f"thinking: {level}"
     lower = stem.lower()
     for token, label in PROFILE_RULES:
         if token in lower:

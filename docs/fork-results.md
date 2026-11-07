@@ -29,7 +29,7 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 Руками не редактировать — правь скрипт/JSON и пересобирай.
 
 <!-- FORK:RESULTS:BEGIN -->
-Автосинк: 19 прогонов
+Автосинк: 22 прогонов
 
 | Harness | Suite | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
@@ -38,6 +38,9 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 | Hermes | Shot List (52) | — | Qwen3.6-35B-A3B | 36/52 | 69.2% | 38.6m | 301 | 6 961 237 (1 737₽) |
 | Hermes | Light (391) | — | — | 387/391 | 99.0% | 404.6m | — | 31 770 687 (7 775₽) |
 | OpenClaw | Shot List (52) | — | DeepSeek-V4.1-Flash | 50/52 | 96.2% | 47.3m | — | 2 814 749 (165₽) |
+| OpenClaw | Shot List (52) | thinking: high | DeepSeek-V4.1-Flash (thinking: high) | 51/52 | 98.1% | 40.3m | — | 2 926 226 (141₽) |
+| OpenClaw | Shot List (52) | thinking: medium | DeepSeek-V4.1-Flash (thinking: medium) | 52/52 | 100.0% | 40.6m | — | 2 935 013 (148₽) |
+| OpenClaw | Shot List (52) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 50/52 | 96.2% | 37.9m | — | 2 718 375 (133₽) |
 | OpenClaw | Shot List (52) | thinking: off | GLM-5.2 (thinking: off) | 47/52 | 90.4% | 231.9m | — | 1 777 320 (1 793₽) |
 | OpenClaw | Shot List (52) | — | GLM-5.3 | 44/52 | 84.6% | 46.1m | — | 1 955 767 (66₽) |
 | OpenClaw | Shot List (52) | — | GPT-OSS-120B | 17/52 | 32.7% | 205.2m | — | 1 261 870 (1 080₽) |
@@ -64,6 +67,9 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 
 | Harness | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| OpenClaw | thinking: medium (2026-11-07) | DeepSeek-V4.1-Flash | 52/52 | 100.0% | 40.6m | — | 2 935 013 (148₽) |
+| OpenClaw | thinking: high (2026-11-07) | DeepSeek-V4.1-Flash | 51/52 | 98.1% | 40.3m | — | 2 926 226 (141₽) |
+| OpenClaw | thinking: off (2026-11-07) | DeepSeek-V4.1-Flash | 50/52 | 96.2% | 37.9m | — | 2 718 375 (133₽) |
 | OpenClaw | thinking: off (2026-11-04) | DeepSeek-V4.1-Flash | 50/52 | 96.2% | 47.3m | 237 | 2 814 749 (165₽) |
 | Pi | — (2026-11-04) | DeepSeek-V4.1-Flash | 49/52 | 94.2% | 21.4m | 330 | 1 438 179 (~150₽) |
 | Pi | — (2026-11-04) | GLM-5.3 | 49/52 | 94.2% | 64.9m | 349 | 1 764 093 (~220₽) |

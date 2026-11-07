@@ -27,7 +27,7 @@ upstream-строки) — остаётся в основном [`README.md`](RE
 
 ## Главное в двух строках
 
-- **Shot List (52 задачи):** лучший наш результат — **OpenClaw + DeepSeek-V4.1-Flash, 50/52 (96.2%)**; Pi + DeepSeek-V4.1-Flash и Pi + GLM-5.3 — 49/52 (94.2%).
+- **Shot List (52 задачи):** лучший наш результат — **OpenClaw + DeepSeek-V4.1-Flash (thinking: medium), 52/52 (100%)**; thinking: high — 51/52; thinking: off — 50/52; Pi + DeepSeek-V4.1-Flash и Pi + GLM-5.3 — 49/52 (94.2%).
 - **Wave 19 (задачи 432–471, 40 задач):** Pi + DeepSeek V4.1 Flash — **36/40 (90.0%)**, Wilson 76.9–96.0%.
 
 ## Wave 19 — Pi + DeepSeek V4.1 Flash
@@ -61,6 +61,9 @@ Pi-раннер на той же замороженной волне, поэто
 
 | Harness | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| OpenClaw | thinking: medium (2026-11-07) | DeepSeek-V4.1-Flash | 52/52 | 100.0% | 40.6m | — | 2 935 013 (148₽) |
+| OpenClaw | thinking: high (2026-11-07) | DeepSeek-V4.1-Flash | 51/52 | 98.1% | 40.3m | — | 2 926 226 (141₽) |
+| OpenClaw | thinking: off (2026-11-07) | DeepSeek-V4.1-Flash | 50/52 | 96.2% | 37.9m | — | 2 718 375 (133₽) |
 | OpenClaw | thinking: off (2026-11-04) | DeepSeek-V4.1-Flash | 50/52 | 96.2% | 47.3m | 237 | 2 814 749 (165₽) |
 | Pi | — (2026-11-04) | DeepSeek-V4.1-Flash | 49/52 | 94.2% | 21.4m | 330 | 1 438 179 (~150₽) |
 | Pi | — (2026-11-04) | GLM-5.3 | 49/52 | 94.2% | 64.9m | 349 | 1 764 093 (~220₽) |

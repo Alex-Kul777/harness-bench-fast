@@ -685,7 +685,10 @@ Rows are sorted by pass count.
 
 | Harness | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| OpenClaw | thinking: medium (2026-11-07) | DeepSeek-V4.1-Flash | 52/52 | 100.0% | 40.6m | — | 2,935,013 (148₽) |
+| OpenClaw | thinking: high (2026-11-07) | DeepSeek-V4.1-Flash | 51/52 | 98.1% | 40.3m | — | 2,926,226 (141₽) |
 | Kimi CLI | — (2026-08-08) | Kimi K3 | 51/52 | 98.1% | 61.8m | — | — |
+| OpenClaw | thinking: off (2026-11-07) | DeepSeek-V4.1-Flash | 50/52 | 96.2% | 37.9m | — | 2,718,375 (133₽) |
 | OpenClaw | thinking: off (2026-11-04) | DeepSeek-V4.1-Flash | 50/52 | 96.2% | 47.3m | 237 | 2,814,749 (165₽) |
 | Pi | — (2026-11-04) | DeepSeek-V4.1-Flash | 49/52 | 94.2% | 21.4m | 330 | 1,438,179 (~150₽) |
 | Pi | — (2026-11-04) | GLM-5.3 | 49/52 | 94.2% | 64.9m | 349 | 1,764,093 (~220₽) |

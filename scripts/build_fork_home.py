@@ -82,6 +82,14 @@ def _harness_version(data):
 def _with_version(harness, version):
     return f"{harness} {version}" if version else harness
 PROFILE_RULES = (("thinking_off", "thinking: off"), ("mcpoff", "MCP off"))
+# Reasoning-sweep artifacts end with ``_<level>_<YYYYMMDD>``; the level drives the
+# Profile cell and the ``(thinking: <level>)`` suffix on the Model cell.
+THINKING_LEVEL_RE = re.compile(r"_(off|medium|high)_\d{8}$")
+
+
+def _thinking_level(stem):
+    m = THINKING_LEVEL_RE.search(stem)
+    return m.group(1) if m else None
 EXCLUDE = ("part2", "rerun", "smoke", "sample", "diag", "pilot")
 
 OURS_LIGHT = [
@@ -125,6 +133,9 @@ def _model(stem):
 
 
 def _profile(stem):
+    level = _thinking_level(stem)
+    if level:
+        return f"thinking: {level}"
     low = stem.lower()
     for tok, lab in PROFILE_RULES:
         if tok in low:
