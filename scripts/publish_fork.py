@@ -382,6 +382,9 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     p.add_argument("--dry-run", action="store_true", help="Read-only: print what would happen")
     p.add_argument("--commit-message", default="chore(fork): regenerate published pages",
                    help="Commit message")
+    p.add_argument("run_json", nargs="?", default=None,
+                   help="Optional path to the run JSON that triggered this publish "
+                        "(used by the runners' --publish auto-call)")
     return p.parse_args(argv)
 
 
@@ -390,6 +393,23 @@ def main(argv: list[str]) -> int:
     dry_run = args.dry_run
 
     print("=== publish_fork.py ===")
+
+    # 0. Optional explicit run JSON (the runners' --publish auto-call passes it)
+    if args.run_json:
+        run_path = Path(args.run_json)
+        if not run_path.is_file():
+            print(f"error: run JSON not found: {run_path}", file=sys.stderr)
+            return 1
+        try:
+            run_data = json.loads(run_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            print(f"error: cannot read run JSON {run_path}: {exc}", file=sys.stderr)
+            return 1
+        if not isinstance(run_data, dict) or "summary" not in run_data:
+            print(f"error: incomplete run (no top-level summary): {run_path.name}",
+                  file=sys.stderr)
+            return 1
+        print(f"[run] explicit run JSON accepted: {run_path.name}")
 
     # 1. Hard-fail: check for incomplete runs (no summary / in-flight markers)
     print("[guard] checking for incomplete runs...")
