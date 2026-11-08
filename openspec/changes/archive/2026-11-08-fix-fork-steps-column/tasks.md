@@ -32,9 +32,9 @@
 - [x] 5.2 `build_fork_results.py --check`/`--lint`, `build_fork_home.py --check`, `build_fork_pages.py --check` → 0
 - [x] 5.3 `tests/test_fork_bilingual.py` (паритет RU/EN) → ok
 - [x] 5.4 Регенерация `docs/fork.html`(+`.en`), `docs/fork-results.md`(+`.en`) → колонка Steps заполнена
-- [ ] 5.5 Live-проверка `fork.html`/`fork.en.html` (после пуша — по команде владельца)
+- [x] 5.5 Live-проверка `fork.html`/`fork.en.html` (после пуша — по команде владельца)
 
 ## 6. Финализация
 
 - [x] 6.1 Коммит(ы) в ветке `fix/fork-run-steps` (main не трогаем)
-- [ ] 6.2 `openspec archive fix-fork-steps-column` после зелёного QA (по команде)
+- [x] 6.2 `openspec archive fix-fork-steps-column` после зелёного QA (по команде)
