@@ -114,3 +114,11 @@ recorded in `docs/adr/0002-openspec-vs-engineering-flow.md`.
 `openspec/changes/<id>/` (proposal → specs-дельта → design → tasks) с ревью до кода.
 CLI: `npx -y @fission-ai/openspec@1.16.0`. CI: `.github/workflows/openspec-validate.yml`.
 Граница со скиллами mattpocock flow — в `docs/adr/0002-openspec-vs-engineering-flow.md`.
+
+## 🌳 Worktrees (параллельные сессии)
+
+Один репозиторий HBF может использоваться несколькими сессиями OpenClaw
+одновременно — каждая работает в **своём** git/managed worktree, общий чекаут не
+переключается по веткам. Полный гайд, правила и рецепты (OpenClaw-native,
+ручной git worktree, посадка ветки на `main`, лимиты):
+`docs/agents/worktree-workflow.md`.
