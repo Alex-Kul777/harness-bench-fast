@@ -196,3 +196,14 @@ def test_regression_glm52_rates(config_path):
     assert rates["input"] == pytest.approx(239.12)
     assert rates["output"] == pytest.approx(751.52)
     assert rates["cacheRead"] == pytest.approx(44.408)
+
+
+@pytest.fixture(autouse=True)
+def _ignore_real_catalog_cache(tmp_path, monkeypatch):
+    """Keep these tests hermetic.
+
+    ``resolve_model_rates`` now prefers the live Cloud.ru catalog cache
+    (``~/.openclaw/cloudru-prices.json``); point it at a non-existent file so the
+    config fixture remains the effective source regardless of the machine state.
+    """
+    monkeypatch.setenv("CLOUDRU_PRICES_CACHE", str(tmp_path / "no-catalog-cache.json"))
