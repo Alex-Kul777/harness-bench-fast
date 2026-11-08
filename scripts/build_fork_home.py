@@ -38,19 +38,16 @@ MEDIUM90_JSON = DOCS / "medium90-results.json"
 PILOT_MANIFEST = DOCS / "fork-medium-pilot-manifest.json"
 
 GENERATED_BY = "scripts/build_fork_home.py"
-RESULT_DIRS = [REPO_ROOT / "results", REPO_ROOT.parent / "results"]
 DASH = "\u2014"
 RUB = "\u20bd"
 
-HARNESS_PREFIXES = (
-    ("opencode_", "opencode"), ("openclaw_", "OpenClaw"), ("hermes_", "Hermes"),
-    ("pi_", "Pi"), ("oc_", "OpenClaw"),
-)
-MODEL_TOKENS = (
-    ("ds41flash", "DeepSeek-V4.1-Flash"), ("gigachat3pro", "GigaChat 3 Pro"),
-    ("giga35", "GigaChat 3.5 Reasoning"),
-    ("glm53", "GLM-5.3"), ("glm52", "GLM-5.2"),
-    ("qwen36", "Qwen3.6-35B-A3B"), ("oss120b", "GPT-OSS-120B"),
+from fork_metadata import (  # noqa: E402
+    HARNESS_PREFIXES,
+    MODEL_TOKENS,
+    THINKING_LEVEL_RE,
+    PROFILE_RULES,
+    RESULT_DIRS,
+    EXCLUDE_KEYWORDS as EXCLUDE_KEYWORDS_META,
 )
 
 # Upstream writes the reasoning level inside the Model cell, e.g.
@@ -86,10 +83,7 @@ def _harness_version(data):
 
 def _with_version(harness, version):
     return f"{harness} {version}" if version else harness
-PROFILE_RULES = (("thinking_off", "thinking: off"), ("mcpoff", "MCP off"))
-# Reasoning-sweep artifacts end with ``_<level>_<YYYYMMDD>``; the level drives the
-# Profile cell and the ``(thinking: <level>)`` suffix on the Model cell.
-THINKING_LEVEL_RE = re.compile(r"_(off|low|medium|high)_\d{8}$")
+
 
 
 def _thinking_level(stem):

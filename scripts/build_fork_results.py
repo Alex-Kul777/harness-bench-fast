@@ -30,31 +30,22 @@ END_MARKER = "<!-- FORK:RESULTS:END -->"
 # The fork keeps its published runs in ``<repo>/results``; the shared project
 # run store lives one level up and uses the same file names. Aggregate both,
 # de-duplicated by file name (the checkout's own copy wins on a tie).
-RESULT_DIRS = [REPO_ROOT / "results", REPO_ROOT.parent / "results"]
 
-HARNESS_PREFIXES = (
-    ("opencode_", "opencode"),
-    ("hermes_", "Hermes"),
-    ("pi_", "Pi"),
-    ("oc_", "OpenClaw"),
+from fork_metadata import (  # noqa: E402
+    HARNESS_PREFIXES,
+    MODEL_TOKENS,
+    THINKING_LEVEL_RE,
+    PROFILE_RULES as _PROFILE_RULES_META,
+    RESULT_DIRS,
+
+    classify_harness,
+    classify_profile,
+    collect_paths,
 )
 
-MODEL_TOKENS = (
-    ("ds41flash", "DeepSeek-V4.1-Flash"),
-    ("gigachat3pro", "GigaChat 3 Pro"),
-    ("giga35", "GigaChat 3.5 Reasoning"),
-    ("glm53", "GLM-5.3"),
-    ("glm52", "GLM-5.2"),
-    ("qwen36", "Qwen3.6-35B-A3B"),
-    ("oss120b", "GPT-OSS-120B"),
-)
+# build_fork_results embeds thinking level and thinking_off fallback in model label.
 THINKING_OFF_SUFFIX = "thinking_off"
 THINKING_OFF_MODEL = "GLM-5.2 (thinking: off)"
-
-# Our reasoning-sweep artifacts end with ``_<level>_<YYYYMMDD>`` (e.g.
-# ``oc_shotlist_ds41flash_high_20261107``); the level belongs in the Model cell
-# and in the Profile column.
-THINKING_LEVEL_RE = re.compile(r"_(off|low|medium|high)_\d{8}$")
 
 
 def _thinking_level(stem: str) -> str | None:
@@ -128,13 +119,6 @@ def classify_suite(stem: str) -> str | None:
     return None
 
 
-def classify_harness(stem: str) -> str | None:
-    for prefix, harness in HARNESS_PREFIXES:
-        if stem.startswith(prefix):
-            return harness
-    return None
-
-
 def classify_model(stem: str) -> str | None:
     if THINKING_OFF_SUFFIX in stem:
         return THINKING_OFF_MODEL
@@ -145,32 +129,7 @@ def classify_model(stem: str) -> str | None:
     return None
 
 
-PROFILE_RULES = (
-    ("thinking_off", "thinking: off"),
-    ("mcpoff", "MCP off"),
-)
 
-
-def classify_profile(stem: str) -> str | None:
-    level = _thinking_level(stem)
-    if level:
-        return f"thinking: {level}"
-    lower = stem.lower()
-    for token, label in PROFILE_RULES:
-        if token in lower:
-            return label
-    return None
-
-
-def collect_paths() -> dict[str, Path]:
-    """Return {file name: path} across the result dirs (first dir wins)."""
-    seen: dict[str, Path] = {}
-    for directory in RESULT_DIRS:
-        if not directory.is_dir():
-            continue
-        for path in sorted(directory.glob("*.json")):
-            seen.setdefault(path.name, path)
-    return seen
 
 
 def fmt_result(passed, total) -> str:

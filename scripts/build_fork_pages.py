@@ -42,8 +42,6 @@ from fork_metrics import steps_from_json  # noqa: E402
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUT = REPO_ROOT / "docs" / "fork-medium90-results.json"
 
-# Checkout's own results win on a name clash; the shared store lives one level up.
-RESULT_DIRS = [REPO_ROOT / "results", REPO_ROOT.parent / "results"]
 
 GENERATED_BY = "scripts/build_fork_pages.py"
 TASK_SET_VERSION = "v0.21.3"
@@ -93,37 +91,19 @@ REQUIRED_SUMMARY_FIELDS = (
     "estimated_cost_rub",
 )
 
-# longest prefixes first
-HARNESS_PREFIXES = (
-    ("opencode_", "opencode"),
-    ("openclaw_", "OpenClaw"),
-    ("opencode", "opencode"),
-    ("hermes_", "Hermes"),
-    ("pi_", "Pi"),
-    ("oc_", "OpenClaw"),
+# Metadata constants and classifiers imported from the single-source module.
+from fork_metadata import (  # noqa: E402
+    HARNESS_PREFIXES,
+    MODEL_TOKENS,
+    THINKING_LEVEL_RE,
+    PROFILE_RULES,
+    EXCLUDE_KEYWORDS,
+    RESULT_DIRS,
+    classify_harness,
+    classify_model,
+    classify_profile,
+    collect_paths,
 )
-
-MODEL_TOKENS = (
-    ("ds41flash", "DeepSeek-V4.1-Flash"),
-    ("giga35", "GigaChat 3.5 Reasoning"),
-    ("glm53", "GLM-5.3"),
-    ("glm52", "GLM-5.2"),
-    ("qwen36", "Qwen3.6-35B-A3B"),
-    ("oss120b", "GPT-OSS-120B"),
-)
-
-PROFILE_RULES = (
-    ("thinking_off", "thinking: off"),
-    ("mcpoff", "MCP off"),
-)
-
-# Reasoning-sweep artifacts end with ``_<level>_<YYYYMMDD>``; the level drives the
-# Profile cell (mirrors build_fork_results.py / build_fork_home.py). Enumerate every
-# sweep level so a low arm never publishes with a blank profile.
-THINKING_LEVEL_RE = re.compile(r"_(off|low|medium|high)_\d{8}$")
-
-# Non-publishable artifacts (smoke/sample/diagnostic/rerun) never reach the page.
-EXCLUDE_KEYWORDS = ("smoke", "sample", "diag", "part2", "rerun")
 
 # Known fork wave artifacts whose file name lacks the harness/model token.
 # (Explicit, documented: avoids a bogus "unknown" row for real runs.)
@@ -183,44 +163,6 @@ def classify_task_wave(task_id) -> str | None:
         if low <= number <= high:
             return wave
     return None
-
-
-def classify_harness(stem: str) -> str | None:
-    lower = stem.lower()
-    for prefix, harness in HARNESS_PREFIXES:
-        if lower.startswith(prefix):
-            return harness
-    return None
-
-
-def classify_model(stem: str) -> str | None:
-    lower = stem.lower()
-    for token, model in MODEL_TOKENS:
-        if token in lower:
-            return model
-    return None
-
-
-def classify_profile(stem: str) -> str | None:
-    level = THINKING_LEVEL_RE.search(stem)
-    if level:
-        return f"thinking: {level.group(1)}"
-    lower = stem.lower()
-    for token, label in PROFILE_RULES:
-        if token in lower:
-            return label
-    return None
-
-
-def collect_paths() -> dict[str, Path]:
-    """Return {file name: path} across the result dirs (first dir wins)."""
-    seen: dict[str, Path] = {}
-    for directory in RESULT_DIRS:
-        if not directory.is_dir():
-            continue
-        for path in sorted(directory.glob("*.json")):
-            seen.setdefault(path.name, path)
-    return seen
 
 
 def wilson_interval(passed: int, total: int, z: float = WILSON_Z) -> list[float]:

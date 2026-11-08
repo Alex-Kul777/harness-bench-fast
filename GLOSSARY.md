@@ -71,8 +71,45 @@ A wave measured on fewer tasks than its full size; recorded as
 95% score interval for a binomial proportion (z = 1.96), computed per wave. It
 describes **task outcomes**, not repeat variability (k = 1).
 
+## Fork layer
+Fork-authored documentation layered over upstream: the `FORK.md` index, the
+`docs/fork*.{html,md}` pages, the README banner, and the generated result tables.
+Kept out of upstream files so merges do not conflict (fork-doc-layering skill).
+
+## Generator
+A script that reads run JSON envelopes and rewrites one fork artifact — either the
+guarded auto-block or the unified HTML page and its per-suite JSON. Three exist:
+`scripts/build_fork_pages.py`, `scripts/build_fork_home.py`,
+`scripts/build_fork_results.py`.
+
+## Suite registration
+Adding a run wave's filename pattern to a generator's include regex plus a display
+name, sort order, and harness/model classifier branches. An unregistered stem is
+silently skipped — the main "published nothing" bug class.
+
+## Classifier (stem -> metadata)
+The mapping from a run filename stem to `(harness, model, reasoning level)`
+(`HARNESS_PREFIXES`, `MODEL_TOKENS`, `THINKING_LEVEL_RE`). Currently duplicated per
+generator; a token added to one leaves the others rendering blank.
+
+## Detail page
+A per-run HTML page (`docs/fork-detail-<stem>.html`, EN mirror `.en`) listing the
+run's waves, per-task rows, and source files; a table row links to it via
+`details_url` / `data-detail`.
+
+## Publish
+The step that turns finished `results/*.json` into committed fork docs and a
+deployed GitHub Pages site. Distinct from a benchmark **run**; not yet wired to run
+completion (there is no run -> publish hook).
+
+## Coverage / sample manifest
+A truncated subset view (Light shot list, Medium sample/pilot) rendered from a
+manifest of task ids, not from every scanner-matched run file.
+
 ## Relationships
 - Shot List = smoke(5) + high-discrim(18) + mid-discrim(25) + low-discrim(4)
+- Publish = generators (per artifact) + checks (--check/--lint on RU+EN) + Pages deploy
+- Classifier feeds every suite row's Harness/Model/Profile cells; Suite registration gates whether a run reaches the table at all
 - Wave coverage: all 13 waves have >= 2 tasks in shot list
 - Discrimination Power determines shot list membership
 - Capability sample = cost-weighted slice of the Medium waves, stratified by Task band
