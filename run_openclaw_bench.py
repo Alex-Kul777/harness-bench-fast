@@ -29,14 +29,19 @@ BENCH_DIR = Path(os.environ.get("BENCH_DIR", str(Path(__file__).parent)))
 sys.path.insert(0, str(BENCH_DIR))
 
 from harness_bench.tasks import ALL_TASKS, SUITES, get_task
+from harness_bench.cost_resolver import resolve_model_rates, compute_cost_rub
 
 
 # ── Configuration ──────────────────────────────────────────────────────
 
 DEFAULT_MODEL = "custom-foundation-models-api-cloud-ru/zai-org/GLM-5.2"
 DEFAULT_TIMEOUT = 600  # seconds per task
-CLOUD_RU_INPUT_PRICE = 239.12   # ₽ per 1M input tokens
-CLOUD_RU_OUTPUT_PRICE = 751.52  # ₽ per 1M output tokens
+# ₽ pricing is resolved per-model from ~/.openclaw/openclaw.json via cost_resolver.
+# The default model rates are populated lazily in _get_model_rates(); callers supply
+# their model arg at runtime so we cannot resolve at module load time.
+def _get_model_rates(model_id: str) -> dict:
+    """Return per-model ₽/1M rates (input/output/cacheRead/cacheWrite)."""
+    return resolve_model_rates(model_id)
 
 FAILED_TASK_IDS = [
     "task_223_memory_city_timezone_script",
@@ -176,7 +181,8 @@ def run_one_task(
 def _write_results(results: list[dict], path: str, *,
                    harness_version: str | None = None,
                    thinking: str | None = None,
-                   command: str | None = None) -> None:
+                   command: str | None = None,
+                   model: str | None = None) -> None:
     """Write results in upstream-compatible format."""
     passed = sum(1 for r in results if r["passed"])
     total = len(results)
@@ -185,8 +191,11 @@ def _write_results(results: list[dict], path: str, *,
     total_tokens = sum(r.get("agent_total_tokens", 0) for r in results)
     total_seconds = sum(r["elapsed_seconds"] for r in results)
     total_steps = sum(r.get("agent_steps", 0) for r in results)
-    cost_rub = (total_input / 1e6 * CLOUD_RU_INPUT_PRICE +
-                total_output / 1e6 * CLOUD_RU_OUTPUT_PRICE)
+    # Per-model rates resolved from ~/.openclaw/openclaw.json
+    _rates = _get_model_rates(model or DEFAULT_MODEL)
+    total_cache_read = sum(r.get("agent_cache_read_tokens", 0) or 0 for r in results)
+    total_cache_write = sum(r.get("agent_cache_write_tokens", 0) or 0 for r in results)
+    cost_rub = compute_cost_rub(total_input, total_output, total_cache_read, total_cache_write, _rates)
 
     payload = {
         "task_set_version": "0.16.0",
@@ -323,13 +332,13 @@ def run_concurrent(
                 total_input += run.get("agent_input_tokens", 0)
                 total_output += run.get("agent_output_tokens", 0)
                 elapsed = time.monotonic() - start_time
-                cost = (total_input / 1e6 * CLOUD_RU_INPUT_PRICE +
-                        total_output / 1e6 * CLOUD_RU_OUTPUT_PRICE)
+                _live_rates = _get_model_rates(model)
+                cost = compute_cost_rub(total_input, total_output, 0, 0, _live_rates)
 
                 if json_output:
                     _write_results(list(results.values()), json_output,
                                    harness_version=harness_version, thinking=thinking,
-                                   command=command)
+                                   command=command, model=model)
                 if status_file:
                     _write_status(status_file, completed, len(task_ids),
                                   passed, failed, elapsed, tid, total_tokens, cost)

@@ -37,6 +37,7 @@ sys.path.insert(0, str(BENCH_DIR))
 SHOT_LIST_FILE = BENCH_DIR / "shot_list.txt"
 
 from harness_bench.tasks import ALL_TASKS, get_task
+from harness_bench.cost_resolver import resolve_model_rates, compute_cost_rub
 
 DEFAULT_MODEL = "zai-org/GLM-5.2"
 DEFAULT_TIMEOUT = 660
@@ -91,9 +92,10 @@ PILOT_TASK_IDS = FAILED_TASK_IDS + PASSED_TASK_IDS
 # Thread lock for checkpoint writes
 _write_lock = threading.Lock()
 
-# Pricing for cost estimation (Cloud.ru, GLM-5.2, August 2026)
-PRICE_INPUT_PER_M = 239.12   # ₽ per 1M input tokens
-PRICE_OUTPUT_PER_M = 751.52  # ₽ per 1M output tokens
+# ₽ pricing is resolved per-model from ~/.openclaw/openclaw.json via cost_resolver.
+def _get_model_rates(model_id: str) -> dict:
+    """Return per-model ₽/1M rates (input/output/cacheRead/cacheWrite)."""
+    return resolve_model_rates(model_id)
 
 
 def run_one_task(task, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT, keep_workspace=False, thinking_off=False):
@@ -248,7 +250,7 @@ def run_one_task(task, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT, keep_wor
             workspace_keepalive.cleanup()
 
 
-def _write_results(results, path):
+def _write_results(results, path, model=None):
     """Write results JSON with summary. Thread-safe."""
     with _write_lock:
         passed = sum(1 for r in results if r["passed"])
@@ -258,7 +260,7 @@ def _write_results(results, path):
         total_out = sum(r.get("agent_output_tokens", 0) for r in results)
         total_tok = sum(r.get("agent_total_tokens", 0) for r in results)
         total_steps = sum(r.get("agent_steps", 0) or 0 for r in results)
-        cost_rub = round(total_in / 1e6 * PRICE_INPUT_PER_M + total_out / 1e6 * PRICE_OUTPUT_PER_M, 2)
+        cost_rub = round(compute_cost_rub(total_in, total_out, 0, 0, _get_model_rates(model or DEFAULT_MODEL)), 2)
         payload = {
             "results": results,
             "summary": {
@@ -290,7 +292,7 @@ def _write_status(path, completed, total_task_count, results, started_at):
         total_in = sum(r.get("agent_input_tokens", 0) for r in results)
         total_out = sum(r.get("agent_output_tokens", 0) for r in results)
         total_tok = total_in + total_out
-        cost_rub = round(total_in / 1e6 * PRICE_INPUT_PER_M + total_out / 1e6 * PRICE_OUTPUT_PER_M, 2)
+        cost_rub = round(compute_cost_rub(total_in, total_out, 0, 0, _get_model_rates(DEFAULT_MODEL)), 2)
         last_task = results[-1]["task_id"] if results else None
         status = {
             "completed": completed,
@@ -374,7 +376,7 @@ def run_batch(task_ids, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT,
             status = "PASS" if run["passed"] else "FAIL"
             print(f"  [{status}] {run['elapsed_seconds']:.1f}s — {run['message'][:120]}", flush=True)
             if json_output:
-                _write_results(results, json_output)
+                _write_results(results, json_output, model=model)
             if status_file:
                 _write_status(status_file, completed, total_all, results, started_at)
     else:
@@ -394,7 +396,7 @@ def run_batch(task_ids, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT,
                 status = "PASS" if run["passed"] else "FAIL"
                 print(f"[{completed}/{total_all}] {tid}: [{status}] {run['elapsed_seconds']:.1f}s — {run['message'][:120]}", flush=True)
                 if json_output:
-                    _write_results(results, json_output)
+                    _write_results(results, json_output, model=model)
                 if status_file:
                     _write_status(status_file, completed, total_all, results, started_at)
 
@@ -493,7 +495,7 @@ def main():
     total_out = sum(r.get("agent_output_tokens", 0) for r in results)
     total_tok = total_in + total_out
     total_steps = sum(r.get("agent_steps", 0) or 0 for r in results)
-    cost = round(total_in / 1e6 * PRICE_INPUT_PER_M + total_out / 1e6 * PRICE_OUTPUT_PER_M, 2)
+    cost = round(compute_cost_rub(total_in, total_out, 0, 0, _get_model_rates(model or DEFAULT_MODEL)), 2)
 
     print()
     print("=" * 60)

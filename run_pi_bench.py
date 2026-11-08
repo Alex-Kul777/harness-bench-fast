@@ -36,6 +36,7 @@ sys.path.insert(0, str(BENCH_DIR))
 SHOT_LIST_FILE = BENCH_DIR / "shot_list.txt"
 
 from harness_bench.tasks import ALL_TASKS, SUITES, get_task
+from harness_bench.cost_resolver import resolve_model_rates, compute_cost_rub
 from harness_bench.core import effective_task_timeout
 
 DEFAULT_MODEL = "zai-org/GLM-5.2"
@@ -72,9 +73,10 @@ if not CLOUD_RU_API_KEY:
     if not CLOUD_RU_API_KEY:
         print("WARNING: CLOUD_RU_API_KEY not found.", file=sys.stderr)
 
-# Pricing for cost estimation (Cloud.ru, per 1M tokens, August 2026)
-PRICE_INPUT_PER_M = 239.12   # ₽ per 1M input tokens
-PRICE_OUTPUT_PER_M = 751.52  # ₽ per 1M output tokens
+# ₽ pricing is resolved per-model from ~/.openclaw/openclaw.json via cost_resolver.
+def _get_model_rates(model_id: str) -> dict:
+    """Return per-model ₽/1M rates (input/output/cacheRead/cacheWrite)."""
+    return resolve_model_rates(model_id)
 
 # Thread lock for checkpoint writes
 _write_lock = threading.Lock()
@@ -332,7 +334,7 @@ def run_one_task(task, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT, keep_wor
             workspace_keepalive.cleanup()
 
 
-def _write_results(results, path, timeout=None):
+def _write_results(results, path, timeout=None, model=None):
     """Write results JSON with summary. Thread-safe."""
     with _write_lock:
         passed = sum(1 for r in results if r["passed"])
@@ -344,7 +346,8 @@ def _write_results(results, path, timeout=None):
         total_tok = sum(r.get("agent_total_tokens", 0) for r in results)
         total_steps = sum(r.get("agent_steps", 0) or 0 for r in results)
         total_tool_calls = sum(r.get("agent_tool_calls", 0) or 0 for r in results)
-        cost_rub = round(total_in / 1e6 * PRICE_INPUT_PER_M + total_out / 1e6 * PRICE_OUTPUT_PER_M, 2)
+        _rates = _get_model_rates(model or DEFAULT_MODEL)
+        cost_rub = round(compute_cost_rub(total_in, total_out, 0, 0, _rates), 2)
         payload = {
             "results": results,
             "summary": {
@@ -382,7 +385,8 @@ def _write_status(path, completed, total_task_count, results, started_at):
         total_in = sum(r.get("agent_input_tokens", 0) for r in results)
         total_out = sum(r.get("agent_output_tokens", 0) for r in results)
         total_tok = total_in + total_out
-        cost_rub = round(total_in / 1e6 * PRICE_INPUT_PER_M + total_out / 1e6 * PRICE_OUTPUT_PER_M, 2)
+        _rates = _get_model_rates(model or DEFAULT_MODEL)
+        cost_rub = round(compute_cost_rub(total_in, total_out, 0, 0, _rates), 2)
         last_task = results[-1]["task_id"] if results else None
         status = {
             "completed": completed,
@@ -463,7 +467,7 @@ def run_batch(task_ids, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT,
             steps = run.get("agent_steps", 0) or 0
             print(f"  [{status}] {run['elapsed_seconds']:.1f}s — steps={steps} tokens={tokens} — {run['message'][:100]}", flush=True)
             if json_output:
-                _write_results(results, json_output, timeout=timeout)
+                _write_results(results, json_output, timeout=timeout, model=model)
             if status_file:
                 _write_status(status_file, completed, total_all, results, started_at)
     else:
@@ -484,7 +488,7 @@ def run_batch(task_ids, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT,
                 steps = run.get("agent_steps", 0) or 0
                 print(f"[{completed}/{total_all}] {tid}: [{status}] {run['elapsed_seconds']:.1f}s — steps={steps} tokens={tokens} — {run['message'][:100]}", flush=True)
                 if json_output:
-                    _write_results(results, json_output, timeout=timeout)
+                    _write_results(results, json_output, timeout=timeout, model=model)
                 if status_file:
                     _write_status(status_file, completed, total_all, results, started_at)
 
@@ -568,7 +572,7 @@ def main():
     total_tok = sum(r.get("agent_total_tokens", 0) for r in results)
     total_steps = sum(r.get("agent_steps", 0) or 0 for r in results)
     total_tool_calls = sum(r.get("agent_tool_calls", 0) or 0 for r in results)
-    cost = round(total_in / 1e6 * PRICE_INPUT_PER_M + total_out / 1e6 * PRICE_OUTPUT_PER_M, 2)
+    cost = round(compute_cost_rub(total_in, total_out, 0, 0, _get_model_rates(args.model if hasattr(args, 'model') else DEFAULT_MODEL)), 2)
 
     print()
     print("=" * 60)
