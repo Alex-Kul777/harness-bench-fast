@@ -1,0 +1,63 @@
+{
+  "results": [
+    {
+      "task_id": "task_392_manuscript_continuity",
+      "passed": false,
+      "message": "нет файла errors.csv",
+      "elapsed_seconds": 2461.67,
+      "error": "timed out after 2400s",
+      "workspace": null,
+      "agent_input_tokens": 743436,
+      "agent_output_tokens": 177677,
+      "agent_reasoning_tokens": 168152,
+      "agent_total_tokens": 4184089,
+      "agent_tool_calls": 109,
+      "agent_api_calls": 108,
+      "agent_steps": 108
+    },
+    {
+      "task_id": "task_398_card_game_engine",
+      "passed": false,
+      "message": "партии: верно 0/100, нужно не меньше 95. Примеры: партия 1: исключение AttributeError: module 'engine' has no attribute 'simulate'; партия 2: исключение AttributeError: module 'engine' has no attribute 'simulate'; партия 3: исключение AttributeError: module 'engine' has no attribute 'simulate'; партия 4: исключение AttributeError: module 'engine' has no attribute 'simulate'; партия 5: исключение AttributeError: module 'engine' has no attribute 'simulate'",
+      "elapsed_seconds": 2462.42,
+      "error": "timed out after 2400s",
+      "workspace": null,
+      "agent_input_tokens": 694564,
+      "agent_output_tokens": 180711,
+      "agent_reasoning_tokens": 149514,
+      "agent_total_tokens": 8117899,
+      "agent_tool_calls": 187,
+      "agent_api_calls": 226,
+      "agent_steps": 226
+    },
+    {
+      "task_id": "task_403_binary_format_reverse",
+      "passed": false,
+      "message": "нет файла vtl_decode.py",
+      "elapsed_seconds": 2461.32,
+      "error": "timed out after 2400s",
+      "workspace": null,
+      "agent_input_tokens": 648420,
+      "agent_output_tokens": 92666,
+      "agent_reasoning_tokens": 76036,
+      "agent_total_tokens": 9575390,
+      "agent_tool_calls": 194,
+      "agent_api_calls": 254,
+      "agent_steps": 254
+    }
+  ],
+  "summary": {
+    "total": 3,
+    "passed": 0,
+    "failed": 3,
+    "pass_rate": 0.0,
+    "total_seconds": 7385.4,
+    "total_input_tokens": 2086420,
+    "total_output_tokens": 451054,
+    "total_reasoning_tokens": 393702,
+    "total_tokens": 21877378,
+    "total_steps": 588,
+    "total_tool_calls": 490,
+    "estimated_cost_rub": 837.88
+  }
+}

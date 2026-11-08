@@ -1,0 +1,78 @@
+{
+  "results": [
+    {
+      "task_id": "task_415_api_throttle",
+      "passed": true,
+      "message": "service state matches the goal",
+      "elapsed_seconds": 195.68,
+      "error": null,
+      "workspace": null,
+      "agent_input_tokens": 41580,
+      "agent_output_tokens": 15405,
+      "agent_reasoning_tokens": 8685,
+      "agent_total_tokens": 192921,
+      "agent_tool_calls": 40,
+      "agent_api_calls": 48,
+      "agent_steps": 48
+    },
+    {
+      "task_id": "task_426_kv_eventual",
+      "passed": true,
+      "message": "service state matches the goal",
+      "elapsed_seconds": 656.91,
+      "error": null,
+      "workspace": null,
+      "agent_input_tokens": 45444,
+      "agent_output_tokens": 71013,
+      "agent_reasoning_tokens": 61536,
+      "agent_total_tokens": 501225,
+      "agent_tool_calls": 53,
+      "agent_api_calls": 52,
+      "agent_steps": 52
+    },
+    {
+      "task_id": "task_422_calendar_timezone",
+      "passed": false,
+      "message": "meeting 'Интервью: бэкенд' starts at the wrong moment",
+      "elapsed_seconds": 960.32,
+      "error": "timed out after 900s",
+      "workspace": null,
+      "agent_input_tokens": 165676,
+      "agent_output_tokens": 70806,
+      "agent_reasoning_tokens": 67088,
+      "agent_total_tokens": 898242,
+      "agent_tool_calls": 84,
+      "agent_api_calls": 55,
+      "agent_steps": 55
+    },
+    {
+      "task_id": "task_430_orders_backorder",
+      "passed": true,
+      "message": "service state matches the goal",
+      "elapsed_seconds": 741.92,
+      "error": null,
+      "workspace": null,
+      "agent_input_tokens": 112368,
+      "agent_output_tokens": 66873,
+      "agent_reasoning_tokens": 51375,
+      "agent_total_tokens": 1808553,
+      "agent_tool_calls": 97,
+      "agent_api_calls": 132,
+      "agent_steps": 132
+    }
+  ],
+  "summary": {
+    "total": 4,
+    "passed": 3,
+    "failed": 1,
+    "pass_rate": 0.75,
+    "total_seconds": 2554.8,
+    "total_input_tokens": 365068,
+    "total_output_tokens": 224097,
+    "total_reasoning_tokens": 188684,
+    "total_tokens": 3400941,
+    "total_steps": 287,
+    "total_tool_calls": 274,
+    "estimated_cost_rub": 255.71
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "results": [
+    {
+      "task_id": "task_393_intranet_multihop",
+      "passed": true,
+      "message": "ответы: верно 40/40 (100.0%)",
+      "elapsed_seconds": 2174.52,
+      "error": null,
+      "workspace": null,
+      "agent_input_tokens": 4731158,
+      "agent_output_tokens": 294253,
+      "agent_reasoning_tokens": 212540,
+      "agent_total_tokens": 26050179,
+      "agent_tool_calls": 480,
+      "agent_api_calls": 500,
+      "agent_steps": 500
+    },
+    {
+      "task_id": "task_394_review_annotation",
+      "passed": true,
+      "message": "отзывы: верно 797/800 (99.6%)",
+      "elapsed_seconds": 3571.21,
+      "error": null,
+      "workspace": null,
+      "agent_input_tokens": 1535806,
+      "agent_output_tokens": 207320,
+      "agent_reasoning_tokens": 158142,
+      "agent_total_tokens": 9320214,
+      "agent_tool_calls": 201,
+      "agent_api_calls": 273,
+      "agent_steps": 273
+    },
+    {
+      "task_id": "task_395_homework_grading",
+      "passed": true,
+      "message": "строк верно 89/90",
+      "elapsed_seconds": 1603.79,
+      "error": null,
+      "workspace": null,
+      "agent_input_tokens": 4861000,
+      "agent_output_tokens": 302645,
+      "agent_reasoning_tokens": 221021,
+      "agent_total_tokens": 26571261,
+      "agent_tool_calls": 402,
+      "agent_api_calls": 512,
+      "agent_steps": 512
+    }
+  ],
+  "summary": {
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "pass_rate": 1.0,
+    "total_seconds": 7349.5,
+    "total_input_tokens": 11127964,
+    "total_output_tokens": 804218,
+    "total_reasoning_tokens": 591703,
+    "total_tokens": 61941654,
+    "total_steps": 1285,
+    "total_tool_calls": 1083,
+    "estimated_cost_rub": 3265.3
+  }
+}
