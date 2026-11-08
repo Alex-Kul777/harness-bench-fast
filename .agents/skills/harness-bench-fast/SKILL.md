@@ -6,8 +6,7 @@ description: Work with the harness-bench-fast benchmark repo (projects/benchmark
 # harness-bench-fast — Benchmark Workflow
 
 Procedure for scoring models on the `harness-bench-fast` benchmark and keeping the
-runners healthy. Repo root: `~/.openclaw/workspace/projects/benchmark-research`
-(checkout in `harness-bench-fast/`).
+runners healthy. Repo root: `~/.openclaw/workspace/projects/benchmark-research/harness-bench-fast` (runners co-located here since feat/move-runners-into-hbf).
 
 ## When to use
 Any work touching this repo: running a model on the shot list or a new wave,
@@ -15,13 +14,14 @@ onboarding a Cloud.ru model, diagnosing/fixing a runner, merging upstream, or
 publishing results. Load this skill before the run.
 
 ## Repo map
+## Repo map (updated: runners are now in HBF root)
 - `run_pi_bench.py` — Pi Agent harness runner (default first wave; fastest/cheapest).
 - `run_openclaw_bench.py` — OpenClaw harness runner (second wave; `--model` uses the
   full provider-prefixed id).
-- `harness-bench-fast/shot_list.txt` — the 52-task stratified sample (Light, 391 set).
-- `harness-bench-fast/harness_bench/{long,reflect,feasibility}_tasks/` — new waves.
+- `shot_list.txt` — the 52-task stratified sample (Light, 391 set).
+- `harness_bench/{long,reflect,feasibility}_tasks/` — new waves.
 - `results/` — per-run JSON envelopes; commit key ones under `runs/` in the checkout.
-- `tests/test_runner_pi_cleanup.py` — runner regression suite.
+- `tests/test_runner_*.py` (runner regression suite) — runner regression suite.
 - `docs/SPEC-new-waves-track.md`, repo `AGENTS.md`.
 
 ## Environment prerequisites

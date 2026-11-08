@@ -1,0 +1,453 @@
+#!/usr/bin/env python3
+# FORK-OWNED: not in upstream ai-forever/harness-bench-fast
+"""OpenClaw Benchmark Runner — runs harness-bench-fast tasks through OpenClaw agent exec.
+
+Uses `openclaw agent exec` to run each task in an isolated session with
+the benchmark agent. Verifies results using harness-bench-fast verifiers.
+
+Usage:
+    python run_openclaw_bench.py --pilot           # 12 tasks (6 failed + 6 passed)
+    python run_openclaw_bench.py --failed-only      # 6 failed tasks
+    python run_openclaw_bench.py --tasks task_01_create_hello
+    python run_openclaw_bench.py --all               # all 391 tasks
+    python run_openclaw_bench.py --all --concurrency 3 --json-output results/oc_full_391.json --status-file /tmp/oc_bench_status.json
+"""
+
+import argparse
+import json
+import os
+import subprocess
+import sys
+import time
+import threading
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+# Add harness-bench-fast to path
+BENCH_DIR = Path(os.environ.get("BENCH_DIR", str(Path(__file__).parent)))
+sys.path.insert(0, str(BENCH_DIR))
+
+from harness_bench.tasks import ALL_TASKS, SUITES, get_task
+
+
+# ── Configuration ──────────────────────────────────────────────────────
+
+DEFAULT_MODEL = "custom-foundation-models-api-cloud-ru/zai-org/GLM-5.2"
+DEFAULT_TIMEOUT = 600  # seconds per task
+CLOUD_RU_INPUT_PRICE = 239.12   # ₽ per 1M input tokens
+CLOUD_RU_OUTPUT_PRICE = 751.52  # ₽ per 1M output tokens
+
+FAILED_TASK_IDS = [
+    "task_223_memory_city_timezone_script",
+    "task_293_tau2_event_ticket_exchange",
+    "task_355_segment_audit",
+    "task_376_cli_xtab_column_share",
+    "task_378_cli_cfgctl_layered_merge",
+    "task_389_cli_find_xargs_predicates",
+]
+
+PASSED_TASK_IDS = [
+    "task_01_create_hello",
+    "task_13_count_csv_lines",
+    "task_50_fix_typo",
+    "task_76_create_dataclass",
+    "task_100_zero_balance",
+    "task_200_impl_priority_queue",
+]
+
+PILOT_TASK_IDS = FAILED_TASK_IDS + PASSED_TASK_IDS
+
+# Thread-safe print
+_print_lock = threading.Lock()
+def safe_print(*args, **kwargs):
+    with _print_lock:
+        print(*args, **kwargs)
+
+
+def run_one_task(
+    task,
+    *,
+    model: str = DEFAULT_MODEL,
+    timeout: int = DEFAULT_TIMEOUT,
+    keep_workspace: bool = False,
+    thinking: str | None = None,
+) -> dict:
+    """Run a single benchmark task through `openclaw agent exec`."""
+    started = time.monotonic()
+    workspace_keepalive = None
+
+    try:
+        if keep_workspace:
+            workspace_path = Path(f"/tmp/oc_bench_{task.id}")
+            workspace_path.mkdir(parents=True, exist_ok=True)
+        else:
+            workspace_keepalive = TemporaryDirectory(prefix=f"oc_bench_{task.id}_")
+            workspace_path = Path(workspace_keepalive.name)
+
+        # 1. Setup workspace with task fixtures
+        task.setup(workspace_path)
+
+        # 2. Run openclaw agent exec
+        cmd = [
+            "openclaw", "agent", "exec",
+            "--model", model,
+            "--cwd", str(workspace_path),
+            "--timeout", str(timeout),
+            "--json",
+        ]
+        if thinking:
+            cmd.extend(["--thinking", thinking])
+        cmd.append(task.prompt)
+
+        agent_error = None
+        result = None
+        try:
+            result = subprocess.run(
+                cmd,
+                cwd=str(workspace_path),
+                capture_output=True,
+                text=True,
+                timeout=timeout + 60,
+                encoding="utf-8",
+                errors="replace",
+            )
+            if result.returncode != 0:
+                stderr_tail = (result.stderr or "")[-300:]
+                agent_error = f"exit={result.returncode}: {stderr_tail}"
+        except subprocess.TimeoutExpired:
+            agent_error = f"timed out after {timeout}s"
+        except Exception as exc:
+            agent_error = f"exception: {exc}"
+
+        elapsed = time.monotonic() - started
+
+        # 3. Verify the result
+        verify_result = task.verify(workspace_path)
+
+        # 4. Extract token stats from JSON envelope
+        # Envelope format: {ok, status, final, payloads, usage:{input,output,total,reasoningTokens},
+        #                   costUsd, assistantTurns, toolSummary:{calls,tools,failures}, model, sessionId}
+        token_stats = {}
+        if result and result.stdout:
+            try:
+                envelope = json.loads(result.stdout)
+                usage = envelope.get("usage", {})
+                tool_summary = envelope.get("toolSummary", {})
+                token_stats = {
+                    "agent_input_tokens": usage.get("input", 0),
+                    "agent_output_tokens": usage.get("output", 0),
+                    "agent_total_tokens": usage.get("total", 0),
+                    "agent_reasoning_tokens": usage.get("reasoningTokens", 0),
+                    "agent_steps": tool_summary.get("calls", 0),
+                    "agent_turns": envelope.get("assistantTurns", 0),
+                    "agent_cost_usd": envelope.get("costUsd", 0),
+                    "agent_session_id": envelope.get("sessionId", ""),
+                }
+            except (json.JSONDecodeError, AttributeError):
+                pass
+
+        return {
+            "task_id": task.id,
+            "passed": verify_result.passed,
+            "message": verify_result.message,
+            "elapsed_seconds": round(elapsed, 2),
+            "error": agent_error,
+            "workspace": str(workspace_path) if keep_workspace else None,
+            "thinking": thinking,
+            **token_stats,
+        }
+
+    except Exception as exc:
+        elapsed = time.monotonic() - started
+        return {
+            "task_id": task.id,
+            "passed": False,
+            "message": f"runner error: {exc}",
+            "elapsed_seconds": round(elapsed, 2),
+            "error": str(exc),
+            "workspace": None,
+        }
+    finally:
+        if workspace_keepalive is not None and not keep_workspace:
+            workspace_keepalive.cleanup()
+
+
+def _write_results(results: list[dict], path: str, *,
+                   harness_version: str | None = None,
+                   thinking: str | None = None,
+                   command: str | None = None) -> None:
+    """Write results in upstream-compatible format."""
+    passed = sum(1 for r in results if r["passed"])
+    total = len(results)
+    total_input = sum(r.get("agent_input_tokens", 0) for r in results)
+    total_output = sum(r.get("agent_output_tokens", 0) for r in results)
+    total_tokens = sum(r.get("agent_total_tokens", 0) for r in results)
+    total_seconds = sum(r["elapsed_seconds"] for r in results)
+    total_steps = sum(r.get("agent_steps", 0) for r in results)
+    cost_rub = (total_input / 1e6 * CLOUD_RU_INPUT_PRICE +
+                total_output / 1e6 * CLOUD_RU_OUTPUT_PRICE)
+
+    payload = {
+        "task_set_version": "0.16.0",
+        "harness": "openclaw",
+        "harness_version": harness_version,
+        "thinking": thinking,
+        "command": command or f"python run_openclaw_bench.py --all --model {DEFAULT_MODEL}",
+        "total": total,
+        "passed": passed,
+        "pass_rate": round(passed / max(total, 1), 4),
+        "tokens": total_tokens,
+        "tasks": results,
+        "summary": {
+            "total": total,
+            "passed": passed,
+            "failed": total - passed,
+            "pass_rate": round(passed / max(total, 1), 4),
+            "total_seconds": round(total_seconds, 1),
+            "total_steps": total_steps,
+            "total_input_tokens": total_input,
+            "total_output_tokens": total_output,
+            "total_tokens": total_tokens,
+            "estimated_cost_rub": round(cost_rub, 2),
+        },
+    }
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
+
+
+def _write_status(path: str, completed: int, total: int, passed: int, failed: int,
+                  elapsed: float, last_task: str, tokens: int, cost: float):
+    """Write JSON status file for monitoring."""
+    remaining = total - completed
+    avg_time = elapsed / max(completed, 1)
+    eta = remaining * avg_time
+    status = {
+        "completed": completed,
+        "total": total,
+        "passed": passed,
+        "failed": failed,
+        "elapsed_seconds": round(elapsed, 1),
+        "estimated_remaining_seconds": round(eta, 1),
+        "total_tokens": tokens,
+        "estimated_cost_rub": round(cost, 2),
+        "last_task": last_task,
+        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+    }
+    with open(path, "w") as f:
+        json.dump(status, f, indent=2)
+
+
+def load_checkpoint(path: str) -> dict[str, dict]:
+    """Load existing results from JSON file (for --rerun-on-fail)."""
+    if not Path(path).exists():
+        return {}
+    try:
+        with open(path) as f:
+            data = json.load(f)
+        tasks = data.get("tasks", data.get("results", []))
+        return {t["task_id"]: t for t in tasks if isinstance(t, dict)}
+    except (json.JSONDecodeError, KeyError):
+        return {}
+
+
+def run_concurrent(
+    task_ids: list[str],
+    *,
+    model: str = DEFAULT_MODEL,
+    timeout: int = DEFAULT_TIMEOUT,
+    keep_workspace: bool = False,
+    json_output: str | None = None,
+    status_file: str | None = None,
+    concurrency: int = 3,
+    checkpoint: dict[str, dict] | None = None,
+    thinking: str | None = None,
+    harness_version: str | None = None,
+    command: str | None = None,
+) -> list[dict]:
+    """Run tasks with ThreadPoolExecutor."""
+    checkpoint = checkpoint or {}
+    to_run = [tid for tid in task_ids if tid not in checkpoint or not checkpoint[tid].get("passed")]
+    skipped = len(task_ids) - len(to_run)
+
+    if skipped:
+        safe_print(f"Checkpoint: {skipped} passed tasks skipped, {len(to_run)} to run")
+
+    safe_print(f"Running {len(to_run)} tasks (concurrency={concurrency})")
+
+    results = dict(checkpoint)  # start with checkpoint
+    completed = len(checkpoint)
+    passed = sum(1 for r in checkpoint.values() if r.get("passed"))
+    failed = completed - passed
+    start_time = time.monotonic()
+    total_tokens = sum(r.get("agent_total_tokens", 0) for r in checkpoint.values())
+    total_input = sum(r.get("agent_input_tokens", 0) for r in checkpoint.values())
+    total_output = sum(r.get("agent_output_tokens", 0) for r in checkpoint.values())
+    lock = threading.Lock()
+
+    def task_wrapper(tid: str, idx: int) -> dict:
+        task = get_task(tid)
+        safe_print(f"[{idx}/{len(task_ids)}] {task.id}: starting...", flush=True)
+        run = run_one_task(task, model=model, timeout=timeout, keep_workspace=keep_workspace, thinking=thinking)
+        status = "✅ PASS" if run["passed"] else "❌ FAIL"
+        safe_print(f"[{idx}/{len(task_ids)}] {task.id}: [{status}] {run['elapsed_seconds']:.1f}s — {run['message'][:120]}", flush=True)
+        return run
+
+    with ThreadPoolExecutor(max_workers=concurrency) as executor:
+        futures = {}
+        for i, tid in enumerate(to_run, skipped + 1):
+            future = executor.submit(task_wrapper, tid, i)
+            futures[future] = tid
+
+        for future in as_completed(futures):
+            tid = futures[future]
+            try:
+                run = future.result()
+            except Exception as exc:
+                run = {
+                    "task_id": tid,
+                    "passed": False,
+                    "message": f"executor error: {exc}",
+                    "elapsed_seconds": 0,
+                    "error": str(exc),
+                }
+
+            with lock:
+                results[tid] = run
+                completed += 1
+                if run["passed"]:
+                    passed += 1
+                else:
+                    failed += 1
+                total_tokens += run.get("agent_total_tokens", 0)
+                total_input += run.get("agent_input_tokens", 0)
+                total_output += run.get("agent_output_tokens", 0)
+                elapsed = time.monotonic() - start_time
+                cost = (total_input / 1e6 * CLOUD_RU_INPUT_PRICE +
+                        total_output / 1e6 * CLOUD_RU_OUTPUT_PRICE)
+
+                if json_output:
+                    _write_results(list(results.values()), json_output,
+                                   harness_version=harness_version, thinking=thinking,
+                                   command=command)
+                if status_file:
+                    _write_status(status_file, completed, len(task_ids),
+                                  passed, failed, elapsed, tid, total_tokens, cost)
+
+    return list(results.values())
+
+
+def resolve_task_ids(args):
+    """Resolve task list from CLI flags (--tasks > --suite > --failed-only > --pilot > --all > --shot-list)."""
+    if args.tasks:
+        return args.tasks
+    if getattr(args, "suite", None):
+        return [t.id for t in SUITES[args.suite]]
+    if args.failed_only:
+        return FAILED_TASK_IDS
+    if args.pilot:
+        return PILOT_TASK_IDS
+    if args.all:
+        return [t.id for t in ALL_TASKS]
+    if args.shot_list:
+        shot_file = BENCH_DIR / "shot_list.txt"
+        return [l.strip() for l in shot_file.read_text().splitlines() if l.strip() and not l.startswith("#")]
+    return None
+
+
+def detect_harness_version() -> str | None:
+    """Best-effort OpenClaw CLI version for the harness_version artifact field."""
+    try:
+        out = subprocess.run(["openclaw", "--version"], capture_output=True,
+                             text=True, timeout=30)
+        line = (out.stdout or out.stderr or "").strip().splitlines()
+        return line[0].strip() if line else None
+    except Exception:
+        return None
+
+
+def resolve_harness_version(explicit: str | None) -> str | None:
+    """Explicit --harness-version > env HARNESS_BENCH_HARNESS_VERSION > autodetect."""
+    return explicit or os.environ.get("HARNESS_BENCH_HARNESS_VERSION") or detect_harness_version()
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Run harness-bench-fast via OpenClaw")
+    parser.add_argument("--tasks", nargs="+", help="Specific task IDs")
+    parser.add_argument("--failed-only", action="store_true")
+    parser.add_argument("--pilot", action="store_true")
+    parser.add_argument("--all", action="store_true")
+    parser.add_argument("--shot-list", action="store_true", help="Run 52-task shot list")
+    parser.add_argument("--suite", choices=sorted(SUITES), help="Named task suite (harness_bench.tasks.SUITES), e.g. reflect, feasibility, long")
+    parser.add_argument("--model", default=DEFAULT_MODEL)
+    parser.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT)
+    parser.add_argument("--thinking", default=None, help="Thinking level: off | minimal | low | medium | high | max")
+    parser.add_argument("--harness-version", default=None,
+                        help="Harness (CLI) version recorded as harness_version; "
+                             "defaults to `openclaw --version`, env HARNESS_BENCH_HARNESS_VERSION")
+    parser.add_argument("--keep", action="store_true", help="Keep workspaces")
+    parser.add_argument("--json-output", default=None)
+    parser.add_argument("--status-file", default=None, help="JSON status file for monitoring")
+    parser.add_argument("--concurrency", type=int, default=1, help="Parallel tasks")
+    parser.add_argument("--rerun-on-fail", action="store_true", help="Skip passed tasks from checkpoint")
+    args = parser.parse_args()
+
+    task_ids = resolve_task_ids(args)
+    if task_ids is None:
+        parser.print_help()
+        sys.exit(1)
+
+    json_output = args.json_output or f"/tmp/oc_bench_{int(time.time())}.json"
+
+    # Load checkpoint
+    checkpoint = {}
+    if args.rerun_on_fail and json_output:
+        checkpoint = load_checkpoint(json_output)
+        if checkpoint:
+            print(f"Loaded {len(checkpoint)} tasks from checkpoint")
+
+    harness_version = resolve_harness_version(args.harness_version)
+    command = "python run_openclaw_bench.py " + " ".join(sys.argv[1:])
+
+    print(f"🧪 OpenClaw Benchmark Runner")
+    print(f"   Model: {args.model}")
+    print(f"   Tasks: {len(task_ids)}")
+    print(f"   Concurrency: {args.concurrency}")
+    print(f"   Timeout: {args.timeout}s")
+    print(f"   Harness version: {harness_version}")
+    if args.thinking:
+        print(f"   Thinking: {args.thinking}")
+    print(f"   JSON: {json_output}")
+    if args.status_file:
+        print(f"   Status: {args.status_file}")
+    print()
+
+    results = run_concurrent(
+        task_ids,
+        model=args.model,
+        timeout=args.timeout,
+        thinking=args.thinking,
+        harness_version=harness_version,
+        command=command,
+        keep_workspace=args.keep,
+        json_output=json_output,
+        status_file=args.status_file,
+        concurrency=args.concurrency,
+        checkpoint=checkpoint,
+    )
+
+    passed = sum(1 for r in results if r["passed"])
+    print()
+    print("=" * 60)
+    print(f"Results: {passed}/{len(results)} passed ({passed/len(results):.1%})")
+    print(f"JSON: {json_output}")
+
+    failed = [r for r in results if not r["passed"]]
+    if failed:
+        print(f"\nFailed tasks ({len(failed)}):")
+        for r in sorted(failed, key=lambda x: x["task_id"]):
+            print(f"  ❌ {r['task_id']}: {(r.get('error') or r['message'])[:100]}")
+
+
+if __name__ == "__main__":
+    main()
