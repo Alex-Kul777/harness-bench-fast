@@ -1849,6 +1849,38 @@
           },
           "detail": "fork-run-pi-deepseek-v4-1-flash.html",
           "coverage": "66/90"
+        },
+        {
+          "harness": "Pi",
+          "profile": "thinking: low (2026-11-07)",
+          "model": "GigaChat 3.5 Reasoning (thinking: low)",
+          "result": "13/66 (partial 66/90)",
+          "pct": "19.7%",
+          "time": "790.2m",
+          "steps": "6 568",
+          "tokens_cost": "191 167 840 (6 946₽)",
+          "version": "v0.21.3",
+          "source": "ours",
+          "waves": {
+            "long": {
+              "passed": 0,
+              "total": 6
+            },
+            "reflect": {
+              "passed": 2,
+              "total": 20
+            },
+            "feasibility": {
+              "passed": 11,
+              "total": 40
+            },
+            "composite_hard": {
+              "passed": null,
+              "total": null
+            }
+          },
+          "detail": "fork-run-pi-gigachat-3-5-reasoning-thinking-low.html",
+          "coverage": "66/90"
         }
       ],
       "upstream": [
@@ -1987,6 +2019,23 @@
           "tokens_cost": "206 712 383 (11 310₽)",
           "status_key": "status_partial",
           "detail": "fork-run-pi-deepseek-v4-1-flash.html"
+        },
+        {
+          "kind": "coverage",
+          "harness": "Pi",
+          "profile": "thinking: low",
+          "model": "GigaChat 3.5 Reasoning",
+          "subset_key": "subset_our_runs",
+          "subset_args": {
+            "n": 66
+          },
+          "result": "13/66",
+          "pct": "19.7%",
+          "coverage": "66/90",
+          "time": "790.2m",
+          "tokens_cost": "191 167 840 (6 946₽)",
+          "status_key": "status_partial",
+          "detail": "fork-run-pi-gigachat-3-5-reasoning-thinking-low.html"
         },
         {
           "kind": "pilot",

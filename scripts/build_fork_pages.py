@@ -104,6 +104,7 @@ HARNESS_PREFIXES = (
 
 MODEL_TOKENS = (
     ("ds41flash", "DeepSeek-V4.1-Flash"),
+    ("giga35", "GigaChat 3.5 Reasoning"),
     ("glm53", "GLM-5.3"),
     ("glm52", "GLM-5.2"),
     ("qwen36", "Qwen3.6-35B-A3B"),
@@ -114,6 +115,11 @@ PROFILE_RULES = (
     ("thinking_off", "thinking: off"),
     ("mcpoff", "MCP off"),
 )
+
+# Reasoning-sweep artifacts end with ``_<level>_<YYYYMMDD>``; the level drives the
+# Profile cell (mirrors build_fork_results.py / build_fork_home.py). Enumerate every
+# sweep level so a low arm never publishes with a blank profile.
+THINKING_LEVEL_RE = re.compile(r"_(off|low|medium|high)_\d{8}$")
 
 # Non-publishable artifacts (smoke/sample/diagnostic/rerun) never reach the page.
 EXCLUDE_KEYWORDS = ("smoke", "sample", "diag", "part2", "rerun")
@@ -195,6 +201,9 @@ def classify_model(stem: str) -> str | None:
 
 
 def classify_profile(stem: str) -> str | None:
+    level = THINKING_LEVEL_RE.search(stem)
+    if level:
+        return f"thinking: {level.group(1)}"
     lower = stem.lower()
     for token, label in PROFILE_RULES:
         if token in lower:

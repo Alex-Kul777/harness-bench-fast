@@ -100,15 +100,84 @@
         "pi_reflect_ds41flash_b_20261106.json",
         "wave19_full_ds41flash.json"
       ]
+    },
+    {
+      "id": "pi-gigachat-3-5-reasoning-thinking-low",
+      "details_url": "fork-run-pi-gigachat-3-5-reasoning-thinking-low.html",
+      "harness": "Pi",
+      "model": "GigaChat 3.5 Reasoning",
+      "profile": "thinking: low",
+      "runs": 3,
+      "suites": {
+        "long": {
+          "passed": 0,
+          "total": 6,
+          "measurement": "partial",
+          "duration": {
+            "n": 6,
+            "mean": 621.6,
+            "median": 611.4,
+            "max": 1405.4
+          }
+        },
+        "reflect": {
+          "passed": 2,
+          "total": 20,
+          "measurement": "complete",
+          "duration": {
+            "n": 20,
+            "mean": 632.6,
+            "median": 303.1,
+            "max": 2116.6
+          }
+        },
+        "feasibility": {
+          "passed": 11,
+          "total": 40,
+          "measurement": "complete",
+          "duration": {
+            "n": 40,
+            "mean": 775.7,
+            "median": 258.3,
+            "max": 3660.4
+          }
+        },
+        "composite_hard": null
+      },
+      "usage": {
+        "seconds": 47410.8,
+        "steps": 6568,
+        "tokens": 191167840,
+        "cost_rub": 6946.1
+      },
+      "wilson": {
+        "long": [
+          0.115,
+          0.275
+        ],
+        "reflect": [
+          0.134,
+          0.195
+        ],
+        "feasibility": [
+          0.274,
+          0.316
+        ]
+      },
+      "sources": [
+        "pi_medium_feasibility_giga35_low_20261107.json",
+        "pi_medium_long_giga35_low_20261107.json",
+        "pi_medium_reflect_giga35_low_20261107.json"
+      ]
     }
   ],
   "duration_by_wave": {
     "long": [
       {
         "label": "Pi (ours)",
-        "n": 6,
-        "mean": 4111.8,
-        "median": 3658.7,
+        "n": 12,
+        "mean": 2366.7,
+        "median": 1504.6,
         "max": 7262.0
       },
       {
@@ -136,10 +205,10 @@
     "reflect": [
       {
         "label": "Pi (ours)",
-        "n": 20,
-        "mean": 508.0,
-        "median": 393.8,
-        "max": 1301.9
+        "n": 40,
+        "mean": 570.3,
+        "median": 359.5,
+        "max": 2116.6
       },
       {
         "label": "Codex + DeepSeek",
@@ -166,9 +235,9 @@
     "feasibility": [
       {
         "label": "Pi (ours)",
-        "n": 40,
-        "mean": 262.2,
-        "median": 111.3,
+        "n": 80,
+        "mean": 518.9,
+        "median": 181.1,
         "max": 3660.4
       },
       {
