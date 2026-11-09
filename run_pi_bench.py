@@ -38,6 +38,7 @@ SHOT_LIST_FILE = BENCH_DIR / "shot_list.txt"
 from harness_bench.tasks import ALL_TASKS, SUITES, get_task
 from harness_bench.cost_resolver import resolve_model_rates, compute_cost_rub
 from harness_bench.core import effective_task_timeout
+from harness_bench.artifact_metadata import artifact_metadata, resolve_harness_version  # noqa: E402
 
 DEFAULT_MODEL = "zai-org/GLM-5.2"
 DEFAULT_TIMEOUT = 660
@@ -334,7 +335,8 @@ def run_one_task(task, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT, keep_wor
             workspace_keepalive.cleanup()
 
 
-def _write_results(results, path, timeout=None, model=None):
+def _write_results(results, path, timeout=None, model=None, *,
+                   thinking=None, harness_version=None, task_ids=None):
     """Write results JSON with summary. Thread-safe."""
     with _write_lock:
         passed = sum(1 for r in results if r["passed"])
@@ -348,7 +350,15 @@ def _write_results(results, path, timeout=None, model=None):
         total_tool_calls = sum(r.get("agent_tool_calls", 0) or 0 for r in results)
         _rates = _get_model_rates(model or DEFAULT_MODEL)
         cost_rub = round(compute_cost_rub(total_in, total_out, 0, 0, _rates), 2)
+        task_id_list = list(task_ids) if task_ids is not None else [r.get("task_id") for r in results]
         payload = {
+            **artifact_metadata(
+                harness="pi",
+                task_ids=task_id_list,
+                thinking=thinking,
+                harness_version=harness_version,
+                model=model or DEFAULT_MODEL,
+            ),
             "results": results,
             "summary": {
                 "total": total,
@@ -418,7 +428,7 @@ def _load_checkpoint(json_path):
 def run_batch(task_ids, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT,
                keep_workspace=False, json_output=None, concurrency=1,
                status_file=None, rerun_on_fail=False, fresh=False,
-               thinking_level=None, allow_below_floor=False):
+               thinking_level=None, allow_below_floor=False, harness_version=None):
     """Run tasks with optional concurrency, checkpoint/resume, and progress reporting."""
 
     existing_results = {}
@@ -467,7 +477,9 @@ def run_batch(task_ids, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT,
             steps = run.get("agent_steps", 0) or 0
             print(f"  [{status}] {run['elapsed_seconds']:.1f}s — steps={steps} tokens={tokens} — {run['message'][:100]}", flush=True)
             if json_output:
-                _write_results(results, json_output, timeout=timeout, model=model)
+                _write_results(results, json_output, timeout=timeout, model=model,
+                               thinking=thinking_level, harness_version=harness_version,
+                               task_ids=task_ids)
             if status_file:
                 _write_status(status_file, completed, total_all, results, started_at)
     else:
@@ -488,7 +500,9 @@ def run_batch(task_ids, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT,
                 steps = run.get("agent_steps", 0) or 0
                 print(f"[{completed}/{total_all}] {tid}: [{status}] {run['elapsed_seconds']:.1f}s — steps={steps} tokens={tokens} — {run['message'][:100]}", flush=True)
                 if json_output:
-                    _write_results(results, json_output, timeout=timeout, model=model)
+                    _write_results(results, json_output, timeout=timeout, model=model,
+                                   thinking=thinking_level, harness_version=harness_version,
+                                   task_ids=task_ids)
                 if status_file:
                     _write_status(status_file, completed, total_all, results, started_at)
 
@@ -501,6 +515,19 @@ def _load_shot_list():
         print(f"ERROR: shot list not found at {SHOT_LIST_FILE}", file=sys.stderr)
         sys.exit(1)
     return [line.strip() for line in SHOT_LIST_FILE.read_text().splitlines() if line.strip() and not line.startswith("#")]
+
+
+def detect_harness_version() -> str | None:
+    """Best-effort Pi harness (CLI) version for the harness_version artifact field."""
+    for cmd in ([PI_DOCKER_SCRIPT, "--version"], ["pi", "--version"]):
+        try:
+            out = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
+        except Exception:  # noqa: BLE001 - detection is best-effort
+            continue
+        lines = (out.stdout or out.stderr or "").strip().splitlines()
+        if lines:
+            return lines[0].strip()
+    return None
 
 
 def resolve_task_ids(args):
@@ -534,6 +561,9 @@ def main():
     parser.add_argument("--rerun-on-fail", action="store_true")
     parser.add_argument("--fresh", action="store_true")
     parser.add_argument("--thinking", default=None, help="Pi thinking level: off, minimal, low, medium, high, xhigh, max")
+    parser.add_argument("--harness-version", default=None,
+                        help="Harness (CLI) version recorded as harness_version; "
+                             "defaults to env HARNESS_BENCH_HARNESS_VERSION or autodetect")
     args = parser.parse_args()
 
     task_ids = resolve_task_ids(args)
@@ -552,6 +582,8 @@ def main():
           + (" (below-floor allowed -> non-comparable)" if args.allow_below_floor else ""))
     if args.thinking:
         print(f"  Thinking: {args.thinking}")
+    harness_version = resolve_harness_version(args.harness_version, detect=detect_harness_version)
+    print(f"  Harness version: {harness_version}")
     print(f"  JSON: {json_output}")
     print(f"  Status: {status_file}")
     print()
@@ -562,6 +594,7 @@ def main():
         json_output=json_output, status_file=status_file,
         rerun_on_fail=args.rerun_on_fail, fresh=args.fresh,
         thinking_level=args.thinking, allow_below_floor=args.allow_below_floor,
+        harness_version=harness_version,
     )
 
     passed = sum(1 for r in results if r["passed"])

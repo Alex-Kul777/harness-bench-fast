@@ -30,6 +30,7 @@ sys.path.insert(0, str(BENCH_DIR))
 
 from harness_bench.tasks import ALL_TASKS, SUITES, get_task
 from harness_bench.cost_resolver import resolve_model_rates, compute_cost_rub
+from harness_bench.artifact_metadata import artifact_metadata  # noqa: E402
 
 
 # ── Configuration ──────────────────────────────────────────────────────
@@ -198,10 +199,13 @@ def _write_results(results: list[dict], path: str, *,
     cost_rub = compute_cost_rub(total_input, total_output, total_cache_read, total_cache_write, _rates)
 
     payload = {
-        "task_set_version": "0.16.0",
-        "harness": "openclaw",
-        "harness_version": harness_version,
-        "thinking": thinking,
+        **artifact_metadata(
+            harness="openclaw",
+            task_ids=[r.get("task_id") for r in results],
+            thinking=thinking,
+            harness_version=harness_version,
+            model=model or DEFAULT_MODEL,
+        ),
         "command": command or f"python run_openclaw_bench.py --all --model {DEFAULT_MODEL}",
         "total": total,
         "passed": passed,

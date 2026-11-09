@@ -38,6 +38,7 @@ SHOT_LIST_FILE = BENCH_DIR / "shot_list.txt"
 
 from harness_bench.tasks import ALL_TASKS, get_task
 from harness_bench.cost_resolver import resolve_model_rates, compute_cost_rub
+from harness_bench.artifact_metadata import artifact_metadata, resolve_harness_version  # noqa: E402
 
 DEFAULT_MODEL = "zai-org/GLM-5.2"
 DEFAULT_TIMEOUT = 660
@@ -250,7 +251,8 @@ def run_one_task(task, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT, keep_wor
             workspace_keepalive.cleanup()
 
 
-def _write_results(results, path, model=None):
+def _write_results(results, path, model=None, *,
+                   thinking=None, harness_version=None, task_ids=None):
     """Write results JSON with summary. Thread-safe."""
     with _write_lock:
         passed = sum(1 for r in results if r["passed"])
@@ -261,7 +263,15 @@ def _write_results(results, path, model=None):
         total_tok = sum(r.get("agent_total_tokens", 0) for r in results)
         total_steps = sum(r.get("agent_steps", 0) or 0 for r in results)
         cost_rub = round(compute_cost_rub(total_in, total_out, 0, 0, _get_model_rates(model or DEFAULT_MODEL)), 2)
+        task_id_list = list(task_ids) if task_ids is not None else [r.get("task_id") for r in results]
         payload = {
+            **artifact_metadata(
+                harness="hermes",
+                task_ids=task_id_list,
+                thinking=thinking,
+                harness_version=harness_version,
+                model=model or DEFAULT_MODEL,
+            ),
             "results": results,
             "summary": {
                 "total": total,
@@ -324,7 +334,7 @@ def _load_checkpoint(json_path):
 def run_batch(task_ids, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT,
                keep_workspace=False, json_output=None, concurrency=1,
                status_file=None, rerun_on_fail=False, fresh=False,
-               thinking_off=False):
+               thinking_off=False, harness_version=None):
     """Run tasks with optional concurrency, checkpoint/resume, and progress reporting."""
 
     # Checkpoint/resume: load existing results
@@ -376,7 +386,9 @@ def run_batch(task_ids, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT,
             status = "PASS" if run["passed"] else "FAIL"
             print(f"  [{status}] {run['elapsed_seconds']:.1f}s — {run['message'][:120]}", flush=True)
             if json_output:
-                _write_results(results, json_output, model=model)
+                _write_results(results, json_output, model=model,
+                               thinking=("off" if thinking_off else None),
+                               harness_version=harness_version, task_ids=task_ids)
             if status_file:
                 _write_status(status_file, completed, total_all, results, started_at)
     else:
@@ -396,7 +408,9 @@ def run_batch(task_ids, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT,
                 status = "PASS" if run["passed"] else "FAIL"
                 print(f"[{completed}/{total_all}] {tid}: [{status}] {run['elapsed_seconds']:.1f}s — {run['message'][:120]}", flush=True)
                 if json_output:
-                    _write_results(results, json_output, model=model)
+                    _write_results(results, json_output, model=model,
+                                   thinking=("off" if thinking_off else None),
+                                   harness_version=harness_version, task_ids=task_ids)
                 if status_file:
                     _write_status(status_file, completed, total_all, results, started_at)
 
@@ -422,6 +436,17 @@ def _set_hermes_reasoning(value: str):
     )
 
 
+def detect_harness_version() -> str | None:
+    """Best-effort Hermes harness (CLI) version for the harness_version artifact field."""
+    try:
+        out = subprocess.run([HERMES_BIN, "--version"], capture_output=True,
+                             text=True, timeout=15)
+    except Exception:  # noqa: BLE001 - detection is best-effort
+        return None
+    lines = (out.stdout or out.stderr or "").strip().splitlines()
+    return lines[0].strip() if lines else None
+
+
 def main():
     parser = argparse.ArgumentParser(description="Run harness-bench-fast via Hermes")
     parser.add_argument("--tasks", nargs="+", help="Specific task IDs")
@@ -431,6 +456,9 @@ def main():
     parser.add_argument("--shot-list", action="store_true", help="Run the 52-task shot list")
     parser.add_argument("--thinking-off", action="store_true", help="Disable model reasoning (sets agent.reasoning_effort=none)")
     parser.add_argument("--model", default=DEFAULT_MODEL)
+    parser.add_argument("--harness-version", default=None,
+                        help="Harness (CLI) version recorded as harness_version; "
+                             "defaults to env HARNESS_BENCH_HARNESS_VERSION or autodetect")
     parser.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT)
     parser.add_argument("--concurrency", type=int, default=DEFAULT_CONCURRENCY)
     parser.add_argument("--keep", action="store_true", help="Keep workspaces")
@@ -471,6 +499,8 @@ def main():
     print(f"  Tasks: {len(task_ids)}")
     print(f"  Concurrency: {args.concurrency}")
     print(f"  Timeout: {args.timeout}s")
+    harness_version = resolve_harness_version(args.harness_version, detect=detect_harness_version)
+    print(f"  Harness version: {harness_version}")
     print(f"  JSON: {json_output}")
     print(f"  Status: {status_file}")
     print()
@@ -481,7 +511,7 @@ def main():
             concurrency=args.concurrency, keep_workspace=args.keep,
             json_output=json_output, status_file=status_file,
             rerun_on_fail=args.rerun_on_fail, fresh=args.fresh,
-            thinking_off=args.thinking_off,
+            thinking_off=args.thinking_off, harness_version=harness_version,
         )
     finally:
         # Restore reasoning setting
