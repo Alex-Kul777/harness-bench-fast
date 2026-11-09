@@ -897,6 +897,11 @@ uv venv && uv pip install -e ".[gigachat,openrouter]"
 # to the public profile.
 uv pip install -e ".[gigachat-profile]"
 
+# Provision the test/dev environment (repo deps + dev/test extras) so that
+# `pytest tests/` collects with 0 errors. Prefers uv, falls back to pip:
+./scripts/setup_test_env.sh
+.venv/bin/python -m pytest tests/ --collect-only -q
+
 # List all 471 tasks
 uv run python -m harness_bench list
 
