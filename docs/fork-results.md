@@ -29,7 +29,7 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 Руками не редактировать — правь скрипт/JSON и пересобирай.
 
 <!-- FORK:RESULTS:BEGIN -->
-Автосинк: 38 прогонов
+Автосинк: 41 прогонов
 
 | Harness | Suite | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
@@ -48,10 +48,13 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 | OpenClaw | Light (391) | — | — | 378/391 | 96.7% | 1473.3m | — | 0 (0₽) |
 | OpenClaw | Medium (392-471) | thinking: high | DeepSeek-V4.1-Flash (thinking: high) | 38/40 | 95.0% | 105.0m | 783 | 25 623 769 (371₽) |
 | OpenClaw | Medium (392-471) | thinking: high | DeepSeek-V4.1-Flash (thinking: high) | 17/20 | 85.0% | 81.5m | 406 | 14 660 719 (195₽) |
+| OpenClaw | Medium (392-471) | thinking: high | DeepSeek-V4.1-Flash (thinking: high) | 3/6 | 50.0% | 128.2m | 183 | 8 929 176 (122₽) |
 | OpenClaw | Medium (392-471) | thinking: medium | DeepSeek-V4.1-Flash (thinking: medium) | 39/40 | 97.5% | 123.7m | 811 | 24 275 573 (363₽) |
 | OpenClaw | Medium (392-471) | thinking: medium | DeepSeek-V4.1-Flash (thinking: medium) | 16/20 | 80.0% | 69.1m | 399 | 11 144 179 (183₽) |
+| OpenClaw | Medium (392-471) | thinking: medium | DeepSeek-V4.1-Flash (thinking: medium) | 2/6 | 33.3% | 115.5m | 66 | 303 527 (12₽) |
 | OpenClaw | Medium (392-471) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 36/40 | 90.0% | 169.6m | 873 | 29 641 266 (407₽) |
 | OpenClaw | Medium (392-471) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 12/20 | 60.0% | 128.5m | 467 | 10 009 328 (161₽) |
+| OpenClaw | Medium (392-471) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 2/6 | 33.3% | 131.6m | 86 | 8 425 060 (146₽) |
 | OpenClaw | Medium (392-471) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 0/2 | 0.0% | 45.6m | 4 | 9 429 226 (152₽) |
 | Pi | Shot List (52) | — | DeepSeek-V4.1-Flash | 49/52 | 94.2% | 21.3m | 330 | 1 438 179 (34₽) |
 | Pi | Shot List (52) | thinking: off | GLM-5.2 (thinking: off) | 49/52 | 94.2% | 102.8m | 388 | 1 913 439 (501₽) |
