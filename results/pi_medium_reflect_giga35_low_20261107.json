@@ -353,7 +353,7 @@
     "total_tokens": 31410934,
     "total_steps": 2176,
     "total_tool_calls": 2159,
-    "estimated_cost_rub": 1313.22,
+    "estimated_cost_rub": 511.06,
     "timeout": 1800,
     "task_timeouts": {
       "task_414_batch_partial": 1800,

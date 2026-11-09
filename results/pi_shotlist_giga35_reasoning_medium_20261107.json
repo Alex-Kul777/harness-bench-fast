@@ -897,7 +897,7 @@
     "total_tokens": 2974629,
     "total_steps": 1176,
     "total_tool_calls": 990,
-    "estimated_cost_rub": 385.03,
+    "estimated_cost_rub": 150.1,
     "timeout": 660,
     "task_timeouts": {
       "task_01_create_hello": 660,

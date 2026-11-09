@@ -115,7 +115,7 @@
     "total_tokens": 65534148,
     "total_steps": 1419,
     "total_tool_calls": 1161,
-    "estimated_cost_rub": 1163.58,
+    "estimated_cost_rub": 456.41,
     "timeout": 7200,
     "task_timeouts": {
       "task_403_binary_format_reverse": 7200,

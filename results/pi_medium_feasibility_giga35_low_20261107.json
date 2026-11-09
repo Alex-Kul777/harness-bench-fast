@@ -693,7 +693,7 @@
     "total_tokens": 94222758,
     "total_steps": 2973,
     "total_tool_calls": 2614,
-    "estimated_cost_rub": 4469.33,
+    "estimated_cost_rub": 1739.92,
     "timeout": 3600,
     "task_timeouts": {
       "task_432_clock_contract": 3600,
