@@ -31,6 +31,141 @@
   ],
   "rows": [
     {
+      "id": "openclaw-deepseek-v4-1-flash-thinking-high",
+      "details_url": "fork-run-openclaw-deepseek-v4-1-flash-thinking-high.html",
+      "harness": "OpenClaw",
+      "model": "DeepSeek-V4.1-Flash",
+      "profile": "thinking: high",
+      "runs": 2,
+      "suites": {
+        "long": null,
+        "reflect": {
+          "passed": 17,
+          "total": 20,
+          "measurement": "complete"
+        },
+        "feasibility": {
+          "passed": 38,
+          "total": 40,
+          "measurement": "complete"
+        },
+        "composite_hard": null
+      },
+      "usage": {
+        "seconds": 11191.5,
+        "steps": 1189,
+        "tokens": 40284488,
+        "cost_rub": 565.6
+      },
+      "wilson": {
+        "reflect": [
+          0.759,
+          0.828
+        ],
+        "feasibility": [
+          0.899,
+          0.923
+        ]
+      },
+      "sources": [
+        "oc_medium_feasibility_ds41flash_high_20261108.json",
+        "oc_medium_reflect_ds41flash_high_20261108.json"
+      ]
+    },
+    {
+      "id": "openclaw-deepseek-v4-1-flash-thinking-medium",
+      "details_url": "fork-run-openclaw-deepseek-v4-1-flash-thinking-medium.html",
+      "harness": "OpenClaw",
+      "model": "DeepSeek-V4.1-Flash",
+      "profile": "thinking: medium",
+      "runs": 2,
+      "suites": {
+        "long": null,
+        "reflect": {
+          "passed": 16,
+          "total": 20,
+          "measurement": "complete"
+        },
+        "feasibility": {
+          "passed": 39,
+          "total": 40,
+          "measurement": "complete"
+        },
+        "composite_hard": null
+      },
+      "usage": {
+        "seconds": 11567.9,
+        "steps": 1210,
+        "tokens": 35419752,
+        "cost_rub": 546.4
+      },
+      "wilson": {
+        "reflect": [
+          0.714,
+          0.789
+        ],
+        "feasibility": [
+          0.924,
+          0.943
+        ]
+      },
+      "sources": [
+        "oc_medium_feasibility_ds41flash_medium_20261108.json",
+        "oc_medium_reflect_ds41flash_medium_20261108.json"
+      ]
+    },
+    {
+      "id": "openclaw-deepseek-v4-1-flash-thinking-off",
+      "details_url": "fork-run-openclaw-deepseek-v4-1-flash-thinking-off.html",
+      "harness": "OpenClaw",
+      "model": "DeepSeek-V4.1-Flash",
+      "profile": "thinking: off",
+      "runs": 3,
+      "suites": {
+        "long": {
+          "passed": 0,
+          "total": 2,
+          "measurement": "partial"
+        },
+        "reflect": {
+          "passed": 12,
+          "total": 20,
+          "measurement": "complete"
+        },
+        "feasibility": {
+          "passed": 36,
+          "total": 40,
+          "measurement": "complete"
+        },
+        "composite_hard": null
+      },
+      "usage": {
+        "seconds": 20624.5,
+        "steps": 1344,
+        "tokens": 49079820,
+        "cost_rub": 720.1
+      },
+      "wilson": {
+        "long": [
+          0.096,
+          0.561
+        ],
+        "reflect": [
+          0.54,
+          0.628
+        ],
+        "feasibility": [
+          0.85,
+          0.88
+        ]
+      },
+      "sources": [
+        "oc_medium_feasibility_ds41flash_off_20261108.json",
+        "oc_medium_long_ds41flash_off_20261108.json",
+        "oc_medium_reflect_ds41flash_off_20261108.json"
+      ]
+    },
+    {
       "id": "pi-deepseek-v4-1-flash",
       "details_url": "fork-run-pi-deepseek-v4-1-flash.html",
       "harness": "Pi",

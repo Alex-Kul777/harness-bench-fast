@@ -16,7 +16,7 @@
           "pct": "100.0%",
           "time": "40.6m",
           "steps": "224",
-          "tokens_cost": "2 935 013 (148₽)",
+          "tokens_cost": "2 935 013 (39₽)",
           "version": "0.16.0",
           "source": "ours",
           "waves": null,
@@ -30,7 +30,7 @@
           "pct": "98.1%",
           "time": "40.3m",
           "steps": "244",
-          "tokens_cost": "2 926 226 (141₽)",
+          "tokens_cost": "2 926 226 (38₽)",
           "version": "0.16.0",
           "source": "ours",
           "waves": null,
@@ -44,7 +44,7 @@
           "pct": "96.2%",
           "time": "47.3m",
           "steps": "237",
-          "tokens_cost": "2 814 749 (165₽)",
+          "tokens_cost": "2 814 749 (123₽)",
           "version": "0.16.0",
           "source": "ours",
           "waves": null,
@@ -58,7 +58,7 @@
           "pct": "96.2%",
           "time": "37.9m",
           "steps": "244",
-          "tokens_cost": "2 718 375 (133₽)",
+          "tokens_cost": "2 718 375 (35₽)",
           "version": "0.16.0",
           "source": "ours",
           "waves": null,
@@ -72,7 +72,7 @@
           "pct": "94.2%",
           "time": "21.3m",
           "steps": "330",
-          "tokens_cost": "1 438 179",
+          "tokens_cost": "1 438 179 (130₽)",
           "version": "—",
           "source": "ours",
           "waves": null,
@@ -114,7 +114,7 @@
           "pct": "90.4%",
           "time": "231.9m",
           "steps": "247",
-          "tokens_cost": "1 777 320 (1 793₽)",
+          "tokens_cost": "1 777 320 (1 302₽)",
           "version": "0.16.0",
           "source": "ours",
           "waves": null,
@@ -142,7 +142,7 @@
           "pct": "84.6%",
           "time": "46.1m",
           "steps": "148",
-          "tokens_cost": "1 955 767 (66₽)",
+          "tokens_cost": "1 955 767 (50₽)",
           "version": "0.16.0",
           "source": "ours",
           "waves": null,
@@ -170,7 +170,7 @@
           "pct": "76.9%",
           "time": "195.2m",
           "steps": "328",
-          "tokens_cost": "2 109 433 (2 859₽)",
+          "tokens_cost": "2 109 433 (2 079₽)",
           "version": "0.16.0",
           "source": "ours",
           "waves": null,
@@ -254,7 +254,7 @@
           "pct": "32.7%",
           "time": "205.2m",
           "steps": "120",
-          "tokens_cost": "1 261 870 (1 080₽)",
+          "tokens_cost": "1 261 870 (786₽)",
           "version": "0.16.0",
           "source": "ours",
           "waves": null,
@@ -1819,6 +1819,102 @@
       "tasks": 90,
       "ours": [
         {
+          "harness": "OpenClaw",
+          "profile": "thinking: high (2026-11-08)",
+          "model": "DeepSeek-V4.1-Flash (thinking: high)",
+          "result": "55/60 (partial 60/90)",
+          "pct": "91.7%",
+          "time": "186.5m",
+          "steps": "1 189",
+          "tokens_cost": "40 284 488 (566₽)",
+          "version": "v0.21.3",
+          "source": "ours",
+          "waves": {
+            "long": {
+              "passed": null,
+              "total": null
+            },
+            "reflect": {
+              "passed": 17,
+              "total": 20
+            },
+            "feasibility": {
+              "passed": 38,
+              "total": 40
+            },
+            "composite_hard": {
+              "passed": null,
+              "total": null
+            }
+          },
+          "detail": "fork-run-openclaw-deepseek-v4-1-flash-thinking-high.html",
+          "coverage": "60/90"
+        },
+        {
+          "harness": "OpenClaw",
+          "profile": "thinking: medium (2026-11-08)",
+          "model": "DeepSeek-V4.1-Flash (thinking: medium)",
+          "result": "55/60 (partial 60/90)",
+          "pct": "91.7%",
+          "time": "192.8m",
+          "steps": "1 210",
+          "tokens_cost": "35 419 752 (546₽)",
+          "version": "v0.21.3",
+          "source": "ours",
+          "waves": {
+            "long": {
+              "passed": null,
+              "total": null
+            },
+            "reflect": {
+              "passed": 16,
+              "total": 20
+            },
+            "feasibility": {
+              "passed": 39,
+              "total": 40
+            },
+            "composite_hard": {
+              "passed": null,
+              "total": null
+            }
+          },
+          "detail": "fork-run-openclaw-deepseek-v4-1-flash-thinking-medium.html",
+          "coverage": "60/90"
+        },
+        {
+          "harness": "OpenClaw",
+          "profile": "thinking: off (2026-11-08)",
+          "model": "DeepSeek-V4.1-Flash (thinking: off)",
+          "result": "48/62 (partial 62/90)",
+          "pct": "77.4%",
+          "time": "343.7m",
+          "steps": "1 344",
+          "tokens_cost": "49 079 820 (720₽)",
+          "version": "v0.21.3",
+          "source": "ours",
+          "waves": {
+            "long": {
+              "passed": 0,
+              "total": 2
+            },
+            "reflect": {
+              "passed": 12,
+              "total": 20
+            },
+            "feasibility": {
+              "passed": 36,
+              "total": 40
+            },
+            "composite_hard": {
+              "passed": null,
+              "total": null
+            }
+          },
+          "detail": "fork-run-openclaw-deepseek-v4-1-flash-thinking-off.html",
+          "coverage": "62/90"
+        },
+        {
           "harness": "Pi",
           "profile": "— (2026-11-05)",
           "model": "DeepSeek-V4.1-Flash",
@@ -2003,6 +2099,57 @@
       "label": "Medium sample",
       "tasks": 0,
       "ours": [
+        {
+          "kind": "coverage",
+          "harness": "OpenClaw",
+          "profile": "thinking: high",
+          "model": "DeepSeek-V4.1-Flash",
+          "subset_key": "subset_our_runs",
+          "subset_args": {
+            "n": 60
+          },
+          "result": "55/60",
+          "pct": "91.7%",
+          "coverage": "60/90",
+          "time": "186.5m",
+          "tokens_cost": "40 284 488 (566₽)",
+          "status_key": "status_partial",
+          "detail": "fork-run-openclaw-deepseek-v4-1-flash-thinking-high.html"
+        },
+        {
+          "kind": "coverage",
+          "harness": "OpenClaw",
+          "profile": "thinking: medium",
+          "model": "DeepSeek-V4.1-Flash",
+          "subset_key": "subset_our_runs",
+          "subset_args": {
+            "n": 60
+          },
+          "result": "55/60",
+          "pct": "91.7%",
+          "coverage": "60/90",
+          "time": "192.8m",
+          "tokens_cost": "35 419 752 (546₽)",
+          "status_key": "status_partial",
+          "detail": "fork-run-openclaw-deepseek-v4-1-flash-thinking-medium.html"
+        },
+        {
+          "kind": "coverage",
+          "harness": "OpenClaw",
+          "profile": "thinking: off",
+          "model": "DeepSeek-V4.1-Flash",
+          "subset_key": "subset_our_runs",
+          "subset_args": {
+            "n": 62
+          },
+          "result": "48/62",
+          "pct": "77.4%",
+          "coverage": "62/90",
+          "time": "343.7m",
+          "tokens_cost": "49 079 820 (720₽)",
+          "status_key": "status_partial",
+          "detail": "fork-run-openclaw-deepseek-v4-1-flash-thinking-off.html"
+        },
         {
           "kind": "coverage",
           "harness": "Pi",
