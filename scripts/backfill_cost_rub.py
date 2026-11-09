@@ -14,7 +14,12 @@ Token fields checked:
   summary.total_cache_read_tokens (if present) → cacheRead
   summary.total_cache_write_tokens (if present) → cacheWrite
 
-Model is detected from the top-level 'model' field or the first task's 'model' field.
+Model is detected from the top-level 'model' field, the summary's 'model', the first
+task's 'model', the command line, and -- as a last resort when those are absent --
+inferred from the artifact FILENAME/family (e.g. ``*_ds41flash_*`` ->
+DeepSeek-V4.1-Flash; ``*_giga35_*`` / ``*_gigachat35_*`` -> GigaChat 3.5 Reasoning).
+Only a genuinely undetectable artifact is reported as ``(unknown -> fallback)`` and
+priced with the documented GLM-5.2 fallback (with a WARNING from the resolver).
 """
 
 from __future__ import annotations
@@ -29,8 +34,34 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from harness_bench.cost_resolver import compute_cost_rub, resolve_model_rates
 
 
-def _detect_model(data: dict) -> str | None:
-    """Try to detect model from result file."""
+# Filename/family -> canonical model id. Used ONLY when the artifact exposes no
+# model field at all (Pi artifacts carry just ``results`` + ``summary``). Ordered:
+# the first matching token wins. Keep this list small and explicit -- add a family
+# only when its canonical model id is known and resolvable by the cost resolver.
+_FILENAME_MODEL_TOKENS: tuple[tuple[str, str], ...] = (
+    ("ds41flash",  "custom-foundation-models-api-cloud-ru/deepseek-ai/DeepSeek-V4.1-Flash"),
+    ("gigachat35", "ai-sage/GigaChat3.5-432B-A28B-Reasoning"),
+    ("giga35",     "ai-sage/GigaChat3.5-432B-A28B-Reasoning"),
+)
+
+
+def _detect_model_from_name(name: str) -> str | None:
+    """Infer a canonical model id from an artifact filename/stem, or None."""
+    stem = Path(name).stem.lower()
+    for token, model_id in _FILENAME_MODEL_TOKENS:
+        if token in stem:
+            return model_id
+    return None
+
+
+def _detect_model(data: dict, name: str = "") -> str | None:
+    """Try to detect model from result file.
+
+    Fields first (``model`` -> ``summary.model`` -> per-task ``model`` -> ``command``),
+    then -- only when every field is absent -- the artifact FILENAME/family via
+    :func:`_detect_model_from_name`. Returns None when the model is genuinely
+    undeterminable (caller then uses the documented resolver fallback + WARNING).
+    """
     if m := data.get("model"):
         return m
     if m := data.get("summary", {}).get("model"):
@@ -40,10 +71,13 @@ def _detect_model(data: dict) -> str | None:
         if isinstance(task, dict) and (m := task.get("model")):
             return m
     # Try command field
-    cmd = data.get("command", "")
+    cmd = data.get("command") or ""
     for part in cmd.split():
         if "/" in part and not part.startswith("-"):
             return part
+    # Last resort: infer from the artifact filename/family
+    if name:
+        return _detect_model_from_name(name)
     return None
 
 
@@ -60,7 +94,7 @@ def _recompute_file(path: Path, *, dry_run: bool, config_path: str | None) -> bo
         print(f"  SKIP {path.name}: no top-level summary")
         return False
 
-    model = _detect_model(data)
+    model = _detect_model(data, name=path.name)
     rates = resolve_model_rates(model or "", config_path=config_path)
 
     total_in = int(summary.get("total_input_tokens", 0) or 0)
