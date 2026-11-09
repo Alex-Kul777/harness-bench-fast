@@ -1,7 +1,9 @@
 # dev-environment Specification
 
 ## Purpose
-TBD - created by archiving change fix-test-env-provisioning. Update Purpose after archive.
+Как тест/дев-окружение репозитория воспроизводимо провижинится (изолированный venv +
+editable-пакет `-e .` + нужные extras), чтобы `pytest tests/` собирался без import-ошибок
+(`openai` / `deepagents` / `langgraph`).
 
 ## Requirements
 
