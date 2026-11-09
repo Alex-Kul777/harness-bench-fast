@@ -29,7 +29,7 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 Руками не редактировать — правь скрипт/JSON и пересобирай.
 
 <!-- FORK:RESULTS:BEGIN -->
-Автосинк: 35 прогонов
+Автосинк: 38 прогонов
 
 | Harness | Suite | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
@@ -64,6 +64,9 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 | Pi | Medium (392-471) | — | DeepSeek-V4.1-Flash | 11/15 | 73.3% | 137.3m | 1 124 | 15 124 377 (278₽) |
 | Pi | Medium (392-471) | — | DeepSeek-V4.1-Flash | 5/5 | 100.0% | 32.0m | 336 | 2 949 354 (71₽) |
 | Pi | Medium (392-471) | — | DeepSeek-V4.1-Flash | 0/3 | 0.0% | 288.7m | 1 650 | 78 233 678 (744₽) |
+| Pi | Medium (392-471) | — | GigaChat 3 Pro | 0/40 | 0.0% | 15.0m | 1 408 | 27 408 162 (801₽) |
+| Pi | Medium (392-471) | — | GigaChat 3 Pro | 0/6 | 0.0% | 23.5m | 1 020 | 22 942 929 (299₽) |
+| Pi | Medium (392-471) | — | GigaChat 3 Pro | 0/20 | 0.0% | 31.6m | 2 948 | 25 638 927 (316₽) |
 | Pi | Medium (392-471) | thinking: low | GigaChat 3.5 Reasoning (thinking: low) | 11/40 | 27.5% | 517.1m | 2 973 | 94 222 758 (1 740₽) |
 | Pi | Medium (392-471) | thinking: low | GigaChat 3.5 Reasoning (thinking: low) | 2/20 | 10.0% | 210.9m | 2 176 | 31 410 934 (511₽) |
 | Pi | Medium (392-471) | thinking: low | GigaChat 3.5 Reasoning (thinking: low) | 0/6 | 0.0% | 62.2m | 1 419 | 65 534 148 (456₽) |

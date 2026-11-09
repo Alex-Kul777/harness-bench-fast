@@ -1948,6 +1948,38 @@
         },
         {
           "harness": "Pi",
+          "profile": "— (2026-11-09)",
+          "model": "GigaChat 3 Pro (cloud.ru)",
+          "result": "0/66 (partial 66/90)",
+          "pct": "0.0%",
+          "time": "70.1m",
+          "steps": "5 376",
+          "tokens_cost": "75 990 018 (1 416₽)",
+          "version": "v0.21.3",
+          "source": "ours",
+          "waves": {
+            "long": {
+              "passed": 0,
+              "total": 6
+            },
+            "reflect": {
+              "passed": 0,
+              "total": 20
+            },
+            "feasibility": {
+              "passed": 0,
+              "total": 40
+            },
+            "composite_hard": {
+              "passed": null,
+              "total": null
+            }
+          },
+          "detail": "fork-run-pi-gigachat-3-pro.html",
+          "coverage": "66/90"
+        },
+        {
+          "harness": "Pi",
           "profile": "thinking: low (2026-11-07)",
           "model": "GigaChat 3.5 Reasoning (cloud.ru) (thinking: low)",
           "result": "13/66 (partial 66/90)",
@@ -2170,6 +2202,24 @@
           "tokens_cost": "206 712 383 (5 404₽)",
           "status_key": "status_partial",
           "detail": "fork-run-pi-deepseek-v4-1-flash.html"
+        },
+        {
+          "kind": "coverage",
+          "harness": "Pi",
+          "profile": "— (2026-11-09)",
+          "model": "GigaChat 3 Pro (cloud.ru)",
+          "subset_key": "subset_our_runs",
+          "subset_args": {
+            "n": 66
+          },
+          "result": "0/66",
+          "pct": "0.0%",
+          "coverage": "66/90",
+          "time": "70.1m",
+          "steps": "5 376",
+          "tokens_cost": "75 990 018 (1 416₽)",
+          "status_key": "status_partial",
+          "detail": "fork-run-pi-gigachat-3-pro.html"
         },
         {
           "kind": "coverage",
