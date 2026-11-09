@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -94,12 +95,63 @@ def assemble_row(identity, components):
             "usage": usage}
 
 
+def _read_json(path, label):
+    """Read an external JSON source, failing loudly with a clear message."""
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError as exc:
+        raise ValueError(f"{label}: missing source file {path}") from exc
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError(f"{label}: unreadable source {path}: {exc}") from exc
+
+
+def _fresh_medium90_row(src, row_id, details_url):
+    """Build one fresh Medium90 row (shared by codex / mini-swe / claude-code).
+
+    The three upstream 90-task snapshots differ only by identity and source, so
+    the previously triplicated ~30-line component loop lives here once.
+    """
+    if not (src.get("measurement_valid") and src.get("total") == 90):
+        raise ValueError(f"{row_id}: source must be a valid 90-task measurement")
+    outcomes = src.get("outcomes") or []
+    if [r.get("number") for r in outcomes] != sorted(NUMBERS):
+        raise ValueError(f"{row_id}: outcomes must cover exactly the 90 Medium tasks")
+    if sum(r.get("passed") for r in outcomes) != src.get("passed"):
+        raise ValueError(f"{row_id}: passed total disagrees with outcomes")
+    components = []
+    for numbers, note in ((list(range(392, 472)), "fresh Medium90 run · earlier80 subset"),
+                          (SELECTED, "fresh Medium90 run · selected wave21 subset")):
+        subset = [r for r in outcomes if r["number"] in numbers]
+        usage = {"sources_sha256": [src["source_digest"]], "notes": [
+            "One fresh90 cohort; first retained clean attempt per task, including failures. Superseded transport attempts excluded.",
+            "Tokens are captured API input + output usage; cached input and reasoning output are counted once."]}
+        for metric, field in (("steps", "agent_steps"), ("tokens", "agent_total_tokens")):
+            values = [r[field] for r in subset if r[field] is not None]
+            covered = len(values) if metric == "steps" else sum(r["token_usage_present"] for r in subset)
+            partial = covered != len(subset) or (metric == "tokens" and not all(r["token_usage_complete"] for r in subset))
+            usage[metric] = {"value": sum(values), "covered_tasks": covered,
+                             "status": "unavailable" if not values else "partial" if partial else "complete", "lower_bound": partial}
+        usage["steps"]["unit"] = "native_steps"
+        usage["tokens"]["unmetered_requests"] = sum(r["unmetered_requests"] for r in subset)
+        usage["tokens"]["completed_responses"] = sum(r["completed_responses"] for r in subset)
+        usage["tokens"]["input_tokens"] = sum(r["input_tokens"] or 0 for r in subset)
+        usage["tokens"]["output_tokens"] = sum(r["output_tokens"] or 0 for r in subset)
+        components.append(component(numbers, {"total": len(subset), "passed": sum(r["passed"] for r in subset)},
+                                    usage, src["task_set_version"], note))
+    identity = {"id": row_id, "profile_id": row_id, "model": src["model"], "harness": src["harness"],
+                "runs": 1, "source_version": src["task_set_version"], "reasoning_effort": "high",
+                "measurement_type": "fresh_medium90", "measurement_valid": True,
+                "details_url": details_url}
+    return assemble_row(identity, components)
+
+
 def build(root=ROOT):
     legacy_path = root / "docs/leaderboard-results.json"
     wave_path = root / "docs/wave21-results.json"
-    old = json.loads(legacy_path.read_text(encoding="utf-8"))
-    wave = json.loads(wave_path.read_text(encoding="utf-8"))
-    assert wave["task_numbers"] == SELECTED
+    old = _read_json(legacy_path, "leaderboard-results")
+    wave = _read_json(wave_path, "wave21-results")
+    if wave.get("task_numbers") != SELECTED:
+        raise ValueError("wave21-results: unexpected selected task numbers")
     rows = []
     for row in old["rows"]:
         components = []
@@ -140,12 +192,15 @@ def build(root=ROOT):
                     "details_url": "wave21-measurements.html#" + run["configuration_id"]}
         rows.append(assemble_row(identity, [component(numbers, {"total": len(numbers), "passed": run["passed"]}, usage, run["source_task_set_version"], "targeted wave21 follow-up")]))
     fresh_path = root / "docs/haiku-medium90.json"
-    fresh = json.loads(fresh_path.read_text(encoding="utf-8"))
-    assert fresh["task_set_version"] == "0.21.3" and fresh["task_count"] == 90
+    fresh = _read_json(fresh_path, "haiku-medium90")
+    if not (fresh.get("task_set_version") == "0.21.3" and fresh.get("task_count") == 90):
+        raise ValueError("haiku-medium90: unexpected task set version or task count")
     for run in fresh["rows"]:
         tasks = run["tasks"]
-        assert sorted(t["number"] for t in tasks) == sorted(NUMBERS)
-        assert sum(t["passed"] for t in tasks) == run["passed"]
+        if sorted(t["number"] for t in tasks) != sorted(NUMBERS):
+            raise ValueError(f"haiku-medium90: {run.get('id')} does not cover the 90 Medium tasks")
+        if sum(t["passed"] for t in tasks) != run["passed"]:
+            raise ValueError(f"haiku-medium90: {run.get('id')} passed total disagrees with tasks")
         components = []
         for numbers, note in ((list(range(392, 472)), "fresh Medium90 run · historical80 subset"),
                               (SELECTED, "fresh Medium90 run · selected wave21 subset")):
@@ -166,99 +221,19 @@ def build(root=ROOT):
                     "measurement_valid": run["measurement_valid"], "details_url": "haiku-medium90.html#" + run["profile"]}
         rows.append(assemble_row(identity, components))
     codex90_path = root / "docs/codex-deepseek-medium90-20261027.json"
-    codex = json.loads(codex90_path.read_text(encoding="utf-8"))
-    assert codex["measurement_valid"] and codex["total"] == 90
-    assert [r["number"] for r in codex["outcomes"]] == sorted(NUMBERS)
-    assert sum(r["passed"] for r in codex["outcomes"]) == codex["passed"]
-    components = []
-    for numbers, note in ((list(range(392, 472)), "fresh Medium90 run · earlier80 subset"),
-                          (SELECTED, "fresh Medium90 run · selected wave21 subset")):
-        subset = [r for r in codex["outcomes"] if r["number"] in numbers]
-        usage = {"sources_sha256": [codex["source_digest"]], "notes": [
-            "One fresh90 cohort; first retained clean attempt per task, including failures. Superseded transport attempts excluded.",
-            "Tokens are captured API input + output usage; cached input and reasoning output are counted once."]}
-        for metric, field in (("steps", "agent_steps"), ("tokens", "agent_total_tokens")):
-            values = [r[field] for r in subset if r[field] is not None]
-            covered = len(values) if metric == "steps" else sum(r["token_usage_present"] for r in subset)
-            partial = covered != len(subset) or (metric == "tokens" and not all(r["token_usage_complete"] for r in subset))
-            usage[metric] = {"value": sum(values), "covered_tasks": covered,
-                             "status": "unavailable" if not values else "partial" if partial else "complete", "lower_bound": partial}
-        usage["steps"]["unit"] = "native_steps"
-        usage["tokens"]["unmetered_requests"] = sum(r["unmetered_requests"] for r in subset)
-        usage["tokens"]["completed_responses"] = sum(r["completed_responses"] for r in subset)
-        usage["tokens"]["input_tokens"] = sum(r["input_tokens"] or 0 for r in subset)
-        usage["tokens"]["output_tokens"] = sum(r["output_tokens"] or 0 for r in subset)
-        components.append(component(numbers, {"total": len(subset), "passed": sum(r["passed"] for r in subset)},
-                                    usage, codex["task_set_version"], note))
-    identity = {"id": "codex-deepseek-medium90-20261027", "profile_id": "codex-deepseek-medium90-20261027",
-                "model": codex["model"], "harness": codex["harness"], "runs": 1,
-                "source_version": codex["task_set_version"], "reasoning_effort": "high",
-                "measurement_type": "fresh_medium90", "measurement_valid": True,
-                "details_url": "codex-deepseek-medium90.html"}
-    rows.append(assemble_row(identity, components))
     miniswe90_path = root / "docs/miniswe-deepseek-medium90-20261027.json"
-    miniswe = json.loads(miniswe90_path.read_text(encoding="utf-8"))
-    assert miniswe["measurement_valid"] and miniswe["total"] == 90
-    assert [r["number"] for r in miniswe["outcomes"]] == sorted(NUMBERS)
-    assert sum(r["passed"] for r in miniswe["outcomes"]) == miniswe["passed"]
-    components = []
-    for numbers, note in ((list(range(392, 472)), "fresh Medium90 run · earlier80 subset"),
-                          (SELECTED, "fresh Medium90 run · selected wave21 subset")):
-        subset = [r for r in miniswe["outcomes"] if r["number"] in numbers]
-        usage = {"sources_sha256": [miniswe["source_digest"]], "notes": [
-            "One fresh90 cohort; first retained clean attempt per task, including failures. Superseded transport attempts excluded.",
-            "Tokens are captured API input + output usage; cached input and reasoning output are counted once."]}
-        for metric, field in (("steps", "agent_steps"), ("tokens", "agent_total_tokens")):
-            values = [r[field] for r in subset if r[field] is not None]
-            covered = len(values) if metric == "steps" else sum(r["token_usage_present"] for r in subset)
-            partial = covered != len(subset) or (metric == "tokens" and not all(r["token_usage_complete"] for r in subset))
-            usage[metric] = {"value": sum(values), "covered_tasks": covered,
-                             "status": "unavailable" if not values else "partial" if partial else "complete", "lower_bound": partial}
-        usage["steps"]["unit"] = "native_steps"
-        usage["tokens"]["unmetered_requests"] = sum(r["unmetered_requests"] for r in subset)
-        usage["tokens"]["completed_responses"] = sum(r["completed_responses"] for r in subset)
-        usage["tokens"]["input_tokens"] = sum(r["input_tokens"] or 0 for r in subset)
-        usage["tokens"]["output_tokens"] = sum(r["output_tokens"] or 0 for r in subset)
-        components.append(component(numbers, {"total": len(subset), "passed": sum(r["passed"] for r in subset)},
-                                    usage, miniswe["task_set_version"], note))
-    identity = {"id": "miniswe-deepseek-medium90-20261027", "profile_id": "miniswe-deepseek-medium90-20261027",
-                "model": miniswe["model"], "harness": miniswe["harness"], "runs": 1,
-                "source_version": miniswe["task_set_version"], "reasoning_effort": "high",
-                "measurement_type": "fresh_medium90", "measurement_valid": True,
-                "details_url": "miniswe-deepseek-medium90.html"}
-    rows.append(assemble_row(identity, components))
     claudecode_sonnet90_path = root / "docs/claudecode-sonnet-medium90-20261027.json"
-    claudecode_sonnet = json.loads(claudecode_sonnet90_path.read_text(encoding="utf-8"))
-    assert claudecode_sonnet["measurement_valid"] and claudecode_sonnet["total"] == 90
-    assert [r["number"] for r in claudecode_sonnet["outcomes"]] == sorted(NUMBERS)
-    assert sum(r["passed"] for r in claudecode_sonnet["outcomes"]) == claudecode_sonnet["passed"]
-    components = []
-    for numbers, note in ((list(range(392, 472)), "fresh Medium90 run · earlier80 subset"),
-                          (SELECTED, "fresh Medium90 run · selected wave21 subset")):
-        subset = [r for r in claudecode_sonnet["outcomes"] if r["number"] in numbers]
-        usage = {"sources_sha256": [claudecode_sonnet["source_digest"]], "notes": [
-            "One fresh90 cohort; first retained clean attempt per task, including failures. Superseded transport attempts excluded.",
-            "Tokens are captured API input + output usage; cached input and reasoning output are counted once."]}
-        for metric, field in (("steps", "agent_steps"), ("tokens", "agent_total_tokens")):
-            values = [r[field] for r in subset if r[field] is not None]
-            covered = len(values) if metric == "steps" else sum(r["token_usage_present"] for r in subset)
-            partial = covered != len(subset) or (metric == "tokens" and not all(r["token_usage_complete"] for r in subset))
-            usage[metric] = {"value": sum(values), "covered_tasks": covered,
-                             "status": "unavailable" if not values else "partial" if partial else "complete", "lower_bound": partial}
-        usage["steps"]["unit"] = "native_steps"
-        usage["tokens"]["unmetered_requests"] = sum(r["unmetered_requests"] for r in subset)
-        usage["tokens"]["completed_responses"] = sum(r["completed_responses"] for r in subset)
-        usage["tokens"]["input_tokens"] = sum(r["input_tokens"] or 0 for r in subset)
-        usage["tokens"]["output_tokens"] = sum(r["output_tokens"] or 0 for r in subset)
-        components.append(component(numbers, {"total": len(subset), "passed": sum(r["passed"] for r in subset)},
-                                    usage, claudecode_sonnet["task_set_version"], note))
-    identity = {"id": "claudecode-sonnet-medium90-20261027", "profile_id": "claudecode-sonnet-medium90-20261027",
-                "model": claudecode_sonnet["model"], "harness": claudecode_sonnet["harness"], "runs": 1,
-                "source_version": claudecode_sonnet["task_set_version"], "reasoning_effort": "high",
-                "measurement_type": "fresh_medium90", "measurement_valid": True,
-                "details_url": "claudecode-sonnet-medium90.html"}
-    rows.append(assemble_row(identity, components))
-    assert len({r["id"] for r in rows}) == len(rows)
+    rows.append(_fresh_medium90_row(
+        _read_json(codex90_path, "codex-deepseek-medium90"),
+        "codex-deepseek-medium90-20261027", "codex-deepseek-medium90.html"))
+    rows.append(_fresh_medium90_row(
+        _read_json(miniswe90_path, "miniswe-deepseek-medium90"),
+        "miniswe-deepseek-medium90-20261027", "miniswe-deepseek-medium90.html"))
+    rows.append(_fresh_medium90_row(
+        _read_json(claudecode_sonnet90_path, "claudecode-sonnet-medium90"),
+        "claudecode-sonnet-medium90-20261027", "claudecode-sonnet-medium90.html"))
+    if len({r["id"] for r in rows}) != len(rows):
+        raise ValueError("duplicate row ids in Medium90 board")
     complete = sorted((r for r in rows if r["score"] is not None), key=lambda r: -r["score"])
     for r in complete:
         r["rank"] = 1 + next(i for i, other in enumerate(complete) if other["score"] == r["score"])
@@ -280,5 +255,10 @@ def build(root=ROOT):
 
 if __name__ == "__main__":
     target = ROOT / "docs/medium90-results.json"
-    target.write_text(json.dumps(build(), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    try:
+        payload = build()
+    except ValueError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        raise SystemExit(1)
+    target.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(target)

@@ -38,7 +38,6 @@ MEDIUM90_JSON = DOCS / "medium90-results.json"
 PILOT_MANIFEST = DOCS / "fork-medium-pilot-manifest.json"
 
 GENERATED_BY = "scripts/build_fork_home.py"
-DASH = "\u2014"
 RUB = "\u20bd"
 
 from fork_metadata import (  # noqa: E402
@@ -48,6 +47,7 @@ from fork_metadata import (  # noqa: E402
     PROFILE_RULES,
     RESULT_DIRS,
     EXCLUDE_KEYWORDS as EXCLUDE_KEYWORDS_META,
+    DASH,
 )
 
 # Upstream writes the reasoning level inside the Model cell, e.g.
@@ -66,9 +66,21 @@ def _reasoning_suffix(profile):
     return ""
 
 
-def _with_reasoning(model, profile):
+# Cloud.ru Foundation Models is the provider behind every *our* run on the fork
+# page; upstream rows keep whatever provider their source already carries.
+OUR_PROVIDER = "cloud.ru"
+
+
+def _with_reasoning(model, profile, provider=OUR_PROVIDER):
+    """`model (provider) (level)` for our rows, mirroring upstream's Model cell."""
+    parts = []
+    if provider:
+        parts.append(f"({provider})")
     suffix = _reasoning_suffix(profile)
-    return f"{model} {suffix}".strip() if suffix else model
+    if suffix:
+        parts.append(suffix)
+    base = model if model else DASH
+    return f"{base} {' '.join(parts)}".strip() if parts else base
 
 
 def _harness_version(data):
@@ -82,7 +94,18 @@ def _harness_version(data):
 
 
 def _with_version(harness, version):
-    return f"{harness} {version}" if version else harness
+    """Attach a run's harness version without repeating the harness name.
+
+    Artifacts record the version already prefixed with the harness
+    ("OpenClaw 2026.10.9 (8b18b55)"), so joining blindly would duplicate it.
+    """
+    if not version:
+        return harness
+    base = (harness or "").strip()
+    ver = str(version).strip()
+    if base and ver.lower().startswith(base.lower()):
+        return ver
+    return f"{base} {ver}".strip() if base else ver
 
 
 
@@ -414,8 +437,58 @@ def upstream_medium():
     return out
 
 
+def _pilot_usage(man):
+    """Aggregate pilot Time/Tokens/Steps from the manifest or its source runs.
+
+    An explicit ``usage`` block on the manifest wins; otherwise the ``summary``
+    fields of every resolvable source artifact are summed (missing files and
+    unreadable JSON contribute nothing). Returns None when nothing is found.
+    """
+    explicit = man.get("usage")
+    if isinstance(explicit, dict):
+        return explicit
+    names = list(man.get("sources") or [])
+    for item in man.get("results") or []:
+        if isinstance(item, dict) and item.get("source"):
+            names.append(item["source"])
+    names = list(dict.fromkeys(names))  # a source may appear in both lists
+    totals = {"seconds": 0.0, "steps": 0, "tokens": 0, "cost_rub": 0.0}
+    found = False
+    for name in names:
+        for base in RESULT_DIRS:
+            path = base / name
+            if not path.exists():
+                continue
+            with contextlib.suppress(OSError, json.JSONDecodeError):
+                data = json.loads(path.read_text(encoding="utf-8"))
+                summary = data.get("summary") or {}
+                totals["seconds"] += float(summary.get("total_seconds") or 0.0)
+                totals["tokens"] += int(summary.get("total_tokens") or 0)
+                totals["cost_rub"] += float(summary.get("estimated_cost_rub") or 0.0)
+                totals["steps"] += int(steps_from_json(data) or 0)
+                found = True
+            break
+    return totals if found else None
+
+
+def _pilot_date(man):
+    """Run date for the pilot row: source filenames first, then manifest `created`."""
+    date = _date_from_source_files(man.get("sources"))
+    if date:
+        return date
+    created = man.get("created")
+    if isinstance(created, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", created):
+        return created
+    return None
+
+
 def sample_rows():
-    """Our truncated Medium subsets + pilot mini-sets (coverage vs the full 90)."""
+    """Our truncated Medium subsets + pilot mini-sets (coverage vs the full 90).
+
+    Rows pass through the same canonical metadata transforms as #medium:
+    date in Profile, provider + reasoning level in Model, harness version in
+    Harness, and a Steps column (from usage.steps / the source summary).
+    """
     out = []
     if MEDIUM_JSON.exists():
         d = json.loads(MEDIUM_JSON.read_text(encoding="utf-8"))
@@ -428,15 +501,16 @@ def sample_rows():
             u = r.get("usage") or {}
             out.append({
                 "kind": "coverage",
-                "harness": r.get("harness") or DASH,
-                "profile": r.get("profile") or DASH,
-                "model": r.get("model") or DASH,
+                "harness": _with_version(r.get("harness"), r.get("harness_version")),
+                "profile": _with_date(r.get("profile"), _date_from_source_files(r.get("sources"))),
+                "model": _with_reasoning(r.get("model"), r.get("profile")),
                 "subset_key": "subset_our_runs",
                 "subset_args": {"n": total},
                 "result": f"{passed}/{total}",
                 "pct": f"{100 * passed / total:.1f}%",
                 "coverage": f"{total}/90",
                 "time": _fmt_min(u.get("seconds")),
+                "steps": _fmt_int(u.get("steps")),
                 "tokens_cost": _fmt_cost(u.get("tokens"), u.get("cost_rub")),
                 "status_key": "status_partial" if total < 90 else "status_complete",
                 "detail": r.get("details_url"),
@@ -447,21 +521,25 @@ def sample_rows():
         res = man.get("results") or []
         passed = sum((x.get("passed") or 0) for x in res)
         total = sum((x.get("total") or 0) for x in res)
-        out.append({
-            "kind": "pilot",
-            "harness": cfg.get("harness") or DASH,
-            "profile": cfg.get("profile") or DASH,
-            "model": cfg.get("model") or DASH,
-            "subset_key": "subset_pilot",
-            "subset_args": {"n": man.get("size")},
-            "result": f"{passed}/{total}",
-            "pct": f"{100 * passed / total:.1f}%" if total else DASH,
-            "coverage": f"{total}/90",
-            "time": DASH,
-            "tokens_cost": DASH,
-            "status_key": "status_pilot",
-            "detail": None,
-        })
+        # Guard an empty pilot manifest: never emit a bogus "0/0" row.
+        if total > 0:
+            u = _pilot_usage(man) or {}
+            out.append({
+                "kind": "pilot",
+                "harness": _with_version(cfg.get("harness"), _harness_version(man)),
+                "profile": _with_date(cfg.get("profile"), _pilot_date(man)),
+                "model": _with_reasoning(cfg.get("model"), cfg.get("profile")),
+                "subset_key": "subset_pilot",
+                "subset_args": {"n": man.get("size")},
+                "result": f"{passed}/{total}",
+                "pct": f"{100 * passed / total:.1f}%",
+                "coverage": f"{total}/90",
+                "time": _fmt_min(u.get("seconds")),
+                "steps": _fmt_int(u.get("steps")),
+                "tokens_cost": _fmt_cost(u.get("tokens"), u.get("cost_rub")),
+                "status_key": "status_pilot",
+                "detail": None,
+            })
     return out
 
 
@@ -666,7 +744,8 @@ SAMPLE_HEAD = """<tr>
   <th scope="col">Harness</th><th scope="col">Profile</th><th scope="col">Model</th>
   <th scope="col">Subset</th><th scope="col" class="numeric">Result</th>
   <th scope="col" class="numeric">%</th><th scope="col" class="numeric">Coverage</th>
-  <th scope="col" class="numeric">Time</th><th scope="col" class="numeric">Tokens (cost)</th>
+  <th scope="col" class="numeric">Time</th><th scope="col" class="numeric">Steps</th>
+  <th scope="col" class="numeric">Tokens (cost)</th>
   <th scope="col">Status</th>
 </tr>"""
 
@@ -690,6 +769,7 @@ def _sample_rows_html(rows, locale=DEFAULT_LOCALE):
             f'<td class="numeric">{html.escape(r["pct"])}</td>'
             f'<td class="numeric">{html.escape(r["coverage"])}</td>'
             f'<td class="numeric">{html.escape(r["time"])}</td>'
+            f'<td class="numeric">{html.escape(r.get("steps") or DASH)}</td>'
             f'<td class="numeric">{html.escape(r["tokens_cost"])}</td>'
             f"<td>{html.escape(status)}</td>"
             "</tr>"
@@ -699,10 +779,10 @@ def _sample_rows_html(rows, locale=DEFAULT_LOCALE):
 
 def _sample_table(rows, upstream=None, locale=DEFAULT_LOCALE):
     parts = ['<table class="leaderboard-table"><thead>' + SAMPLE_HEAD + '</thead><tbody>',
-             f'<tr class="group"><td colspan="10"><strong>{html.escape(t(locale, "group_sample_ours"))}</strong></td></tr>',
+             f'<tr class="group"><td colspan="11"><strong>{html.escape(t(locale, "group_sample_ours"))}</strong></td></tr>',
              _sample_rows_html(rows, locale)]
     if upstream:
-        parts.append(f'<tr class="group"><td colspan="10"><strong>{html.escape(t(locale, "group_sample_upstream"))}</strong></td></tr>')
+        parts.append(f'<tr class="group"><td colspan="11"><strong>{html.escape(t(locale, "group_sample_upstream"))}</strong></td></tr>')
         parts.append(_sample_rows_html(upstream, locale))
     parts.append("</tbody></table>")
     return "\n".join(parts)

@@ -103,6 +103,8 @@ from fork_metadata import (  # noqa: E402
     classify_model,
     classify_profile,
     collect_paths,
+    DASH,
+    harness_version,
 )
 
 # Known fork wave artifacts whose file name lacks the harness/model token.
@@ -348,8 +350,13 @@ def build_model() -> dict:
                 "wave_usage": {w: _empty_usage() for w in WAVE_ORDER},
                 "durations": {w: [] for w in WAVE_ORDER},
                 "sources": [],
+                "versions": set(),
             },
         )
+        version = harness_version(data)
+        if version:
+            group["versions"].add(version)
+
         suit = group["suites"][wave]
         suit["passed"] += int(summary.get("passed") or 0)
         suit["total"] += int(summary.get("total") or 0)
@@ -419,6 +426,7 @@ def build_model() -> dict:
                 "harness": harness,
                 "model": model,
                 "profile": profile,
+                "harness_version": (sorted(group["versions"])[0] if group["versions"] else None),
                 "runs": len(group["sources"]),
                 "suites": suites,
                 "usage": {
@@ -482,7 +490,7 @@ def fmt_compact(value) -> str:
     try:
         number = float(value)
     except (TypeError, ValueError):
-        return "\u2014"
+        return DASH
     for divisor, suffix in ((1_000_000_000, "B"), (1_000_000, "M")):
         if abs(number) >= divisor:
             text = f"{number / divisor:.2f}".rstrip("0").rstrip(".")
@@ -495,7 +503,7 @@ def fmt_cost(value) -> str:
     try:
         number = float(value)
     except (TypeError, ValueError):
-        return "\u2014"
+        return DASH
     return f"{int(round(number)):,}".replace(",", " ") + "\u20bd"
 
 
@@ -504,7 +512,7 @@ def fmt_duration(seconds) -> str:
     try:
         number = float(seconds)
     except (TypeError, ValueError):
-        return "\u2014"
+        return DASH
     return f"{number / 60:.1f}m"
 
 
@@ -512,19 +520,19 @@ def fmt_seconds(value) -> str:
     try:
         number = float(value)
     except (TypeError, ValueError):
-        return "\u2014"
+        return DASH
     return f"{number:.1f}"
 
 
 def fmt_percent(passed, total) -> str:
     if not total:
-        return "\u2014"
+        return DASH
     return f"{100 * passed / total:.1f}%"
 
 
 def fmt_interval(range_value) -> str:
     if not isinstance(range_value, list) or len(range_value) < 2:
-        return "\u2014"
+        return DASH
     return f"{100 * range_value[0]:.1f}\u2013{100 * range_value[1]:.1f}%"
 
 
@@ -668,7 +676,7 @@ def _band_mix(tasks) -> str:
     for band in list(order) + [b for b in counts if b not in order]:
         if counts.get(band):
             parts.append(f"{band} \u00d7{counts[band]}")
-    return ", ".join(parts) or "\u2014"
+    return ", ".join(parts) or DASH
 
 
 def _sample_provenance() -> str:
@@ -770,8 +778,8 @@ def _sample_result_label(task: dict) -> str:
 def render_sample_html(model: dict, locale: str = DEFAULT_LOCALE) -> str:
     tasks = model.get("_tasks_full") or []
     config = model.get("config") or {}
-    model_name = config.get("model") or "\u2014"
-    harness = config.get("harness") or "\u2014"
+    model_name = config.get("model") or DASH
+    harness = config.get("harness") or DASH
     size = model.get("size")
 
     # ---- waves summary ----
@@ -920,12 +928,12 @@ def _source_item(name: str) -> str:
 
 
 def render_run_page(row: dict, details: dict, locale: str = DEFAULT_LOCALE) -> str:
-    model_name = row.get("model") or "\u2014"
-    harness = row.get("harness") or "\u2014"
+    model_name = row.get("model") or DASH
+    harness = row.get("harness") or DASH
     profile = row.get("profile")
     runs = int(row.get("runs") or 0)
 
-    title_text = f"{model_name} \u2014 {harness}"
+    title_text = f"{model_name} {DASH} {harness}"
     if profile:
         title_text += f" ({profile})"
 
@@ -1001,7 +1009,7 @@ def render_run_page(row: dict, details: dict, locale: str = DEFAULT_LOCALE) -> s
 
     # ---- Sources ----
     sources = row.get("sources") or []
-    source_items = "".join(_source_item(name) for name in sources) or "<li>\u2014</li>"
+    source_items = "".join(_source_item(name) for name in sources) or f"<li>{DASH}</li>"
     sources_section = (
         f'<section aria-label="Sources"><h2>{_esc(t(locale, "run_sources_title"))}</h2>'
         f'<p class="coverage-note">{t(locale, "run_sources_note")}</p>'
@@ -1118,7 +1126,7 @@ def main(argv: list[str]) -> int:
             if not p.exists() or p.read_text(encoding="utf-8") != want:
                 stale.append(name)
         if stale:
-            print("STALE: " + ", ".join(sorted(set(stale))) + " \u2014 run: python3 scripts/build_fork_pages.py")
+            print(f"STALE: {', '.join(sorted(set(stale)))} {DASH} run: python3 scripts/build_fork_pages.py")
             return 1
         print(f"{out_path.name}: up to date ({len(model['rows'])} rows)")
         return 0

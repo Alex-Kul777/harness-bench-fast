@@ -13,6 +13,9 @@ Public API:
     RESULT_DIRS          -- [checkout results/, sibling ../results/]
     EXCLUDE_KEYWORDS     -- artifact stems that must never reach the page
 
+    DASH                            -- canonical null-cell marker (U+2014)
+    harness_version(data)           -> str | None
+
     resolve_stem(stem)              -> (harness, model, reasoning_level)
     classify_suite(stem)            -> str | None
     classify_harness(stem)          -> str | None
@@ -57,6 +60,17 @@ PROFILE_RULES: tuple[tuple[str, str], ...] = (
     ("mcpoff",       "MCP off"),
 )
 
+# Canonical null-cell marker shared by every fork generator (single source).
+DASH: str = "\u2014"
+
+# Run artifacts record their harness version under one of these keys.
+HARNESS_VERSION_KEYS: tuple[str, ...] = (
+    "harness_version",
+    "openclaw_version",
+    "cli_version",
+    "runner_version",
+)
+
 # Non-publishable artifacts: these keywords in a stem mean "skip".
 EXCLUDE_KEYWORDS: tuple[str, ...] = (
     "smoke", "sample", "diag", "part2", "rerun",
@@ -72,6 +86,15 @@ RESULT_DIRS: list[Path] = [_REPO_ROOT / "results", _REPO_ROOT.parent / "results"
 # ---------------------------------------------------------------------------
 # Classifiers
 # ---------------------------------------------------------------------------
+
+def harness_version(data) -> str | None:
+    """Return the harness version a run artifact records, or None."""
+    for key in HARNESS_VERSION_KEYS:
+        value = (data or {}).get(key)
+        if value:
+            return str(value)
+    return None
+
 
 def classify_harness(stem: str) -> str | None:
     """Return harness label for *stem*, or None if unrecognised."""
