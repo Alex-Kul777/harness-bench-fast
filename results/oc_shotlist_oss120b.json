@@ -848,7 +848,7 @@
     "total_input_tokens": 4339062,
     "total_output_tokens": 56777,
     "total_tokens": 1261870,
-    "estimated_cost_rub": 1080.23,
+    "estimated_cost_rub": 785.74,
     "total_steps": 120
   }
 }

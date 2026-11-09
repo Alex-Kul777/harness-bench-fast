@@ -1,0 +1,59 @@
+{
+  "task_set_version": "0.16.0",
+  "harness": "openclaw",
+  "harness_version": "OpenClaw 2026.10.9 (8b18b55)",
+  "thinking": "off",
+  "command": "python run_openclaw_bench.py --tasks task_392_manuscript_continuity task_398_card_game_engine task_403_binary_format_reverse task_393_intranet_multihop task_394_review_annotation task_395_homework_grading --model custom-foundation-models-api-cloud-ru/deepseek-ai/DeepSeek-V4.1-Flash --thinking off --timeout 7200 --concurrency 3 --json-output /home/kap/.openclaw/workspace/projects/benchmark-research/harness-bench-fast/results/oc_medium_long_ds41flash_off_20261108.json --status-file /tmp/oc_medium_long_off_status.json",
+  "total": 2,
+  "passed": 0,
+  "pass_rate": 0.0,
+  "tokens": 9429226,
+  "tasks": [
+    {
+      "task_id": "task_392_manuscript_continuity",
+      "passed": false,
+      "message": "нет файла errors.csv",
+      "elapsed_seconds": 1353.78,
+      "error": "exit=1: sistantRetries=0/1 — surfacing error to user\n[state/agent-db] agent database clean-close receipt: active-leases\n[state/agent-db] agent database clean-close receipt: written\n⚠️ Agent couldn't generate a response. Note: some tool actions may have already been executed — please verify before retrying.\n",
+      "workspace": null,
+      "thinking": "off",
+      "agent_input_tokens": 494674,
+      "agent_output_tokens": 109257,
+      "agent_total_tokens": 3871259,
+      "agent_reasoning_tokens": 95871,
+      "agent_steps": 0,
+      "agent_turns": 41,
+      "agent_cost_usd": 74.64611773,
+      "agent_session_id": "d941ea6d-964b-4d03-9a44-ba5d0bef3deb"
+    },
+    {
+      "task_id": "task_393_intranet_multihop",
+      "passed": false,
+      "message": "нет файла answers.json",
+      "elapsed_seconds": 1384.35,
+      "error": null,
+      "workspace": null,
+      "thinking": "off",
+      "agent_input_tokens": 1109814,
+      "agent_output_tokens": 138009,
+      "agent_total_tokens": 5557967,
+      "agent_reasoning_tokens": 131846,
+      "agent_steps": 4,
+      "agent_turns": 39,
+      "agent_cost_usd": 126.97279045,
+      "agent_session_id": "87cf2e6a-ec16-48a6-a0c3-0f5f75368b55"
+    }
+  ],
+  "summary": {
+    "total": 2,
+    "passed": 0,
+    "failed": 2,
+    "pass_rate": 0.0,
+    "total_seconds": 2738.1,
+    "total_steps": 4,
+    "total_input_tokens": 1604488,
+    "total_output_tokens": 247266,
+    "total_tokens": 9429226,
+    "estimated_cost_rub": 152.37
+  }
+}
