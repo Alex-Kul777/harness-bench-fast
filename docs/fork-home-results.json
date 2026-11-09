@@ -9,9 +9,9 @@
       "tasks": 52,
       "ours": [
         {
-          "harness": "OpenClaw OpenClaw 2026.10.9 (8b18b55)",
+          "harness": "OpenClaw 2026.10.9 (8b18b55)",
           "profile": "thinking: medium (2026-11-07)",
-          "model": "DeepSeek-V4.1-Flash (thinking: medium)",
+          "model": "DeepSeek-V4.1-Flash (cloud.ru) (thinking: medium)",
           "result": "52/52",
           "pct": "100.0%",
           "time": "40.6m",
@@ -23,9 +23,9 @@
           "detail": "fork-detail-oc_shotlist_ds41flash_medium_20261107.html"
         },
         {
-          "harness": "OpenClaw OpenClaw 2026.10.9 (8b18b55)",
+          "harness": "OpenClaw 2026.10.9 (8b18b55)",
           "profile": "thinking: high (2026-11-07)",
-          "model": "DeepSeek-V4.1-Flash (thinking: high)",
+          "model": "DeepSeek-V4.1-Flash (cloud.ru) (thinking: high)",
           "result": "51/52",
           "pct": "98.1%",
           "time": "40.3m",
@@ -39,7 +39,7 @@
         {
           "harness": "OpenClaw",
           "profile": "— (2026-11-07)",
-          "model": "DeepSeek-V4.1-Flash",
+          "model": "DeepSeek-V4.1-Flash (cloud.ru)",
           "result": "50/52",
           "pct": "96.2%",
           "time": "47.3m",
@@ -51,9 +51,9 @@
           "detail": "fork-detail-oc_shotlist_ds41flash.html"
         },
         {
-          "harness": "OpenClaw OpenClaw 2026.10.9 (8b18b55)",
+          "harness": "OpenClaw 2026.10.9 (8b18b55)",
           "profile": "thinking: off (2026-11-07)",
-          "model": "DeepSeek-V4.1-Flash (thinking: off)",
+          "model": "DeepSeek-V4.1-Flash (cloud.ru) (thinking: off)",
           "result": "50/52",
           "pct": "96.2%",
           "time": "37.9m",
@@ -67,7 +67,7 @@
         {
           "harness": "Pi",
           "profile": "— (2026-11-04)",
-          "model": "DeepSeek-V4.1-Flash",
+          "model": "DeepSeek-V4.1-Flash (cloud.ru)",
           "result": "49/52",
           "pct": "94.2%",
           "time": "21.3m",
@@ -81,7 +81,7 @@
         {
           "harness": "Pi",
           "profile": "thinking: off (2026-08-17)",
-          "model": "GLM-5.2 (thinking: off)",
+          "model": "GLM-5.2 (cloud.ru) (thinking: off)",
           "result": "49/52",
           "pct": "94.2%",
           "time": "102.8m",
@@ -95,7 +95,7 @@
         {
           "harness": "Pi",
           "profile": "— (2026-11-04)",
-          "model": "GLM-5.3",
+          "model": "GLM-5.3 (cloud.ru)",
           "result": "49/52",
           "pct": "94.2%",
           "time": "64.9m",
@@ -109,7 +109,7 @@
         {
           "harness": "OpenClaw",
           "profile": "thinking: off (2026-08-12)",
-          "model": "GLM-5.2 (thinking: off)",
+          "model": "GLM-5.2 (cloud.ru) (thinking: off)",
           "result": "47/52",
           "pct": "90.4%",
           "time": "231.9m",
@@ -123,7 +123,7 @@
         {
           "harness": "Hermes",
           "profile": "thinking: off (2026-08-13)",
-          "model": "GLM-5.2 (thinking: off)",
+          "model": "GLM-5.2 (cloud.ru) (thinking: off)",
           "result": "46/52",
           "pct": "88.5%",
           "time": "68.5m",
@@ -137,7 +137,7 @@
         {
           "harness": "OpenClaw",
           "profile": "— (2026-11-04)",
-          "model": "GLM-5.3",
+          "model": "GLM-5.3 (cloud.ru)",
           "result": "44/52",
           "pct": "84.6%",
           "time": "46.1m",
@@ -151,7 +151,7 @@
         {
           "harness": "Pi",
           "profile": "— (2026-08-17)",
-          "model": "Qwen3.6-35B-A3B",
+          "model": "Qwen3.6-35B-A3B (cloud.ru)",
           "result": "42/52",
           "pct": "80.8%",
           "time": "18.5m",
@@ -165,7 +165,7 @@
         {
           "harness": "OpenClaw",
           "profile": "— (2026-08-17)",
-          "model": "Qwen3.6-35B-A3B",
+          "model": "Qwen3.6-35B-A3B (cloud.ru)",
           "result": "40/52",
           "pct": "76.9%",
           "time": "195.2m",
@@ -179,7 +179,7 @@
         {
           "harness": "Hermes",
           "profile": "— (2026-08-17)",
-          "model": "Qwen3.6-35B-A3B",
+          "model": "Qwen3.6-35B-A3B (cloud.ru)",
           "result": "36/52",
           "pct": "69.2%",
           "time": "38.6m",
@@ -193,7 +193,7 @@
         {
           "harness": "Pi",
           "profile": "thinking: low (2026-11-07)",
-          "model": "GigaChat 3.5 Reasoning (thinking: low)",
+          "model": "GigaChat 3.5 Reasoning (cloud.ru) (thinking: low)",
           "result": "35/52",
           "pct": "67.3%",
           "time": "15.8m",
@@ -207,7 +207,7 @@
         {
           "harness": "Pi",
           "profile": "thinking: high (2026-11-07)",
-          "model": "GigaChat 3.5 Reasoning (thinking: high)",
+          "model": "GigaChat 3.5 Reasoning (cloud.ru) (thinking: high)",
           "result": "34/52",
           "pct": "65.4%",
           "time": "33.8m",
@@ -221,7 +221,7 @@
         {
           "harness": "Pi",
           "profile": "thinking: medium (2026-11-07)",
-          "model": "GigaChat 3.5 Reasoning (thinking: medium)",
+          "model": "GigaChat 3.5 Reasoning (cloud.ru) (thinking: medium)",
           "result": "34/52",
           "pct": "65.4%",
           "time": "19.2m",
@@ -235,7 +235,7 @@
         {
           "harness": "Hermes",
           "profile": "— (2026-08-13)",
-          "model": "GPT-OSS-120B",
+          "model": "GPT-OSS-120B (cloud.ru)",
           "result": "28/52",
           "pct": "53.8%",
           "time": "37.9m",
@@ -249,7 +249,7 @@
         {
           "harness": "OpenClaw",
           "profile": "— (2026-08-13)",
-          "model": "GPT-OSS-120B",
+          "model": "GPT-OSS-120B (cloud.ru)",
           "result": "17/52",
           "pct": "32.7%",
           "time": "205.2m",
@@ -263,7 +263,7 @@
         {
           "harness": "Pi",
           "profile": "— (2026-11-07)",
-          "model": "GigaChat 3 Pro",
+          "model": "GigaChat 3 Pro (cloud.ru)",
           "result": "16/52",
           "pct": "30.8%",
           "time": "25.7m",
@@ -426,7 +426,7 @@
         {
           "harness": "Hermes",
           "profile": "MCP off (2026-08-09)",
-          "model": "GLM-5.2",
+          "model": "GLM-5.2 (cloud.ru)",
           "result": "387/391",
           "pct": "99.0%",
           "time": "404.6m",
@@ -440,7 +440,7 @@
         {
           "harness": "Pi",
           "profile": "high",
-          "model": "GLM-5.2 (high)",
+          "model": "GLM-5.2 (cloud.ru) (high)",
           "result": "385/391",
           "pct": "—",
           "time": "—",
@@ -454,7 +454,7 @@
         {
           "harness": "OpenClaw",
           "profile": "—",
-          "model": "GLM-5.2",
+          "model": "GLM-5.2 (cloud.ru)",
           "result": "378/391",
           "pct": "96.7%",
           "time": "1473.3m",
@@ -1819,9 +1819,9 @@
       "tasks": 90,
       "ours": [
         {
-          "harness": "OpenClaw",
+          "harness": "OpenClaw 2026.10.9 (8b18b55)",
           "profile": "thinking: high (2026-11-08)",
-          "model": "DeepSeek-V4.1-Flash (thinking: high)",
+          "model": "DeepSeek-V4.1-Flash (cloud.ru) (thinking: high)",
           "result": "55/60 (partial 60/90)",
           "pct": "91.7%",
           "time": "186.5m",
@@ -1851,9 +1851,9 @@
           "coverage": "60/90"
         },
         {
-          "harness": "OpenClaw",
+          "harness": "OpenClaw 2026.10.9 (8b18b55)",
           "profile": "thinking: medium (2026-11-08)",
-          "model": "DeepSeek-V4.1-Flash (thinking: medium)",
+          "model": "DeepSeek-V4.1-Flash (cloud.ru) (thinking: medium)",
           "result": "55/60 (partial 60/90)",
           "pct": "91.7%",
           "time": "192.8m",
@@ -1883,9 +1883,9 @@
           "coverage": "60/90"
         },
         {
-          "harness": "OpenClaw",
+          "harness": "OpenClaw 2026.10.9 (8b18b55)",
           "profile": "thinking: off (2026-11-08)",
-          "model": "DeepSeek-V4.1-Flash (thinking: off)",
+          "model": "DeepSeek-V4.1-Flash (cloud.ru) (thinking: off)",
           "result": "48/62 (partial 62/90)",
           "pct": "77.4%",
           "time": "343.7m",
@@ -1917,7 +1917,7 @@
         {
           "harness": "Pi",
           "profile": "— (2026-11-05)",
-          "model": "DeepSeek-V4.1-Flash",
+          "model": "DeepSeek-V4.1-Flash (cloud.ru)",
           "result": "55/66 (partial 66/90)",
           "pct": "83.3%",
           "time": "755.3m",
@@ -1949,7 +1949,7 @@
         {
           "harness": "Pi",
           "profile": "thinking: low (2026-11-07)",
-          "model": "GigaChat 3.5 Reasoning (thinking: low)",
+          "model": "GigaChat 3.5 Reasoning (cloud.ru) (thinking: low)",
           "result": "13/66 (partial 66/90)",
           "pct": "19.7%",
           "time": "790.2m",
@@ -2101,9 +2101,9 @@
       "ours": [
         {
           "kind": "coverage",
-          "harness": "OpenClaw",
-          "profile": "thinking: high",
-          "model": "DeepSeek-V4.1-Flash",
+          "harness": "OpenClaw 2026.10.9 (8b18b55)",
+          "profile": "thinking: high (2026-11-08)",
+          "model": "DeepSeek-V4.1-Flash (cloud.ru) (thinking: high)",
           "subset_key": "subset_our_runs",
           "subset_args": {
             "n": 60
@@ -2112,15 +2112,16 @@
           "pct": "91.7%",
           "coverage": "60/90",
           "time": "186.5m",
+          "steps": "1 189",
           "tokens_cost": "40 284 488 (566₽)",
           "status_key": "status_partial",
           "detail": "fork-run-openclaw-deepseek-v4-1-flash-thinking-high.html"
         },
         {
           "kind": "coverage",
-          "harness": "OpenClaw",
-          "profile": "thinking: medium",
-          "model": "DeepSeek-V4.1-Flash",
+          "harness": "OpenClaw 2026.10.9 (8b18b55)",
+          "profile": "thinking: medium (2026-11-08)",
+          "model": "DeepSeek-V4.1-Flash (cloud.ru) (thinking: medium)",
           "subset_key": "subset_our_runs",
           "subset_args": {
             "n": 60
@@ -2129,15 +2130,16 @@
           "pct": "91.7%",
           "coverage": "60/90",
           "time": "192.8m",
+          "steps": "1 210",
           "tokens_cost": "35 419 752 (546₽)",
           "status_key": "status_partial",
           "detail": "fork-run-openclaw-deepseek-v4-1-flash-thinking-medium.html"
         },
         {
           "kind": "coverage",
-          "harness": "OpenClaw",
-          "profile": "thinking: off",
-          "model": "DeepSeek-V4.1-Flash",
+          "harness": "OpenClaw 2026.10.9 (8b18b55)",
+          "profile": "thinking: off (2026-11-08)",
+          "model": "DeepSeek-V4.1-Flash (cloud.ru) (thinking: off)",
           "subset_key": "subset_our_runs",
           "subset_args": {
             "n": 62
@@ -2146,6 +2148,7 @@
           "pct": "77.4%",
           "coverage": "62/90",
           "time": "343.7m",
+          "steps": "1 344",
           "tokens_cost": "49 079 820 (720₽)",
           "status_key": "status_partial",
           "detail": "fork-run-openclaw-deepseek-v4-1-flash-thinking-off.html"
@@ -2153,8 +2156,8 @@
         {
           "kind": "coverage",
           "harness": "Pi",
-          "profile": "—",
-          "model": "DeepSeek-V4.1-Flash",
+          "profile": "— (2026-11-05)",
+          "model": "DeepSeek-V4.1-Flash (cloud.ru)",
           "subset_key": "subset_our_runs",
           "subset_args": {
             "n": 66
@@ -2163,6 +2166,7 @@
           "pct": "83.3%",
           "coverage": "66/90",
           "time": "755.3m",
+          "steps": "7 143",
           "tokens_cost": "206 712 383 (11 310₽)",
           "status_key": "status_partial",
           "detail": "fork-run-pi-deepseek-v4-1-flash.html"
@@ -2170,8 +2174,8 @@
         {
           "kind": "coverage",
           "harness": "Pi",
-          "profile": "thinking: low",
-          "model": "GigaChat 3.5 Reasoning",
+          "profile": "thinking: low (2026-11-07)",
+          "model": "GigaChat 3.5 Reasoning (cloud.ru) (thinking: low)",
           "subset_key": "subset_our_runs",
           "subset_args": {
             "n": 66
@@ -2180,6 +2184,7 @@
           "pct": "19.7%",
           "coverage": "66/90",
           "time": "790.2m",
+          "steps": "6 568",
           "tokens_cost": "191 167 840 (6 946₽)",
           "status_key": "status_partial",
           "detail": "fork-run-pi-gigachat-3-5-reasoning-thinking-low.html"
@@ -2187,8 +2192,8 @@
         {
           "kind": "pilot",
           "harness": "Pi",
-          "profile": "—",
-          "model": "GigaChat 3 Pro",
+          "profile": "— (2026-11-07)",
+          "model": "GigaChat 3 Pro (cloud.ru)",
           "subset_key": "subset_pilot",
           "subset_args": {
             "n": 13
@@ -2197,6 +2202,7 @@
           "pct": "0.0%",
           "coverage": "13/90",
           "time": "—",
+          "steps": "—",
           "tokens_cost": "—",
           "status_key": "status_pilot",
           "detail": null

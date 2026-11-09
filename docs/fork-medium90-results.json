@@ -36,6 +36,7 @@
       "harness": "OpenClaw",
       "model": "DeepSeek-V4.1-Flash",
       "profile": "thinking: high",
+      "harness_version": "OpenClaw 2026.10.9 (8b18b55)",
       "runs": 2,
       "suites": {
         "long": null,
@@ -78,6 +79,7 @@
       "harness": "OpenClaw",
       "model": "DeepSeek-V4.1-Flash",
       "profile": "thinking: medium",
+      "harness_version": "OpenClaw 2026.10.9 (8b18b55)",
       "runs": 2,
       "suites": {
         "long": null,
@@ -120,6 +122,7 @@
       "harness": "OpenClaw",
       "model": "DeepSeek-V4.1-Flash",
       "profile": "thinking: off",
+      "harness_version": "OpenClaw 2026.10.9 (8b18b55)",
       "runs": 3,
       "suites": {
         "long": {
@@ -171,6 +174,7 @@
       "harness": "Pi",
       "model": "DeepSeek-V4.1-Flash",
       "profile": null,
+      "harness_version": null,
       "runs": 5,
       "suites": {
         "long": {
@@ -242,6 +246,7 @@
       "harness": "Pi",
       "model": "GigaChat 3.5 Reasoning",
       "profile": "thinking: low",
+      "harness_version": null,
       "runs": 3,
       "suites": {
         "long": {
