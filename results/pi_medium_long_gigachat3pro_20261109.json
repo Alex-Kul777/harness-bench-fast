@@ -115,7 +115,7 @@
     "total_tokens": 22942929,
     "total_steps": 1020,
     "total_tool_calls": 744,
-    "estimated_cost_rub": 299.29,
+    "estimated_cost_rub": 81.54,
     "timeout": 7200,
     "task_timeouts": {
       "task_398_card_game_engine": 7200,

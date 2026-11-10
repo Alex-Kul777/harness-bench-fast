@@ -31,7 +31,11 @@ from pathlib import Path
 
 # Allow running from repo root
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from harness_bench.cost_resolver import compute_cost_rub, resolve_model_rates
+from harness_bench.cost_resolver import (
+    compute_cost_rub,
+    model_hint_from_filename,
+    resolve_model_rates,
+)
 
 
 # Filename/family -> canonical model id. Used ONLY when the artifact exposes no
@@ -95,17 +99,25 @@ def _recompute_file(path: Path, *, dry_run: bool, config_path: str | None) -> bo
         return False
 
     model = _detect_model(data, name=path.name)
-    rates = resolve_model_rates(model or "", config_path=config_path)
+    # Pass the artifact filename so the resolver can fall back to its filename-hint
+    # map (gigachat3pro, glm52, ...) as a LAST resort before the GLM-5.2 fallback.
+    rates = resolve_model_rates(model or "", config_path=config_path, filename=path.name)
 
     total_in = int(summary.get("total_input_tokens", 0) or 0)
     total_out = int(summary.get("total_output_tokens", 0) or 0)
     total_cr = int(summary.get("total_cache_read_tokens", 0) or 0)
     total_cw = int(summary.get("total_cache_write_tokens", 0) or 0)
+    # Older artifacts store only total_tokens; recover the cache-read bucket
+    # from it (total_tokens = input + output + cacheRead + cacheWrite).
+    total_tok = int(summary.get("total_tokens", 0) or 0)
+    if total_cr == 0 and total_cw == 0 and total_tok:
+        total_cr = max(total_tok - total_in - total_out, 0)
 
     old_cost = summary.get("estimated_cost_rub")
     new_cost = round(compute_cost_rub(total_in, total_out, total_cr, total_cw, rates), 2)
 
-    model_str = model or "(unknown → fallback)"
+    resolved_model = model or model_hint_from_filename(path.name)
+    model_str = resolved_model or "(unknown → fallback)"
     old_str = f"{old_cost:.2f} ₽" if old_cost is not None else "—"
     print(f"  {path.name}: {old_str} → {new_cost:.2f} ₽  [model={model_str}]")
 

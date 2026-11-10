@@ -31,6 +31,38 @@ _FALLBACK_RATES: dict = {
 _DEFAULT_CONFIG_PATH = Path.home() / ".openclaw" / "openclaw.json"
 _DEFAULT_CACHE_PATH = Path.home() / ".openclaw" / "cloudru-prices.json"
 
+# Filename/family -> canonical model id. Used as a LAST resort (before the GLM-5.2
+# fallback) when an artifact exposes no model field at all. Ordered: first match wins.
+# Keep this list small and explicit -- add a family only when its canonical id is
+# known and resolvable by this resolver.
+_FILENAME_MODEL_HINTS: tuple[tuple[str, str], ...] = (
+    ("gigachat3pro", "GigaChat/GigaChat-3-Pro"),
+    ("giga35", "ai-sage/GigaChat3.5-432B-A28B-Reasoning"),
+    ("glm52", "zai-org/GLM-5.2"),
+    ("glm53", "zai-org/GLM-5.3"),
+    ("qwen36", "Qwen/Qwen3.6-35B-A3B"),
+    ("oss120b", "openai/gpt-oss-120b"),
+    ("minimaxm3", "MiniMaxAI/MiniMax-M3"),
+    ("ds41flash", "deepseek-ai/DeepSeek-V4.1-Flash"),
+)
+
+
+def model_hint_from_filename(filename: Optional[str]) -> Optional[str]:
+    """Infer a canonical model id from an artifact filename/stem, or None.
+
+    Matches the artifact stem case-insensitively against ``_FILENAME_MODEL_HINTS``;
+    the first matching token wins. This never overrides an explicit model id -- it is
+    only consulted by :func:`resolve_model_rates` when the given ``model_id`` yields
+    no rates.
+    """
+    if not filename:
+        return None
+    stem = Path(filename).stem.lower()
+    for token, model_id in _FILENAME_MODEL_HINTS:
+        if token in stem:
+            return model_id
+    return None
+
 
 def _load_json(path: Path, what: str) -> dict:
     """Load a JSON file; return empty dict on any read/parse error."""
@@ -116,6 +148,7 @@ def resolve_model_rates(
     model_id: str,
     config_path: Optional[str | Path] = None,
     cache_path: Optional[str | Path] = None,
+    filename: Optional[str] = None,
 ) -> dict:
     """Return cost rates dict for *model_id*.
 
@@ -125,17 +158,39 @@ def resolve_model_rates(
 
     1. catalog cache entry for the model (populated from the live Cloud.ru catalog),
     2. ``cost`` block in openclaw.json (matched against ``<provider>/<model>``),
-    3. GLM-5.2 fallback rates with a WARNING on stderr.
+    3. *last resort* -- a canonical model id inferred from the artifact
+       *filename* via :func:`model_hint_from_filename` (re-resolved through 1-2),
+    4. GLM-5.2 fallback rates with a WARNING on stderr.
+
+    An explicit ``model_id`` always wins over the filename hint.
     """
     cache = _load_catalog_cache(cache_path)
-    rates = _rates_from_cache(model_id, cache)
-    if rates is not None:
-        return rates
+    if model_id:
+        rates = _rates_from_cache(model_id, cache)
+        if rates is not None:
+            return rates
 
     cfg = _load_config(config_path)
-    rates = _rates_from_config(model_id, cfg)
-    if rates is not None:
-        return rates
+    if model_id:
+        rates = _rates_from_config(model_id, cfg)
+        if rates is not None:
+            return rates
+
+    # Last resort before the documented fallback: infer the model from the artifact
+    # filename. Never silent -- warn that the model was guessed.
+    hint = model_hint_from_filename(filename)
+    if hint:
+        rates = _rates_from_cache(hint, cache)
+        if rates is None:
+            rates = _rates_from_config(hint, cfg)
+        if rates is not None:
+            print(
+                f"[cost_resolver] WARNING: no cost rates for model "
+                f"'{model_id or '(none)'}' (checked catalog cache and config); "
+                f"inferred '{hint}' from filename '{filename}'.",
+                file=sys.stderr,
+            )
+            return rates
 
     print(
         f"[cost_resolver] WARNING: no cost rates found for model '{model_id}' "

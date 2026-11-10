@@ -196,6 +196,11 @@ def _write_results(results: list[dict], path: str, *,
     _rates = _get_model_rates(model or DEFAULT_MODEL)
     total_cache_read = sum(r.get("agent_cache_read_tokens", 0) or 0 for r in results)
     total_cache_write = sum(r.get("agent_cache_write_tokens", 0) or 0 for r in results)
+    # Task entries predate explicit cache buckets; since
+    # total_tokens = input + output + cacheRead + cacheWrite, recover the
+    # cache-read bucket when it is not stored (otherwise it bills as 0).
+    if total_cache_read == 0 and total_cache_write == 0:
+        total_cache_read = max(total_tokens - total_input - total_output, 0)
     cost_rub = compute_cost_rub(total_input, total_output, total_cache_read, total_cache_write, _rates)
 
     payload = {

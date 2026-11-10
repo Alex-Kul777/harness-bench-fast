@@ -353,7 +353,7 @@
     "total_tokens": 25638927,
     "total_steps": 2948,
     "total_tool_calls": 2151,
-    "estimated_cost_rub": 316.11,
+    "estimated_cost_rub": 85.19,
     "timeout": 1800,
     "task_timeouts": {
       "task_413_crm_pagination": 1800,

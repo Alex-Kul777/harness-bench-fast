@@ -268,7 +268,7 @@
     "total_tokens": 15124377,
     "total_steps": 1124,
     "total_tool_calls": 1129,
-    "estimated_cost_rub": 278.2,
+    "estimated_cost_rub": 360.25,
     "timeout": 1800,
     "task_timeouts": {
       "task_418_ticket_timeout_dupes": 1800,
