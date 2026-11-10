@@ -37,6 +37,20 @@
           "detail": "fork-detail-oc_shotlist_ds41flash_high_20261107.html"
         },
         {
+          "harness": "OpenClaw 2026.11.2 (b556fdf)",
+          "profile": "thinking: off (2026-11-10)",
+          "model": "GPT-5.5 (cloud.ru) (thinking: off)",
+          "result": "51/52",
+          "pct": "98.1%",
+          "time": "30.5m",
+          "steps": "267",
+          "tokens_cost": "2 756 135 (1 308₽)",
+          "version": "0.16.0",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-oc_shotlist_gpt55_off_20261110.html"
+        },
+        {
           "harness": "OpenClaw",
           "profile": "— (2026-11-07)",
           "model": "DeepSeek-V4.1-Flash (cloud.ru)",
@@ -63,6 +77,20 @@
           "source": "ours",
           "waves": null,
           "detail": "fork-detail-oc_shotlist_ds41flash_off_20261107.html"
+        },
+        {
+          "harness": "OpenClaw 2026.11.2 (b556fdf)",
+          "profile": "thinking: high (2026-11-10)",
+          "model": "GPT-5.5 (cloud.ru) (thinking: high)",
+          "result": "50/52",
+          "pct": "96.2%",
+          "time": "37.0m",
+          "steps": "334",
+          "tokens_cost": "3 117 683 (1 419₽)",
+          "version": "0.16.0",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-oc_shotlist_gpt55_high_20261110.html"
         },
         {
           "harness": "Pi",
@@ -107,6 +135,20 @@
           "detail": "fork-detail-pi_shotlist_glm53.html"
         },
         {
+          "harness": "Pi 🟣 Pi Agent (Docker + Cloud.ru)",
+          "profile": "thinking: high (2026-11-10)",
+          "model": "GPT-5.5 (cloud.ru) (thinking: high)",
+          "result": "49/52",
+          "pct": "94.2%",
+          "time": "11.6m",
+          "steps": "900",
+          "tokens_cost": "1 401 405 (1 294₽)",
+          "version": "0.16.0",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-pi_shotlist_gpt55_high_20261110.html"
+        },
+        {
           "harness": "OpenClaw 2026.11.2 (b556fdf)",
           "profile": "thinking: off (2026-11-09)",
           "model": "MiniMax-M3 (cloud.ru) (thinking: off)",
@@ -119,6 +161,20 @@
           "source": "ours",
           "waves": null,
           "detail": "fork-detail-oc_shotlist_minimaxm3_off_20261109.html"
+        },
+        {
+          "harness": "Pi 🟣 Pi Agent (Docker + Cloud.ru)",
+          "profile": "thinking: off (2026-11-10)",
+          "model": "GPT-5.5 (cloud.ru) (thinking: off)",
+          "result": "48/52",
+          "pct": "92.3%",
+          "time": "9.0m",
+          "steps": "908",
+          "tokens_cost": "1 301 688 (1 119₽)",
+          "version": "0.16.0",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-pi_shotlist_gpt55_off_20261110.html"
         },
         {
           "harness": "OpenClaw 2026.11.2 (b556fdf)",
@@ -1958,6 +2014,38 @@
         },
         {
           "harness": "OpenClaw 2026.11.2 (b556fdf)",
+          "profile": "thinking: off (2026-11-10)",
+          "model": "GPT-5.5 (cloud.ru) (thinking: off)",
+          "result": "51/66 (partial 66/90)",
+          "pct": "77.3%",
+          "time": "140.1m",
+          "steps": "946",
+          "tokens_cost": "29 243 400 (7 571₽)",
+          "version": "v0.21.3",
+          "source": "ours",
+          "waves": {
+            "long": {
+              "passed": 1,
+              "total": 6
+            },
+            "reflect": {
+              "passed": 12,
+              "total": 20
+            },
+            "feasibility": {
+              "passed": 38,
+              "total": 40
+            },
+            "composite_hard": {
+              "passed": null,
+              "total": null
+            }
+          },
+          "detail": "fork-run-openclaw-gpt-5-5-thinking-off.html",
+          "coverage": "66/90"
+        },
+        {
+          "harness": "OpenClaw 2026.11.2 (b556fdf)",
           "profile": "thinking: medium (2026-11-09)",
           "model": "MiniMax-M3 (cloud.ru) (thinking: medium)",
           "result": "37/66 (partial 66/90)",
@@ -2050,6 +2138,38 @@
             }
           },
           "detail": "fork-run-pi-deepseek-v4-1-flash.html",
+          "coverage": "66/90"
+        },
+        {
+          "harness": "Pi 🟣 Pi Agent (Docker + Cloud.ru)",
+          "profile": "thinking: off (2026-11-10)",
+          "model": "GPT-5.5 (cloud.ru) (thinking: off)",
+          "result": "53/66 (partial 66/90)",
+          "pct": "80.3%",
+          "time": "199.4m",
+          "steps": "4 395",
+          "tokens_cost": "94 143 893 (24 262₽)",
+          "version": "v0.21.3",
+          "source": "ours",
+          "waves": {
+            "long": {
+              "passed": 1,
+              "total": 6
+            },
+            "reflect": {
+              "passed": 14,
+              "total": 20
+            },
+            "feasibility": {
+              "passed": 38,
+              "total": 40
+            },
+            "composite_hard": {
+              "passed": null,
+              "total": null
+            }
+          },
+          "detail": "fork-run-pi-gpt-5-5-thinking-off.html",
           "coverage": "66/90"
         },
         {
@@ -2294,6 +2414,24 @@
         {
           "kind": "coverage",
           "harness": "OpenClaw 2026.11.2 (b556fdf)",
+          "profile": "thinking: off (2026-11-10)",
+          "model": "GPT-5.5 (cloud.ru) (thinking: off)",
+          "subset_key": "subset_our_runs",
+          "subset_args": {
+            "n": 66
+          },
+          "result": "51/66",
+          "pct": "77.3%",
+          "coverage": "66/90",
+          "time": "140.1m",
+          "steps": "946",
+          "tokens_cost": "29 243 400 (7 571₽)",
+          "status_key": "status_partial",
+          "detail": "fork-run-openclaw-gpt-5-5-thinking-off.html"
+        },
+        {
+          "kind": "coverage",
+          "harness": "OpenClaw 2026.11.2 (b556fdf)",
           "profile": "thinking: medium (2026-11-09)",
           "model": "MiniMax-M3 (cloud.ru) (thinking: medium)",
           "subset_key": "subset_our_runs",
@@ -2344,6 +2482,24 @@
           "tokens_cost": "206 712 383 (18 154₽)",
           "status_key": "status_partial",
           "detail": "fork-run-pi-deepseek-v4-1-flash.html"
+        },
+        {
+          "kind": "coverage",
+          "harness": "Pi 🟣 Pi Agent (Docker + Cloud.ru)",
+          "profile": "thinking: off (2026-11-10)",
+          "model": "GPT-5.5 (cloud.ru) (thinking: off)",
+          "subset_key": "subset_our_runs",
+          "subset_args": {
+            "n": 66
+          },
+          "result": "53/66",
+          "pct": "80.3%",
+          "coverage": "66/90",
+          "time": "199.4m",
+          "steps": "4 395",
+          "tokens_cost": "94 143 893 (24 262₽)",
+          "status_key": "status_partial",
+          "detail": "fork-run-pi-gpt-5-5-thinking-off.html"
         },
         {
           "kind": "coverage",

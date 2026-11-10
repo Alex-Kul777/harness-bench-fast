@@ -29,7 +29,7 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 Руками не редактировать — правь скрипт/JSON и пересобирай.
 
 <!-- FORK:RESULTS:BEGIN -->
-Автосинк: 50 прогонов
+Автосинк: 60 прогонов
 
 | Harness | Suite | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
@@ -43,6 +43,8 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 | OpenClaw | Shot List (52) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 50/52 | 96.2% | 37.9m | 244 | 2 718 375 (50₽) |
 | OpenClaw | Shot List (52) | thinking: off | GLM-5.2 (thinking: off) | 47/52 | 90.4% | 231.9m | 247 | 1 777 320 (1 302₽) |
 | OpenClaw | Shot List (52) | — | GLM-5.3 | 44/52 | 84.6% | 46.1m | 148 | 1 955 767 (125₽) |
+| OpenClaw | Shot List (52) | thinking: high | GPT-5.5 (thinking: high) | 50/52 | 96.2% | 37.0m | 334 | 3 117 683 (1 419₽) |
+| OpenClaw | Shot List (52) | thinking: off | GPT-5.5 (thinking: off) | 51/52 | 98.1% | 30.5m | 267 | 2 756 135 (1 308₽) |
 | OpenClaw | Shot List (52) | — | GPT-OSS-120B | 17/52 | 32.7% | 205.2m | 120 | 1 261 870 (786₽) |
 | OpenClaw | Shot List (52) | thinking: medium | MiniMax-M3 (thinking: medium) | 47/52 | 90.4% | 306.9m | 328 | 4 052 449 (1 119₽) |
 | OpenClaw | Shot List (52) | thinking: off | MiniMax-M3 (thinking: off) | 48/52 | 92.3% | 295.4m | 312 | 3 650 102 (972₽) |
@@ -59,6 +61,9 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 | OpenClaw | Medium (392-471) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 12/20 | 60.0% | 128.5m | 467 | 10 009 328 (216₽) |
 | OpenClaw | Medium (392-471) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 2/6 | 33.3% | 131.6m | 86 | 8 425 060 (189₽) |
 | OpenClaw | Medium (392-471) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 0/2 | 0.0% | 45.6m | 4 | 9 429 226 (202₽) |
+| OpenClaw | Medium (392-471) | thinking: off | GPT-5.5 (thinking: off) | 38/40 | 95.0% | 61.9m | 473 | 10 786 591 (3 414₽) |
+| OpenClaw | Medium (392-471) | thinking: off | GPT-5.5 (thinking: off) | 12/20 | 60.0% | 35.1m | 264 | 3 987 306 (1 478₽) |
+| OpenClaw | Medium (392-471) | thinking: off | GPT-5.5 (thinking: off) | 1/6 | 16.7% | 43.2m | 209 | 14 469 503 (2 680₽) |
 | OpenClaw | Medium (392-471) | thinking: medium | MiniMax-M3 (thinking: medium) | 26/40 | 65.0% | 385.8m | 1 329 | 50 707 607 (13 173₽) |
 | OpenClaw | Medium (392-471) | thinking: medium | MiniMax-M3 (thinking: medium) | 11/20 | 55.0% | 109.4m | 623 | 10 614 066 (2 960₽) |
 | OpenClaw | Medium (392-471) | thinking: medium | MiniMax-M3 (thinking: medium) | 0/6 | 0.0% | 154.9m | 284 | 14 488 379 (3 707₽) |
@@ -68,6 +73,8 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 | Pi | Shot List (52) | — | DeepSeek-V4.1-Flash | 49/52 | 94.2% | 21.3m | 330 | 1 438 179 (42₽) |
 | Pi | Shot List (52) | thinking: off | GLM-5.2 (thinking: off) | 49/52 | 94.2% | 102.8m | 388 | 1 913 439 (377₽) |
 | Pi | Shot List (52) | — | GLM-5.3 | 49/52 | 94.2% | 64.9m | 349 | 1 764 093 (221₽) |
+| Pi | Shot List (52) | thinking: high | GPT-5.5 (thinking: high) | 49/52 | 94.2% | 11.6m | 900 | 1 401 405 (1 294₽) |
+| Pi | Shot List (52) | thinking: off | GPT-5.5 (thinking: off) | 48/52 | 92.3% | 9.0m | 908 | 1 301 688 (1 119₽) |
 | Pi | Shot List (52) | — | GigaChat 3 Pro | 16/52 | 30.8% | 25.7m | 2 034 | 12 883 705 (957₽) |
 | Pi | Shot List (52) | thinking: high | GigaChat 3.5 Reasoning (thinking: high) | 34/52 | 65.4% | 33.8m | 1 160 | 3 796 473 (436₽) |
 | Pi | Shot List (52) | thinking: low | GigaChat 3.5 Reasoning (thinking: low) | 35/52 | 67.3% | 15.8m | 1 116 | 3 041 748 (352₽) |
@@ -76,6 +83,9 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 | Pi | Medium (392-471) | — | DeepSeek-V4.1-Flash | 11/15 | 73.3% | 137.3m | 1 124 | 15 124 377 (360₽) |
 | Pi | Medium (392-471) | — | DeepSeek-V4.1-Flash | 5/5 | 100.0% | 32.0m | 336 | 2 949 354 (86₽) |
 | Pi | Medium (392-471) | — | DeepSeek-V4.1-Flash | 0/3 | 0.0% | 288.7m | 1 650 | 78 233 678 (1 201₽) |
+| Pi | Medium (392-471) | thinking: off | GPT-5.5 (thinking: off) | 38/40 | 95.0% | 125.9m | 2 136 | 35 551 107 (8 770₽) |
+| Pi | Medium (392-471) | thinking: off | GPT-5.5 (thinking: off) | 14/20 | 70.0% | 25.9m | 984 | 4 634 064 (2 680₽) |
+| Pi | Medium (392-471) | thinking: off | GPT-5.5 (thinking: off) | 1/6 | 16.7% | 47.6m | 1 275 | 53 958 722 (12 813₽) |
 | Pi | Medium (392-471) | — | GigaChat 3 Pro | 0/40 | 0.0% | 15.0m | 1 408 | 27 408 162 (2 009₽) |
 | Pi | Medium (392-471) | — | GigaChat 3 Pro | 0/6 | 0.0% | 23.5m | 1 020 | 22 942 929 (1 695₽) |
 | Pi | Medium (392-471) | — | GigaChat 3 Pro | 0/20 | 0.0% | 31.6m | 2 948 | 25 638 927 (1 894₽) |

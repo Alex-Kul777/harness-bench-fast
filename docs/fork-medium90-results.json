@@ -188,6 +188,58 @@
       ]
     },
     {
+      "id": "openclaw-gpt-5-5-thinking-off",
+      "details_url": "fork-run-openclaw-gpt-5-5-thinking-off.html",
+      "harness": "OpenClaw",
+      "model": "GPT-5.5",
+      "profile": "thinking: off",
+      "harness_version": "OpenClaw 2026.11.2 (b556fdf)",
+      "runs": 3,
+      "suites": {
+        "long": {
+          "passed": 1,
+          "total": 6,
+          "measurement": "partial"
+        },
+        "reflect": {
+          "passed": 12,
+          "total": 20,
+          "measurement": "complete"
+        },
+        "feasibility": {
+          "passed": 38,
+          "total": 40,
+          "measurement": "complete"
+        },
+        "composite_hard": null
+      },
+      "usage": {
+        "seconds": 8408.0,
+        "steps": 946,
+        "tokens": 29243400,
+        "cost_rub": 7570.9
+      },
+      "wilson": {
+        "long": [
+          0.188,
+          0.406
+        ],
+        "reflect": [
+          0.54,
+          0.628
+        ],
+        "feasibility": [
+          0.899,
+          0.923
+        ]
+      },
+      "sources": [
+        "oc_medium_feasibility_gpt55_off_20261110.json",
+        "oc_medium_long_gpt55_off_20261110.json",
+        "oc_medium_reflect_gpt55_off_20261110.json"
+      ]
+    },
+    {
       "id": "openclaw-minimax-m3-thinking-medium",
       "details_url": "fork-run-openclaw-minimax-m3-thinking-medium.html",
       "harness": "OpenClaw",
@@ -364,6 +416,76 @@
       ]
     },
     {
+      "id": "pi-gpt-5-5-thinking-off",
+      "details_url": "fork-run-pi-gpt-5-5-thinking-off.html",
+      "harness": "Pi",
+      "model": "GPT-5.5",
+      "profile": "thinking: off",
+      "harness_version": "🟣 Pi Agent (Docker + Cloud.ru)",
+      "runs": 3,
+      "suites": {
+        "long": {
+          "passed": 1,
+          "total": 6,
+          "measurement": "partial",
+          "duration": {
+            "n": 6,
+            "mean": 476.2,
+            "median": 383.0,
+            "max": 1151.6
+          }
+        },
+        "reflect": {
+          "passed": 14,
+          "total": 20,
+          "measurement": "complete",
+          "duration": {
+            "n": 20,
+            "mean": 77.7,
+            "median": 62.0,
+            "max": 328.6
+          }
+        },
+        "feasibility": {
+          "passed": 38,
+          "total": 40,
+          "measurement": "complete",
+          "duration": {
+            "n": 40,
+            "mean": 188.8,
+            "median": 40.1,
+            "max": 2204.1
+          }
+        },
+        "composite_hard": null
+      },
+      "usage": {
+        "seconds": 11964.4,
+        "steps": 4395,
+        "tokens": 94143893,
+        "cost_rub": 24262.1
+      },
+      "wilson": {
+        "long": [
+          0.188,
+          0.406
+        ],
+        "reflect": [
+          0.626,
+          0.71
+        ],
+        "feasibility": [
+          0.899,
+          0.923
+        ]
+      },
+      "sources": [
+        "pi_medium_feasibility_gpt55_off_20261110.json",
+        "pi_medium_long_gpt55_off_20261110.json",
+        "pi_medium_reflect_gpt55_off_20261110.json"
+      ]
+    },
+    {
       "id": "pi-gigachat-3-pro",
       "details_url": "fork-run-pi-gigachat-3-pro.html",
       "harness": "Pi",
@@ -508,9 +630,9 @@
     "long": [
       {
         "label": "Pi (ours)",
-        "n": 18,
-        "mean": 1656.2,
-        "median": 873.6,
+        "n": 24,
+        "mean": 1361.2,
+        "median": 482.9,
         "max": 7262.0
       },
       {
@@ -538,9 +660,9 @@
     "reflect": [
       {
         "label": "Pi (ours)",
-        "n": 60,
-        "mean": 411.8,
-        "median": 260.4,
+        "n": 80,
+        "mean": 328.3,
+        "median": 111.6,
         "max": 2116.6
       },
       {
@@ -568,9 +690,9 @@
     "feasibility": [
       {
         "label": "Pi (ours)",
-        "n": 120,
-        "mean": 353.5,
-        "median": 92.8,
+        "n": 160,
+        "mean": 312.3,
+        "median": 68.1,
         "max": 3660.4
       },
       {
