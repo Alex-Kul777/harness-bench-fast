@@ -897,7 +897,7 @@
     "total_tokens": 3796473,
     "total_steps": 1160,
     "total_tool_calls": 939,
-    "estimated_cost_rub": 158.55,
+    "estimated_cost_rub": 435.81,
     "timeout": 660,
     "task_timeouts": {
       "task_01_create_hello": 660,
@@ -952,6 +952,8 @@
       "task_384_cli_mixed_slicer_warehouse_value": 660,
       "task_382_cli_mixed_depwalk_hotspots": 660,
       "task_389_cli_find_xargs_predicates": 660
-    }
+    },
+    "total_cache_read_tokens": 2881536,
+    "total_cache_write_tokens": 0
   }
 }

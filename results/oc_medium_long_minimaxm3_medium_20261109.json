@@ -122,6 +122,8 @@
     "total_input_tokens": 4952475,
     "total_output_tokens": 294304,
     "total_tokens": 14488379,
-    "estimated_cost_rub": 1486.58
+    "estimated_cost_rub": 3706.58,
+    "total_cache_read_tokens": 9241600,
+    "total_cache_write_tokens": 0
   }
 }

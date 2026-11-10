@@ -106,6 +106,8 @@
       "task_415_api_throttle": 1800,
       "task_412_supplier_minimum": 1800,
       "task_416_pay_units": 1800
-    }
+    },
+    "total_cache_read_tokens": 2261760,
+    "total_cache_write_tokens": 0
   }
 }

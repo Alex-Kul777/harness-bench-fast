@@ -11,8 +11,12 @@ Skips files without a top-level summary.
 Token fields checked:
   summary.total_input_tokens   → input
   summary.total_output_tokens  → output
-  summary.total_cache_read_tokens (if present) → cacheRead
-  summary.total_cache_write_tokens (if present) → cacheWrite
+  summary.total_cache_read_tokens  (preferred) → cacheRead
+  summary.total_cache_write_tokens (preferred) → cacheWrite
+
+Explicit cache buckets are PREFERRED; they are only derived as
+``total_tokens - input - output`` for older artifacts that lack them, and the
+derived values are then written back so artifacts never re-derive at read time.
 
 Model is detected from the top-level 'model' field, the summary's 'model', the first
 task's 'model', the command line, and -- as a last resort when those are absent --
@@ -105,13 +109,20 @@ def _recompute_file(path: Path, *, dry_run: bool, config_path: str | None) -> bo
 
     total_in = int(summary.get("total_input_tokens", 0) or 0)
     total_out = int(summary.get("total_output_tokens", 0) or 0)
-    total_cr = int(summary.get("total_cache_read_tokens", 0) or 0)
-    total_cw = int(summary.get("total_cache_write_tokens", 0) or 0)
-    # Older artifacts store only total_tokens; recover the cache-read bucket
-    # from it (total_tokens = input + output + cacheRead + cacheWrite).
     total_tok = int(summary.get("total_tokens", 0) or 0)
-    if total_cr == 0 and total_cw == 0 and total_tok:
-        total_cr = max(total_tok - total_in - total_out, 0)
+    # PREFER explicit cache buckets recorded at write time. Only for older
+    # artifacts that lack them do we derive total_tokens = input + output +
+    # cacheRead + cacheWrite once; the derived values are written back below.
+    has_explicit_cache = (
+        summary.get("total_cache_read_tokens") is not None
+        or summary.get("total_cache_write_tokens") is not None
+    )
+    if has_explicit_cache:
+        total_cr = int(summary.get("total_cache_read_tokens") or 0)
+        total_cw = int(summary.get("total_cache_write_tokens") or 0)
+    else:
+        total_cr = max(total_tok - total_in - total_out, 0) if total_tok else 0
+        total_cw = 0
 
     old_cost = summary.get("estimated_cost_rub")
     new_cost = round(compute_cost_rub(total_in, total_out, total_cr, total_cw, rates), 2)
@@ -121,11 +132,18 @@ def _recompute_file(path: Path, *, dry_run: bool, config_path: str | None) -> bo
     old_str = f"{old_cost:.2f} ₽" if old_cost is not None else "—"
     print(f"  {path.name}: {old_str} → {new_cost:.2f} ₽  [model={model_str}]")
 
-    if old_cost == new_cost:
+    buckets_missing = (
+        summary.get("total_cache_read_tokens") != total_cr
+        or summary.get("total_cache_write_tokens") != total_cw
+    )
+    if old_cost == new_cost and not buckets_missing:
         return False
 
     if not dry_run:
         summary["estimated_cost_rub"] = new_cost
+        # Record the explicit cache buckets so artifacts never re-derive them.
+        summary["total_cache_read_tokens"] = total_cr
+        summary["total_cache_write_tokens"] = total_cw
         tmp = path.with_suffix(".tmp")
         tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
         tmp.replace(path)

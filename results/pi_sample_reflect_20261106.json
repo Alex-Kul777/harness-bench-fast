@@ -73,6 +73,8 @@
     "total_tokens": 3400941,
     "total_steps": 287,
     "total_tool_calls": 274,
-    "estimated_cost_rub": 255.71
+    "estimated_cost_rub": 928.06,
+    "total_cache_read_tokens": 2811776,
+    "total_cache_write_tokens": 0
   }
 }

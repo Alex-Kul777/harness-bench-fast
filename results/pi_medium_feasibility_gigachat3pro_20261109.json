@@ -693,7 +693,7 @@
     "total_tokens": 27408162,
     "total_steps": 1408,
     "total_tool_calls": 936,
-    "estimated_cost_rub": 240.66,
+    "estimated_cost_rub": 2009.22,
     "timeout": 3600,
     "task_timeouts": {
       "task_435_archive_transfer": 3600,
@@ -736,6 +736,8 @@
       "task_456_build_critical_path": 3600,
       "task_470_search_hint": 3600,
       "task_471_clock_contract": 3600
-    }
+    },
+    "total_cache_read_tokens": 24216816,
+    "total_cache_write_tokens": 0
   }
 }

@@ -192,15 +192,34 @@ def _write_results(results: list[dict], path: str, *,
     total_tokens = sum(r.get("agent_total_tokens", 0) for r in results)
     total_seconds = sum(r["elapsed_seconds"] for r in results)
     total_steps = sum(r.get("agent_steps", 0) for r in results)
-    # Per-model rates resolved from ~/.openclaw/openclaw.json
+    # Per-model rates resolved from the live Cloud.ru catalog / config
     _rates = _get_model_rates(model or DEFAULT_MODEL)
-    total_cache_read = sum(r.get("agent_cache_read_tokens", 0) or 0 for r in results)
-    total_cache_write = sum(r.get("agent_cache_write_tokens", 0) or 0 for r in results)
-    # Task entries predate explicit cache buckets; since
-    # total_tokens = input + output + cacheRead + cacheWrite, recover the
-    # cache-read bucket when it is not stored (otherwise it bills as 0).
-    if total_cache_read == 0 and total_cache_write == 0:
-        total_cache_read = max(total_tokens - total_input - total_output, 0)
+    # Cache buckets are recorded EXPLICITLY so downstream readers never re-derive
+    # them. The OpenClaw envelope usage is {input, output, total, reasoningTokens}
+    # with no explicit provider cache field, so the cache bucket is derived ONCE
+    # here as max(total - input - output, 0) and stored both per task and in the
+    # summary. Prefer a real provider cache field if one appears later.
+    has_explicit_cache = any(
+        r.get("agent_cache_read_tokens") is not None
+        or r.get("agent_cache_write_tokens") is not None
+        for r in results
+    )
+    if has_explicit_cache:
+        total_cache_read = sum(int(r.get("agent_cache_read_tokens") or 0) for r in results)
+        total_cache_write = sum(int(r.get("agent_cache_write_tokens") or 0) for r in results)
+    else:
+        total_cache_read = 0
+        total_cache_write = 0
+        for r in results:
+            cr = max(
+                int(r.get("agent_total_tokens") or 0)
+                - int(r.get("agent_input_tokens") or 0)
+                - int(r.get("agent_output_tokens") or 0),
+                0,
+            )
+            r["agent_cache_read_tokens"] = cr
+            r["agent_cache_write_tokens"] = 0
+            total_cache_read += cr
     cost_rub = compute_cost_rub(total_input, total_output, total_cache_read, total_cache_write, _rates)
 
     payload = {
@@ -227,6 +246,8 @@ def _write_results(results: list[dict], path: str, *,
             "total_input_tokens": total_input,
             "total_output_tokens": total_output,
             "total_tokens": total_tokens,
+            "total_cache_read_tokens": total_cache_read,
+            "total_cache_write_tokens": total_cache_write,
             "estimated_cost_rub": round(cost_rub, 2),
         },
     }

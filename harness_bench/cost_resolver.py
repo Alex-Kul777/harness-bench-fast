@@ -9,7 +9,10 @@ for a given model id, in this order of precedence:
 3. an explicit documented fallback (GLM-5.2: 239.12 / 751.52 / 0 / 0) with a
    WARNING on stderr -- never silent.
 
-A missing ``cache_read`` field in a source is treated as 0.
+A missing ``cache_read`` field is treated as 0 in the returned rates dict;
+when it is *priced*, ``compute_cost_rub`` bills cache tokens at the model's
+INPUT rate -- owner policy H2 (see the ``price-cache-read-at-input-rate``
+change).  A published cache tariff (e.g. DeepSeek-V4.1-Flash = 6.5) is kept.
 """
 
 from __future__ import annotations
@@ -144,6 +147,23 @@ def _rates_from_config(model_id: str, cfg: dict) -> Optional[dict]:
     return None
 
 
+def _note_cache_tariff(model_id: str, rates: dict) -> None:
+    """Emit a clear note about how cache tokens will be priced for a model.
+
+    Distinguishes a *published* cache rate (kept as-is; no note) from a model with
+    **no cache tariff**, whose cache reads/writes are priced at the INPUT rate
+    (owner policy H2).  Never silent.
+    """
+    if rates.get("cacheRead"):
+        return
+    print(
+        f"[cost_resolver] NOTE: no published cache tariff for "
+        f"'{model_id or '(none)'}'; cache tokens priced at the INPUT rate "
+        f"({rates['input']} ₽/1M).",
+        file=sys.stderr,
+    )
+
+
 def resolve_model_rates(
     model_id: str,
     config_path: Optional[str | Path] = None,
@@ -168,12 +188,14 @@ def resolve_model_rates(
     if model_id:
         rates = _rates_from_cache(model_id, cache)
         if rates is not None:
+            _note_cache_tariff(model_id, rates)
             return rates
 
     cfg = _load_config(config_path)
     if model_id:
         rates = _rates_from_config(model_id, cfg)
         if rates is not None:
+            _note_cache_tariff(model_id, rates)
             return rates
 
     # Last resort before the documented fallback: infer the model from the artifact
@@ -190,6 +212,7 @@ def resolve_model_rates(
                 f"inferred '{hint}' from filename '{filename}'.",
                 file=sys.stderr,
             )
+            _note_cache_tariff(hint, rates)
             return rates
 
     print(
@@ -201,6 +224,17 @@ def resolve_model_rates(
     return dict(_FALLBACK_RATES)
 
 
+def cache_rate_or_input(rate, rates: dict) -> float:
+    """Return the effective cache rate: the published one, else the INPUT rate.
+
+    Owner-confirmed policy (H2, ``price-cache-read-at-input-rate``): a model with
+    **no published cache tariff** (``cacheRead`` / ``cacheWrite`` absent or 0)
+    prices its cache-read / cache-write tokens at the model's **input** rate.
+    A published cache rate (e.g. DeepSeek-V4.1-Flash ``cacheRead`` = 6.5) is kept.
+    """
+    return rate or rates["input"]
+
+
 def compute_cost_rub(
     input_tokens: int,
     output_tokens: int,
@@ -208,10 +242,18 @@ def compute_cost_rub(
     cache_write_tokens: int,
     rates: dict,
 ) -> float:
-    """Compute ₽ cost from token counts and per-model rates."""
+    """Compute ₽ cost from token counts and per-model rates.
+
+    Cache tokens are priced via :func:`cache_rate_or_input`: the published cache
+    rate when present, otherwise the model's INPUT rate (owner policy H2).  The
+    billing cross-check that motivated this -- MiniMax-M3 2-day spend 58.00k ₽ vs
+    our 140.06M tokens gives cache@0 = 9.66k (too low), cache@output = 124.37k
+    (impossible), cache@input = 36.97k (consistent) -- is recorded in the change
+    design.md.
+    """
     return (
         input_tokens / 1_000_000 * rates["input"]
         + output_tokens / 1_000_000 * rates["output"]
-        + cache_read_tokens / 1_000_000 * rates["cacheRead"]
-        + cache_write_tokens / 1_000_000 * rates["cacheWrite"]
+        + cache_read_tokens / 1_000_000 * cache_rate_or_input(rates.get("cacheRead"), rates)
+        + cache_write_tokens / 1_000_000 * cache_rate_or_input(rates.get("cacheWrite"), rates)
     )

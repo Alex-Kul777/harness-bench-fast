@@ -43,9 +43,9 @@ Auto-sync: 50 runs
 | OpenClaw | Shot List (52) | thinking: off | GLM-5.2 (thinking: off) | 47/52 | 90.4% | 231.9m | 247 | 1 777 320 (1 302₽) |
 | OpenClaw | Shot List (52) | — | GLM-5.3 | 44/52 | 84.6% | 46.1m | 148 | 1 955 767 (125₽) |
 | OpenClaw | Shot List (52) | — | GPT-OSS-120B | 17/52 | 32.7% | 205.2m | 120 | 1 261 870 (786₽) |
-| OpenClaw | Shot List (52) | thinking: medium | MiniMax-M3 (thinking: medium) | 47/52 | 90.4% | 306.9m | 328 | 4 052 449 (887₽) |
-| OpenClaw | Shot List (52) | thinking: off | MiniMax-M3 (thinking: off) | 48/52 | 92.3% | 295.4m | 312 | 3 650 102 (707₽) |
-| OpenClaw | Shot List (52) | thinking: ultra | MiniMax-M3 (thinking: ultra) | 46/52 | 88.5% | 52.1m | 305 | 3 892 497 (339₽) |
+| OpenClaw | Shot List (52) | thinking: medium | MiniMax-M3 (thinking: medium) | 47/52 | 90.4% | 306.9m | 328 | 4 052 449 (1 119₽) |
+| OpenClaw | Shot List (52) | thinking: off | MiniMax-M3 (thinking: off) | 48/52 | 92.3% | 295.4m | 312 | 3 650 102 (972₽) |
+| OpenClaw | Shot List (52) | thinking: ultra | MiniMax-M3 (thinking: ultra) | 46/52 | 88.5% | 52.1m | 305 | 3 892 497 (1 068₽) |
 | OpenClaw | Shot List (52) | — | Qwen3.6-35B-A3B | 40/52 | 76.9% | 195.2m | 328 | 2 109 433 (2 079₽) |
 | OpenClaw | Light (391) | — | — | 378/391 | 96.7% | 1473.3m | — | 0 (0₽) |
 | OpenClaw | Medium (392-471) | thinking: high | DeepSeek-V4.1-Flash (thinking: high) | 38/40 | 95.0% | 105.0m | 783 | 25 623 769 (509₽) |
@@ -58,29 +58,29 @@ Auto-sync: 50 runs
 | OpenClaw | Medium (392-471) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 12/20 | 60.0% | 128.5m | 467 | 10 009 328 (216₽) |
 | OpenClaw | Medium (392-471) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 2/6 | 33.3% | 131.6m | 86 | 8 425 060 (189₽) |
 | OpenClaw | Medium (392-471) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 0/2 | 0.0% | 45.6m | 4 | 9 429 226 (202₽) |
-| OpenClaw | Medium (392-471) | thinking: medium | MiniMax-M3 (thinking: medium) | 26/40 | 65.0% | 385.8m | 1 329 | 50 707 607 (1 940₽) |
-| OpenClaw | Medium (392-471) | thinking: medium | MiniMax-M3 (thinking: medium) | 11/20 | 55.0% | 109.4m | 623 | 10 614 066 (684₽) |
-| OpenClaw | Medium (392-471) | thinking: medium | MiniMax-M3 (thinking: medium) | 0/6 | 0.0% | 154.9m | 284 | 14 488 379 (1 487₽) |
-| OpenClaw | Medium (392-471) | thinking: off | MiniMax-M3 (thinking: off) | 33/40 | 82.5% | 266.4m | 989 | 33 114 679 (1 235₽) |
-| OpenClaw | Medium (392-471) | thinking: off | MiniMax-M3 (thinking: off) | 13/20 | 65.0% | 162.0m | 698 | 12 178 668 (878₽) |
-| OpenClaw | Medium (392-471) | thinking: off | MiniMax-M3 (thinking: off) | 0/6 | 0.0% | 363.2m | 276 | 7 360 375 (1 502₽) |
+| OpenClaw | Medium (392-471) | thinking: medium | MiniMax-M3 (thinking: medium) | 26/40 | 65.0% | 385.8m | 1 329 | 50 707 607 (13 173₽) |
+| OpenClaw | Medium (392-471) | thinking: medium | MiniMax-M3 (thinking: medium) | 11/20 | 55.0% | 109.4m | 623 | 10 614 066 (2 960₽) |
+| OpenClaw | Medium (392-471) | thinking: medium | MiniMax-M3 (thinking: medium) | 0/6 | 0.0% | 154.9m | 284 | 14 488 379 (3 707₽) |
+| OpenClaw | Medium (392-471) | thinking: off | MiniMax-M3 (thinking: off) | 33/40 | 82.5% | 266.4m | 989 | 33 114 679 (8 636₽) |
+| OpenClaw | Medium (392-471) | thinking: off | MiniMax-M3 (thinking: off) | 13/20 | 65.0% | 162.0m | 698 | 12 178 668 (3 426₽) |
+| OpenClaw | Medium (392-471) | thinking: off | MiniMax-M3 (thinking: off) | 0/6 | 0.0% | 363.2m | 276 | 7 360 375 (1 913₽) |
 | Pi | Shot List (52) | — | DeepSeek-V4.1-Flash | 49/52 | 94.2% | 21.3m | 330 | 1 438 179 (42₽) |
 | Pi | Shot List (52) | thinking: off | GLM-5.2 (thinking: off) | 49/52 | 94.2% | 102.8m | 388 | 1 913 439 (377₽) |
 | Pi | Shot List (52) | — | GLM-5.3 | 49/52 | 94.2% | 64.9m | 349 | 1 764 093 (221₽) |
-| Pi | Shot List (52) | — | GigaChat 3 Pro | 16/52 | 30.8% | 25.7m | 2 034 | 12 883 705 (62₽) |
-| Pi | Shot List (52) | thinking: high | GigaChat 3.5 Reasoning (thinking: high) | 34/52 | 65.4% | 33.8m | 1 160 | 3 796 473 (159₽) |
-| Pi | Shot List (52) | thinking: low | GigaChat 3.5 Reasoning (thinking: low) | 35/52 | 67.3% | 15.8m | 1 116 | 3 041 748 (139₽) |
-| Pi | Shot List (52) | thinking: medium | GigaChat 3.5 Reasoning (thinking: medium) | 34/52 | 65.4% | 19.2m | 1 176 | 2 974 629 (150₽) |
+| Pi | Shot List (52) | — | GigaChat 3 Pro | 16/52 | 30.8% | 25.7m | 2 034 | 12 883 705 (957₽) |
+| Pi | Shot List (52) | thinking: high | GigaChat 3.5 Reasoning (thinking: high) | 34/52 | 65.4% | 33.8m | 1 160 | 3 796 473 (436₽) |
+| Pi | Shot List (52) | thinking: low | GigaChat 3.5 Reasoning (thinking: low) | 35/52 | 67.3% | 15.8m | 1 116 | 3 041 748 (352₽) |
+| Pi | Shot List (52) | thinking: medium | GigaChat 3.5 Reasoning (thinking: medium) | 34/52 | 65.4% | 19.2m | 1 176 | 2 974 629 (354₽) |
 | Pi | Shot List (52) | — | Qwen3.6-35B-A3B | 42/52 | 80.8% | 18.5m | 327 | 1 318 346 (299₽) |
 | Pi | Medium (392-471) | — | DeepSeek-V4.1-Flash | 11/15 | 73.3% | 137.3m | 1 124 | 15 124 377 (360₽) |
 | Pi | Medium (392-471) | — | DeepSeek-V4.1-Flash | 5/5 | 100.0% | 32.0m | 336 | 2 949 354 (86₽) |
 | Pi | Medium (392-471) | — | DeepSeek-V4.1-Flash | 0/3 | 0.0% | 288.7m | 1 650 | 78 233 678 (1 201₽) |
-| Pi | Medium (392-471) | — | GigaChat 3 Pro | 0/40 | 0.0% | 15.0m | 1 408 | 27 408 162 (241₽) |
-| Pi | Medium (392-471) | — | GigaChat 3 Pro | 0/6 | 0.0% | 23.5m | 1 020 | 22 942 929 (82₽) |
-| Pi | Medium (392-471) | — | GigaChat 3 Pro | 0/20 | 0.0% | 31.6m | 2 948 | 25 638 927 (85₽) |
-| Pi | Medium (392-471) | thinking: low | GigaChat 3.5 Reasoning (thinking: low) | 11/40 | 27.5% | 517.1m | 2 973 | 94 222 758 (1 740₽) |
-| Pi | Medium (392-471) | thinking: low | GigaChat 3.5 Reasoning (thinking: low) | 2/20 | 10.0% | 210.9m | 2 176 | 31 410 934 (511₽) |
-| Pi | Medium (392-471) | thinking: low | GigaChat 3.5 Reasoning (thinking: low) | 0/6 | 0.0% | 62.2m | 1 419 | 65 534 148 (456₽) |
+| Pi | Medium (392-471) | — | GigaChat 3 Pro | 0/40 | 0.0% | 15.0m | 1 408 | 27 408 162 (2 009₽) |
+| Pi | Medium (392-471) | — | GigaChat 3 Pro | 0/6 | 0.0% | 23.5m | 1 020 | 22 942 929 (1 695₽) |
+| Pi | Medium (392-471) | — | GigaChat 3 Pro | 0/20 | 0.0% | 31.6m | 2 948 | 25 638 927 (1 894₽) |
+| Pi | Medium (392-471) | thinking: low | GigaChat 3.5 Reasoning (thinking: low) | 11/40 | 27.5% | 517.1m | 2 973 | 94 222 758 (9 881₽) |
+| Pi | Medium (392-471) | thinking: low | GigaChat 3.5 Reasoning (thinking: low) | 2/20 | 10.0% | 210.9m | 2 176 | 31 410 934 (3 264₽) |
+| Pi | Medium (392-471) | thinking: low | GigaChat 3.5 Reasoning (thinking: low) | 0/6 | 0.0% | 62.2m | 1 419 | 65 534 148 (6 470₽) |
 | — | Wave 19 (40) | — | DeepSeek-V4.1-Flash | 36/40 | 90.0% | 174.8m | 2 748 | 48 463 320 (1 284₽) |
 <!-- FORK:RESULTS:END -->
 

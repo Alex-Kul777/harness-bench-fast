@@ -793,6 +793,8 @@
     "passed": 49,
     "failed": 3,
     "pass_rate": 0.9423076923076923,
-    "estimated_cost_rub": 41.51
+    "estimated_cost_rub": 41.51,
+    "total_cache_read_tokens": 1079168,
+    "total_cache_write_tokens": 0
   }
 }

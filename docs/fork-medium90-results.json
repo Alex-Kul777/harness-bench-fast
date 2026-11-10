@@ -217,7 +217,7 @@
         "seconds": 39005.7,
         "steps": 2236,
         "tokens": 75810052,
-        "cost_rub": 4110.2
+        "cost_rub": 19839.6
       },
       "wilson": {
         "long": [
@@ -269,7 +269,7 @@
         "seconds": 47494.7,
         "steps": 1963,
         "tokens": 52653722,
-        "cost_rub": 3614.4
+        "cost_rub": 13974.3
       },
       "wilson": {
         "long": [
@@ -339,7 +339,7 @@
         "seconds": 45317.0,
         "steps": 7143,
         "tokens": 206712383,
-        "cost_rub": 6195.6
+        "cost_rub": 18153.8
       },
       "wilson": {
         "long": [
@@ -411,7 +411,7 @@
         "seconds": 4207.7,
         "steps": 5376,
         "tokens": 75990018,
-        "cost_rub": 407.4
+        "cost_rub": 5598.4
       },
       "wilson": {
         "long": [
@@ -481,7 +481,7 @@
         "seconds": 47410.8,
         "steps": 6568,
         "tokens": 191167840,
-        "cost_rub": 2707.4
+        "cost_rub": 19616.0
       },
       "wilson": {
         "long": [

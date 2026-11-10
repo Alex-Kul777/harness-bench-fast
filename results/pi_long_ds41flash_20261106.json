@@ -70,6 +70,8 @@
       "task_392_manuscript_continuity": 7200,
       "task_398_card_game_engine": 7200,
       "task_403_binary_format_reverse": 7200
-    }
+    },
+    "total_cache_read_tokens": 70225792,
+    "total_cache_write_tokens": 0
   }
 }

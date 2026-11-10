@@ -353,7 +353,7 @@
     "total_tokens": 25638927,
     "total_steps": 2948,
     "total_tool_calls": 2151,
-    "estimated_cost_rub": 85.19,
+    "estimated_cost_rub": 1894.5,
     "timeout": 1800,
     "task_timeouts": {
       "task_413_crm_pagination": 1800,
@@ -376,6 +376,8 @@
       "task_421_catalog_case_search": 1800,
       "task_431_admin_elevation": 1800,
       "task_418_ticket_timeout_dupes": 1800
-    }
+    },
+    "total_cache_read_tokens": 24774912,
+    "total_cache_write_tokens": 0
   }
 }
