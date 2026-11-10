@@ -385,7 +385,7 @@ def _write_results(results, path, timeout=None, model=None, *,
         os.replace(tmp_path, path)
 
 
-def _write_status(path, completed, total_task_count, results, started_at):
+def _write_status(path, completed, total_task_count, results, started_at, model=DEFAULT_MODEL):
     """Write status file for progress monitoring. Thread-safe."""
     with _write_lock:
         passed = sum(1 for r in results if r["passed"])
@@ -481,7 +481,7 @@ def run_batch(task_ids, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT,
                                thinking=thinking_level, harness_version=harness_version,
                                task_ids=task_ids)
             if status_file:
-                _write_status(status_file, completed, total_all, results, started_at)
+                _write_status(status_file, completed, total_all, results, started_at, model=model)
     else:
         with ThreadPoolExecutor(max_workers=concurrency) as pool:
             future_to_task = {}
@@ -504,7 +504,7 @@ def run_batch(task_ids, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT,
                                    thinking=thinking_level, harness_version=harness_version,
                                    task_ids=task_ids)
                 if status_file:
-                    _write_status(status_file, completed, total_all, results, started_at)
+                    _write_status(status_file, completed, total_all, results, started_at, model=model)
 
     results.sort(key=lambda r: r["task_id"])
     return results
