@@ -107,6 +107,34 @@
           "detail": "fork-detail-pi_shotlist_glm53.html"
         },
         {
+          "harness": "OpenClaw 2026.11.2 (b556fdf)",
+          "profile": "thinking: off (2026-11-09)",
+          "model": "MiniMax-M3 (cloud.ru) (thinking: off)",
+          "result": "48/52",
+          "pct": "92.3%",
+          "time": "295.4m",
+          "steps": "312",
+          "tokens_cost": "3 650 102 (673₽)",
+          "version": "0.16.0",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-oc_shotlist_minimaxm3_off_20261109.html"
+        },
+        {
+          "harness": "OpenClaw 2026.11.2 (b556fdf)",
+          "profile": "thinking: medium (2026-11-09)",
+          "model": "MiniMax-M3 (cloud.ru) (thinking: medium)",
+          "result": "47/52",
+          "pct": "90.4%",
+          "time": "306.9m",
+          "steps": "328",
+          "tokens_cost": "4 052 449 (835₽)",
+          "version": "0.16.0",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-oc_shotlist_minimaxm3_medium_20261109.html"
+        },
+        {
           "harness": "OpenClaw",
           "profile": "thinking: off (2026-08-12)",
           "model": "GLM-5.2 (cloud.ru) (thinking: off)",
@@ -133,6 +161,20 @@
           "source": "ours",
           "waves": null,
           "detail": "fork-detail-hermes_shotlist_thinking_off.html"
+        },
+        {
+          "harness": "OpenClaw 2026.11.2 (b556fdf)",
+          "profile": "thinking: ultra (2026-11-09)",
+          "model": "MiniMax-M3 (cloud.ru) (thinking: ultra)",
+          "result": "46/52",
+          "pct": "88.5%",
+          "time": "52.1m",
+          "steps": "305",
+          "tokens_cost": "3 892 497 (294₽)",
+          "version": "0.16.0",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-oc_shotlist_minimaxm3_ultra_20261109.html"
         },
         {
           "harness": "OpenClaw",
@@ -1915,6 +1957,70 @@
           "coverage": "68/90"
         },
         {
+          "harness": "OpenClaw 2026.11.2 (b556fdf)",
+          "profile": "thinking: medium (2026-11-09)",
+          "model": "MiniMax-M3 (cloud.ru) (thinking: medium)",
+          "result": "37/66 (partial 66/90)",
+          "pct": "56.1%",
+          "time": "650.1m",
+          "steps": "2 236",
+          "tokens_cost": "75 810 052 (3 556₽)",
+          "version": "v0.21.3",
+          "source": "ours",
+          "waves": {
+            "long": {
+              "passed": 0,
+              "total": 6
+            },
+            "reflect": {
+              "passed": 11,
+              "total": 20
+            },
+            "feasibility": {
+              "passed": 26,
+              "total": 40
+            },
+            "composite_hard": {
+              "passed": null,
+              "total": null
+            }
+          },
+          "detail": "fork-run-openclaw-minimax-m3-thinking-medium.html",
+          "coverage": "66/90"
+        },
+        {
+          "harness": "OpenClaw 2026.11.2 (b556fdf)",
+          "profile": "thinking: off (2026-11-09)",
+          "model": "MiniMax-M3 (cloud.ru) (thinking: off)",
+          "result": "46/66 (partial 66/90)",
+          "pct": "69.7%",
+          "time": "791.6m",
+          "steps": "1 963",
+          "tokens_cost": "52 653 722 (3 162₽)",
+          "version": "v0.21.3",
+          "source": "ours",
+          "waves": {
+            "long": {
+              "passed": 0,
+              "total": 6
+            },
+            "reflect": {
+              "passed": 13,
+              "total": 20
+            },
+            "feasibility": {
+              "passed": 33,
+              "total": 40
+            },
+            "composite_hard": {
+              "passed": null,
+              "total": null
+            }
+          },
+          "detail": "fork-run-openclaw-minimax-m3-thinking-off.html",
+          "coverage": "66/90"
+        },
+        {
           "harness": "Pi",
           "profile": "— (2026-11-05)",
           "model": "DeepSeek-V4.1-Flash (cloud.ru)",
@@ -2184,6 +2290,42 @@
           "tokens_cost": "57 504 880 (866₽)",
           "status_key": "status_partial",
           "detail": "fork-run-openclaw-deepseek-v4-1-flash-thinking-off.html"
+        },
+        {
+          "kind": "coverage",
+          "harness": "OpenClaw 2026.11.2 (b556fdf)",
+          "profile": "thinking: medium (2026-11-09)",
+          "model": "MiniMax-M3 (cloud.ru) (thinking: medium)",
+          "subset_key": "subset_our_runs",
+          "subset_args": {
+            "n": 66
+          },
+          "result": "37/66",
+          "pct": "56.1%",
+          "coverage": "66/90",
+          "time": "650.1m",
+          "steps": "2 236",
+          "tokens_cost": "75 810 052 (3 556₽)",
+          "status_key": "status_partial",
+          "detail": "fork-run-openclaw-minimax-m3-thinking-medium.html"
+        },
+        {
+          "kind": "coverage",
+          "harness": "OpenClaw 2026.11.2 (b556fdf)",
+          "profile": "thinking: off (2026-11-09)",
+          "model": "MiniMax-M3 (cloud.ru) (thinking: off)",
+          "subset_key": "subset_our_runs",
+          "subset_args": {
+            "n": 66
+          },
+          "result": "46/66",
+          "pct": "69.7%",
+          "coverage": "66/90",
+          "time": "791.6m",
+          "steps": "1 963",
+          "tokens_cost": "52 653 722 (3 162₽)",
+          "status_key": "status_partial",
+          "detail": "fork-run-openclaw-minimax-m3-thinking-off.html"
         },
         {
           "kind": "coverage",

@@ -29,7 +29,7 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 Руками не редактировать — правь скрипт/JSON и пересобирай.
 
 <!-- FORK:RESULTS:BEGIN -->
-Автосинк: 41 прогонов
+Автосинк: 50 прогонов
 
 | Harness | Suite | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
@@ -44,6 +44,9 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 | OpenClaw | Shot List (52) | thinking: off | GLM-5.2 (thinking: off) | 47/52 | 90.4% | 231.9m | 247 | 1 777 320 (1 302₽) |
 | OpenClaw | Shot List (52) | — | GLM-5.3 | 44/52 | 84.6% | 46.1m | 148 | 1 955 767 (50₽) |
 | OpenClaw | Shot List (52) | — | GPT-OSS-120B | 17/52 | 32.7% | 205.2m | 120 | 1 261 870 (786₽) |
+| OpenClaw | Shot List (52) | thinking: medium | MiniMax-M3 (thinking: medium) | 47/52 | 90.4% | 306.9m | 328 | 4 052 449 (835₽) |
+| OpenClaw | Shot List (52) | thinking: off | MiniMax-M3 (thinking: off) | 48/52 | 92.3% | 295.4m | 312 | 3 650 102 (673₽) |
+| OpenClaw | Shot List (52) | thinking: ultra | MiniMax-M3 (thinking: ultra) | 46/52 | 88.5% | 52.1m | 305 | 3 892 497 (294₽) |
 | OpenClaw | Shot List (52) | — | Qwen3.6-35B-A3B | 40/52 | 76.9% | 195.2m | 328 | 2 109 433 (2 079₽) |
 | OpenClaw | Light (391) | — | — | 378/391 | 96.7% | 1473.3m | — | 0 (0₽) |
 | OpenClaw | Medium (392-471) | thinking: high | DeepSeek-V4.1-Flash (thinking: high) | 38/40 | 95.0% | 105.0m | 783 | 25 623 769 (371₽) |
@@ -56,6 +59,12 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 | OpenClaw | Medium (392-471) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 12/20 | 60.0% | 128.5m | 467 | 10 009 328 (161₽) |
 | OpenClaw | Medium (392-471) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 2/6 | 33.3% | 131.6m | 86 | 8 425 060 (146₽) |
 | OpenClaw | Medium (392-471) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 0/2 | 0.0% | 45.6m | 4 | 9 429 226 (152₽) |
+| OpenClaw | Medium (392-471) | thinking: medium | MiniMax-M3 (thinking: medium) | 26/40 | 65.0% | 385.8m | 1 329 | 50 707 607 (1 605₽) |
+| OpenClaw | Medium (392-471) | thinking: medium | MiniMax-M3 (thinking: medium) | 11/20 | 55.0% | 109.4m | 623 | 10 614 066 (546₽) |
+| OpenClaw | Medium (392-471) | thinking: medium | MiniMax-M3 (thinking: medium) | 0/6 | 0.0% | 154.9m | 284 | 14 488 379 (1 405₽) |
+| OpenClaw | Medium (392-471) | thinking: off | MiniMax-M3 (thinking: off) | 33/40 | 82.5% | 266.4m | 989 | 33 114 679 (1 005₽) |
+| OpenClaw | Medium (392-471) | thinking: off | MiniMax-M3 (thinking: off) | 13/20 | 65.0% | 162.0m | 698 | 12 178 668 (709₽) |
+| OpenClaw | Medium (392-471) | thinking: off | MiniMax-M3 (thinking: off) | 0/6 | 0.0% | 363.2m | 276 | 7 360 375 (1 447₽) |
 | Pi | Shot List (52) | — | DeepSeek-V4.1-Flash | 49/52 | 94.2% | 21.3m | 330 | 1 438 179 (34₽) |
 | Pi | Shot List (52) | thinking: off | GLM-5.2 (thinking: off) | 49/52 | 94.2% | 102.8m | 388 | 1 913 439 (501₽) |
 | Pi | Shot List (52) | — | GLM-5.3 | 49/52 | 94.2% | 64.9m | 349 | 1 764 093 (216₽) |

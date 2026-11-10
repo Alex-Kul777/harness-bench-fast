@@ -188,6 +188,110 @@
       ]
     },
     {
+      "id": "openclaw-minimax-m3-thinking-medium",
+      "details_url": "fork-run-openclaw-minimax-m3-thinking-medium.html",
+      "harness": "OpenClaw",
+      "model": "MiniMax-M3",
+      "profile": "thinking: medium",
+      "harness_version": "OpenClaw 2026.11.2 (b556fdf)",
+      "runs": 3,
+      "suites": {
+        "long": {
+          "passed": 0,
+          "total": 6,
+          "measurement": "partial"
+        },
+        "reflect": {
+          "passed": 11,
+          "total": 20,
+          "measurement": "complete"
+        },
+        "feasibility": {
+          "passed": 26,
+          "total": 40,
+          "measurement": "complete"
+        },
+        "composite_hard": null
+      },
+      "usage": {
+        "seconds": 39005.7,
+        "steps": 2236,
+        "tokens": 75810052,
+        "cost_rub": 3555.9
+      },
+      "wilson": {
+        "long": [
+          0.115,
+          0.275
+        ],
+        "reflect": [
+          0.497,
+          0.587
+        ],
+        "feasibility": [
+          0.614,
+          0.659
+        ]
+      },
+      "sources": [
+        "oc_medium_feasibility_minimaxm3_medium_20261109.json",
+        "oc_medium_long_minimaxm3_medium_20261109.json",
+        "oc_medium_reflect_minimaxm3_medium_20261109.json"
+      ]
+    },
+    {
+      "id": "openclaw-minimax-m3-thinking-off",
+      "details_url": "fork-run-openclaw-minimax-m3-thinking-off.html",
+      "harness": "OpenClaw",
+      "model": "MiniMax-M3",
+      "profile": "thinking: off",
+      "harness_version": "OpenClaw 2026.11.2 (b556fdf)",
+      "runs": 3,
+      "suites": {
+        "long": {
+          "passed": 0,
+          "total": 6,
+          "measurement": "partial"
+        },
+        "reflect": {
+          "passed": 13,
+          "total": 20,
+          "measurement": "complete"
+        },
+        "feasibility": {
+          "passed": 33,
+          "total": 40,
+          "measurement": "complete"
+        },
+        "composite_hard": null
+      },
+      "usage": {
+        "seconds": 47494.7,
+        "steps": 1963,
+        "tokens": 52653722,
+        "cost_rub": 3161.9
+      },
+      "wilson": {
+        "long": [
+          0.115,
+          0.275
+        ],
+        "reflect": [
+          0.583,
+          0.669
+        ],
+        "feasibility": [
+          0.778,
+          0.815
+        ]
+      },
+      "sources": [
+        "oc_medium_feasibility_minimaxm3_off_20261109.json",
+        "oc_medium_long_minimaxm3_off_20261109.json",
+        "oc_medium_reflect_minimaxm3_off_20261109.json"
+      ]
+    },
+    {
       "id": "pi-deepseek-v4-1-flash",
       "details_url": "fork-run-pi-deepseek-v4-1-flash.html",
       "harness": "Pi",

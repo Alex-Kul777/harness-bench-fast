@@ -44,6 +44,7 @@ HARNESS_PREFIXES: tuple[tuple[str, str], ...] = (
 MODEL_TOKENS: tuple[tuple[str, str], ...] = (
     ("ds41flash",    "DeepSeek-V4.1-Flash"),
     ("gigachat3pro", "GigaChat 3 Pro"),
+    ("minimaxm3",    "MiniMax-M3"),
     ("giga35",       "GigaChat 3.5 Reasoning"),
     ("glm53",        "GLM-5.3"),
     ("glm52",        "GLM-5.2"),
@@ -52,7 +53,7 @@ MODEL_TOKENS: tuple[tuple[str, str], ...] = (
 )
 
 # Reasoning-sweep artifacts end with ``_<level>_<YYYYMMDD>``.
-THINKING_LEVEL_RE: re.Pattern[str] = re.compile(r"_(off|low|medium|high)_\d{8}$")
+THINKING_LEVEL_RE: re.Pattern[str] = re.compile(r"_(off|minimal|low|medium|high|xhigh|max|ultra)_\d{8}$")
 
 # Non-reasoning special profiles (ordered; first match wins).
 PROFILE_RULES: tuple[tuple[str, str], ...] = (
