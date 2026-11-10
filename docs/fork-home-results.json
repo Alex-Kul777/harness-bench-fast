@@ -1928,8 +1928,8 @@
           "harness": "OpenClaw 2026.10.9 (8b18b55)",
           "profile": "thinking: off (2026-11-08)",
           "model": "DeepSeek-V4.1-Flash (cloud.ru) (thinking: off)",
-          "result": "50/68 (partial 68/90)",
-          "pct": "73.5%",
+          "result": "50/66 (partial 66/90)",
+          "pct": "75.8%",
           "time": "475.4m",
           "steps": "1 430",
           "tokens_cost": "57 504 880 (1 180₽)",
@@ -1938,7 +1938,7 @@
           "waves": {
             "long": {
               "passed": 2,
-              "total": 8
+              "total": 6
             },
             "reflect": {
               "passed": 12,
@@ -1954,7 +1954,7 @@
             }
           },
           "detail": "fork-run-openclaw-deepseek-v4-1-flash-thinking-off.html",
-          "coverage": "68/90"
+          "coverage": "66/90"
         },
         {
           "harness": "OpenClaw 2026.11.2 (b556fdf)",
@@ -2280,11 +2280,11 @@
           "model": "DeepSeek-V4.1-Flash (cloud.ru) (thinking: off)",
           "subset_key": "subset_our_runs",
           "subset_args": {
-            "n": 68
+            "n": 66
           },
-          "result": "50/68",
-          "pct": "73.5%",
-          "coverage": "68/90",
+          "result": "50/66",
+          "pct": "75.8%",
+          "coverage": "66/90",
           "time": "475.4m",
           "steps": "1 430",
           "tokens_cost": "57 504 880 (1 180₽)",

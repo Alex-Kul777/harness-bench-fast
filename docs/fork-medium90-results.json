@@ -145,7 +145,7 @@
       "suites": {
         "long": {
           "passed": 2,
-          "total": 8,
+          "total": 6,
           "measurement": "partial"
         },
         "reflect": {
@@ -168,8 +168,8 @@
       },
       "wilson": {
         "long": [
-          0.239,
-          0.423
+          0.275,
+          0.522
         ],
         "reflect": [
           0.54,

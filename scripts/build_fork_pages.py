@@ -310,11 +310,62 @@ def _empty_usage() -> dict:
     return {"seconds": 0.0, "steps": 0, "tokens": 0, "cost_rub": 0.0}
 
 
-def build_model() -> dict:
+_TASK_NUM_RE = re.compile(r"task_(\d+)")
+
+
+def _artifact_task_numbers(data: dict) -> dict[int, bool]:
+    r"""Map task number -> passed for one run artifact ({} when none parseable).
+
+    Mirrors ``build_fork_home._TASK_NUM_RE``: the number comes from the entry's
+    ``number`` field, else from ``task_(\d+)`` inside ``task_id``. Both
+    OpenClaw-runner (top-level ``tasks``) and Pi-runner (top-level ``results``)
+    artifacts are supported.
+    """
+    entries = data.get("results") or data.get("tasks") or []
+    numbers: dict[int, bool] = {}
+    if not isinstance(entries, list):
+        return numbers
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        number = entry.get("number")
+        if number is None:
+            match = _TASK_NUM_RE.search(str(entry.get("task_id") or ""))
+            number = int(match.group(1)) if match else None
+        if number is not None:
+            numbers[int(number)] = bool(entry.get("passed"))
+    return numbers
+
+
+def _aggregate_wave_suite(artifacts: list[dict]) -> dict:
+    """Union a wave's task numbers across artifacts; fall back to summed totals.
+
+    Artifacts are processed in ascending file-name order (stems end ``_YYYYMMDD``,
+    so lexicographic == chronological) and a later artifact supersedes an earlier
+    one for the same task number. When no artifact yields a parseable number the
+    legacy behaviour (sum of per-file ``summary`` totals) is kept.
+    """
+    numbers: dict[int, bool] = {}
+    sum_passed = 0
+    sum_total = 0
+    for artifact in sorted(artifacts, key=lambda a: a["name"]):
+        sum_passed += artifact["summary_passed"]
+        sum_total += artifact["summary_total"]
+        for number, passed in artifact["numbers"].items():
+            numbers[number] = passed
+    if numbers:
+        return {
+            "passed": sum(1 for passed in numbers.values() if passed),
+            "total": len(numbers),
+        }
+    return {"passed": sum_passed, "total": sum_total}
+
+
+def build_model(result_dirs: list[Path] | None = None) -> dict:
     groups: dict[tuple, dict] = {}
     tasks_by_id: dict[str, list] = {}
 
-    for name, path in collect_paths().items():
+    for name, path in collect_paths(result_dirs).items():
         stem = path.stem
         lower = stem.lower()
         wave = classify_wave(stem)
@@ -346,6 +397,7 @@ def build_model() -> dict:
             key,
             {
                 "suites": {w: {"passed": 0, "total": 0} for w in WAVE_ORDER},
+                "wave_artifacts": {w: [] for w in WAVE_ORDER},
                 "usage": _empty_usage(),
                 "wave_usage": {w: _empty_usage() for w in WAVE_ORDER},
                 "durations": {w: [] for w in WAVE_ORDER},
@@ -357,9 +409,14 @@ def build_model() -> dict:
         if version:
             group["versions"].add(version)
 
-        suit = group["suites"][wave]
-        suit["passed"] += int(summary.get("passed") or 0)
-        suit["total"] += int(summary.get("total") or 0)
+        group["wave_artifacts"][wave].append(
+            {
+                "name": name,
+                "numbers": _artifact_task_numbers(data),
+                "summary_passed": int(summary.get("passed") or 0),
+                "summary_total": int(summary.get("total") or 0),
+            }
+        )
 
         usage = group["usage"]
         usage["seconds"] += float(summary.get("total_seconds") or 0.0)
@@ -397,6 +454,10 @@ def build_model() -> dict:
     for (harness, model, profile), group in groups.items():
         suites: dict[str, object] = {}
         wilson: dict[str, list[float]] = {}
+        for wave in WAVE_ORDER:
+            # Union wave task numbers across this config's artifacts (legacy sum
+            # fallback when no artifact yields a parseable task number).
+            group["suites"][wave] = _aggregate_wave_suite(group["wave_artifacts"][wave])
         for wave in WAVE_ORDER:
             # Our per-task times pool across every measured run for this wave.
             ours_durations[wave].extend(group["durations"][wave])
