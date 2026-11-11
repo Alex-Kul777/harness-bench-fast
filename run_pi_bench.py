@@ -98,34 +98,61 @@ def _docker_kill(container_name):
 
 
 def _extract_usage(obj, acc):
-    """Recursively scan a parsed NDJSON line for assistant `usage` blocks.
+    """Count each assistant API response's usage EXACTLY ONCE.
 
-    Captures usage even when the stream is cut off before the final
-    `agent_end` event (Fix B: no more steps=0/tokens=0 on timeout).
+    ``pi --mode json`` repeats the *same* ``usage`` object across several
+    events: ``message_end`` (source of truth, one per assistant message),
+    ``turn_end`` (the same message echoed) and ``agent_end.messages[]`` (the
+    full transcript).  A recursive scan of the whole stream therefore
+    multiplies input/output/reasoning/total by ~3x.  ``message_update`` delta
+    events repeat it per chunk as well.
+
+    We count ONLY a ``message_end`` event (``message.usage``) or a bare object
+    that directly carries ``usage`` (partial/legacy streams that never wrap
+    it), skip the ``message_update``/``turn_end``/``agent_end`` containers, and
+    dedupe by ``responseId`` so any echo of the same call is ignored.  Cache
+    buckets (``cacheRead``/``cacheWrite``) are captured explicitly instead of
+    being dropped.
     """
-    if isinstance(obj, dict):
-        # Streaming deltas repeat usage on every token chunk; never count them
-        # as API calls (Fix B refinement: steps 4173 -> ~64).
-        if obj.get("type") == "message_update":
-            return
+    if not isinstance(obj, dict):
+        return
+    etype = obj.get("type")
+    if etype in ("message_update", "turn_end", "agent_end"):
+        return
+
+    usage = None
+    message = obj.get("message") if isinstance(obj.get("message"), dict) else None
+    if etype == "message_end" and message is not None and message.get("role") == "assistant":
+        usage = message.get("usage")
+    if usage is None and isinstance(obj.get("usage"), dict):
         usage = obj.get("usage")
-        if isinstance(usage, dict) and any(k in usage for k in ("input", "output", "totalTokens")):
-            acc["input"] += usage.get("input", 0) or 0
-            acc["output"] += usage.get("output", 0) or 0
-            acc["reasoning"] += usage.get("reasoning", 0) or 0
-            acc["total"] += usage.get("totalTokens", 0) or 0
-            cost = usage.get("cost", {})
-            acc["cost"] += (cost.get("total", 0) or 0) if isinstance(cost, dict) else 0
-            acc["api_calls"] += 1
-        for block in obj.get("content", []) if isinstance(obj.get("content"), list) else []:
+    if not (isinstance(usage, dict) and any(k in usage for k in ("input", "output", "totalTokens"))):
+        return
+
+    key = obj.get("responseId") or (message or {}).get("responseId")
+    seen = acc.setdefault("_seen", set())
+    if key is not None:
+        if key in seen:
+            return
+        seen.add(key)
+
+    acc["input"] += int(usage.get("input") or 0)
+    acc["output"] += int(usage.get("output") or 0)
+    acc["reasoning"] += int(usage.get("reasoning") or 0)
+    acc["cache_read"] += int(usage.get("cacheRead") or 0)
+    acc["cache_write"] += int(usage.get("cacheWrite") or 0)
+    acc["total"] += int(usage.get("totalTokens") or 0)
+    cost = usage.get("cost", {})
+    if isinstance(cost, dict):
+        acc["cost"] += cost.get("total", 0) or 0
+    acc["api_calls"] += 1
+
+    content = (message or {}).get("content")
+    if isinstance(content, list):
+        for block in content:
             if isinstance(block, dict) and block.get("type") == "toolCall":
                 acc["tool_calls"] += 1
-        for v in obj.values():
-            if isinstance(v, (dict, list)):
-                _extract_usage(v, acc)
-    elif isinstance(obj, list):
-        for item in obj:
-            _extract_usage(item, acc)
+
 
 # Pilot task IDs (same as Hermes runner)
 FAILED_TASK_IDS = [
@@ -284,6 +311,7 @@ def run_one_task(task, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT, keep_wor
         token_stats = {}
         if result and result.stdout:
             acc = {"input": 0, "output": 0, "reasoning": 0, "total": 0,
+                   "cache_read": 0, "cache_write": 0,
                    "cost": 0.0, "api_calls": 0, "tool_calls": 0}
             for line in result.stdout.splitlines():
                 line = line.strip()
@@ -300,6 +328,8 @@ def run_one_task(task, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT, keep_wor
                     "agent_input_tokens": acc["input"],
                     "agent_output_tokens": acc["output"],
                     "agent_reasoning_tokens": acc["reasoning"],
+                    "agent_cache_read_tokens": acc["cache_read"],
+                    "agent_cache_write_tokens": acc["cache_write"],
                     "agent_total_tokens": acc["total"],
                     "agent_tool_calls": acc["tool_calls"],
                     "agent_api_calls": acc["api_calls"],
@@ -346,10 +376,12 @@ def _write_results(results, path, timeout=None, model=None, *,
         total_out = sum(r.get("agent_output_tokens", 0) for r in results)
         total_reason = sum(r.get("agent_reasoning_tokens", 0) for r in results)
         total_tok = sum(r.get("agent_total_tokens", 0) for r in results)
+        total_cache_read = sum(r.get("agent_cache_read_tokens", 0) or 0 for r in results)
+        total_cache_write = sum(r.get("agent_cache_write_tokens", 0) or 0 for r in results)
         total_steps = sum(r.get("agent_steps", 0) or 0 for r in results)
         total_tool_calls = sum(r.get("agent_tool_calls", 0) or 0 for r in results)
         _rates = _get_model_rates(model or DEFAULT_MODEL)
-        cost_rub = round(compute_cost_rub(total_in, total_out, 0, 0, _rates), 2)
+        cost_rub = round(compute_cost_rub(total_in, total_out, total_cache_read, total_cache_write, _rates), 2)
         task_id_list = list(task_ids) if task_ids is not None else [r.get("task_id") for r in results]
         payload = {
             **artifact_metadata(
@@ -369,6 +401,8 @@ def _write_results(results, path, timeout=None, model=None, *,
                 "total_input_tokens": total_in,
                 "total_output_tokens": total_out,
                 "total_reasoning_tokens": total_reason,
+                "total_cache_read_tokens": total_cache_read,
+                "total_cache_write_tokens": total_cache_write,
                 "total_tokens": total_tok,
                 "total_steps": total_steps,
                 "total_tool_calls": total_tool_calls,
@@ -394,9 +428,11 @@ def _write_status(path, completed, total_task_count, results, started_at, model=
         remaining = (elapsed / max(completed, 1)) * (total_task_count - completed) if completed > 0 else 0
         total_in = sum(r.get("agent_input_tokens", 0) for r in results)
         total_out = sum(r.get("agent_output_tokens", 0) for r in results)
+        total_cr = sum(r.get("agent_cache_read_tokens", 0) or 0 for r in results)
+        total_cw = sum(r.get("agent_cache_write_tokens", 0) or 0 for r in results)
         total_tok = total_in + total_out
         _rates = _get_model_rates(model or DEFAULT_MODEL)
-        cost_rub = round(compute_cost_rub(total_in, total_out, 0, 0, _rates), 2)
+        cost_rub = round(compute_cost_rub(total_in, total_out, total_cr, total_cw, _rates), 2)
         last_task = results[-1]["task_id"] if results else None
         status = {
             "completed": completed,
@@ -603,9 +639,11 @@ def main():
     total_out = sum(r.get("agent_output_tokens", 0) for r in results)
     total_reason = sum(r.get("agent_reasoning_tokens", 0) for r in results)
     total_tok = sum(r.get("agent_total_tokens", 0) for r in results)
+    total_cache_read = sum(r.get("agent_cache_read_tokens", 0) or 0 for r in results)
+    total_cache_write = sum(r.get("agent_cache_write_tokens", 0) or 0 for r in results)
     total_steps = sum(r.get("agent_steps", 0) or 0 for r in results)
     total_tool_calls = sum(r.get("agent_tool_calls", 0) or 0 for r in results)
-    cost = round(compute_cost_rub(total_in, total_out, 0, 0, _get_model_rates(args.model if hasattr(args, 'model') else DEFAULT_MODEL)), 2)
+    cost = round(compute_cost_rub(total_in, total_out, total_cache_read, total_cache_write, _get_model_rates(args.model if hasattr(args, 'model') else DEFAULT_MODEL)), 2)
 
     print()
     print("=" * 60)

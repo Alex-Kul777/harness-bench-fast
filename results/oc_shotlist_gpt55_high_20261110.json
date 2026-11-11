@@ -44,7 +44,9 @@
       "agent_steps": 4,
       "agent_turns": 4,
       "agent_cost_usd": 24.285881200000002,
-      "agent_session_id": "e5eb9e7a-2f7e-4ae1-94ca-e8a3a6e20fb4"
+      "agent_session_id": "e5eb9e7a-2f7e-4ae1-94ca-e8a3a6e20fb4",
+      "agent_cache_read_tokens": 21248,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_24_add_header_comment",
@@ -61,7 +63,9 @@
       "agent_steps": 4,
       "agent_turns": 5,
       "agent_cost_usd": 29.7342304,
-      "agent_session_id": "75038e68-69e7-44bc-a119-be6e0e35d8c6"
+      "agent_session_id": "75038e68-69e7-44bc-a119-be6e0e35d8c6",
+      "agent_cache_read_tokens": 31616,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_41_count_todos",
@@ -78,7 +82,9 @@
       "agent_steps": 1,
       "agent_turns": 2,
       "agent_cost_usd": 20.737682,
-      "agent_session_id": "d6012052-6955-421d-bdf5-70c1eeb8705a"
+      "agent_session_id": "d6012052-6955-421d-bdf5-70c1eeb8705a",
+      "agent_cache_read_tokens": 0,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_48_append_eof_each",
@@ -95,7 +101,9 @@
       "agent_steps": 1,
       "agent_turns": 2,
       "agent_cost_usd": 14.8483272,
-      "agent_session_id": "93931927-691c-4421-94db-fa4aab98ddf8"
+      "agent_session_id": "93931927-691c-4421-94db-fa4aab98ddf8",
+      "agent_cache_read_tokens": 10368,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_63_nested_json_edit",
@@ -112,7 +120,9 @@
       "agent_steps": 5,
       "agent_turns": 4,
       "agent_cost_usd": 24.0995384,
-      "agent_session_id": "9da8edbd-8929-41dc-aa1f-79ddb9153c55"
+      "agent_session_id": "9da8edbd-8929-41dc-aa1f-79ddb9153c55",
+      "agent_cache_read_tokens": 20736,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_69_remove_comments",
@@ -129,7 +139,9 @@
       "agent_steps": 2,
       "agent_turns": 3,
       "agent_cost_usd": 20.8604872,
-      "agent_session_id": "c0a1c658-d06b-4ab0-85b9-b14f5f4b079e"
+      "agent_session_id": "c0a1c658-d06b-4ab0-85b9-b14f5f4b079e",
+      "agent_cache_read_tokens": 10368,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_92_count_chars",
@@ -146,7 +158,9 @@
       "agent_steps": 1,
       "agent_turns": 2,
       "agent_cost_usd": 20.58994,
-      "agent_session_id": "e55eefc6-95ca-4076-aa29-fe31184922e8"
+      "agent_session_id": "e55eefc6-95ca-4076-aa29-fe31184922e8",
+      "agent_cache_read_tokens": 0,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_101_csv_mean_score",
@@ -163,7 +177,9 @@
       "agent_steps": 5,
       "agent_turns": 4,
       "agent_cost_usd": 23.267913200000002,
-      "agent_session_id": "34d91291-717f-4d29-b355-6acc09fd8e40"
+      "agent_session_id": "34d91291-717f-4d29-b355-6acc09fd8e40",
+      "agent_cache_read_tokens": 21248,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_104_csv_join",
@@ -180,7 +196,9 @@
       "agent_steps": 5,
       "agent_turns": 4,
       "agent_cost_usd": 22.968159200000002,
-      "agent_session_id": "63846dd6-9e2e-4b6e-a6c4-93b2c438f6d3"
+      "agent_session_id": "63846dd6-9e2e-4b6e-a6c4-93b2c438f6d3",
+      "agent_cache_read_tokens": 21248,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_140_grep_emails",
@@ -197,7 +215,9 @@
       "agent_steps": 3,
       "agent_turns": 4,
       "agent_cost_usd": 25.1687464,
-      "agent_session_id": "13bf4ceb-c9be-4875-bb54-bbcd5c5db634"
+      "agent_session_id": "13bf4ceb-c9be-4875-bb54-bbcd5c5db634",
+      "agent_cache_read_tokens": 20736,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_106_csv_group_count",
@@ -214,7 +234,9 @@
       "agent_steps": 6,
       "agent_turns": 5,
       "agent_cost_usd": 26.185177200000005,
-      "agent_session_id": "95eca455-8901-4506-8c5d-b57ff6c2b141"
+      "agent_session_id": "95eca455-8901-4506-8c5d-b57ff6c2b141",
+      "agent_cache_read_tokens": 32128,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_157_two_csv_diff",
@@ -231,7 +253,9 @@
       "agent_steps": 4,
       "agent_turns": 3,
       "agent_cost_usd": 23.09216,
-      "agent_session_id": "24fe72fa-6676-42e3-af1c-1133568aafc1"
+      "agent_session_id": "24fe72fa-6676-42e3-af1c-1133568aafc1",
+      "agent_cache_read_tokens": 10880,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_153_xlsx_to_markdown_report",
@@ -248,7 +272,9 @@
       "agent_steps": 6,
       "agent_turns": 5,
       "agent_cost_usd": 32.212025999999994,
-      "agent_session_id": "0f2c87a5-9fc8-4bc8-b767-4def618165c4"
+      "agent_session_id": "0f2c87a5-9fc8-4bc8-b767-4def618165c4",
+      "agent_cache_read_tokens": 32640,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_159_unzip_extract",
@@ -265,7 +291,9 @@
       "agent_steps": 3,
       "agent_turns": 3,
       "agent_cost_usd": 25.9580132,
-      "agent_session_id": "8b5e80df-d4ff-45dc-bf4a-0b6fafd1f4b0"
+      "agent_session_id": "8b5e80df-d4ff-45dc-bf4a-0b6fafd1f4b0",
+      "agent_cache_read_tokens": 10368,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_201_reconcile_vip_users",
@@ -282,7 +310,9 @@
       "agent_steps": 8,
       "agent_turns": 5,
       "agent_cost_usd": 29.591270799999997,
-      "agent_session_id": "b3dea9b8-ca16-4455-b1fb-6f6c2586cd5a"
+      "agent_session_id": "b3dea9b8-ca16-4455-b1fb-6f6c2586cd5a",
+      "agent_cache_read_tokens": 33152,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_206_reconcile_paid_revenue",
@@ -299,7 +329,9 @@
       "agent_steps": 9,
       "agent_turns": 6,
       "agent_cost_usd": 34.6022012,
-      "agent_session_id": "f1607cc7-53b5-43d5-a6e5-2351ac3302f8"
+      "agent_session_id": "f1607cc7-53b5-43d5-a6e5-2351ac3302f8",
+      "agent_cache_read_tokens": 45568,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_214_customer_data_quality_report",
@@ -316,7 +348,9 @@
       "agent_steps": 5,
       "agent_turns": 5,
       "agent_cost_usd": 29.018919999999998,
-      "agent_session_id": "e6ddb368-611d-49ed-a744-3eeaf64236b1"
+      "agent_session_id": "e6ddb368-611d-49ed-a744-3eeaf64236b1",
+      "agent_cache_read_tokens": 32640,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_222_memory_name_pyproject",
@@ -333,7 +367,9 @@
       "agent_steps": 10,
       "agent_turns": 6,
       "agent_cost_usd": 35.0602868,
-      "agent_session_id": "6da91b5c-85d9-457b-9b26-13301abbd162"
+      "agent_session_id": "6da91b5c-85d9-457b-9b26-13301abbd162",
+      "agent_cache_read_tokens": 46592,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_223_memory_city_timezone_script",
@@ -350,7 +386,9 @@
       "agent_steps": 5,
       "agent_turns": 4,
       "agent_cost_usd": 25.195562000000002,
-      "agent_session_id": "d8b08372-c3c5-4bca-8b42-532f03d506e6"
+      "agent_session_id": "d8b08372-c3c5-4bca-8b42-532f03d506e6",
+      "agent_cache_read_tokens": 21760,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_226_memory_requirements_dev",
@@ -367,7 +405,9 @@
       "agent_steps": 3,
       "agent_turns": 3,
       "agent_cost_usd": 23.5277,
-      "agent_session_id": "7fec8261-9d54-46f6-b6c4-73d57081b0b9"
+      "agent_session_id": "7fec8261-9d54-46f6-b6c4-73d57081b0b9",
+      "agent_cache_read_tokens": 10880,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_240_memory_summarize_profile",
@@ -384,7 +424,9 @@
       "agent_steps": 2,
       "agent_turns": 3,
       "agent_cost_usd": 13.401822,
-      "agent_session_id": "3ce70b75-ffed-460a-8a81-ca52631b5046"
+      "agent_session_id": "3ce70b75-ffed-460a-8a81-ca52631b5046",
+      "agent_cache_read_tokens": 21760,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_263_terminal_du_top_dirs",
@@ -401,7 +443,9 @@
       "agent_steps": 7,
       "agent_turns": 5,
       "agent_cost_usd": 25.188730000000003,
-      "agent_session_id": "732063a1-2dd2-484a-8cd3-b297c8fa1575"
+      "agent_session_id": "732063a1-2dd2-484a-8cd3-b297c8fa1575",
+      "agent_cache_read_tokens": 32640,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_231_memory_refuse_secrets",
@@ -418,7 +462,9 @@
       "agent_steps": 9,
       "agent_turns": 4,
       "agent_cost_usd": 32.4967496,
-      "agent_session_id": "7ce5f293-8228-4cf5-99e5-18c71b2659c3"
+      "agent_session_id": "7ce5f293-8228-4cf5-99e5-18c71b2659c3",
+      "agent_cache_read_tokens": 22784,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_266_terminal_sha256_manifest",
@@ -435,7 +481,9 @@
       "agent_steps": 3,
       "agent_turns": 3,
       "agent_cost_usd": 24.4737612,
-      "agent_session_id": "e570ff82-b9d3-488c-94a3-b29ab547372e"
+      "agent_session_id": "e570ff82-b9d3-488c-94a3-b29ab547372e",
+      "agent_cache_read_tokens": 10368,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_270_tau2_bank_duplicate_charge",
@@ -452,7 +500,9 @@
       "agent_steps": 6,
       "agent_turns": 5,
       "agent_cost_usd": 24.9323592,
-      "agent_session_id": "ca16d1b5-6e54-4d8d-873f-ce8bbf01595d"
+      "agent_session_id": "ca16d1b5-6e54-4d8d-873f-ce8bbf01595d",
+      "agent_cache_read_tokens": 32128,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_272_tau2_clinic_reschedule",
@@ -469,7 +519,9 @@
       "agent_steps": 7,
       "agent_turns": 5,
       "agent_cost_usd": 25.7769652,
-      "agent_session_id": "844abd1e-61b7-4bea-81e4-ec8cd95c48d0"
+      "agent_session_id": "844abd1e-61b7-4bea-81e4-ec8cd95c48d0",
+      "agent_cache_read_tokens": 32128,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_309_rename_refactor_scale",
@@ -486,7 +538,9 @@
       "agent_steps": 9,
       "agent_turns": 6,
       "agent_cost_usd": 34.5215836,
-      "agent_session_id": "65491fcd-ca18-4919-9c45-9f100b882793"
+      "agent_session_id": "65491fcd-ca18-4919-9c45-9f100b882793",
+      "agent_cache_read_tokens": 47104,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_307_resolve_many_files",
@@ -503,7 +557,9 @@
       "agent_steps": 9,
       "agent_turns": 8,
       "agent_cost_usd": 40.2881332,
-      "agent_session_id": "e561294b-8acc-4b3e-8478-035f1ecfc00c"
+      "agent_session_id": "e561294b-8acc-4b3e-8478-035f1ecfc00c",
+      "agent_cache_read_tokens": 69888,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_315_skill_b1_failure_codebook",
@@ -520,7 +576,9 @@
       "agent_steps": 4,
       "agent_turns": 5,
       "agent_cost_usd": 27.057452799999997,
-      "agent_session_id": "4329a342-b832-42cd-9789-c6db0750df0d"
+      "agent_session_id": "4329a342-b832-42cd-9789-c6db0750df0d",
+      "agent_cache_read_tokens": 33152,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_332_adv_broken_build",
@@ -537,7 +595,9 @@
       "agent_steps": 1,
       "agent_turns": 2,
       "agent_cost_usd": 13.0404092,
-      "agent_session_id": "1d1ced84-04ce-497f-8cdf-f3e512def676"
+      "agent_session_id": "1d1ced84-04ce-497f-8cdf-f3e512def676",
+      "agent_cache_read_tokens": 10368,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_319_skill_b2_ndr7_parse",
@@ -554,7 +614,9 @@
       "agent_steps": 7,
       "agent_turns": 5,
       "agent_cost_usd": 26.242736800000003,
-      "agent_session_id": "13f90840-a240-4708-ada6-51ec604a2e33"
+      "agent_session_id": "13f90840-a240-4708-ada6-51ec604a2e33",
+      "agent_cache_read_tokens": 33152,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_323_skill_g1_create_slugify_skill",
@@ -571,7 +633,9 @@
       "agent_steps": 9,
       "agent_turns": 6,
       "agent_cost_usd": 39.2937356,
-      "agent_session_id": "bf3a3d8b-844a-4d70-9dea-68e00f6b2eaf"
+      "agent_session_id": "bf3a3d8b-844a-4d70-9dea-68e00f6b2eaf",
+      "agent_cache_read_tokens": 44544,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_335_adv_missing_config_file",
@@ -588,7 +652,9 @@
       "agent_steps": 7,
       "agent_turns": 5,
       "agent_cost_usd": 26.607053200000003,
-      "agent_session_id": "3202cf90-c3f9-4c82-99a9-a7491c4b49b7"
+      "agent_session_id": "3202cf90-c3f9-4c82-99a9-a7491c4b49b7",
+      "agent_cache_read_tokens": 32128,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_352_structured_log_summary",
@@ -605,7 +671,9 @@
       "agent_steps": 7,
       "agent_turns": 5,
       "agent_cost_usd": 28.8458996,
-      "agent_session_id": "149bf7f0-6ba9-465b-82bb-b57b8b9753c8"
+      "agent_session_id": "149bf7f0-6ba9-465b-82bb-b57b8b9753c8",
+      "agent_cache_read_tokens": 33664,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_353_reconstruct_sessions",
@@ -622,7 +690,9 @@
       "agent_steps": 3,
       "agent_turns": 4,
       "agent_cost_usd": 33.9365936,
-      "agent_session_id": "2ea4cb96-9baf-4010-95c3-e66148fbb827"
+      "agent_session_id": "2ea4cb96-9baf-4010-95c3-e66148fbb827",
+      "agent_cache_read_tokens": 22784,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_355_segment_audit",
@@ -639,7 +709,9 @@
       "agent_steps": 7,
       "agent_turns": 6,
       "agent_cost_usd": 30.933758800000003,
-      "agent_session_id": "5628426a-4dba-4899-96f8-90b8e218d934"
+      "agent_session_id": "5628426a-4dba-4899-96f8-90b8e218d934",
+      "agent_cache_read_tokens": 44032,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_357_request_latency",
@@ -656,7 +728,9 @@
       "agent_steps": 6,
       "agent_turns": 5,
       "agent_cost_usd": 37.466688,
-      "agent_session_id": "e75d5f5d-2685-4da5-82c9-1ddc4434565f"
+      "agent_session_id": "e75d5f5d-2685-4da5-82c9-1ddc4434565f",
+      "agent_cache_read_tokens": 21760,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_356_deduplicate_contacts",
@@ -673,7 +747,9 @@
       "agent_steps": 5,
       "agent_turns": 4,
       "agent_cost_usd": 31.7267832,
-      "agent_session_id": "32fdae05-5522-4e7f-955f-543d3688a7e4"
+      "agent_session_id": "32fdae05-5522-4e7f-955f-543d3688a7e4",
+      "agent_cache_read_tokens": 21248,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_358_range_parser",
@@ -690,7 +766,9 @@
       "agent_steps": 7,
       "agent_turns": 7,
       "agent_cost_usd": 37.9942892,
-      "agent_session_id": "4998ad78-b36d-4b10-a885-10240f425f95"
+      "agent_session_id": "4998ad78-b36d-4b10-a885-10240f425f95",
+      "agent_cache_read_tokens": 56448,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_370_change_plan",
@@ -707,7 +785,9 @@
       "agent_steps": 8,
       "agent_turns": 5,
       "agent_cost_usd": 35.50505,
-      "agent_session_id": "4067dece-7b04-4f4d-96c4-0ef2854902ac"
+      "agent_session_id": "4067dece-7b04-4f4d-96c4-0ef2854902ac",
+      "agent_cache_read_tokens": 21760,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_368_sqlite_migration",
@@ -724,7 +804,9 @@
       "agent_steps": 11,
       "agent_turns": 10,
       "agent_cost_usd": 60.964668800000005,
-      "agent_session_id": "a639d866-1dd5-4eac-9e8d-3d789fdd5dbf"
+      "agent_session_id": "a639d866-1dd5-4eac-9e8d-3d789fdd5dbf",
+      "agent_cache_read_tokens": 81792,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_365_package_rename",
@@ -741,7 +823,9 @@
       "agent_steps": 33,
       "agent_turns": 11,
       "agent_cost_usd": 65.2459416,
-      "agent_session_id": "201a8bc7-90d4-4fca-b471-e049a218e489"
+      "agent_session_id": "201a8bc7-90d4-4fca-b471-e049a218e489",
+      "agent_cache_read_tokens": 100864,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_371_test_result_aggregation",
@@ -758,7 +842,9 @@
       "agent_steps": 8,
       "agent_turns": 6,
       "agent_cost_usd": 32.2747096,
-      "agent_session_id": "c6ad0ef7-2cee-42f7-b045-a2b927bb7550"
+      "agent_session_id": "c6ad0ef7-2cee-42f7-b045-a2b927bb7550",
+      "agent_cache_read_tokens": 44544,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_374_cli_pktool_filter_decode",
@@ -775,7 +861,9 @@
       "agent_steps": 6,
       "agent_turns": 6,
       "agent_cost_usd": 29.7825668,
-      "agent_session_id": "7d9c321c-447d-4998-8238-98e5e2d19e81"
+      "agent_session_id": "7d9c321c-447d-4998-8238-98e5e2d19e81",
+      "agent_cache_read_tokens": 44032,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_375_cli_pktool_stats_corrupt",
@@ -792,7 +880,9 @@
       "agent_steps": 6,
       "agent_turns": 5,
       "agent_cost_usd": 30.2445808,
-      "agent_session_id": "033ce7d8-859e-4279-b05c-ab88406f83a0"
+      "agent_session_id": "033ce7d8-859e-4279-b05c-ab88406f83a0",
+      "agent_cache_read_tokens": 33152,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_378_cli_cfgctl_layered_merge",
@@ -809,7 +899,9 @@
       "agent_steps": 9,
       "agent_turns": 5,
       "agent_cost_usd": 31.779389600000002,
-      "agent_session_id": "aa513231-11db-49b8-96b0-62e7af19bd69"
+      "agent_session_id": "aa513231-11db-49b8-96b0-62e7af19bd69",
+      "agent_cache_read_tokens": 33664,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_382_cli_mixed_depwalk_hotspots",
@@ -826,7 +918,9 @@
       "agent_steps": 7,
       "agent_turns": 6,
       "agent_cost_usd": 38.603191200000005,
-      "agent_session_id": "783b77fe-5db8-4d9f-bebd-6bcf2fbc757c"
+      "agent_session_id": "783b77fe-5db8-4d9f-bebd-6bcf2fbc757c",
+      "agent_cache_read_tokens": 45568,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_381_cli_slicer_restock",
@@ -843,7 +937,9 @@
       "agent_steps": 11,
       "agent_turns": 8,
       "agent_cost_usd": 34.6546368,
-      "agent_session_id": "11397552-3f2e-4fe0-ab41-ea6fe6c00ef7"
+      "agent_session_id": "11397552-3f2e-4fe0-ab41-ea6fe6c00ef7",
+      "agent_cache_read_tokens": 68352,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_383_cli_mixed_pktool_ports",
@@ -860,7 +956,9 @@
       "agent_steps": 7,
       "agent_turns": 7,
       "agent_cost_usd": 33.183024,
-      "agent_session_id": "725d0083-6851-4e69-9584-55ab1188b62a"
+      "agent_session_id": "725d0083-6851-4e69-9584-55ab1188b62a",
+      "agent_cache_read_tokens": 56960,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_384_cli_mixed_slicer_warehouse_value",
@@ -877,7 +975,9 @@
       "agent_steps": 10,
       "agent_turns": 7,
       "agent_cost_usd": 36.4868084,
-      "agent_session_id": "b98213d6-f1e3-4c1f-81c8-94a6e6669c5f"
+      "agent_session_id": "b98213d6-f1e3-4c1f-81c8-94a6e6669c5f",
+      "agent_cache_read_tokens": 58496,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_389_cli_find_xargs_predicates",
@@ -894,7 +994,9 @@
       "agent_steps": 7,
       "agent_turns": 6,
       "agent_cost_usd": 38.6141224,
-      "agent_session_id": "789b5d37-85a8-4377-9dbc-1be0807de118"
+      "agent_session_id": "789b5d37-85a8-4377-9dbc-1be0807de118",
+      "agent_cache_read_tokens": 45056,
+      "agent_cache_write_tokens": 0
     }
   ],
   "summary": {
@@ -907,8 +1009,9 @@
     "total_input_tokens": 1316818,
     "total_output_tokens": 56481,
     "total_tokens": 3117683,
-    "total_cache_read_tokens": 53888,
+    "total_cache_read_tokens": 1744384,
     "total_cache_write_tokens": 0,
-    "estimated_cost_rub": 1418.57
+    "estimated_cost_rub": 2903.68,
+    "total_reasoning_tokens": 23996
   }
 }

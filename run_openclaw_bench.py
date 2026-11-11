@@ -145,6 +145,11 @@ def run_one_task(
                     "agent_output_tokens": usage.get("output", 0),
                     "agent_total_tokens": usage.get("total", 0),
                     "agent_reasoning_tokens": usage.get("reasoningTokens", 0),
+                    # Explicit cache buckets from the envelope (invariant:
+                    # total = input + output + cacheRead + cacheWrite). Stored
+                    # verbatim; only derived downstream when truly absent.
+                    "agent_cache_read_tokens": usage.get("cacheRead"),
+                    "agent_cache_write_tokens": usage.get("cacheWrite"),
                     "agent_steps": tool_summary.get("calls", 0),
                     "agent_turns": envelope.get("assistantTurns", 0),
                     "agent_cost_usd": envelope.get("costUsd", 0),
@@ -194,32 +199,32 @@ def _write_results(results: list[dict], path: str, *,
     total_steps = sum(r.get("agent_steps", 0) for r in results)
     # Per-model rates resolved from the live Cloud.ru catalog / config
     _rates = _get_model_rates(model or DEFAULT_MODEL)
-    # Cache buckets are recorded EXPLICITLY so downstream readers never re-derive
-    # them. The OpenClaw envelope usage is {input, output, total, reasoningTokens}
-    # with no explicit provider cache field, so the cache bucket is derived ONCE
-    # here as max(total - input - output, 0) and stored both per task and in the
-    # summary. Prefer a real provider cache field if one appears later.
-    has_explicit_cache = any(
-        r.get("agent_cache_read_tokens") is not None
-        or r.get("agent_cache_write_tokens") is not None
-        for r in results
-    )
-    if has_explicit_cache:
-        total_cache_read = sum(int(r.get("agent_cache_read_tokens") or 0) for r in results)
-        total_cache_write = sum(int(r.get("agent_cache_write_tokens") or 0) for r in results)
-    else:
-        total_cache_read = 0
-        total_cache_write = 0
-        for r in results:
-            cr = max(
+    # Cache buckets are recorded EXPLICITLY so downstream readers never
+    # re-derive them. The OpenClaw envelope exposes real provider cache fields
+    # (usage.cacheRead / usage.cacheWrite, invariant total = input + output +
+    # cacheRead + cacheWrite); when a task lacks them the bucket is derived ONCE
+    # here from that invariant and stored per task and in the summary.
+    total_cache_read = 0
+    total_cache_write = 0
+    total_reasoning = sum(int(r.get("agent_reasoning_tokens") or 0) for r in results)
+    for r in results:
+        cr = r.get("agent_cache_read_tokens")
+        cw = r.get("agent_cache_write_tokens")
+        if cr is None or cw is None:
+            derived = max(
                 int(r.get("agent_total_tokens") or 0)
                 - int(r.get("agent_input_tokens") or 0)
                 - int(r.get("agent_output_tokens") or 0),
                 0,
             )
-            r["agent_cache_read_tokens"] = cr
-            r["agent_cache_write_tokens"] = 0
-            total_cache_read += cr
+            if cr is None:
+                cr = derived
+            if cw is None:
+                cw = 0
+        r["agent_cache_read_tokens"] = int(cr)
+        r["agent_cache_write_tokens"] = int(cw)
+        total_cache_read += int(cr)
+        total_cache_write += int(cw)
     cost_rub = compute_cost_rub(total_input, total_output, total_cache_read, total_cache_write, _rates)
 
     payload = {
@@ -245,6 +250,7 @@ def _write_results(results: list[dict], path: str, *,
             "total_steps": total_steps,
             "total_input_tokens": total_input,
             "total_output_tokens": total_output,
+            "total_reasoning_tokens": total_reasoning,
             "total_tokens": total_tokens,
             "total_cache_read_tokens": total_cache_read,
             "total_cache_write_tokens": total_cache_write,
@@ -361,9 +367,11 @@ def run_concurrent(
                 total_tokens += run.get("agent_total_tokens", 0)
                 total_input += run.get("agent_input_tokens", 0)
                 total_output += run.get("agent_output_tokens", 0)
+                total_cache_read = sum(int(r.get("agent_cache_read_tokens") or 0) for r in results.values())
+                total_cache_write = sum(int(r.get("agent_cache_write_tokens") or 0) for r in results.values())
                 elapsed = time.monotonic() - start_time
                 _live_rates = _get_model_rates(model)
-                cost = compute_cost_rub(total_input, total_output, 0, 0, _live_rates)
+                cost = compute_cost_rub(total_input, total_output, total_cache_read, total_cache_write, _live_rates)
 
                 if json_output:
                     _write_results(list(results.values()), json_output,

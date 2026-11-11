@@ -217,7 +217,7 @@
         "seconds": 8408.0,
         "steps": 946,
         "tokens": 29243400,
-        "cost_rub": 7570.9
+        "cost_rub": 26632.2
       },
       "wilson": {
         "long": [
@@ -461,9 +461,9 @@
       },
       "usage": {
         "seconds": 11964.4,
-        "steps": 4395,
-        "tokens": 94143893,
-        "cost_rub": 24262.1
+        "steps": 1465,
+        "tokens": 31381298,
+        "cost_rub": 28842.4
       },
       "wilson": {
         "long": [

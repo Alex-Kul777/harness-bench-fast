@@ -44,7 +44,9 @@
       "agent_steps": 2,
       "agent_turns": 35,
       "agent_cost_usd": 0,
-      "agent_session_id": "669af08e-33eb-4f31-8d6f-fec39071558d"
+      "agent_session_id": "669af08e-33eb-4f31-8d6f-fec39071558d",
+      "agent_cache_read_tokens": 0,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_398_card_game_engine",
@@ -61,7 +63,9 @@
       "agent_steps": 49,
       "agent_turns": 59,
       "agent_cost_usd": 0,
-      "agent_session_id": "cf75cb7f-f75b-4b68-bc21-d2519fe42e33"
+      "agent_session_id": "cf75cb7f-f75b-4b68-bc21-d2519fe42e33",
+      "agent_cache_read_tokens": 0,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_395_homework_grading",
@@ -78,7 +82,9 @@
       "agent_steps": 19,
       "agent_turns": 14,
       "agent_cost_usd": 483.53462920000004,
-      "agent_session_id": "187f660b-cf84-4c6e-9cf4-0234dd2794ab"
+      "agent_session_id": "187f660b-cf84-4c6e-9cf4-0234dd2794ab",
+      "agent_cache_read_tokens": 727808,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_392_manuscript_continuity",
@@ -95,7 +101,9 @@
       "agent_steps": 50,
       "agent_turns": 47,
       "agent_cost_usd": 1464.8199131999997,
-      "agent_session_id": "237cc788-d6f6-4e35-9a74-13fdb4c3e8bc"
+      "agent_session_id": "237cc788-d6f6-4e35-9a74-13fdb4c3e8bc",
+      "agent_cache_read_tokens": 6304128,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_394_review_annotation",
@@ -112,7 +120,9 @@
       "agent_steps": 57,
       "agent_turns": 44,
       "agent_cost_usd": 794.4965251999997,
-      "agent_session_id": "320d8673-1763-4471-9383-c8efefd5edee"
+      "agent_session_id": "320d8673-1763-4471-9383-c8efefd5edee",
+      "agent_cache_read_tokens": 2158848,
+      "agent_cache_write_tokens": 0
     }
   ],
   "summary": {
@@ -125,8 +135,9 @@
     "total_input_tokens": 2025614,
     "total_output_tokens": 133361,
     "total_tokens": 14469503,
-    "total_cache_read_tokens": 3119744,
+    "total_cache_read_tokens": 12310528,
     "total_cache_write_tokens": 0,
-    "estimated_cost_rub": 2679.64
+    "estimated_cost_rub": 12926.41,
+    "total_reasoning_tokens": 70685
   }
 }

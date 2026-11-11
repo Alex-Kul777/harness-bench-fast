@@ -44,7 +44,9 @@
       "agent_steps": 7,
       "agent_turns": 7,
       "agent_cost_usd": 70.9706452,
-      "agent_session_id": "f709494f-abf2-4e23-bafa-5468187adc79"
+      "agent_session_id": "f709494f-abf2-4e23-bafa-5468187adc79",
+      "agent_cache_read_tokens": 48128,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_413_crm_pagination",
@@ -61,7 +63,9 @@
       "agent_steps": 18,
       "agent_turns": 17,
       "agent_cost_usd": 130.3943564,
-      "agent_session_id": "c3df1a6c-58e1-4625-9011-fb50dad42f9c"
+      "agent_session_id": "c3df1a6c-58e1-4625-9011-fb50dad42f9c",
+      "agent_cache_read_tokens": 330496,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_412_supplier_minimum",
@@ -78,7 +82,9 @@
       "agent_steps": 12,
       "agent_turns": 8,
       "agent_cost_usd": 42.5789028,
-      "agent_session_id": "0dc8dc6b-5c85-4706-bfc8-f22303a95c2f"
+      "agent_session_id": "0dc8dc6b-5c85-4706-bfc8-f22303a95c2f",
+      "agent_cache_read_tokens": 70912,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_416_pay_units",
@@ -95,7 +101,9 @@
       "agent_steps": 13,
       "agent_turns": 11,
       "agent_cost_usd": 64.75164640000001,
-      "agent_session_id": "7c0ff486-b3d4-4e94-807f-04e9e3e65639"
+      "agent_session_id": "7c0ff486-b3d4-4e94-807f-04e9e3e65639",
+      "agent_cache_read_tokens": 119936,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_417_transfer_fees",
@@ -112,7 +120,9 @@
       "agent_steps": 15,
       "agent_turns": 8,
       "agent_cost_usd": 62.8854856,
-      "agent_session_id": "8ba985aa-b602-4c64-8ffd-66c7985de528"
+      "agent_session_id": "8ba985aa-b602-4c64-8ffd-66c7985de528",
+      "agent_cache_read_tokens": 60544,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_419_storage_async_delete",
@@ -129,7 +139,9 @@
       "agent_steps": 13,
       "agent_turns": 13,
       "agent_cost_usd": 99.6363508,
-      "agent_session_id": "d3109426-5b36-4998-a097-5d17fa08b03a"
+      "agent_session_id": "d3109426-5b36-4998-a097-5d17fa08b03a",
+      "agent_cache_read_tokens": 168832,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_418_ticket_timeout_dupes",
@@ -146,7 +158,9 @@
       "agent_steps": 16,
       "agent_turns": 12,
       "agent_cost_usd": 96.6072128,
-      "agent_session_id": "a6708ce2-f7aa-4417-a5e2-90a234c5de84"
+      "agent_session_id": "a6708ce2-f7aa-4417-a5e2-90a234c5de84",
+      "agent_cache_read_tokens": 147712,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_421_catalog_case_search",
@@ -163,7 +177,9 @@
       "agent_steps": 11,
       "agent_turns": 11,
       "agent_cost_usd": 64.46589800000001,
-      "agent_session_id": "9574a869-239c-4d2b-a8dc-b2781b29a62e"
+      "agent_session_id": "9574a869-239c-4d2b-a8dc-b2781b29a62e",
+      "agent_cache_read_tokens": 128640,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_423_rooms_duration_cap",
@@ -180,7 +196,9 @@
       "agent_steps": 11,
       "agent_turns": 10,
       "agent_cost_usd": 84.57674399999999,
-      "agent_session_id": "73683b4d-380b-4f27-83e8-dad67c93a45e"
+      "agent_session_id": "73683b4d-380b-4f27-83e8-dad67c93a45e",
+      "agent_cache_read_tokens": 120320,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_425_shipping_weight_codes",
@@ -197,7 +215,9 @@
       "agent_steps": 10,
       "agent_turns": 9,
       "agent_cost_usd": 83.49250559999999,
-      "agent_session_id": "9a89f155-d095-4a6f-9e1e-45a2e5d1dec3"
+      "agent_session_id": "9a89f155-d095-4a6f-9e1e-45a2e5d1dec3",
+      "agent_cache_read_tokens": 84224,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_420_wiki_optimistic_lock",
@@ -214,7 +234,9 @@
       "agent_steps": 26,
       "agent_turns": 25,
       "agent_cost_usd": 215.828004,
-      "agent_session_id": "1c74a5f3-95f9-4b45-aa90-d52ccf9580bf"
+      "agent_session_id": "1c74a5f3-95f9-4b45-aa90-d52ccf9580bf",
+      "agent_cache_read_tokens": 316800,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_424_payments_split_limits",
@@ -231,7 +253,9 @@
       "agent_steps": 15,
       "agent_turns": 13,
       "agent_cost_usd": 91.7465864,
-      "agent_session_id": "3160229f-2f7d-4580-9daa-0e09ad6e9333"
+      "agent_session_id": "3160229f-2f7d-4580-9daa-0e09ad6e9333",
+      "agent_cache_read_tokens": 157056,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_422_calendar_timezone",
@@ -248,7 +272,9 @@
       "agent_steps": 8,
       "agent_turns": 7,
       "agent_cost_usd": 57.9847212,
-      "agent_session_id": "a71439d9-a3e9-426c-8b2c-095f5dafbb78"
+      "agent_session_id": "a71439d9-a3e9-426c-8b2c-095f5dafbb78",
+      "agent_cache_read_tokens": 48128,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_427_report_deprecated_flag",
@@ -265,7 +291,9 @@
       "agent_steps": 8,
       "agent_turns": 8,
       "agent_cost_usd": 63.2948932,
-      "agent_session_id": "2a56557f-6980-4abe-9e15-5c0d6586ce4e"
+      "agent_session_id": "2a56557f-6980-4abe-9e15-5c0d6586ce4e",
+      "agent_cache_read_tokens": 74368,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_426_kv_eventual",
@@ -282,7 +310,9 @@
       "agent_steps": 8,
       "agent_turns": 7,
       "agent_cost_usd": 62.938946,
-      "agent_session_id": "e58b17c4-9395-41dc-a385-5eaa6df2195b"
+      "agent_session_id": "e58b17c4-9395-41dc-a385-5eaa6df2195b",
+      "agent_cache_read_tokens": 67200,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_429_mail_bounce",
@@ -299,7 +329,9 @@
       "agent_steps": 14,
       "agent_turns": 13,
       "agent_cost_usd": 111.91157600000001,
-      "agent_session_id": "a3d4fcea-4ef3-4b04-862d-9f67aec32021"
+      "agent_session_id": "a3d4fcea-4ef3-4b04-862d-9f67aec32021",
+      "agent_cache_read_tokens": 144000,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_430_orders_backorder",
@@ -316,7 +348,9 @@
       "agent_steps": 12,
       "agent_turns": 11,
       "agent_cost_usd": 89.3555572,
-      "agent_session_id": "adeabe55-a56b-41d3-81ce-54527ad517ba"
+      "agent_session_id": "adeabe55-a56b-41d3-81ce-54527ad517ba",
+      "agent_cache_read_tokens": 98688,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_431_admin_elevation",
@@ -333,7 +367,9 @@
       "agent_steps": 2,
       "agent_turns": 9,
       "agent_cost_usd": 0,
-      "agent_session_id": "7be51ee9-cb9c-42f0-8bb0-58466ffc09e7"
+      "agent_session_id": "7be51ee9-cb9c-42f0-8bb0-58466ffc09e7",
+      "agent_cache_read_tokens": 0,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_428_geocode_quota",
@@ -350,7 +386,9 @@
       "agent_steps": 35,
       "agent_turns": 34,
       "agent_cost_usd": 151.95136599999998,
-      "agent_session_id": "04dbc706-d19d-4a37-a143-d52d94e88730"
+      "agent_session_id": "04dbc706-d19d-4a37-a143-d52d94e88730",
+      "agent_cache_read_tokens": 519040,
+      "agent_cache_write_tokens": 0
     }
   ],
   "summary": {
@@ -363,8 +401,9 @@
     "total_input_tokens": 1102956,
     "total_output_tokens": 103294,
     "total_tokens": 3987306,
-    "total_cache_read_tokens": 76032,
+    "total_cache_read_tokens": 2781056,
     "total_cache_write_tokens": 0,
-    "estimated_cost_rub": 1477.7
+    "estimated_cost_rub": 3846.22,
+    "total_reasoning_tokens": 46411
   }
 }

@@ -44,7 +44,9 @@
       "agent_steps": 9,
       "agent_turns": 10,
       "agent_cost_usd": 75.44440959999999,
-      "agent_session_id": "df90227c-5ef1-4721-bd70-aa054ed90548"
+      "agent_session_id": "df90227c-5ef1-4721-bd70-aa054ed90548",
+      "agent_cache_read_tokens": 175104,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_435_archive_transfer",
@@ -61,7 +63,9 @@
       "agent_steps": 13,
       "agent_turns": 11,
       "agent_cost_usd": 94.31593080000002,
-      "agent_session_id": "d49a6f14-71d0-42b6-bef5-4a7e4c6258be"
+      "agent_session_id": "d49a6f14-71d0-42b6-bef5-4a7e4c6258be",
+      "agent_cache_read_tokens": 216192,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_436_search_capabilities",
@@ -78,7 +82,9 @@
       "agent_steps": 9,
       "agent_turns": 7,
       "agent_cost_usd": 58.066534399999995,
-      "agent_session_id": "dcfe78aa-d5a6-41a0-bbaf-5ba8628a6d4c"
+      "agent_session_id": "dcfe78aa-d5a6-41a0-bbaf-5ba8628a6d4c",
+      "agent_cache_read_tokens": 65536,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_437_search_index",
@@ -95,7 +101,9 @@
       "agent_steps": 7,
       "agent_turns": 6,
       "agent_cost_usd": 45.7258928,
-      "agent_session_id": "8e405635-4e8f-40b6-9586-714e4fe725a3"
+      "agent_session_id": "8e405635-4e8f-40b6-9586-714e4fe725a3",
+      "agent_cache_read_tokens": 61952,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_433_aggregate_identifiability",
@@ -112,7 +120,9 @@
       "agent_steps": 12,
       "agent_turns": 10,
       "agent_cost_usd": 96.5453832,
-      "agent_session_id": "d442ef82-cd7c-4c30-980f-615430f7c812"
+      "agent_session_id": "d442ef82-cd7c-4c30-980f-615430f7c812",
+      "agent_cache_read_tokens": 175488,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_438_opaque_guid",
@@ -129,7 +139,9 @@
       "agent_steps": 13,
       "agent_turns": 14,
       "agent_cost_usd": 176.80806080000002,
-      "agent_session_id": "63939839-145b-413a-9822-111ffeb5bf1f"
+      "agent_session_id": "63939839-145b-413a-9822-111ffeb5bf1f",
+      "agent_cache_read_tokens": 396672,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_440_universal_compressor",
@@ -146,7 +158,9 @@
       "agent_steps": 17,
       "agent_turns": 15,
       "agent_cost_usd": 188.351408,
-      "agent_session_id": "3553df66-2e71-47fa-a049-bb0d36d35e89"
+      "agent_session_id": "3553df66-2e71-47fa-a049-bb0d36d35e89",
+      "agent_cache_read_tokens": 334720,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_441_stateless_contract",
@@ -163,7 +177,9 @@
       "agent_steps": 7,
       "agent_turns": 5,
       "agent_cost_usd": 75.2631908,
-      "agent_session_id": "91200d97-fc28-41a6-9fc0-bf35937cb835"
+      "agent_session_id": "91200d97-fc28-41a6-9fc0-bf35937cb835",
+      "agent_cache_read_tokens": 68992,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_443_search_count",
@@ -180,7 +196,9 @@
       "agent_steps": 10,
       "agent_turns": 7,
       "agent_cost_usd": 51.972390399999995,
-      "agent_session_id": "df8fcff1-7dc5-40d8-9879-dd5e43fea145"
+      "agent_session_id": "df8fcff1-7dc5-40d8-9879-dd5e43fea145",
+      "agent_cache_read_tokens": 73856,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_444_stateless_contract",
@@ -197,7 +215,9 @@
       "agent_steps": 6,
       "agent_turns": 7,
       "agent_cost_usd": 58.9615264,
-      "agent_session_id": "0794e454-b792-44c3-b280-3a525bcd87f2"
+      "agent_session_id": "0794e454-b792-44c3-b280-3a525bcd87f2",
+      "agent_cache_read_tokens": 99456,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_439_ledger_reachability",
@@ -214,7 +234,9 @@
       "agent_steps": 29,
       "agent_turns": 27,
       "agent_cost_usd": 168.06890800000002,
-      "agent_session_id": "02e1d369-15ab-4675-9802-5f7fe68c3014"
+      "agent_session_id": "02e1d369-15ab-4675-9802-5f7fe68c3014",
+      "agent_cache_read_tokens": 629760,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_445_parity_repair",
@@ -231,7 +253,9 @@
       "agent_steps": 8,
       "agent_turns": 7,
       "agent_cost_usd": 84.42575680000002,
-      "agent_session_id": "e94234a1-91ba-4e30-9adc-0ddf47ff68a3"
+      "agent_session_id": "e94234a1-91ba-4e30-9adc-0ddf47ff68a3",
+      "agent_cache_read_tokens": 113792,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_446_archive_transfer",
@@ -248,7 +272,9 @@
       "agent_steps": 8,
       "agent_turns": 7,
       "agent_cost_usd": 57.8079432,
-      "agent_session_id": "547208cf-2a5b-4c02-919c-9f4d9d024662"
+      "agent_session_id": "547208cf-2a5b-4c02-919c-9f4d9d024662",
+      "agent_cache_read_tokens": 92288,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_449_search_capabilities",
@@ -265,7 +291,9 @@
       "agent_steps": 12,
       "agent_turns": 10,
       "agent_cost_usd": 72.39733760000001,
-      "agent_session_id": "d7335d3b-e8ee-478d-a19a-6876b42046ee"
+      "agent_session_id": "d7335d3b-e8ee-478d-a19a-6876b42046ee",
+      "agent_cache_read_tokens": 130944,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_448_aggregate_identifiability",
@@ -282,7 +310,9 @@
       "agent_steps": 15,
       "agent_turns": 13,
       "agent_cost_usd": 116.0147044,
-      "agent_session_id": "75c0c1e2-2069-4bd2-b8e5-00bd5ed09839"
+      "agent_session_id": "75c0c1e2-2069-4bd2-b8e5-00bd5ed09839",
+      "agent_cache_read_tokens": 305536,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_451_search_index",
@@ -299,7 +329,9 @@
       "agent_steps": 7,
       "agent_turns": 6,
       "agent_cost_usd": 55.156444,
-      "agent_session_id": "d5529e57-c7a8-4847-b688-d5bc4dad97b8"
+      "agent_session_id": "d5529e57-c7a8-4847-b688-d5bc4dad97b8",
+      "agent_cache_read_tokens": 42880,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_447_sealed_partition",
@@ -316,7 +348,9 @@
       "agent_steps": 29,
       "agent_turns": 27,
       "agent_cost_usd": 227.88101840000002,
-      "agent_session_id": "12004e4c-cd56-4599-893c-884e96ddcd59"
+      "agent_session_id": "12004e4c-cd56-4599-893c-884e96ddcd59",
+      "agent_cache_read_tokens": 712576,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_442_ledger_reachability",
@@ -333,7 +367,9 @@
       "agent_steps": 17,
       "agent_turns": 15,
       "agent_cost_usd": 146.73530480000002,
-      "agent_session_id": "c6dcfe92-7774-4528-a924-40c52f946b9a"
+      "agent_session_id": "c6dcfe92-7774-4528-a924-40c52f946b9a",
+      "agent_cache_read_tokens": 284672,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_452_search_hint",
@@ -350,7 +386,9 @@
       "agent_steps": 12,
       "agent_turns": 10,
       "agent_cost_usd": 73.02434439999999,
-      "agent_session_id": "c78e1336-6bcf-4340-ba71-116645616371"
+      "agent_session_id": "c78e1336-6bcf-4340-ba71-116645616371",
+      "agent_cache_read_tokens": 126336,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_454_search_boundary",
@@ -367,7 +405,9 @@
       "agent_steps": 10,
       "agent_turns": 8,
       "agent_cost_usd": 71.6038008,
-      "agent_session_id": "28c37252-6ca2-4d21-a56e-a9aa5ff76e68"
+      "agent_session_id": "28c37252-6ca2-4d21-a56e-a9aa5ff76e68",
+      "agent_cache_read_tokens": 77952,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_450_maintenance_windows",
@@ -384,7 +424,9 @@
       "agent_steps": 13,
       "agent_turns": 12,
       "agent_cost_usd": 124.3796344,
-      "agent_session_id": "317a0ca1-3225-4175-b52c-ff6ff26c8edc"
+      "agent_session_id": "317a0ca1-3225-4175-b52c-ff6ff26c8edc",
+      "agent_cache_read_tokens": 247936,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_455_maintenance_windows",
@@ -401,7 +443,9 @@
       "agent_steps": 8,
       "agent_turns": 6,
       "agent_cost_usd": 66.0121504,
-      "agent_session_id": "8da182b3-9ccd-4536-9a73-79f1ddf080b4"
+      "agent_session_id": "8da182b3-9ccd-4536-9a73-79f1ddf080b4",
+      "agent_cache_read_tokens": 93696,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_457_search_pool",
@@ -418,7 +462,9 @@
       "agent_steps": 7,
       "agent_turns": 5,
       "agent_cost_usd": 25.9732144,
-      "agent_session_id": "3cfaec94-e5e8-4c1c-8b2d-bd86feb14d7f"
+      "agent_session_id": "3cfaec94-e5e8-4c1c-8b2d-bd86feb14d7f",
+      "agent_cache_read_tokens": 60416,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_458_deployment_matching",
@@ -435,7 +481,9 @@
       "agent_steps": 12,
       "agent_turns": 10,
       "agent_cost_usd": 107.9343272,
-      "agent_session_id": "56dda1b6-ae4b-4142-9b5f-11d7b6179727"
+      "agent_session_id": "56dda1b6-ae4b-4142-9b5f-11d7b6179727",
+      "agent_cache_read_tokens": 219648,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_453_opaque_guid",
@@ -452,7 +500,9 @@
       "agent_steps": 16,
       "agent_turns": 15,
       "agent_cost_usd": 173.62588599999998,
-      "agent_session_id": "565a3425-c476-48ae-b90d-4826d0325b87"
+      "agent_session_id": "565a3425-c476-48ae-b90d-4826d0325b87",
+      "agent_cache_read_tokens": 360960,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_460_replication_cut",
@@ -469,7 +519,9 @@
       "agent_steps": 10,
       "agent_turns": 8,
       "agent_cost_usd": 92.694014,
-      "agent_session_id": "89f9ef3c-69aa-49d9-b8ae-7b6bf696296b"
+      "agent_session_id": "89f9ef3c-69aa-49d9-b8ae-7b6bf696296b",
+      "agent_cache_read_tokens": 95360,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_461_search_pool",
@@ -486,7 +538,9 @@
       "agent_steps": 8,
       "agent_turns": 7,
       "agent_cost_usd": 47.41442160000001,
-      "agent_session_id": "78c750bf-6a1e-4987-b153-59e5f0bf0096"
+      "agent_session_id": "78c750bf-6a1e-4987-b153-59e5f0bf0096",
+      "agent_cache_read_tokens": 73344,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_462_build_critical_path",
@@ -503,7 +557,9 @@
       "agent_steps": 13,
       "agent_turns": 14,
       "agent_cost_usd": 131.45844040000003,
-      "agent_session_id": "ede717cb-49c3-4aca-9eea-0764c16c7462"
+      "agent_session_id": "ede717cb-49c3-4aca-9eea-0764c16c7462",
+      "agent_cache_read_tokens": 331776,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_463_diagnostic_queries",
@@ -520,7 +576,9 @@
       "agent_steps": 15,
       "agent_turns": 13,
       "agent_cost_usd": 133.76202,
-      "agent_session_id": "52f6a3bb-77c4-41f8-bacd-49fd7f5077ff"
+      "agent_session_id": "52f6a3bb-77c4-41f8-bacd-49fd7f5077ff",
+      "agent_cache_read_tokens": 177280,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_459_replication_cut",
@@ -537,7 +595,9 @@
       "agent_steps": 21,
       "agent_turns": 22,
       "agent_cost_usd": 161.69584759999998,
-      "agent_session_id": "0be0ec20-5cfc-4825-8cfd-1359ed8ae9dd"
+      "agent_session_id": "0be0ec20-5cfc-4825-8cfd-1359ed8ae9dd",
+      "agent_cache_read_tokens": 447744,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_464_search_boundary",
@@ -554,7 +614,9 @@
       "agent_steps": 9,
       "agent_turns": 8,
       "agent_cost_usd": 69.0592224,
-      "agent_session_id": "d08eadca-b931-4a1b-8d19-4fd2b08da7ec"
+      "agent_session_id": "d08eadca-b931-4a1b-8d19-4fd2b08da7ec",
+      "agent_cache_read_tokens": 81536,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_465_search_count",
@@ -571,7 +633,9 @@
       "agent_steps": 10,
       "agent_turns": 8,
       "agent_cost_usd": 63.6060908,
-      "agent_session_id": "92ea15ff-1a49-47d2-98c2-f25be45ff362"
+      "agent_session_id": "92ea15ff-1a49-47d2-98c2-f25be45ff362",
+      "agent_cache_read_tokens": 75392,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_467_sealed_partition",
@@ -588,7 +652,9 @@
       "agent_steps": 11,
       "agent_turns": 9,
       "agent_cost_usd": 112.77172480000002,
-      "agent_session_id": "9f3f4d10-8454-49a9-b207-189e3dea2a0d"
+      "agent_session_id": "9f3f4d10-8454-49a9-b207-189e3dea2a0d",
+      "agent_cache_read_tokens": 122112,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_466_parity_repair",
@@ -605,7 +671,9 @@
       "agent_steps": 12,
       "agent_turns": 13,
       "agent_cost_usd": 127.26256760000001,
-      "agent_session_id": "8c1e3197-435a-4126-86fc-ccc4169206fc"
+      "agent_session_id": "8c1e3197-435a-4126-86fc-ccc4169206fc",
+      "agent_cache_read_tokens": 258304,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_468_diagnostic_queries",
@@ -622,7 +690,9 @@
       "agent_steps": 9,
       "agent_turns": 7,
       "agent_cost_usd": 105.11441919999999,
-      "agent_session_id": "4bd08770-6248-46f7-a7d0-aca0787faecc"
+      "agent_session_id": "4bd08770-6248-46f7-a7d0-aca0787faecc",
+      "agent_cache_read_tokens": 107008,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_471_clock_contract",
@@ -639,7 +709,9 @@
       "agent_steps": 13,
       "agent_turns": 9,
       "agent_cost_usd": 100.18256920000002,
-      "agent_session_id": "c652dbd5-a9fe-46b7-9767-fa7895879292"
+      "agent_session_id": "c652dbd5-a9fe-46b7-9767-fa7895879292",
+      "agent_cache_read_tokens": 175488,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_470_search_hint",
@@ -656,7 +728,9 @@
       "agent_steps": 8,
       "agent_turns": 9,
       "agent_cost_usd": 104.99707959999999,
-      "agent_session_id": "19b713ca-aae7-4ad8-b83b-aca98b80e981"
+      "agent_session_id": "19b713ca-aae7-4ad8-b83b-aca98b80e981",
+      "agent_cache_read_tokens": 65024,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_469_deployment_matching",
@@ -673,7 +747,9 @@
       "agent_steps": 12,
       "agent_turns": 11,
       "agent_cost_usd": 131.0746528,
-      "agent_session_id": "19781072-163e-4802-ad44-647d26c26bcb"
+      "agent_session_id": "19781072-163e-4802-ad44-647d26c26bcb",
+      "agent_cache_read_tokens": 200192,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_456_build_critical_path",
@@ -690,7 +766,9 @@
       "agent_steps": 8,
       "agent_turns": 6,
       "agent_cost_usd": 77.45609200000001,
-      "agent_session_id": "044ddb91-8c6f-4bc9-83a5-a1bfa726256b"
+      "agent_session_id": "044ddb91-8c6f-4bc9-83a5-a1bfa726256b",
+      "agent_cache_read_tokens": 102400,
+      "agent_cache_write_tokens": 0
     }
   ],
   "summary": {
@@ -703,8 +781,9 @@
     "total_input_tokens": 3079431,
     "total_output_tokens": 151704,
     "total_tokens": 10786591,
-    "total_cache_read_tokens": 75136,
+    "total_cache_read_tokens": 7555456,
     "total_cache_write_tokens": 0,
-    "estimated_cost_rub": 3413.58
+    "estimated_cost_rub": 9859.52,
+    "total_reasoning_tokens": 35491
   }
 }

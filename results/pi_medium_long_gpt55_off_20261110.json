@@ -14,13 +14,15 @@
       "timeout": 7200,
       "comparable": true,
       "workspace": null,
-      "agent_input_tokens": 600459,
-      "agent_output_tokens": 69261,
-      "agent_reasoning_tokens": 22827,
-      "agent_total_tokens": 5177496,
-      "agent_tool_calls": 120,
-      "agent_api_calls": 152,
-      "agent_steps": 152
+      "agent_input_tokens": 200153,
+      "agent_output_tokens": 23087,
+      "agent_reasoning_tokens": 7609,
+      "agent_total_tokens": 1725832,
+      "agent_tool_calls": 40,
+      "agent_api_calls": 51,
+      "agent_steps": 51,
+      "agent_cache_read_tokens": 1502592,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_403_binary_format_reverse",
@@ -31,13 +33,15 @@
       "timeout": 7200,
       "comparable": true,
       "workspace": null,
-      "agent_input_tokens": 4269484,
-      "agent_output_tokens": 71242,
-      "agent_reasoning_tokens": 27039,
-      "agent_total_tokens": 12647030,
-      "agent_tool_calls": 375,
-      "agent_api_calls": 263,
-      "agent_steps": 263
+      "agent_input_tokens": 1423161,
+      "agent_output_tokens": 23747,
+      "agent_reasoning_tokens": 9013,
+      "agent_total_tokens": 4215677,
+      "agent_tool_calls": 125,
+      "agent_api_calls": 88,
+      "agent_steps": 88,
+      "agent_cache_read_tokens": 2768769,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_393_intranet_multihop",
@@ -48,13 +52,15 @@
       "timeout": 7200,
       "comparable": true,
       "workspace": null,
-      "agent_input_tokens": 1445280,
-      "agent_output_tokens": 86409,
-      "agent_reasoning_tokens": 60993,
-      "agent_total_tokens": 8924073,
-      "agent_tool_calls": 165,
-      "agent_api_calls": 212,
-      "agent_steps": 212
+      "agent_input_tokens": 481760,
+      "agent_output_tokens": 28803,
+      "agent_reasoning_tokens": 20331,
+      "agent_total_tokens": 2974691,
+      "agent_tool_calls": 55,
+      "agent_api_calls": 71,
+      "agent_steps": 71,
+      "agent_cache_read_tokens": 2464128,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_394_review_annotation",
@@ -65,13 +71,15 @@
       "timeout": 7200,
       "comparable": true,
       "workspace": null,
-      "agent_input_tokens": 279882,
-      "agent_output_tokens": 50451,
-      "agent_reasoning_tokens": 14805,
-      "agent_total_tokens": 3174621,
-      "agent_tool_calls": 87,
-      "agent_api_calls": 120,
-      "agent_steps": 120
+      "agent_input_tokens": 93294,
+      "agent_output_tokens": 16817,
+      "agent_reasoning_tokens": 4935,
+      "agent_total_tokens": 1058207,
+      "agent_tool_calls": 29,
+      "agent_api_calls": 40,
+      "agent_steps": 40,
+      "agent_cache_read_tokens": 948096,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_395_homework_grading",
@@ -82,13 +90,15 @@
       "timeout": 7200,
       "comparable": true,
       "workspace": null,
-      "agent_input_tokens": 454320,
-      "agent_output_tokens": 35061,
-      "agent_reasoning_tokens": 15123,
-      "agent_total_tokens": 3006501,
-      "agent_tool_calls": 144,
-      "agent_api_calls": 84,
-      "agent_steps": 84
+      "agent_input_tokens": 151440,
+      "agent_output_tokens": 11687,
+      "agent_reasoning_tokens": 5041,
+      "agent_total_tokens": 1002167,
+      "agent_tool_calls": 48,
+      "agent_api_calls": 28,
+      "agent_steps": 28,
+      "agent_cache_read_tokens": 839040,
+      "agent_cache_write_tokens": 0
     },
     {
       "task_id": "task_392_manuscript_continuity",
@@ -99,13 +109,15 @@
       "timeout": 7200,
       "comparable": true,
       "workspace": null,
-      "agent_input_tokens": 4824356,
-      "agent_output_tokens": 209125,
-      "agent_reasoning_tokens": 87236,
-      "agent_total_tokens": 21029001,
-      "agent_tool_calls": 400,
-      "agent_api_calls": 444,
-      "agent_steps": 444
+      "agent_input_tokens": 1608119,
+      "agent_output_tokens": 69708,
+      "agent_reasoning_tokens": 29079,
+      "agent_total_tokens": 7009667,
+      "agent_tool_calls": 133,
+      "agent_api_calls": 148,
+      "agent_steps": 148,
+      "agent_cache_read_tokens": 5331840,
+      "agent_cache_write_tokens": 0
     }
   ],
   "summary": {
@@ -114,13 +126,13 @@
     "failed": 5,
     "pass_rate": 0.1667,
     "total_seconds": 2857.2,
-    "total_input_tokens": 11873781,
-    "total_output_tokens": 521549,
-    "total_reasoning_tokens": 228023,
-    "total_tokens": 53958722,
-    "total_steps": 1275,
-    "total_tool_calls": 1291,
-    "estimated_cost_rub": 12812.63,
+    "total_input_tokens": 3957927,
+    "total_output_tokens": 173849,
+    "total_reasoning_tokens": 76008,
+    "total_tokens": 17986241,
+    "total_steps": 426,
+    "total_tool_calls": 430,
+    "estimated_cost_rub": 16102.59,
     "timeout": 7200,
     "task_timeouts": {
       "task_398_card_game_engine": 7200,
@@ -129,6 +141,8 @@
       "task_394_review_annotation": 7200,
       "task_395_homework_grading": 7200,
       "task_392_manuscript_continuity": 7200
-    }
+    },
+    "total_cache_read_tokens": 13854465,
+    "total_cache_write_tokens": 0
   }
 }

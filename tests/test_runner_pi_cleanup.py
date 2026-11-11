@@ -61,26 +61,48 @@ class _FakeProc:
         self.returncode = -9
 
 
+def _acc():
+    return {"input": 0, "output": 0, "reasoning": 0, "total": 0,
+            "cache_read": 0, "cache_write": 0,
+            "cost": 0.0, "api_calls": 0, "tool_calls": 0}
+
+
 class TestExtractUsage(unittest.TestCase):
-    def test_parses_nested_usage_and_tool_calls(self):
-        acc = {"input": 0, "output": 0, "reasoning": 0, "total": 0,
-               "cost": 0.0, "api_calls": 0, "tool_calls": 0}
+    def test_counts_message_end_once_with_cache_and_tool_calls(self):
+        acc = _acc()
         obj = json.loads(
-            '{"type":"agent_end","messages":[{"role":"assistant",'
-            '"usage":{"input":7,"output":3,"reasoning":1,"totalTokens":10,"cost":{"total":0.5}},'
-            '"content":[{"type":"toolCall"},{"type":"text"}]}]}'
+            '{"type":"message_end","message":{"role":"assistant","responseId":"r1",'
+            '"usage":{"input":7,"output":3,"reasoning":1,"cacheRead":70,"cacheWrite":2,'
+            '"totalTokens":82,"cost":{"total":0.5}},'
+            '"content":[{"type":"toolCall"},{"type":"text"}]}}'
         )
         rpb._extract_usage(obj, acc)
         self.assertEqual(acc["input"], 7)
         self.assertEqual(acc["output"], 3)
         self.assertEqual(acc["reasoning"], 1)
-        self.assertEqual(acc["total"], 10)
+        self.assertEqual(acc["cache_read"], 70)
+        self.assertEqual(acc["cache_write"], 2)
+        self.assertEqual(acc["total"], 82)
+        self.assertEqual(acc["cost"], 0.5)
         self.assertEqual(acc["api_calls"], 1)
         self.assertEqual(acc["tool_calls"], 1)
 
+    def test_transcript_echoes_are_not_double_counted(self):
+        """The same usage repeats in turn_end and agent_end.messages[] -> count once."""
+        acc = _acc()
+        msg = ('{"role":"assistant","responseId":"r1",'
+               '"usage":{"input":7,"output":3,"totalTokens":10},'
+               '"content":[{"type":"toolCall"}]}')
+        rpb._extract_usage(json.loads('{"type":"message_end","message":' + msg + '}'), acc)
+        rpb._extract_usage(json.loads('{"type":"turn_end","message":' + msg + '}'), acc)
+        rpb._extract_usage(json.loads('{"type":"agent_end","messages":[' + msg + ']}'), acc)
+        self.assertEqual(acc["api_calls"], 1, "usage echoed in turn_end/agent_end must not inflate")
+        self.assertEqual(acc["input"], 7)
+        self.assertEqual(acc["output"], 3)
+        self.assertEqual(acc["tool_calls"], 1)
+
     def test_message_update_deltas_do_not_inflate_steps(self):
-        acc = {"input": 0, "output": 0, "reasoning": 0, "total": 0,
-               "cost": 0.0, "api_calls": 0, "tool_calls": 0}
+        acc = _acc()
         # many streaming deltas carrying the same usage
         for _ in range(50):
             rpb._extract_usage(
