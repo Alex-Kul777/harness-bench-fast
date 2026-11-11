@@ -36,6 +36,7 @@ HARNESS_PREFIXES: tuple[tuple[str, str], ...] = (
     ("opencode_", "opencode"),
     ("openclaw_", "OpenClaw"),
     ("opencode",  "opencode"),   # bare stem fallback (no underscore)
+    ("dsh_",      "DeepSeek Harness"),
     ("hermes_",   "Hermes"),
     ("pi_",       "Pi"),
     ("oc_",       "OpenClaw"),

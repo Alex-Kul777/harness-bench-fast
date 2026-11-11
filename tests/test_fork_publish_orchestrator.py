@@ -49,6 +49,12 @@ class TestClassifyHarness:
     def test_hermes(self):
         assert classify_harness("hermes_full_391") == "Hermes"
 
+    def test_dsh(self):
+        assert classify_harness("dsh_shotlist_ds41flash_20261111") == "DeepSeek Harness"
+
+    def test_dsh_thinking_suffix(self):
+        assert classify_harness("dsh_shotlist_ds41flash_high_20261111") == "DeepSeek Harness"
+
     def test_opencode(self):
         assert classify_harness("opencode_shotlist_x") == "opencode"
 
@@ -101,6 +107,18 @@ class TestResolveStem:
         assert h == "Pi"
         assert m == "DeepSeek-V4.1-Flash"
         assert lvl is None
+
+    def test_dsh_ds41flash(self):
+        h, m, lvl = resolve_stem("dsh_shotlist_ds41flash_20261111")
+        assert h == "DeepSeek Harness"
+        assert m == "DeepSeek-V4.1-Flash"
+        assert lvl is None
+
+    def test_dsh_ds41flash_high(self):
+        h, m, lvl = resolve_stem("dsh_shotlist_ds41flash_high_20261111")
+        assert h == "DeepSeek Harness"
+        assert m == "DeepSeek-V4.1-Flash"
+        assert lvl == "high"
 
 
 # ---------------------------------------------------------------------------
