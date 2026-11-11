@@ -13,7 +13,8 @@ Usage:
     python run_hermes_bench.py --shot-list         # 52-task stratified sample
     python run_hermes_bench.py --all --concurrency 3 --json-output results/hermes_full_391.json
     python run_hermes_bench.py --all --rerun-on-fail  # resume, re-run failed only
-    python run_hermes_bench.py --shot-list --thinking-off  # shot list, reasoning disabled
+    python run_hermes_bench.py --shot-list --thinking-off  # shot list, reasoning disabled (alias: --thinking none)
+    python run_hermes_bench.py --shot-list --thinking high  # shot list, explicit reasoning level
 """
 
 import argparse
@@ -43,6 +44,9 @@ from harness_bench.artifact_metadata import artifact_metadata, resolve_harness_v
 DEFAULT_MODEL = "zai-org/GLM-5.2"
 DEFAULT_TIMEOUT = 660
 DEFAULT_CONCURRENCY = 3
+
+# Reasoning levels accepted by `hermes chat --reasoning` (Hermes 0.22.1+).
+THINKING_LEVELS = ("none", "minimal", "low", "medium", "high", "xhigh", "max", "ultra")
 HERMES_BIN = os.environ.get("HERMES_BIN", "hermes")
 
 # Cloud.ru Foundation Models API — provider config for --ignore-user-config mode.
@@ -99,7 +103,7 @@ def _get_model_rates(model_id: str) -> dict:
     return resolve_model_rates(model_id)
 
 
-def run_one_task(task, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT, keep_workspace=False, thinking_off=False):
+def run_one_task(task, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT, keep_workspace=False, thinking=None):
     """Run a single benchmark task through `hermes chat -q`."""
     started = time.monotonic()
     workspace_keepalive = None
@@ -126,11 +130,9 @@ def run_one_task(task, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT, keep_wor
         # --max-turns 120: limit agent loop iterations
         # --source tool: mark sessions as tool-origin
         # --provider custom: use OPENAI_API_KEY/OPENAI_BASE_URL env vars (Cloud.ru)
-        #
-        # NOTE: --ignore-user-config skips config.yaml entirely, so
-        # agent.reasoning_effort=none would be ignored. When thinking_off
-        # is set, we skip --ignore-user-config and rely on the config.yaml
-        # having reasoning_effort=none set by the caller.
+        # --reasoning <level>: native reasoning control (Hermes 0.22.1+); it overrides
+        #   agent.reasoning_effort for this run only, so no config.yaml toggle is needed
+        #   and --ignore-user-config can stay on for every task.
         cmd = [
             HERMES_BIN, "chat",
             "-q", task.prompt,
@@ -141,11 +143,12 @@ def run_one_task(task, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT, keep_wor
             "-v",
             "--max-turns", "120",
             "--source", "tool",
+            "--ignore-user-config",
         ]
 
-        # --ignore-user-config only when NOT thinking-off (so config.yaml is read)
-        if not thinking_off:
-            cmd.append("--ignore-user-config")
+        # Native reasoning-control flag (none|minimal|low|medium|high|xhigh|max|ultra).
+        if thinking:
+            cmd += ["--reasoning", thinking]
 
         # Hybrid: only non-memory tasks get --ignore-rules
         if not _is_memory_task(task.id):
@@ -211,6 +214,21 @@ def run_one_task(task, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT, keep_wor
                     "agent_output_tokens": output_tokens,
                     "agent_total_tokens": total_tokens,
                 }
+            # Explicit cache buckets, when the verbose stream carries them (Hermes's
+            # Cache line is verbosity-gated and is usually suppressed under -Q);
+            # otherwise `_write_results` derives the bucket ONCE from the token total
+            # (OpenClaw-runner parity).
+            cache_read = 0
+            cache_write = 0
+            for m in re.finditer(
+                r"Cache:\s*([\d,]+)/[\d,]+\s*tokens.*?([\d,]+)\s*written",
+                result.stderr,
+            ):
+                cache_read += int(m.group(1).replace(",", ""))
+                cache_write += int(m.group(2).replace(",", ""))
+            if total_tokens > 0 and (cache_read or cache_write):
+                token_stats["agent_cache_read_tokens"] = cache_read
+                token_stats["agent_cache_write_tokens"] = cache_write
 
         # 6. Extract step count from verbose output
         # Hermes -v outputs tool call info; count tool_call markers.
@@ -262,7 +280,35 @@ def _write_results(results, path, model=None, *,
         total_out = sum(r.get("agent_output_tokens", 0) for r in results)
         total_tok = sum(r.get("agent_total_tokens", 0) for r in results)
         total_steps = sum(r.get("agent_steps", 0) or 0 for r in results)
-        cost_rub = round(compute_cost_rub(total_in, total_out, 0, 0, _get_model_rates(model or DEFAULT_MODEL)), 2)
+        total_reasoning = sum(int(r.get("agent_reasoning_tokens") or 0) for r in results)
+        # Cache buckets are recorded EXPLICITLY (OpenClaw-runner parity) so downstream
+        # readers never re-derive them: prefer an explicit per-task bucket, else derive
+        # it ONCE here from ``total - input - output`` and store it back on the task row.
+        total_cache_read = 0
+        total_cache_write = 0
+        for r in results:
+            cr = r.get("agent_cache_read_tokens")
+            cw = r.get("agent_cache_write_tokens")
+            if cr is None or cw is None:
+                derived = max(
+                    int(r.get("agent_total_tokens") or 0)
+                    - int(r.get("agent_input_tokens") or 0)
+                    - int(r.get("agent_output_tokens") or 0),
+                    0,
+                )
+                if cr is None:
+                    cr = derived
+                if cw is None:
+                    cw = 0
+            r["agent_cache_read_tokens"] = int(cr)
+            r["agent_cache_write_tokens"] = int(cw)
+            total_cache_read += int(cr)
+            total_cache_write += int(cw)
+        cost_rub = round(
+            compute_cost_rub(total_in, total_out, total_cache_read, total_cache_write,
+                             _get_model_rates(model or DEFAULT_MODEL)),
+            2,
+        )
         task_id_list = list(task_ids) if task_ids is not None else [r.get("task_id") for r in results]
         payload = {
             **artifact_metadata(
@@ -283,6 +329,9 @@ def _write_results(results, path, model=None, *,
                 "total_output_tokens": total_out,
                 "total_tokens": total_tok,
                 "total_steps": total_steps,
+                "total_reasoning_tokens": total_reasoning,
+                "total_cache_read_tokens": total_cache_read,
+                "total_cache_write_tokens": total_cache_write,
                 "estimated_cost_rub": cost_rub,
             },
         }
@@ -292,7 +341,7 @@ def _write_results(results, path, model=None, *,
         os.replace(tmp_path, path)
 
 
-def _write_status(path, completed, total_task_count, results, started_at):
+def _write_status(path, completed, total_task_count, results, started_at, model=DEFAULT_MODEL):
     """Write status file for progress monitoring. Thread-safe."""
     with _write_lock:
         passed = sum(1 for r in results if r["passed"])
@@ -302,7 +351,9 @@ def _write_status(path, completed, total_task_count, results, started_at):
         total_in = sum(r.get("agent_input_tokens", 0) for r in results)
         total_out = sum(r.get("agent_output_tokens", 0) for r in results)
         total_tok = total_in + total_out
-        cost_rub = round(compute_cost_rub(total_in, total_out, 0, 0, _get_model_rates(DEFAULT_MODEL)), 2)
+        total_cr = sum(r.get("agent_cache_read_tokens", 0) or 0 for r in results)
+        total_cw = sum(r.get("agent_cache_write_tokens", 0) or 0 for r in results)
+        cost_rub = round(compute_cost_rub(total_in, total_out, total_cr, total_cw, _get_model_rates(model)), 2)
         last_task = results[-1]["task_id"] if results else None
         status = {
             "completed": completed,
@@ -334,7 +385,7 @@ def _load_checkpoint(json_path):
 def run_batch(task_ids, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT,
                keep_workspace=False, json_output=None, concurrency=1,
                status_file=None, rerun_on_fail=False, fresh=False,
-               thinking_off=False, harness_version=None):
+               thinking=None, harness_version=None):
     """Run tasks with optional concurrency, checkpoint/resume, and progress reporting."""
 
     # Checkpoint/resume: load existing results
@@ -380,24 +431,24 @@ def run_batch(task_ids, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT,
         for tid in pending:
             task = get_task(tid)
             print(f"[{completed+1}/{total_all}] {task.id}", flush=True)
-            run = run_one_task(task, model=model, timeout=timeout, keep_workspace=keep_workspace, thinking_off=thinking_off)
+            run = run_one_task(task, model=model, timeout=timeout, keep_workspace=keep_workspace, thinking=thinking)
             results.append(run)
             completed += 1
             status = "PASS" if run["passed"] else "FAIL"
             print(f"  [{status}] {run['elapsed_seconds']:.1f}s — {run['message'][:120]}", flush=True)
             if json_output:
                 _write_results(results, json_output, model=model,
-                               thinking=("off" if thinking_off else None),
+                               thinking=thinking,
                                harness_version=harness_version, task_ids=task_ids)
             if status_file:
-                _write_status(status_file, completed, total_all, results, started_at)
+                _write_status(status_file, completed, total_all, results, started_at, model=model)
     else:
         # Parallel mode with ThreadPoolExecutor
         with ThreadPoolExecutor(max_workers=concurrency) as pool:
             future_to_task = {}
             for tid in pending:
                 task = get_task(tid)
-                future = pool.submit(run_one_task, task, model=model, timeout=timeout, keep_workspace=keep_workspace, thinking_off=thinking_off)
+                future = pool.submit(run_one_task, task, model=model, timeout=timeout, keep_workspace=keep_workspace, thinking=thinking)
                 future_to_task[future] = tid
 
             for future in as_completed(future_to_task):
@@ -409,10 +460,10 @@ def run_batch(task_ids, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT,
                 print(f"[{completed}/{total_all}] {tid}: [{status}] {run['elapsed_seconds']:.1f}s — {run['message'][:120]}", flush=True)
                 if json_output:
                     _write_results(results, json_output, model=model,
-                                   thinking=("off" if thinking_off else None),
+                                   thinking=thinking,
                                    harness_version=harness_version, task_ids=task_ids)
                 if status_file:
-                    _write_status(status_file, completed, total_all, results, started_at)
+                    _write_status(status_file, completed, total_all, results, started_at, model=model)
 
     # Sort results by task_id for consistent output
     results.sort(key=lambda r: r["task_id"])
@@ -426,14 +477,6 @@ def _load_shot_list():
         print(f"ERROR: shot list not found at {SHOT_LIST_FILE}", file=sys.stderr)
         sys.exit(1)
     return [line.strip() for line in SHOT_LIST_FILE.read_text().splitlines() if line.strip() and not line.startswith("#")]
-
-
-def _set_hermes_reasoning(value: str):
-    """Set agent.reasoning_effort in hermes config."""
-    subprocess.run(
-        [HERMES_BIN, "config", "set", "agent.reasoning_effort", value, "--force"],
-        capture_output=True, timeout=10,
-    )
 
 
 def detect_harness_version() -> str | None:
@@ -454,7 +497,12 @@ def main():
     parser.add_argument("--pilot", action="store_true")
     parser.add_argument("--all", action="store_true")
     parser.add_argument("--shot-list", action="store_true", help="Run the 52-task shot list")
-    parser.add_argument("--thinking-off", action="store_true", help="Disable model reasoning (sets agent.reasoning_effort=none)")
+    parser.add_argument("--thinking", choices=THINKING_LEVELS, default=None,
+                        help="Reasoning level passed to `hermes chat --reasoning` "
+                             "(none|minimal|low|medium|high|xhigh|max|ultra); "
+                             "recorded in the artifact `thinking` field")
+    parser.add_argument("--thinking-off", action="store_true",
+                        help="Alias for --thinking none (disable model reasoning)")
     parser.add_argument("--model", default=DEFAULT_MODEL)
     parser.add_argument("--harness-version", default=None,
                         help="Harness (CLI) version recorded as harness_version; "
@@ -482,20 +530,15 @@ def main():
         parser.print_help()
         sys.exit(1)
 
-    # Handle reasoning toggle
-    _restore_reasoning = None
-    if args.thinking_off:
-        _restore_reasoning = "medium"  # default to restore
-        _set_hermes_reasoning("none")
-        print("Reasoning: OFF (agent.reasoning_effort=none)", flush=True)
+    # Reasoning level: --thinking <level>, or --thinking-off as an alias for none.
+    thinking_level = "none" if args.thinking_off else args.thinking
 
     json_output = args.json_output or f"/tmp/hermes_bench_{int(time.time())}.json"
     status_file = args.status_file or "/tmp/hermes_bench_status.json"
 
-    thinking_tag = "_thinking_off" if args.thinking_off else ""
     print(f"Hermes Benchmark Runner")
     print(f"  Model: {args.model}")
-    print(f"  Thinking: {'OFF' if args.thinking_off else 'ON (default)'}")
+    print(f"  Thinking: {thinking_level or 'default'}")
     print(f"  Tasks: {len(task_ids)}")
     print(f"  Concurrency: {args.concurrency}")
     print(f"  Timeout: {args.timeout}s")
@@ -505,19 +548,13 @@ def main():
     print(f"  Status: {status_file}")
     print()
 
-    try:
-        results = run_batch(
-            task_ids, model=args.model, timeout=args.timeout,
-            concurrency=args.concurrency, keep_workspace=args.keep,
-            json_output=json_output, status_file=status_file,
-            rerun_on_fail=args.rerun_on_fail, fresh=args.fresh,
-            thinking_off=args.thinking_off, harness_version=harness_version,
-        )
-    finally:
-        # Restore reasoning setting
-        if _restore_reasoning:
-            _set_hermes_reasoning(_restore_reasoning)
-            print(f"Reasoning restored to: {_restore_reasoning}", flush=True)
+    results = run_batch(
+        task_ids, model=args.model, timeout=args.timeout,
+        concurrency=args.concurrency, keep_workspace=args.keep,
+        json_output=json_output, status_file=status_file,
+        rerun_on_fail=args.rerun_on_fail, fresh=args.fresh,
+        thinking=thinking_level, harness_version=harness_version,
+    )
 
     passed = sum(1 for r in results if r["passed"])
     total = len(results)
@@ -525,7 +562,9 @@ def main():
     total_out = sum(r.get("agent_output_tokens", 0) for r in results)
     total_tok = total_in + total_out
     total_steps = sum(r.get("agent_steps", 0) or 0 for r in results)
-    cost = round(compute_cost_rub(total_in, total_out, 0, 0, _get_model_rates(model or DEFAULT_MODEL)), 2)
+    total_cache_read = sum(r.get("agent_cache_read_tokens", 0) or 0 for r in results)
+    total_cache_write = sum(r.get("agent_cache_write_tokens", 0) or 0 for r in results)
+    cost = round(compute_cost_rub(total_in, total_out, total_cache_read, total_cache_write, _get_model_rates(args.model)), 2)
 
     print()
     print("=" * 60)
