@@ -93,6 +93,20 @@
           "detail": "fork-detail-oc_shotlist_gpt55_high_20261110.html"
         },
         {
+          "harness": "Hermes Agent v0.23.1 (2026.9.24) · stable · local 3b4215785882",
+          "profile": "thinking: off (2026-11-11)",
+          "model": "DeepSeek-V4.1-Flash (cloud.ru) (thinking: off)",
+          "result": "49/52",
+          "pct": "94.2%",
+          "time": "22.0m",
+          "steps": "221",
+          "tokens_cost": "4 030 565 (289₽)",
+          "version": "0.16.0",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-hermes_shotlist_ds41flash_off_20261111.html"
+        },
+        {
           "harness": "Pi",
           "profile": "— (2026-11-04)",
           "model": "DeepSeek-V4.1-Flash (cloud.ru)",

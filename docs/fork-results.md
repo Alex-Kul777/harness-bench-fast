@@ -29,10 +29,11 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 Руками не редактировать — правь скрипт/JSON и пересобирай.
 
 <!-- FORK:RESULTS:BEGIN -->
-Автосинк: 60 прогонов
+Автосинк: 61 прогонов
 
 | Harness | Suite | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Hermes | Shot List (52) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 49/52 | 94.2% | 22.0m | 221 | 4 030 565 (289₽) |
 | Hermes | Shot List (52) | thinking: off | GLM-5.2 (thinking: off) | 46/52 | 88.5% | 68.5m | — | 6 209 159 (1 509₽) |
 | Hermes | Shot List (52) | — | GPT-OSS-120B | 28/52 | 53.8% | 37.9m | 427 | 8 833 747 (145₽) |
 | Hermes | Shot List (52) | — | Qwen3.6-35B-A3B | 36/52 | 69.2% | 38.6m | 301 | 6 961 237 (1 544₽) |
