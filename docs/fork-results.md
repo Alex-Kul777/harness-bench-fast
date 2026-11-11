@@ -29,11 +29,14 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 Руками не редактировать — правь скрипт/JSON и пересобирай.
 
 <!-- FORK:RESULTS:BEGIN -->
-Автосинк: 62 прогонов
+Автосинк: 65 прогонов
 
 | Harness | Suite | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
 | DeepSeek Harness | Shot List (52) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 51/52 | 98.1% | 19.1m | 266 | 1 975 401 (43₽) |
+| DeepSeek Harness | Medium (392-471) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 39/40 | 97.5% | 161.8m | 727 | 20 621 016 (494₽) |
+| DeepSeek Harness | Medium (392-471) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 16/20 | 80.0% | 95.8m | 379 | 8 316 142 (206₽) |
+| DeepSeek Harness | Medium (392-471) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 5/6 | 83.3% | 244.9m | 436 | 74 296 407 (979₽) |
 | Hermes | Shot List (52) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 49/52 | 94.2% | 22.0m | 221 | 4 030 565 (289₽) |
 | Hermes | Shot List (52) | thinking: off | GLM-5.2 (thinking: off) | 46/52 | 88.5% | 68.5m | — | 6 209 159 (1 509₽) |
 | Hermes | Shot List (52) | — | GPT-OSS-120B | 28/52 | 53.8% | 37.9m | 427 | 8 833 747 (145₽) |

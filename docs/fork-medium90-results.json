@@ -31,6 +31,76 @@
   ],
   "rows": [
     {
+      "id": "deepseek-harness-deepseek-v4-1-flash-thinking-off",
+      "details_url": "fork-run-deepseek-harness-deepseek-v4-1-flash-thinking-off.html",
+      "harness": "DeepSeek Harness",
+      "model": "DeepSeek-V4.1-Flash",
+      "profile": "thinking: off",
+      "harness_version": "0.2.2-rc.1",
+      "runs": 3,
+      "suites": {
+        "long": {
+          "passed": 5,
+          "total": 6,
+          "measurement": "partial",
+          "duration": {
+            "n": 6,
+            "mean": 2449.0,
+            "median": 1972.5,
+            "max": 5556.7
+          }
+        },
+        "reflect": {
+          "passed": 16,
+          "total": 20,
+          "measurement": "complete",
+          "duration": {
+            "n": 20,
+            "mean": 287.5,
+            "median": 179.7,
+            "max": 1469.3
+          }
+        },
+        "feasibility": {
+          "passed": 39,
+          "total": 40,
+          "measurement": "complete",
+          "duration": {
+            "n": 40,
+            "mean": 242.6,
+            "median": 170.6,
+            "max": 783.8
+          }
+        },
+        "composite_hard": null
+      },
+      "usage": {
+        "seconds": 30148.9,
+        "steps": 1542,
+        "tokens": 103233565,
+        "cost_rub": 1679.8
+      },
+      "wilson": {
+        "long": [
+          0.594,
+          0.812
+        ],
+        "reflect": [
+          0.714,
+          0.789
+        ],
+        "feasibility": [
+          0.924,
+          0.943
+        ]
+      },
+      "sources": [
+        "dsh_medium_feasibility_ds41flash_off_20261111.json",
+        "dsh_medium_long_ds41flash_off_20261111.json",
+        "dsh_medium_reflect_ds41flash_off_20261111.json"
+      ]
+    },
+    {
       "id": "openclaw-deepseek-v4-1-flash-thinking-high",
       "details_url": "fork-run-openclaw-deepseek-v4-1-flash-thinking-high.html",
       "harness": "OpenClaw",
@@ -630,9 +700,9 @@
     "long": [
       {
         "label": "Pi (ours)",
-        "n": 24,
-        "mean": 1361.2,
-        "median": 482.9,
+        "n": 30,
+        "mean": 1578.8,
+        "median": 991.8,
         "max": 7262.0
       },
       {
@@ -660,9 +730,9 @@
     "reflect": [
       {
         "label": "Pi (ours)",
-        "n": 80,
-        "mean": 328.3,
-        "median": 111.6,
+        "n": 100,
+        "mean": 320.1,
+        "median": 133.7,
         "max": 2116.6
       },
       {
@@ -690,9 +760,9 @@
     "feasibility": [
       {
         "label": "Pi (ours)",
-        "n": 160,
-        "mean": 312.3,
-        "median": 68.1,
+        "n": 200,
+        "mean": 298.4,
+        "median": 100.0,
         "max": 3660.4
       },
       {

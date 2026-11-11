@@ -1945,6 +1945,38 @@
       "tasks": 90,
       "ours": [
         {
+          "harness": "DeepSeek Harness 0.2.2-rc.1",
+          "profile": "thinking: off (2026-11-11)",
+          "model": "DeepSeek-V4.1-Flash (cloud.ru) (thinking: off)",
+          "result": "60/66 (partial 66/90)",
+          "pct": "90.9%",
+          "time": "502.5m",
+          "steps": "1 542",
+          "tokens_cost": "103 233 565 (1 680₽)",
+          "version": "v0.21.3",
+          "source": "ours",
+          "waves": {
+            "long": {
+              "passed": 5,
+              "total": 6
+            },
+            "reflect": {
+              "passed": 16,
+              "total": 20
+            },
+            "feasibility": {
+              "passed": 39,
+              "total": 40
+            },
+            "composite_hard": {
+              "passed": null,
+              "total": null
+            }
+          },
+          "detail": "fork-run-deepseek-harness-deepseek-v4-1-flash-thinking-off.html",
+          "coverage": "66/90"
+        },
+        {
           "harness": "OpenClaw 2026.10.9 (8b18b55)",
           "profile": "thinking: high (2026-11-08)",
           "model": "DeepSeek-V4.1-Flash (cloud.ru) (thinking: high)",
@@ -2385,6 +2417,24 @@
       "label": "Medium sample",
       "tasks": 0,
       "ours": [
+        {
+          "kind": "coverage",
+          "harness": "DeepSeek Harness 0.2.2-rc.1",
+          "profile": "thinking: off (2026-11-11)",
+          "model": "DeepSeek-V4.1-Flash (cloud.ru) (thinking: off)",
+          "subset_key": "subset_our_runs",
+          "subset_args": {
+            "n": 66
+          },
+          "result": "60/66",
+          "pct": "90.9%",
+          "coverage": "66/90",
+          "time": "502.5m",
+          "steps": "1 542",
+          "tokens_cost": "103 233 565 (1 680₽)",
+          "status_key": "status_partial",
+          "detail": "fork-run-deepseek-harness-deepseek-v4-1-flash-thinking-off.html"
+        },
         {
           "kind": "coverage",
           "harness": "OpenClaw 2026.10.9 (8b18b55)",
