@@ -23,6 +23,20 @@
           "detail": "fork-detail-oc_shotlist_ds41flash_medium_20261107.html"
         },
         {
+          "harness": "DeepSeek Harness 0.2.2-rc.1",
+          "profile": "thinking: off (2026-11-11)",
+          "model": "DeepSeek-V4.1-Flash (cloud.ru) (thinking: off)",
+          "result": "51/52",
+          "pct": "98.1%",
+          "time": "19.1m",
+          "steps": "266",
+          "tokens_cost": "1 975 401 (43₽)",
+          "version": "0.16.0",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-dsh_shotlist_ds41flash_off_20261111.html"
+        },
+        {
           "harness": "OpenClaw 2026.10.9 (8b18b55)",
           "profile": "thinking: high (2026-11-07)",
           "model": "DeepSeek-V4.1-Flash (cloud.ru) (thinking: high)",

@@ -28,10 +28,11 @@ The block below is **generated** by `scripts/build_fork_results.py` from `result
 Do not edit by hand — change the script/JSON and rebuild.
 
 <!-- FORK:RESULTS:BEGIN -->
-Auto-sync: 61 runs
+Auto-sync: 62 runs
 
 | Harness | Suite | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| DeepSeek Harness | Shot List (52) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 51/52 | 98.1% | 19.1m | 266 | 1 975 401 (43₽) |
 | Hermes | Shot List (52) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 49/52 | 94.2% | 22.0m | 221 | 4 030 565 (289₽) |
 | Hermes | Shot List (52) | thinking: off | GLM-5.2 (thinking: off) | 46/52 | 88.5% | 68.5m | — | 6 209 159 (1 509₽) |
 | Hermes | Shot List (52) | — | GPT-OSS-120B | 28/52 | 53.8% | 37.9m | 427 | 8 833 747 (145₽) |
