@@ -3,7 +3,8 @@
 """Hermes Benchmark Runner — runs harness-bench-fast tasks through Hermes agent.
 
 Uses `hermes chat -q` to run each task in an isolated session with
-clean config (--ignore-rules --yolo -Q). Verifies with harness-bench-fast verifiers.
+clean config (--ignore-user-config --yolo --format stream-json). Usage buckets are
+read from the stream-json result envelope. Verifies with harness-bench-fast verifiers.
 
 Usage:
     python run_hermes_bench.py --pilot           # 12 tasks (6 failed + 6 passed)
@@ -20,7 +21,6 @@ Usage:
 import argparse
 import json
 import os
-import re
 import shutil
 import subprocess
 import sys
@@ -67,6 +67,138 @@ _MEMORY_TASK_PREFIXES = tuple(f"task_{n}_" for n in range(222, 254))
 def _is_memory_task(task_id: str) -> bool:
     """Check if task is a memory task (222-253) that needs AGENTS.md."""
     return task_id.startswith(_MEMORY_TASK_PREFIXES)
+
+
+# Prefixes of provider-qualified model ids used by the OpenClaw/Pi runners
+# (e.g. ``custom-foundation-models-api-cloud-ru/deepseek-ai/DeepSeek-V4.1-Flash``).
+# ``hermes chat --provider custom`` routes via ``--base-url``/``--api-key`` and
+# expects the BARE model id, so this leading provider segment must be dropped.
+PROVIDER_MODEL_PREFIXES = ("custom-foundation-models-api-cloud-ru/",)
+
+
+def _bare_model_id(model: str, provider: str = "custom") -> str:
+    """Return the model id Hermes expects, stripping a provider prefix.
+
+    For ``--provider custom`` the OpenClaw/Pi ids carry a leading provider
+    segment (``<provider>/<org>/<model>``) that Hermes does not recognise, so the
+    bare ``<org>/<model>`` is passed instead. Unknown prefixes pass through
+    unchanged.
+    """
+    if provider != "custom":
+        return model
+    for prefix in PROVIDER_MODEL_PREFIXES:
+        if model.startswith(prefix):
+            return model[len(prefix):]
+    return model
+
+
+def build_chat_command(prompt, *, model=DEFAULT_MODEL, thinking=None,
+                       is_memory=False, provider="custom",
+                       api_key=None, base_url=None):
+    """Build the ``hermes chat`` argv for a single benchmark task.
+
+    Hermes >= 0.23 compatibility (see the ``fix-hermes-cli-compat`` change):
+
+    - ``-v/--verbose`` is unsupported on the gateway/non-TTY path — passing it
+      aborts the run with ``exit=2: Unsupported gateway CLI options``. Usage is
+      read from ``--format stream-json`` on stdout instead.
+    - ``--ignore-user-config`` drops the user's provider config, so the custom
+      provider's endpoint (``--base-url``) and credential (``--api-key``) are
+      passed explicitly.
+    - ``--model`` is the *bare* id for the custom provider (``_bare_model_id``).
+
+    ``--ignore-rules`` is applied for every task EXCEPT memory tasks (222-253),
+    which need AGENTS.md injected. ``--reasoning <level>`` is native reasoning
+    control (Hermes 0.22.1+) and only overrides ``agent.reasoning_effort`` for
+    this run, so ``--ignore-user-config`` can stay on.
+    """
+    cmd = [
+        HERMES_BIN, "chat",
+        "-q", prompt,
+        "--model", _bare_model_id(model, provider),
+        "--provider", provider,
+        "--yolo",
+        "--format", "stream-json",
+        "--max-turns", "120",
+        "--source", "tool",
+        "--ignore-user-config",
+    ]
+    if provider == "custom":
+        cmd += ["--base-url", base_url if base_url is not None else CLOUD_RU_BASE_URL]
+        cmd += ["--api-key", api_key if api_key is not None else CLOUD_RU_API_KEY]
+    if thinking:
+        cmd += ["--reasoning", thinking]
+    if not is_memory:
+        cmd.append("--ignore-rules")
+    return cmd
+
+
+def _parse_stream_json(stdout: str) -> tuple[dict, str | None, str | None]:
+    """Parse ``hermes chat --format stream-json`` JSONL from *stdout*.
+
+    Returns ``(token_stats, session_id, result_error)``:
+
+    - ``token_stats`` carries ``agent_input_tokens`` / ``agent_output_tokens`` /
+      ``agent_total_tokens`` / ``agent_cache_read_tokens`` /
+      ``agent_cache_write_tokens`` from the terminal ``result`` event, plus
+      ``agent_tool_calls`` / ``agent_steps`` (number of ``tool_use`` events,
+      OpenClaw-runner parity).
+    - ``session_id`` is taken from ``result`` (falling back to ``system/init``).
+    - ``result_error`` is non-``None`` when the envelope reported an error or no
+      ``result`` event was emitted at all (usage then unwinds to zeros so
+      ``_write_results`` records 0 and the failure is visible in ``error``).
+    """
+    token_stats: dict = {}
+    session_id: str | None = None
+    result_error: str | None = None
+    tool_calls = 0
+    saw_result = False
+
+    for raw_line in (stdout or "").splitlines():
+        line = raw_line.strip()
+        if not line or not line.startswith("{"):
+            continue
+        try:
+            event = json.loads(line)
+        except (json.JSONDecodeError, ValueError):
+            continue
+        if not isinstance(event, dict):
+            continue
+        etype = event.get("type")
+        if etype == "tool_use":
+            tool_calls += 1
+        elif etype == "system":
+            sid = event.get("session_id")
+            if sid and session_id is None:
+                session_id = str(sid)
+        elif etype == "result":
+            saw_result = True
+            sid = event.get("session_id")
+            if sid:
+                session_id = str(sid)
+            tokens = event.get("tokens") or {}
+            token_stats.update({
+                "agent_input_tokens": int(tokens.get("input") or 0),
+                "agent_output_tokens": int(tokens.get("output") or 0),
+                "agent_total_tokens": int(tokens.get("total") or 0),
+                "agent_cache_read_tokens": int(tokens.get("cache_read") or 0),
+                "agent_cache_write_tokens": int(tokens.get("cache_write") or 0),
+            })
+            if event.get("error"):
+                result_error = str(event["error"])
+            elif int(event.get("exit_code") or 0) != 0:
+                result_error = f"result exit_code={int(event.get('exit_code') or 0)}"
+
+    if not saw_result:
+        token_stats = {}
+        if result_error is None:
+            result_error = "stream-json: no result event (usage unavailable)"
+        return token_stats, session_id, result_error
+
+    if tool_calls:
+        token_stats["agent_tool_calls"] = tool_calls
+        token_stats["agent_steps"] = tool_calls
+    return token_stats, session_id, result_error
 
 FAILED_TASK_IDS = [
     "task_223_memory_city_timezone_script",
@@ -115,42 +247,18 @@ def run_one_task(task, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT, keep_wor
         # 1. Setup workspace with task fixtures
         task.setup(workspace_path)
 
-        # 2. Build hermes command
-        # --ignore-user-config: no user plugins/MCP/credentials (ALL tasks)
-        # --ignore-rules: no AGENTS.md/SOUL.md/memory injection — ONLY for non-memory tasks
-        # --yolo: auto-approve all tool calls
-        # -Q: quiet mode (programmatic use)
-        # -v: verbose — needed for token stats parsing
-        # --max-turns 120: limit agent loop iterations
-        # --source tool: mark sessions as tool-origin
-        # --provider custom: use OPENAI_API_KEY/OPENAI_BASE_URL env vars (Cloud.ru)
-        # --reasoning <level>: native reasoning control (Hermes 0.22.1+); it overrides
-        #   agent.reasoning_effort for this run only, so no config.yaml toggle is needed
-        #   and --ignore-user-config can stay on for every task.
-        cmd = [
-            HERMES_BIN, "chat",
-            "-q", task.prompt,
-            "--model", model,
-            "--provider", "custom",
-            "--yolo",
-            "-Q",
-            "-v",
-            "--max-turns", "120",
-            "--source", "tool",
-            "--ignore-user-config",
-        ]
-
-        # Native reasoning-control flag (none|minimal|low|medium|high|xhigh|max|ultra).
-        if thinking:
-            cmd += ["--reasoning", thinking]
-
-        # Hybrid: only non-memory tasks get --ignore-rules
-        if not _is_memory_task(task.id):
-            cmd.append("--ignore-rules")
+        # 2. Build hermes command (supported Hermes >= 0.23 flags; see build_chat_command).
+        cmd = build_chat_command(
+            task.prompt,
+            model=model,
+            thinking=thinking,
+            is_memory=_is_memory_task(task.id),
+        )
 
         # 3. Run hermes with cwd=workspace
         agent_error = None
         session_id = None
+        token_stats: dict = {}
         try:
             run_env = os.environ.copy()
             run_env["OPENAI_API_KEY"] = CLOUD_RU_API_KEY
@@ -170,12 +278,10 @@ def run_one_task(task, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT, keep_wor
                 stderr_tail = (result.stderr or "")[-300:]
                 agent_error = f"exit={result.returncode}: {stderr_tail}"
 
-            # Extract session_id and token stats from verbose output
-            combined_output = (result.stdout or "") + (result.stderr or "")
-            if combined_output:
-                m = re.search(r"session_id:\s+(\S+)", combined_output)
-                if m:
-                    session_id = m.group(1)
+            # Usage + session id come from the stream-json ``result`` envelope on stdout.
+            token_stats, session_id, result_error = _parse_stream_json(result.stdout or "")
+            if result_error:
+                agent_error = f"{agent_error}; {result_error}" if agent_error else result_error
 
         except subprocess.TimeoutExpired:
             agent_error = f"timed out after {timeout}s"
@@ -189,53 +295,12 @@ def run_one_task(task, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT, keep_wor
         # 4. Verify the result
         verify_result = task.verify(workspace_path)
 
-        # 5. Extract token stats from verbose output
-        # Hermes -v outputs lines like:
-        #   "Token usage: prompt=19,945, completion=20, total=19,965"
-        # One per API call — sum all calls for total task tokens.
-        token_stats = {}
-        if result and result.stderr:
-            input_tokens = 0
-            output_tokens = 0
-            total_tokens = 0
-            for m in re.finditer(r"Token usage:\s+prompt=([\d,]+),\s+completion=([\d,]+),\s+total=([\d,]+)", result.stderr):
-                input_tokens += int(m.group(1).replace(",", ""))
-                output_tokens += int(m.group(2).replace(",", ""))
-                total_tokens += int(m.group(3).replace(",", ""))
-            if total_tokens > 0:
-                token_stats = {
-                    "agent_input_tokens": input_tokens,
-                    "agent_output_tokens": output_tokens,
-                    "agent_total_tokens": total_tokens,
-                }
-            # Explicit cache buckets, when the verbose stream carries them (Hermes's
-            # Cache line is verbosity-gated and is usually suppressed under -Q);
-            # otherwise `_write_results` derives the bucket ONCE from the token total
-            # (OpenClaw-runner parity).
-            cache_read = 0
-            cache_write = 0
-            for m in re.finditer(
-                r"Cache:\s*([\d,]+)/[\d,]+\s*tokens.*?([\d,]+)\s*written",
-                result.stderr,
-            ):
-                cache_read += int(m.group(1).replace(",", ""))
-                cache_write += int(m.group(2).replace(",", ""))
-            if total_tokens > 0 and (cache_read or cache_write):
-                token_stats["agent_cache_read_tokens"] = cache_read
-                token_stats["agent_cache_write_tokens"] = cache_write
-
-        # 6. Extract step count from verbose output
-        # Hermes -v outputs tool call info; count tool_call markers.
-        # Also try to get api_call_count from verbose output.
-        if result and result.stderr:
-            tool_calls = len(re.findall(r"Tool call:\s+\w+", result.stderr))
-            api_calls = len(re.findall(r"Token usage:", result.stderr))
-            if tool_calls > 0:
-                token_stats["agent_tool_calls"] = tool_calls
-            if api_calls > 0:
-                token_stats["agent_api_calls"] = api_calls
-            # Steps = agent turns (API calls), consistent with harness-bench definition
-            token_stats["agent_steps"] = api_calls if api_calls > 0 else None
+        # 5. Usage statistics were parsed from the stream-json envelope right
+        #    after the command ran (see `_parse_stream_json`): explicit
+        #    input/output/cache buckets, the session id, and `agent_steps` =
+        #    number of tool calls (OpenClaw-runner parity). When no `result`
+        #    event arrived the stats stay empty → `_write_results` records zeros
+        #    and the missing envelope is surfaced through `error`.
 
         return {
             "task_id": task.id,
