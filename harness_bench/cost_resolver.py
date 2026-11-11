@@ -13,6 +13,12 @@ A missing ``cache_read`` field is treated as 0 in the returned rates dict;
 when it is *priced*, ``compute_cost_rub`` bills cache tokens at the model's
 INPUT rate -- owner policy H2 (see the ``price-cache-read-at-input-rate``
 change).  A published cache tariff (e.g. DeepSeek-V4.1-Flash = 6.5) is kept.
+
+When a model *does* publish a cache rate but that rate is synthetic/incorrect
+(e.g. Cloud.ru gpt-5.5 ``cache_read = 85.4`` = input/10, against a real billing
+model of full-prompt-at-input-rate), the rate is overridden via
+``CACHE_RATE_OVERRIDES`` (change ``fix-gpt55-cache-rate-policy``) -- explicitly,
+per model, never by a ratio heuristic.
 """
 
 from __future__ import annotations
@@ -164,6 +170,75 @@ def _note_cache_tariff(model_id: str, rates: dict) -> None:
     )
 
 
+# ---------------------------------------------------------------------------
+# Explicit cache-rate overrides (synthetic / incorrect published tariff)
+# ---------------------------------------------------------------------------
+
+# Models whose *published* cache tariff is synthetic or otherwise wrong.  The
+# value is either the sentinel ``"input"`` (bill cache-read/cache-write at the
+# model's INPUT rate) or an explicit ₽/1M float.  Owner policy H2 is extended by
+# the change ``fix-gpt55-cache-rate-policy``: when a model *does* publish a cache
+# rate but that rate is wrong, it is overridden here rather than silently kept.
+#
+# Why an explicit table and not a ratio heuristic: a public cache rate equal to
+# ``input/10`` is a *legitimate* discount scheme for some providers, so detecting
+# "synthetic" from the ratio alone would mis-price them.  Overrides are therefore
+# added per model, only after the published rate is shown to disagree with actual
+# provider billing -- auditable and safe for every other model.
+CACHE_RATE_OVERRIDES: dict[str, "str | float"] = {
+    # Cloud.ru bills gpt-5.5 as ``input*854 + output*5124`` with ``input`` = the
+    # FULL prompt including the cached prefix (verified +-0.02% against the
+    # provider export).  The catalog's ``cache_read = 85.4`` (= input/10) is
+    # synthetic and understates cost, so cache tokens are billed at the INPUT rate.
+    "openai/gpt-5.5": "input",
+}
+
+
+def resolve_cache_rate_override(model_id: str) -> "str | float | None":
+    """Return the cache-rate override for *model_id*, or None.
+
+    Matches the full id exactly, or via a ``/``-suffix when the runner passes a
+    compound ``<provider>/<model>`` id that ends with an override key.
+    """
+    if not model_id:
+        return None
+    for key, value in CACHE_RATE_OVERRIDES.items():
+        if model_id == key or model_id.endswith("/" + key):
+            return value
+    return None
+
+
+def _apply_cache_rate_override(model_id: str, rates: dict) -> dict:
+    """Apply an explicit cache-rate override, returning a copy of *rates*.
+
+    Forces ``cacheRead``/``cacheWrite`` to the override value (``"input"`` -> the
+    model's input rate) and prints a NOTE; a no-op when *model_id* has no override.
+    """
+    override = resolve_cache_rate_override(model_id)
+    if override is None:
+        return rates
+    published = rates.get("cacheRead")
+    effective = rates["input"] if override == "input" else float(override)
+    out = dict(rates)
+    out["cacheRead"] = effective
+    out["cacheWrite"] = effective
+    target = "INPUT rate" if override == "input" else f"{effective} ₽/1M"
+    print(
+        f"[cost_resolver] NOTE: cache-rate override for '{model_id}': the published "
+        f"cache tariff ({published} ₽/1M) is synthetic/incorrect; pricing cache "
+        f"tokens at the {target} ({effective} ₽/1M).",
+        file=sys.stderr,
+    )
+    return out
+
+
+def _finalize_rates(model_id: str, rates: dict) -> dict:
+    """Apply any cache-rate override, then emit the cache-tariff note."""
+    rates = _apply_cache_rate_override(model_id, rates)
+    _note_cache_tariff(model_id, rates)
+    return rates
+
+
 def resolve_model_rates(
     model_id: str,
     config_path: Optional[str | Path] = None,
@@ -188,15 +263,13 @@ def resolve_model_rates(
     if model_id:
         rates = _rates_from_cache(model_id, cache)
         if rates is not None:
-            _note_cache_tariff(model_id, rates)
-            return rates
+            return _finalize_rates(model_id, rates)
 
     cfg = _load_config(config_path)
     if model_id:
         rates = _rates_from_config(model_id, cfg)
         if rates is not None:
-            _note_cache_tariff(model_id, rates)
-            return rates
+            return _finalize_rates(model_id, rates)
 
     # Last resort before the documented fallback: infer the model from the artifact
     # filename. Never silent -- warn that the model was guessed.
@@ -212,8 +285,7 @@ def resolve_model_rates(
                 f"inferred '{hint}' from filename '{filename}'.",
                 file=sys.stderr,
             )
-            _note_cache_tariff(hint, rates)
-            return rates
+            return _finalize_rates(hint, rates)
 
     print(
         f"[cost_resolver] WARNING: no cost rates found for model '{model_id}' "
