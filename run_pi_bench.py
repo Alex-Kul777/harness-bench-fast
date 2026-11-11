@@ -39,6 +39,7 @@ from harness_bench.tasks import ALL_TASKS, SUITES, get_task
 from harness_bench.cost_resolver import resolve_model_rates, compute_cost_rub
 from harness_bench.core import effective_task_timeout
 from harness_bench.artifact_metadata import artifact_metadata, resolve_harness_version  # noqa: E402
+from harness_bench.bench_credentials import resolve_bench_api_key  # noqa: E402
 
 DEFAULT_MODEL = "zai-org/GLM-5.2"
 DEFAULT_TIMEOUT = 660
@@ -61,18 +62,10 @@ PI_IMAGE = "pi-sandbox:latest"
 PI_DOCKER_SCRIPT = str(Path.home() / "pi-agent" / "pi-docker.sh")
 PI_MODELS_JSON = str(Path.home() / "pi-agent" / "models.json")
 
-# Cloud.ru API key
-CLOUD_RU_API_KEY = os.environ.get("CLOUD_RU_API_KEY", "")
-if not CLOUD_RU_API_KEY:
-    # Try Hermes .env
-    _hermes_env = Path.home() / ".hermes" / ".env"
-    if _hermes_env.exists():
-        for line in _hermes_env.read_text().splitlines():
-            if line.startswith("CLOUD_RU_KAP_HERMES="):
-                CLOUD_RU_API_KEY = line.split("=", 1)[1].strip()
-                break
-    if not CLOUD_RU_API_KEY:
-        print("WARNING: CLOUD_RU_API_KEY not found.", file=sys.stderr)
+# Dedicated benchmark credential. Priority: CLOUD_RU_BENCH_API_KEY ->
+# CLOUD_RU_KAP_HERMES (env, then ~/.hermes/.env) -> production CLOUD_RU_API_KEY.
+# BENCH_CREDENTIAL records which source was used and is written to the artifact.
+CLOUD_RU_API_KEY, BENCH_CREDENTIAL = resolve_bench_api_key()
 
 # ₽ pricing is resolved per-model from ~/.openclaw/openclaw.json via cost_resolver.
 def _get_model_rates(model_id: str) -> dict:
@@ -407,6 +400,7 @@ def _write_results(results, path, timeout=None, model=None, *,
                 "total_steps": total_steps,
                 "total_tool_calls": total_tool_calls,
                 "estimated_cost_rub": cost_rub,
+                "bench_credential": BENCH_CREDENTIAL,
                 "timeout": timeout,
                 "task_timeouts": {
                     r["task_id"]: r.get("timeout") for r in results if r.get("timeout") is not None

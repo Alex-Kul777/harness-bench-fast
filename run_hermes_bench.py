@@ -40,6 +40,7 @@ SHOT_LIST_FILE = BENCH_DIR / "shot_list.txt"
 from harness_bench.tasks import ALL_TASKS, get_task
 from harness_bench.cost_resolver import resolve_model_rates, compute_cost_rub
 from harness_bench.artifact_metadata import artifact_metadata, resolve_harness_version  # noqa: E402
+from harness_bench.bench_credentials import resolve_bench_api_key  # noqa: E402
 
 DEFAULT_MODEL = "zai-org/GLM-5.2"
 DEFAULT_TIMEOUT = 660
@@ -51,18 +52,11 @@ HERMES_BIN = os.environ.get("HERMES_BIN", "hermes")
 
 # Cloud.ru Foundation Models API — provider config for --ignore-user-config mode.
 CLOUD_RU_BASE_URL = "https://foundation-models.api.cloud.ru/v1/"
-CLOUD_RU_API_KEY = os.environ.get("CLOUD_RU_API_KEY", "")
-
-# Load API key from Hermes .env if not set in environment
-if not CLOUD_RU_API_KEY:
-    _hermes_env = Path.home() / ".hermes" / ".env"
-    if _hermes_env.exists():
-        for line in _hermes_env.read_text().splitlines():
-            if line.startswith("CLOUD_RU_KAP_HERMES="):
-                CLOUD_RU_API_KEY = line.split("=", 1)[1].strip()
-                break
-    if not CLOUD_RU_API_KEY:
-        print("WARNING: CLOUD_RU_API_KEY not found. Set it or ensure ~/.hermes/.env has CLOUD_RU_KAP_HERMES", file=sys.stderr)
+# Dedicated benchmark credential. Priority: CLOUD_RU_BENCH_API_KEY ->
+# CLOUD_RU_KAP_HERMES (env, then ~/.hermes/.env) -> production CLOUD_RU_API_KEY.
+# This is what feeds OPENAI_API_KEY for `--provider custom`; BENCH_CREDENTIAL
+# records the source and is written to the run artifact.
+CLOUD_RU_API_KEY, BENCH_CREDENTIAL = resolve_bench_api_key()
 
 # Memory tasks (222-253) ship AGENTS.md fixture with instructions to read/write MEMORY.md.
 # --ignore-rules would skip AGENTS.md → all memory tasks FAIL.
@@ -333,6 +327,7 @@ def _write_results(results, path, model=None, *,
                 "total_cache_read_tokens": total_cache_read,
                 "total_cache_write_tokens": total_cache_write,
                 "estimated_cost_rub": cost_rub,
+                "bench_credential": BENCH_CREDENTIAL,
             },
         }
         tmp_path = str(path) + ".tmp"

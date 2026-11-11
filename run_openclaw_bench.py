@@ -31,6 +31,13 @@ sys.path.insert(0, str(BENCH_DIR))
 from harness_bench.tasks import ALL_TASKS, SUITES, get_task
 from harness_bench.cost_resolver import resolve_model_rates, compute_cost_rub
 from harness_bench.artifact_metadata import artifact_metadata  # noqa: E402
+from harness_bench.bench_credentials import resolve_bench_api_key  # noqa: E402
+
+# Dedicated benchmark credential (all models × harnesses bill the bench
+# account). `openclaw agent exec` resolves the provider key from the
+# OpenClaw secret store; we ALSO export the resolved bench key into the
+# child environment so the run is isolated from the production budget.
+CLOUD_RU_API_KEY, BENCH_CREDENTIAL = resolve_bench_api_key()
 
 
 # ── Configuration ──────────────────────────────────────────────────────
@@ -109,6 +116,11 @@ def run_one_task(
         agent_error = None
         result = None
         try:
+            run_env = os.environ.copy()
+            if CLOUD_RU_API_KEY:
+                # Non-breaking: the provider config still governs if it ignores env.
+                run_env["CLOUD_RU_API_KEY"] = CLOUD_RU_API_KEY
+                run_env["CLOUD_RU_BENCH_API_KEY"] = CLOUD_RU_API_KEY
             result = subprocess.run(
                 cmd,
                 cwd=str(workspace_path),
@@ -117,6 +129,7 @@ def run_one_task(
                 timeout=timeout + 60,
                 encoding="utf-8",
                 errors="replace",
+                env=run_env,
             )
             if result.returncode != 0:
                 stderr_tail = (result.stderr or "")[-300:]
@@ -255,6 +268,7 @@ def _write_results(results: list[dict], path: str, *,
             "total_cache_read_tokens": total_cache_read,
             "total_cache_write_tokens": total_cache_write,
             "estimated_cost_rub": round(cost_rub, 2),
+            "bench_credential": BENCH_CREDENTIAL,
         },
     }
     with open(path, "w", encoding="utf-8") as f:
