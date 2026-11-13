@@ -71,6 +71,31 @@ PASSED_TASK_IDS = [
 
 PILOT_TASK_IDS = FAILED_TASK_IDS + PASSED_TASK_IDS
 
+# `openclaw agent exec --json` OMITS `usage` entirely when token accounting is
+# unavailable (cli/docs: "usage is omitted when unavailable"). An omitted usage
+# is NOT a zero-token measurement: a run can execute dozens of turns and tool
+# calls yet report nothing (see issue #449). Distinguish the two here so the
+# runner never records 0 tokens for a run that merely failed to report usage.
+_USAGE_BUCKETS = (
+    "agent_input_tokens",
+    "agent_output_tokens",
+    "agent_total_tokens",
+    "agent_reasoning_tokens",
+    "agent_cache_read_tokens",
+    "agent_cache_write_tokens",
+)
+
+
+def _reported_usage(usage: object) -> dict | None:
+    """Return the envelope's `usage` mapping when the run actually reported it.
+
+    Returns ``None`` (unavailable) for a missing/empty mapping. Callers must
+    keep unavailable buckets as ``None`` — never coerce them to ``0``.
+    """
+    if not isinstance(usage, dict) or not usage:
+        return None
+    return usage
+
 # Thread-safe print
 _print_lock = threading.Lock()
 def safe_print(*args, **kwargs):
@@ -147,29 +172,37 @@ def run_one_task(
         # 4. Extract token stats from JSON envelope
         # Envelope format: {ok, status, final, payloads, usage:{input,output,total,reasoningTokens},
         #                   costUsd, assistantTurns, toolSummary:{calls,tools,failures}, model, sessionId}
-        token_stats = {}
+        token_stats = {bucket: None for bucket in _USAGE_BUCKETS}
+        token_stats["agent_usage_available"] = False
         if result and result.stdout:
             try:
                 envelope = json.loads(result.stdout)
-                usage = envelope.get("usage", {})
-                tool_summary = envelope.get("toolSummary", {})
-                token_stats = {
-                    "agent_input_tokens": usage.get("input", 0),
-                    "agent_output_tokens": usage.get("output", 0),
-                    "agent_total_tokens": usage.get("total", 0),
-                    "agent_reasoning_tokens": usage.get("reasoningTokens", 0),
-                    # Explicit cache buckets from the envelope (invariant:
-                    # total = input + output + cacheRead + cacheWrite). Stored
-                    # verbatim; only derived downstream when truly absent.
-                    "agent_cache_read_tokens": usage.get("cacheRead"),
-                    "agent_cache_write_tokens": usage.get("cacheWrite"),
+            except (json.JSONDecodeError, AttributeError):
+                envelope = None
+            if isinstance(envelope, dict):
+                usage = _reported_usage(envelope.get("usage"))
+                tool_summary = envelope.get("toolSummary") or {}
+                available = usage is not None
+                if available:
+                    token_stats = {
+                        "agent_input_tokens": usage.get("input", 0),
+                        "agent_output_tokens": usage.get("output", 0),
+                        "agent_total_tokens": usage.get("total", 0),
+                        "agent_reasoning_tokens": usage.get("reasoningTokens", 0),
+                        # Explicit cache buckets from the envelope (invariant:
+                        # total = input + output + cacheRead + cacheWrite).
+                        # Stored verbatim; only derived downstream when absent.
+                        "agent_cache_read_tokens": usage.get("cacheRead"),
+                        "agent_cache_write_tokens": usage.get("cacheWrite"),
+                    }
+                # else: keep the None buckets from above (usage unavailable).
+                token_stats.update({
+                    "agent_usage_available": available,
                     "agent_steps": tool_summary.get("calls", 0),
                     "agent_turns": envelope.get("assistantTurns", 0),
-                    "agent_cost_usd": envelope.get("costUsd", 0),
+                    "agent_cost_usd": envelope.get("costUsd"),
                     "agent_session_id": envelope.get("sessionId", ""),
-                }
-            except (json.JSONDecodeError, AttributeError):
-                pass
+                })
 
         return {
             "task_id": task.id,
@@ -191,6 +224,7 @@ def run_one_task(
             "elapsed_seconds": round(elapsed, 2),
             "error": str(exc),
             "workspace": None,
+            "agent_usage_available": False,
         }
     finally:
         if workspace_keepalive is not None and not keep_workspace:
@@ -205,9 +239,11 @@ def _write_results(results: list[dict], path: str, *,
     """Write results in upstream-compatible format."""
     passed = sum(1 for r in results if r["passed"])
     total = len(results)
-    total_input = sum(r.get("agent_input_tokens", 0) for r in results)
-    total_output = sum(r.get("agent_output_tokens", 0) for r in results)
-    total_tokens = sum(r.get("agent_total_tokens", 0) for r in results)
+    # Buckets are None when a run's usage was unavailable; a missing
+    # measurement must not be silently written as 0 tokens (issue #449).
+    total_input = sum(int(r.get("agent_input_tokens") or 0) for r in results)
+    total_output = sum(int(r.get("agent_output_tokens") or 0) for r in results)
+    total_tokens = sum(int(r.get("agent_total_tokens") or 0) for r in results)
     total_seconds = sum(r["elapsed_seconds"] for r in results)
     total_steps = sum(r.get("agent_steps", 0) for r in results)
     # Per-model rates resolved from the live Cloud.ru catalog / config
@@ -220,7 +256,14 @@ def _write_results(results: list[dict], path: str, *,
     total_cache_read = 0
     total_cache_write = 0
     total_reasoning = sum(int(r.get("agent_reasoning_tokens") or 0) for r in results)
+    usage_unavailable: list[str] = []
     for r in results:
+        if not r.get("agent_usage_available", True):
+            # No usage reported -> keep the buckets unavailable (None); do not
+            # manufacture a zero bucket from the total-invariant. Surface the
+            # task so published totals are not read as complete.
+            usage_unavailable.append(r.get("task_id"))
+            continue
         cr = r.get("agent_cache_read_tokens")
         cw = r.get("agent_cache_write_tokens")
         if cr is None or cw is None:
@@ -268,6 +311,11 @@ def _write_results(results: list[dict], path: str, *,
             "total_cache_read_tokens": total_cache_read,
             "total_cache_write_tokens": total_cache_write,
             "estimated_cost_rub": round(cost_rub, 2),
+            # A run whose envelope omitted `usage` executed but reported no
+            # tokens; totals above are therefore lower bounds, and these task
+            # ids need provider-billing backfill (issue #449).
+            "usage_unavailable_tasks": sorted(t for t in usage_unavailable if t),
+            "usage_unavailable_count": len(usage_unavailable),
             "bench_credential": BENCH_CREDENTIAL,
         },
     }
@@ -339,9 +387,9 @@ def run_concurrent(
     passed = sum(1 for r in checkpoint.values() if r.get("passed"))
     failed = completed - passed
     start_time = time.monotonic()
-    total_tokens = sum(r.get("agent_total_tokens", 0) for r in checkpoint.values())
-    total_input = sum(r.get("agent_input_tokens", 0) for r in checkpoint.values())
-    total_output = sum(r.get("agent_output_tokens", 0) for r in checkpoint.values())
+    total_tokens = sum(int(r.get("agent_total_tokens") or 0) for r in checkpoint.values())
+    total_input = sum(int(r.get("agent_input_tokens") or 0) for r in checkpoint.values())
+    total_output = sum(int(r.get("agent_output_tokens") or 0) for r in checkpoint.values())
     lock = threading.Lock()
 
     def task_wrapper(tid: str, idx: int) -> dict:
@@ -350,6 +398,9 @@ def run_concurrent(
         run = run_one_task(task, model=model, timeout=timeout, keep_workspace=keep_workspace, thinking=thinking)
         status = "✅ PASS" if run["passed"] else "❌ FAIL"
         safe_print(f"[{idx}/{len(task_ids)}] {task.id}: [{status}] {run['elapsed_seconds']:.1f}s — {run['message'][:120]}", flush=True)
+        if run.get("agent_usage_available") is False:
+            safe_print(f"[{idx}/{len(task_ids)}] {task.id}: ⚠️ usage unavailable "
+                       f"(envelope omitted `usage`) — needs billing backfill", flush=True)
         return run
 
     with ThreadPoolExecutor(max_workers=concurrency) as executor:
@@ -369,6 +420,7 @@ def run_concurrent(
                     "message": f"executor error: {exc}",
                     "elapsed_seconds": 0,
                     "error": str(exc),
+                    "agent_usage_available": False,
                 }
 
             with lock:
@@ -378,9 +430,9 @@ def run_concurrent(
                     passed += 1
                 else:
                     failed += 1
-                total_tokens += run.get("agent_total_tokens", 0)
-                total_input += run.get("agent_input_tokens", 0)
-                total_output += run.get("agent_output_tokens", 0)
+                total_tokens += int(run.get("agent_total_tokens") or 0)
+                total_input += int(run.get("agent_input_tokens") or 0)
+                total_output += int(run.get("agent_output_tokens") or 0)
                 total_cache_read = sum(int(r.get("agent_cache_read_tokens") or 0) for r in results.values())
                 total_cache_write = sum(int(r.get("agent_cache_write_tokens") or 0) for r in results.values())
                 elapsed = time.monotonic() - start_time
