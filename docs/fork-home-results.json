@@ -191,6 +191,20 @@
           "detail": "fork-detail-pi_shotlist_gpt55_high_20261110.html"
         },
         {
+          "harness": "Pi",
+          "profile": "thinking: off (2026-11-13)",
+          "model": "Claude Sonnet 4.6 (cloud.ru) (thinking: off)",
+          "result": "49/52",
+          "pct": "94.2%",
+          "time": "12.8m",
+          "steps": "1 152",
+          "tokens_cost": "3 038 157 (819₽)",
+          "version": "—",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-pi_shotlist_sonnet46_off_20261113.html"
+        },
+        {
           "harness": "OpenClaw 2026.11.2 (b556fdf)",
           "profile": "thinking: off (2026-11-09)",
           "model": "MiniMax-M3 (cloud.ru) (thinking: off)",
@@ -2184,6 +2198,38 @@
         },
         {
           "harness": "Pi",
+          "profile": "thinking: off (2026-11-13)",
+          "model": "Claude Sonnet 4.6 (cloud.ru) (thinking: off)",
+          "result": "35/60 (partial 60/90)",
+          "pct": "58.3%",
+          "time": "283.8m",
+          "steps": "4 867",
+          "tokens_cost": "148 283 633 (36 922₽)",
+          "version": "v0.21.3",
+          "source": "ours",
+          "waves": {
+            "long": {
+              "passed": null,
+              "total": null
+            },
+            "reflect": {
+              "passed": 15,
+              "total": 20
+            },
+            "feasibility": {
+              "passed": 20,
+              "total": 40
+            },
+            "composite_hard": {
+              "passed": null,
+              "total": null
+            }
+          },
+          "detail": "fork-run-pi-claude-sonnet-4-6-thinking-off.html",
+          "coverage": "60/90"
+        },
+        {
+          "harness": "Pi",
           "profile": "— (2026-11-05)",
           "model": "DeepSeek-V4.1-Flash (cloud.ru)",
           "result": "55/66 (partial 66/90)",
@@ -2556,6 +2602,24 @@
           "tokens_cost": "52 653 722 (13 974₽)",
           "status_key": "status_partial",
           "detail": "fork-run-openclaw-minimax-m3-thinking-off.html"
+        },
+        {
+          "kind": "coverage",
+          "harness": "Pi",
+          "profile": "thinking: off (2026-11-13)",
+          "model": "Claude Sonnet 4.6 (cloud.ru) (thinking: off)",
+          "subset_key": "subset_our_runs",
+          "subset_args": {
+            "n": 60
+          },
+          "result": "35/60",
+          "pct": "58.3%",
+          "coverage": "60/90",
+          "time": "283.8m",
+          "steps": "4 867",
+          "tokens_cost": "148 283 633 (36 922₽)",
+          "status_key": "status_partial",
+          "detail": "fork-run-pi-claude-sonnet-4-6-thinking-off.html"
         },
         {
           "kind": "coverage",

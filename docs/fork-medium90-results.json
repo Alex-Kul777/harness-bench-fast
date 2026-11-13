@@ -414,6 +414,61 @@
       ]
     },
     {
+      "id": "pi-claude-sonnet-4-6-thinking-off",
+      "details_url": "fork-run-pi-claude-sonnet-4-6-thinking-off.html",
+      "harness": "Pi",
+      "model": "Claude Sonnet 4.6",
+      "profile": "thinking: off",
+      "harness_version": null,
+      "runs": 2,
+      "suites": {
+        "long": null,
+        "reflect": {
+          "passed": 15,
+          "total": 20,
+          "measurement": "complete",
+          "duration": {
+            "n": 20,
+            "mean": 100.2,
+            "median": 67.6,
+            "max": 511.4
+          }
+        },
+        "feasibility": {
+          "passed": 20,
+          "total": 40,
+          "measurement": "complete",
+          "duration": {
+            "n": 40,
+            "mean": 375.5,
+            "median": 83.9,
+            "max": 3660.8
+          }
+        },
+        "composite_hard": null
+      },
+      "usage": {
+        "seconds": 17025.1,
+        "steps": 4867,
+        "tokens": 148283633,
+        "cost_rub": 36922.2
+      },
+      "wilson": {
+        "reflect": [
+          0.67,
+          0.75
+        ],
+        "feasibility": [
+          0.477,
+          0.523
+        ]
+      },
+      "sources": [
+        "pi_medium_feasibility_sonnet46_off_20261113.json",
+        "pi_medium_reflect_sonnet46_off_20261113.json"
+      ]
+    },
+    {
       "id": "pi-deepseek-v4-1-flash",
       "details_url": "fork-run-pi-deepseek-v4-1-flash.html",
       "harness": "Pi",
@@ -730,9 +785,9 @@
     "reflect": [
       {
         "label": "Pi (ours)",
-        "n": 100,
-        "mean": 320.1,
-        "median": 133.7,
+        "n": 120,
+        "mean": 283.5,
+        "median": 105.2,
         "max": 2116.6
       },
       {
@@ -760,10 +815,10 @@
     "feasibility": [
       {
         "label": "Pi (ours)",
-        "n": 200,
-        "mean": 298.4,
-        "median": 100.0,
-        "max": 3660.4
+        "n": 240,
+        "mean": 311.2,
+        "median": 93.4,
+        "max": 3660.8
       },
       {
         "label": "Codex + DeepSeek",
