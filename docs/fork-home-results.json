@@ -2198,6 +2198,38 @@
         },
         {
           "harness": "Pi",
+          "profile": "thinking: medium (2026-11-13)",
+          "model": "Claude Sonnet 4.6 (cloud.ru) (thinking: medium)",
+          "result": "35/66 (partial 66/90)",
+          "pct": "53.0%",
+          "time": "675.2m",
+          "steps": "5 266",
+          "tokens_cost": "160 081 147 (15 835₽)",
+          "version": "v0.21.3",
+          "source": "ours",
+          "waves": {
+            "long": {
+              "passed": 0,
+              "total": 6
+            },
+            "reflect": {
+              "passed": 14,
+              "total": 20
+            },
+            "feasibility": {
+              "passed": 21,
+              "total": 40
+            },
+            "composite_hard": {
+              "passed": null,
+              "total": null
+            }
+          },
+          "detail": "fork-run-pi-claude-sonnet-4-6-thinking-medium.html",
+          "coverage": "66/90"
+        },
+        {
+          "harness": "Pi",
           "profile": "thinking: off (2026-11-13)",
           "model": "Claude Sonnet 4.6 (cloud.ru) (thinking: off)",
           "result": "35/60 (partial 60/90)",
@@ -2602,6 +2634,24 @@
           "tokens_cost": "52 653 722 (13 974₽)",
           "status_key": "status_partial",
           "detail": "fork-run-openclaw-minimax-m3-thinking-off.html"
+        },
+        {
+          "kind": "coverage",
+          "harness": "Pi",
+          "profile": "thinking: medium (2026-11-13)",
+          "model": "Claude Sonnet 4.6 (cloud.ru) (thinking: medium)",
+          "subset_key": "subset_our_runs",
+          "subset_args": {
+            "n": 66
+          },
+          "result": "35/66",
+          "pct": "53.0%",
+          "coverage": "66/90",
+          "time": "675.2m",
+          "steps": "5 266",
+          "tokens_cost": "160 081 147 (15 835₽)",
+          "status_key": "status_partial",
+          "detail": "fork-run-pi-claude-sonnet-4-6-thinking-medium.html"
         },
         {
           "kind": "coverage",
