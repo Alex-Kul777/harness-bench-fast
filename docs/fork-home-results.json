@@ -107,6 +107,20 @@
           "detail": "fork-detail-oc_shotlist_gpt55_high_20261110.html"
         },
         {
+          "harness": "Pi",
+          "profile": "— (2026-11-13)",
+          "model": "Claude Sonnet 4.6 (cloud.ru)",
+          "result": "50/52",
+          "pct": "96.2%",
+          "time": "14.6m",
+          "steps": "1 060",
+          "tokens_cost": "2 657 016 (758₽)",
+          "version": "—",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-pi_sonnet46_shotlist_20261113.html"
+        },
+        {
           "harness": "Hermes Agent v0.23.1 (2026.9.24) · stable · local 3b4215785882",
           "profile": "thinking: off (2026-11-11)",
           "model": "DeepSeek-V4.1-Flash (cloud.ru) (thinking: off)",

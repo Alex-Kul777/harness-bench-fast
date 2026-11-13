@@ -29,7 +29,7 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 Руками не редактировать — правь скрипт/JSON и пересобирай.
 
 <!-- FORK:RESULTS:BEGIN -->
-Автосинк: 65 прогонов
+Автосинк: 66 прогонов
 
 | Harness | Suite | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
@@ -75,6 +75,7 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 | OpenClaw | Medium (392-471) | thinking: off | MiniMax-M3 (thinking: off) | 33/40 | 82.5% | 266.4m | 989 | 33 114 679 (8 636₽) |
 | OpenClaw | Medium (392-471) | thinking: off | MiniMax-M3 (thinking: off) | 13/20 | 65.0% | 162.0m | 698 | 12 178 668 (3 426₽) |
 | OpenClaw | Medium (392-471) | thinking: off | MiniMax-M3 (thinking: off) | 0/6 | 0.0% | 363.2m | 276 | 7 360 375 (1 913₽) |
+| Pi | Shot List (52) | — | Claude Sonnet 4.6 | 50/52 | 96.2% | 14.6m | 1 060 | 2 657 016 (758₽) |
 | Pi | Shot List (52) | — | DeepSeek-V4.1-Flash | 49/52 | 94.2% | 21.3m | 330 | 1 438 179 (42₽) |
 | Pi | Shot List (52) | thinking: off | GLM-5.2 (thinking: off) | 49/52 | 94.2% | 102.8m | 388 | 1 913 439 (377₽) |
 | Pi | Shot List (52) | — | GLM-5.3 | 49/52 | 94.2% | 64.9m | 349 | 1 764 093 (221₽) |

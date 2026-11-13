@@ -1,0 +1,270 @@
+{
+  "sample": "sonnet46-light",
+  "wave": "light(391/shot-list)",
+  "count": 52,
+  "model": "custom-foundation-models-api-cloud-ru/anthropic/claude-sonnet-4.6",
+  "harness": "pi",
+  "created": "2026-11-13",
+  "tasks": [
+    {
+      "task_id": "task_01_create_hello",
+      "band": "boundary",
+      "by_available_configs": "52/53"
+    },
+    {
+      "task_id": "task_03_slugify",
+      "band": "boundary",
+      "by_available_configs": "47/53"
+    },
+    {
+      "task_id": "task_24_add_header_comment",
+      "band": "boundary",
+      "by_available_configs": "43/53"
+    },
+    {
+      "task_id": "task_41_count_todos",
+      "band": "boundary",
+      "by_available_configs": "29/53"
+    },
+    {
+      "task_id": "task_48_append_eof_each",
+      "band": "boundary",
+      "by_available_configs": "37/53"
+    },
+    {
+      "task_id": "task_63_nested_json_edit",
+      "band": "ceiling",
+      "by_available_configs": "53/53"
+    },
+    {
+      "task_id": "task_69_remove_comments",
+      "band": "boundary",
+      "by_available_configs": "45/53"
+    },
+    {
+      "task_id": "task_92_count_chars",
+      "band": "boundary",
+      "by_available_configs": "31/53"
+    },
+    {
+      "task_id": "task_101_csv_mean_score",
+      "band": "boundary",
+      "by_available_configs": "49/53"
+    },
+    {
+      "task_id": "task_104_csv_join",
+      "band": "boundary",
+      "by_available_configs": "48/53"
+    },
+    {
+      "task_id": "task_106_csv_group_count",
+      "band": "boundary",
+      "by_available_configs": "31/53"
+    },
+    {
+      "task_id": "task_140_grep_emails",
+      "band": "boundary",
+      "by_available_configs": "37/53"
+    },
+    {
+      "task_id": "task_153_xlsx_to_markdown_report",
+      "band": "boundary",
+      "by_available_configs": "35/52"
+    },
+    {
+      "task_id": "task_157_two_csv_diff",
+      "band": "boundary",
+      "by_available_configs": "50/53"
+    },
+    {
+      "task_id": "task_159_unzip_extract",
+      "band": "boundary",
+      "by_available_configs": "52/53"
+    },
+    {
+      "task_id": "task_201_reconcile_vip_users",
+      "band": "boundary",
+      "by_available_configs": "30/53"
+    },
+    {
+      "task_id": "task_206_reconcile_paid_revenue",
+      "band": "boundary",
+      "by_available_configs": "38/53"
+    },
+    {
+      "task_id": "task_214_customer_data_quality_report",
+      "band": "boundary",
+      "by_available_configs": "30/53"
+    },
+    {
+      "task_id": "task_222_memory_name_pyproject",
+      "band": "boundary",
+      "by_available_configs": "25/53"
+    },
+    {
+      "task_id": "task_223_memory_city_timezone_script",
+      "band": "boundary",
+      "by_available_configs": "18/53"
+    },
+    {
+      "task_id": "task_226_memory_requirements_dev",
+      "band": "boundary",
+      "by_available_configs": "39/53"
+    },
+    {
+      "task_id": "task_231_memory_refuse_secrets",
+      "band": "boundary",
+      "by_available_configs": "22/53"
+    },
+    {
+      "task_id": "task_240_memory_summarize_profile",
+      "band": "boundary",
+      "by_available_configs": "47/53"
+    },
+    {
+      "task_id": "task_263_terminal_du_top_dirs",
+      "band": "boundary",
+      "by_available_configs": "29/53"
+    },
+    {
+      "task_id": "task_266_terminal_sha256_manifest",
+      "band": "boundary",
+      "by_available_configs": "29/53"
+    },
+    {
+      "task_id": "task_270_tau2_bank_duplicate_charge",
+      "band": "boundary",
+      "by_available_configs": "46/53"
+    },
+    {
+      "task_id": "task_272_tau2_clinic_reschedule",
+      "band": "boundary",
+      "by_available_configs": "50/53"
+    },
+    {
+      "task_id": "task_307_resolve_many_files",
+      "band": "boundary",
+      "by_available_configs": "29/53"
+    },
+    {
+      "task_id": "task_309_rename_refactor_scale",
+      "band": "boundary",
+      "by_available_configs": "27/53"
+    },
+    {
+      "task_id": "task_315_skill_b1_failure_codebook",
+      "band": "boundary",
+      "by_available_configs": "36/53"
+    },
+    {
+      "task_id": "task_319_skill_b2_ndr7_parse",
+      "band": "boundary",
+      "by_available_configs": "30/53"
+    },
+    {
+      "task_id": "task_323_skill_g1_create_slugify_skill",
+      "band": "boundary",
+      "by_available_configs": "17/53"
+    },
+    {
+      "task_id": "task_332_adv_broken_build",
+      "band": "boundary",
+      "by_available_configs": "44/53"
+    },
+    {
+      "task_id": "task_335_adv_missing_config_file",
+      "band": "boundary",
+      "by_available_configs": "30/53"
+    },
+    {
+      "task_id": "task_352_structured_log_summary",
+      "band": "boundary",
+      "by_available_configs": "14/31"
+    },
+    {
+      "task_id": "task_353_reconstruct_sessions",
+      "band": "boundary",
+      "by_available_configs": "18/31"
+    },
+    {
+      "task_id": "task_355_segment_audit",
+      "band": "boundary",
+      "by_available_configs": "15/31"
+    },
+    {
+      "task_id": "task_356_deduplicate_contacts",
+      "band": "boundary",
+      "by_available_configs": "14/31"
+    },
+    {
+      "task_id": "task_357_request_latency",
+      "band": "boundary",
+      "by_available_configs": "18/31"
+    },
+    {
+      "task_id": "task_358_range_parser",
+      "band": "boundary",
+      "by_available_configs": "18/31"
+    },
+    {
+      "task_id": "task_365_package_rename",
+      "band": "boundary",
+      "by_available_configs": "13/31"
+    },
+    {
+      "task_id": "task_368_sqlite_migration",
+      "band": "boundary",
+      "by_available_configs": "19/31"
+    },
+    {
+      "task_id": "task_370_change_plan",
+      "band": "boundary",
+      "by_available_configs": "13/31"
+    },
+    {
+      "task_id": "task_371_test_result_aggregation",
+      "band": "boundary",
+      "by_available_configs": "15/31"
+    },
+    {
+      "task_id": "task_374_cli_pktool_filter_decode",
+      "band": "boundary",
+      "by_available_configs": "12/24"
+    },
+    {
+      "task_id": "task_375_cli_pktool_stats_corrupt",
+      "band": "boundary",
+      "by_available_configs": "18/24"
+    },
+    {
+      "task_id": "task_378_cli_cfgctl_layered_merge",
+      "band": "boundary",
+      "by_available_configs": "9/24"
+    },
+    {
+      "task_id": "task_381_cli_slicer_restock",
+      "band": "boundary",
+      "by_available_configs": "15/24"
+    },
+    {
+      "task_id": "task_382_cli_mixed_depwalk_hotspots",
+      "band": "boundary",
+      "by_available_configs": "11/24"
+    },
+    {
+      "task_id": "task_383_cli_mixed_pktool_ports",
+      "band": "boundary",
+      "by_available_configs": "12/24"
+    },
+    {
+      "task_id": "task_384_cli_mixed_slicer_warehouse_value",
+      "band": "boundary",
+      "by_available_configs": "11/24"
+    },
+    {
+      "task_id": "task_389_cli_find_xargs_predicates",
+      "band": "boundary",
+      "by_available_configs": "12/24"
+    }
+  ]
+}

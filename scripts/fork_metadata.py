@@ -43,6 +43,7 @@ HARNESS_PREFIXES: tuple[tuple[str, str], ...] = (
 )
 
 MODEL_TOKENS: tuple[tuple[str, str], ...] = (
+    ("sonnet46",     "Claude Sonnet 4.6"),
     ("ds41flash",    "DeepSeek-V4.1-Flash"),
     ("gpt55",        "GPT-5.5"),
     ("gigachat3pro", "GigaChat 3 Pro"),
