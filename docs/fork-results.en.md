@@ -28,7 +28,7 @@ The block below is **generated** by `scripts/build_fork_results.py` from `result
 Do not edit by hand — change the script/JSON and rebuild.
 
 <!-- FORK:RESULTS:BEGIN -->
-Auto-sync: 77 runs
+Auto-sync: 78 runs
 
 | Harness | Suite | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
@@ -74,6 +74,7 @@ Auto-sync: 77 runs
 | OpenClaw | Medium (392-471) | thinking: off | MiniMax-M3 (thinking: off) | 33/40 | 82.5% | 266.4m | 989 | 33 114 679 (8 636₽) |
 | OpenClaw | Medium (392-471) | thinking: off | MiniMax-M3 (thinking: off) | 13/20 | 65.0% | 162.0m | 698 | 12 178 668 (3 426₽) |
 | OpenClaw | Medium (392-471) | thinking: off | MiniMax-M3 (thinking: off) | 0/6 | 0.0% | 363.2m | 276 | 7 360 375 (1 913₽) |
+| Pi | Shot List (52) | — | Claude Fable 5 | 46/52 | 88.5% | 13.9m | 712 | 1 665 021 (461₽) |
 | Pi | Shot List (52) | — | Claude Fable 5.1 | 47/52 | 90.4% | 19.6m | 752 | 1 932 366 (535₽) |
 | Pi | Shot List (52) | — | Claude Opus 4.8 | 49/52 | 94.2% | 12.3m | 808 | 2 155 722 (584₽) |
 | Pi | Shot List (52) | — | Claude Opus 5.5 | 48/52 | 92.3% | 13.3m | 720 | 1 785 909 (499₽) |

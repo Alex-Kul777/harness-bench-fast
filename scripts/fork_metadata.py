@@ -48,6 +48,7 @@ MODEL_TOKENS: tuple[tuple[str, str], ...] = (
     ("opus55",       "Claude Opus 5.5"),
     ("opus48",       "Claude Opus 4.8"),
     ("fable51",      "Claude Fable 5.1"),
+    ("fable5",       "Claude Fable 5"),
     ("ds41flash",    "DeepSeek-V4.1-Flash"),
     ("gpt55",        "GPT-5.5"),
     ("gigachat3pro", "GigaChat 3 Pro"),

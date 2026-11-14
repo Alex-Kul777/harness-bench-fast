@@ -359,6 +359,20 @@
           "detail": "fork-detail-oc_shotlist_minimaxm3_ultra_20261109.html"
         },
         {
+          "harness": "Pi",
+          "profile": "— (2026-11-14)",
+          "model": "Claude Fable 5 (cloud.ru)",
+          "result": "46/52",
+          "pct": "88.5%",
+          "time": "13.9m",
+          "steps": "712",
+          "tokens_cost": "1 665 021 (461₽)",
+          "version": "—",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-pi_shotlist_fable5_20261114.html"
+        },
+        {
           "harness": "OpenClaw",
           "profile": "— (2026-11-04)",
           "model": "GLM-5.3 (cloud.ru)",
