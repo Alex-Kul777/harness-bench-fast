@@ -28,7 +28,7 @@ The block below is **generated** by `scripts/build_fork_results.py` from `result
 Do not edit by hand — change the script/JSON and rebuild.
 
 <!-- FORK:RESULTS:BEGIN -->
-Auto-sync: 72 runs
+Auto-sync: 73 runs
 
 | Harness | Suite | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
@@ -75,6 +75,7 @@ Auto-sync: 72 runs
 | OpenClaw | Medium (392-471) | thinking: off | MiniMax-M3 (thinking: off) | 13/20 | 65.0% | 162.0m | 698 | 12 178 668 (3 426₽) |
 | OpenClaw | Medium (392-471) | thinking: off | MiniMax-M3 (thinking: off) | 0/6 | 0.0% | 363.2m | 276 | 7 360 375 (1 913₽) |
 | Pi | Shot List (52) | — | Claude Sonnet 4.6 | 50/52 | 96.2% | 14.6m | 1 060 | 2 657 016 (758₽) |
+| Pi | Shot List (52) | thinking: medium | Claude Sonnet 4.6 (thinking: medium) | 50/52 | 96.2% | 14.3m | 1 056 | 2 632 875 (749₽) |
 | Pi | Shot List (52) | thinking: off | Claude Sonnet 4.6 (thinking: off) | 49/52 | 94.2% | 12.8m | 1 152 | 3 038 157 (819₽) |
 | Pi | Shot List (52) | — | DeepSeek-V4.1-Flash | 49/52 | 94.2% | 21.3m | 330 | 1 438 179 (42₽) |
 | Pi | Shot List (52) | thinking: off | GLM-5.2 (thinking: off) | 49/52 | 94.2% | 102.8m | 388 | 1 913 439 (377₽) |
