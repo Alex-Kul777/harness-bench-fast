@@ -65,6 +65,20 @@
           "detail": "fork-detail-oc_shotlist_gpt55_off_20261110.html"
         },
         {
+          "harness": "Pi",
+          "profile": "— (2026-11-14)",
+          "model": "Claude Sonnet 4.5 (cloud.ru)",
+          "result": "51/52",
+          "pct": "98.1%",
+          "time": "25.7m",
+          "steps": "1 352",
+          "tokens_cost": "4 526 346 (1 195₽)",
+          "version": "—",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-pi_shotlist_sonnet45_20261114.html"
+        },
+        {
           "harness": "OpenClaw",
           "profile": "— (2026-11-07)",
           "model": "DeepSeek-V4.1-Flash (cloud.ru)",
@@ -192,6 +206,34 @@
         },
         {
           "harness": "Pi",
+          "profile": "— (2026-11-14)",
+          "model": "Claude Opus 4.8 (cloud.ru)",
+          "result": "49/52",
+          "pct": "94.2%",
+          "time": "12.3m",
+          "steps": "808",
+          "tokens_cost": "2 155 722 (584₽)",
+          "version": "—",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-pi_shotlist_opus48_20261114.html"
+        },
+        {
+          "harness": "Pi",
+          "profile": "— (2026-11-14)",
+          "model": "Claude Sonnet 4.6 (cloud.ru)",
+          "result": "49/52",
+          "pct": "94.2%",
+          "time": "14.0m",
+          "steps": "996",
+          "tokens_cost": "2 439 192 (697₽)",
+          "version": "—",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-pi_shotlist_sonnet46_20261114.html"
+        },
+        {
+          "harness": "Pi",
           "profile": "thinking: off (2026-11-13)",
           "model": "Claude Sonnet 4.6 (cloud.ru) (thinking: off)",
           "result": "49/52",
@@ -233,6 +275,20 @@
           "detail": "fork-detail-pi_shotlist_gpt55_off_20261110.html"
         },
         {
+          "harness": "Pi",
+          "profile": "— (2026-11-14)",
+          "model": "Claude Opus 5.5 (cloud.ru)",
+          "result": "48/52",
+          "pct": "92.3%",
+          "time": "13.3m",
+          "steps": "720",
+          "tokens_cost": "1 785 909 (499₽)",
+          "version": "—",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-pi_shotlist_opus55_20261114.html"
+        },
+        {
           "harness": "OpenClaw 2026.11.2 (b556fdf)",
           "profile": "thinking: medium (2026-11-09)",
           "model": "MiniMax-M3 (cloud.ru) (thinking: medium)",
@@ -259,6 +315,20 @@
           "source": "ours",
           "waves": null,
           "detail": "fork-detail-oc_shotlist_thinking_off.html"
+        },
+        {
+          "harness": "Pi",
+          "profile": "— (2026-11-14)",
+          "model": "Claude Fable 5.1 (cloud.ru)",
+          "result": "47/52",
+          "pct": "90.4%",
+          "time": "19.6m",
+          "steps": "752",
+          "tokens_cost": "1 932 366 (535₽)",
+          "version": "—",
+          "source": "ours",
+          "waves": null,
+          "detail": "fork-detail-pi_shotlist_fable51_20261114.html"
         },
         {
           "harness": "Hermes",
