@@ -2246,17 +2246,17 @@
           "harness": "Pi",
           "profile": "thinking: off (2026-11-13)",
           "model": "Claude Sonnet 4.6 (cloud.ru) (thinking: off)",
-          "result": "35/60 (partial 60/90)",
-          "pct": "58.3%",
-          "time": "283.8m",
-          "steps": "4 867",
-          "tokens_cost": "148 283 633 (36 922₽)",
+          "result": "36/66 (partial 66/90)",
+          "pct": "54.5%",
+          "time": "403.2m",
+          "steps": "7 585",
+          "tokens_cost": "376 592 972 (92 203₽)",
           "version": "v0.21.3",
           "source": "ours",
           "waves": {
             "long": {
-              "passed": null,
-              "total": null
+              "passed": 1,
+              "total": 6
             },
             "reflect": {
               "passed": 15,
@@ -2272,7 +2272,7 @@
             }
           },
           "detail": "fork-run-pi-claude-sonnet-4-6-thinking-off.html",
-          "coverage": "60/90"
+          "coverage": "66/90"
         },
         {
           "harness": "Pi",
@@ -2674,14 +2674,14 @@
           "model": "Claude Sonnet 4.6 (cloud.ru) (thinking: off)",
           "subset_key": "subset_our_runs",
           "subset_args": {
-            "n": 60
+            "n": 66
           },
-          "result": "35/60",
-          "pct": "58.3%",
-          "coverage": "60/90",
-          "time": "283.8m",
-          "steps": "4 867",
-          "tokens_cost": "148 283 633 (36 922₽)",
+          "result": "36/66",
+          "pct": "54.5%",
+          "coverage": "66/90",
+          "time": "403.2m",
+          "steps": "7 585",
+          "tokens_cost": "376 592 972 (92 203₽)",
           "status_key": "status_partial",
           "detail": "fork-run-pi-claude-sonnet-4-6-thinking-off.html"
         },

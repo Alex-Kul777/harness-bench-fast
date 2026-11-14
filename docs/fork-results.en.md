@@ -28,7 +28,7 @@ The block below is **generated** by `scripts/build_fork_results.py` from `result
 Do not edit by hand — change the script/JSON and rebuild.
 
 <!-- FORK:RESULTS:BEGIN -->
-Auto-sync: 73 runs
+Auto-sync: 74 runs
 
 | Harness | Suite | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
@@ -92,6 +92,7 @@ Auto-sync: 73 runs
 | Pi | Medium (392-471) | thinking: medium | Claude Sonnet 4.6 (thinking: medium) | 0/6 | 0.0% | 103.2m | 1 004 | 63 667 285 (5 018₽) |
 | Pi | Medium (392-471) | thinking: off | Claude Sonnet 4.6 (thinking: off) | 20/40 | 50.0% | 250.3m | 3 031 | 131 943 515 (32 800₽) |
 | Pi | Medium (392-471) | thinking: off | Claude Sonnet 4.6 (thinking: off) | 15/20 | 75.0% | 33.4m | 1 836 | 16 340 118 (4 122₽) |
+| Pi | Medium (392-471) | thinking: off | Claude Sonnet 4.6 (thinking: off) | 1/6 | 16.7% | 119.4m | 2 718 | 228 309 339 (55 281₽) |
 | Pi | Medium (392-471) | — | DeepSeek-V4.1-Flash | 11/15 | 73.3% | 137.3m | 1 124 | 15 124 377 (360₽) |
 | Pi | Medium (392-471) | — | DeepSeek-V4.1-Flash | 5/5 | 100.0% | 32.0m | 336 | 2 949 354 (86₽) |
 | Pi | Medium (392-471) | — | DeepSeek-V4.1-Flash | 0/3 | 0.0% | 288.7m | 1 650 | 78 233 678 (1 201₽) |
