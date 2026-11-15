@@ -71,3 +71,12 @@ fork-генераторов (см. `Generator` в `GLOSSARY.md`), с гейта�
 - **F. Поддержка:** гибрид — числа/матрица скриптом `build_model_selection.py` c `--check/--lint`; нарратив вручную.
 - **G. Routing:** сейчас — публичная страница; routing policy — отдельный драфт (нужны пороги бюджета).
 - ADR: `docs/adr/0006-model-selection-guidance.md`.
+
+## Decisions — Round 2 (accepted 2026-11-15)
+- **Q1 Шаблон страницы:** TL;DR · матрица · рекомендации по ситуациям · anti-patterns · покрытие/уверенность · методология.
+- **Q2 Тиры:** `Default` · `Balanced` · `Premium` (только с обоснованием), лейблы RU+EN.
+- **Q3 Situation buckets:** `shot-list` · `medium` · `long-context` · `wave19 feasibility` · `hard-coupled (wave21)`.
+- **Q4 Scope версий:** только текущие публичные (**v0.21.3**: Light 391 + Medium 90); исторические — вне рекомендаций.
+- **Q5 Порог premium:** не доминируем И (≥ +3 п.п. pass ИЛИ закрывает ≥1 floor/boundary-задачу); иначе anti-pattern.
+- **Q6 Цена:** классификация по **₽/решённую задачу**, пороги — по данным (терцили/медиана), валюта ₽.
+- **Q7 Матрица:** поля `harness, model, reasoning, suite, situation_bucket, passed, total, pass_rate, cost_rub, cost_per_solved, time_min, steps, pareto, dominated_by, coverage{runs,full,version}, confidence`; генератор `scripts/build_model_selection.py` (`--check/--lint`).

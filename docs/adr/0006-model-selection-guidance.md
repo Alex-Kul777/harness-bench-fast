@@ -47,6 +47,16 @@ Source: grilling session (grill-with-docs), Round 1
 
 ## Follow-ups
 
-- Round 2 grilling: шаблон страницы, тир-лейблы/пороги, situation-buckets, version scope,
-  порог premium, budget ceiling, схема JSON.
+Round 2 (accepted 2026-11-15) — sub-decisions:
+- Шаблон страницы: TL;DR · матрица · рекомендации по ситуациям · anti-patterns · покрытие/уверенность · методология.
+- Тиры: `Default` / `Balanced` / `Premium` (Premium — только с обоснованием).
+- Situation buckets: `shot-list`, `medium`, `long-context`, `wave19 feasibility`, `hard-coupled (wave21)`.
+- Scope версий: только текущие публичные (v0.21.3: Light 391 + Medium 90).
+- Порог premium: не доминируем И (≥ +3 п.п. pass ИЛИ ≥1 floor/boundary-задача).
+- Цена: ₽/решённую задачу, пороги по данным.
+- Матрица: фиксированная схема полей; генератор `scripts/build_model_selection.py`.
+
+Open:
+- Значения бюджетных порогов (из данных, после расчёта).
+- Routing policy — отдельный драфт (следующая итерация).
 - `CONTEXT.md` (branch root) — живой глоссарий слоя рекомендаций.
