@@ -5,6 +5,7 @@
 - [x] Run `uv run ruff check . --fix` (68 safe fixes)
 - [x] Triage and fix the 27 remaining findings by rule (E402, F402, F821, F841, B007, B904, B905, E702, E741, SIM105, SIM109, SIM110)
 - [x] Update `tests/test_fork_sample_columns.py` for the new leading `#` column (12 cols) so pytest passes once Ruff is green
+- [x] Fix `tests/test_runner_timeout_floors.py` runner path (repo root, was stale "one level above checkout") so pytest collection no longer errors in CI
 - [x] Re-run `uv run ruff check .` → "All checks passed!"
 
 ## Spec / Docs

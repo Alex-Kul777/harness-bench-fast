@@ -22,7 +22,9 @@ undefined name `_task_message` в `scripts/build_fork_home.py`).
   - `B007`, `B904`, `B905`, `E702`, `E741`, `SIM105`, `SIM109`, `SIM110`, `F841`;
   - `tests/test_fork_sample_columns.py` — обновить guard под новую ведущую колонку `#`
     (12 колонок вместо 11), введённую ранее в `add-fork-table-ranks-and-sorting`; без
-    этого `pytest` падал бы сразу после того, как Ruff станет зелёным.
+    этого `pytest` падал бы сразу после того, как Ruff станет зелёным;
+  - `tests/test_runner_timeout_floors.py` — грузить раннер из корня репо (сейчас путь
+    ошибочно указывал на уровень выше чекаута → в CI collection error, `pytest` exit 2).
 
 ## How
 
