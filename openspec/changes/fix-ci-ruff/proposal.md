@@ -24,7 +24,12 @@ undefined name `_task_message` в `scripts/build_fork_home.py`).
     (12 колонок вместо 11), введённую ранее в `add-fork-table-ranks-and-sorting`; без
     этого `pytest` падал бы сразу после того, как Ruff станет зелёным;
   - `tests/test_runner_timeout_floors.py` — грузить раннер из корня репо (сейчас путь
-    ошибочно указывал на уровень выше чекаута → в CI collection error, `pytest` exit 2).
+    ошибочно указывал на уровень выше чекаута → в CI collection error, `pytest` exit 2);
+  - `run_pi_bench.py` — убрать хардкод `/tmp/...` (заменён на `tempfile.gettempdir()`):
+    на Windows `open("/tmp/...")` падал → 2 теста `test_runner_pi_cleanup` падали;
+  - `tests/test_cost_cache_bucket.py` — пиновать ставки модели через committed-фикстуру
+    (`tests/fixtures/cloudru-prices-ds41flash.json`), иначе в CI (без `~/.openclaw/cloudru-prices.json`)
+    резолвер падал на GLM‑5.2‑fallback и тест не мог пройти детерминированно.
 
 ## How
 

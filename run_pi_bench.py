@@ -21,6 +21,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -202,7 +203,7 @@ def run_one_task(task, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT, keep_wor
 
     try:
         if keep_workspace:
-            workspace_path = Path(f"/tmp/pi_bench_{task.id}")
+            workspace_path = Path(tempfile.gettempdir()) / f"pi_bench_{task.id}"
             shutil.rmtree(workspace_path, ignore_errors=True)
             workspace_path.mkdir(parents=True, exist_ok=True)
         else:
@@ -258,7 +259,7 @@ def run_one_task(task, *, model=DEFAULT_MODEL, timeout=DEFAULT_TIMEOUT, keep_wor
         #    kill the container by name on timeout (Fix A).
         agent_error = None
         result = None
-        out_path = Path(f"/tmp/pi_bench_out_{task.id}_{int(started)}.ndjson")
+        out_path = Path(tempfile.gettempdir()) / f"pi_bench_out_{task.id}_{int(started)}.ndjson"
         try:
             run_env = os.environ.copy()
             with open(out_path, "w", encoding="utf-8") as out_file:
@@ -599,8 +600,8 @@ def main():
         parser.print_help()
         sys.exit(1)
 
-    json_output = args.json_output or f"/tmp/pi_bench_{int(time.time())}.json"
-    status_file = args.status_file or "/tmp/pi_bench_status.json"
+    json_output = args.json_output or str(Path(tempfile.gettempdir()) / f"pi_bench_{int(time.time())}.json")
+    status_file = args.status_file or str(Path(tempfile.gettempdir()) / "pi_bench_status.json")
 
     print("Pi Benchmark Runner (Docker + Cloud.ru)")
     print(f"  Model: cloud-ru/{args.model}")
