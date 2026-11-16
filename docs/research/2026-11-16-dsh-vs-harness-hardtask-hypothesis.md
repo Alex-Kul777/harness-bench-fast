@@ -82,3 +82,10 @@ python3 run_dsh_bench.py --tasks task_392_manuscript_continuity,task_398_card_ga
 
 ### Данные preflight уровней (DeepSeek-V4.1-Flash)
 `off` → HTTP **400** (не принимается). Приняты: `none, minimal, low, medium, high, xhigh, max, ultra`. `high` реально даёт непустой `message.reasoning`.
+
+## 7. Пилот — ретрай openclaw (2026-11-16)
+Повтор ноги openclaw на той же задаче/уровне: **FAIL 0/1**, 535с, 14 шагов, **0 токенов**,
+`exit=1: Possible EventEmitter memory leak detected. 11 connect listeners added …` (`MaxListenersExceededWarning`).
+→ Краш **воспроизводится** (не флейк): openclaw-агент добавляет листенеры на каждый `connect` и падает на длинной задаче. Это же объясняет старые OC «0-usage/0-token» прогоны на hard-задачах.
+
+**Статус пилота:** dsh — валиден (PASS); openclaw — систематически broken (инфра); pi — не запускался (нет модели в pi-конфиге). Для честного вывода нужны (а) фикс openclaw-краша или (б) решение ограничиться dsh + отдельный прогон pi после онбординга.
