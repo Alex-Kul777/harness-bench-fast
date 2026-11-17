@@ -1,0 +1,47 @@
+{
+  "task_set_version": "0.17.0",
+  "harness": "dsh",
+  "harness_version": "0.2.2-rc.1",
+  "thinking": "off",
+  "model": "custom-foundation-models-api-cloud-ru/deepseek-ai/DeepSeek-V4.1-Flash",
+  "results": [
+    {
+      "task_id": "task_403_binary_format_reverse",
+      "passed": true,
+      "message": "скрытые файлы: верно 40/40 (100.0%)",
+      "elapsed_seconds": 2296.34,
+      "error": null,
+      "timeout": 7200,
+      "reason": "completed",
+      "final_text": "Готово. Реализован `vtl_decode.py` в корне рабочего каталога.\n\n## Что сделано\n\n**Сбор фактов.** Переписка (206 писем, 2.4 МБ) разобрана полностью — 14 параллельными подагентами по хронологическим батчам, с приоритетом утверждений команды прошивки (Олег Кравец, Сергей Лыков, Дина Ахмерова, Артём Зуев) и правилом «более позднее письмо отменяет раннее». Учтены все правки-цепочки (например: 078→080/081, 086→087, 098→100/102, 153→159, 173→174, 176→178, 179→180, 196→198/200, 204→205).\n\n**Формат разобран по версиям:**\n- **v1:** заголовок без тика (tick=1), имя в CP1251, неподпись CRC-16/CCITT-FALSE по нагрузке, big-endian CRC; дельты времени беззнаковые (мс).\n- **v2:** + u16 длительность тика, времена в тиках, дельты знаковые (zigzag/`sint`), типы 6 (питание) и 7 (поездки).\n- **v3:** имя UTF-8, локальное базовое время + знаковый байт пояса (четверти часа, UTC = местное − смещение), координаты приращениями (svarint, 1e-6°), CRC по байтам флагов+длины+нагрузки, little-endian; типы 8/10/11/12/13.\n- **Пакет датчиков (3.3–3.5.1):** все 29 утверждённых записей — `can_fuel`, `can_hours`, `dash_lamps`, `adblue`, `brakes`, `tacho_activity/times/speed`, `trailer`, `trailer_ebs`, `trailer_power`, `reefer_zone/mode/unit`, `axle_loads`, `body_tilt`, `weight`, `mixer_drum`, `adas`, `fatigue`, `seatbelts`, `alcolock`, `cargo_temps`, `humidity`, `seal`, `fuel_drain`, `pto`, `spreader`, `bin_lift` — с точными масштабами, сдвигами, sentinel-значениями, enum- и битовыми идентификаторами. Отменённые типы (36, 38, 43, 50, 59, 75, 84) выводятся как `unknown`.\n\n**Точность чисел** — пересчёт через `Fraction` (без ошибок вида `17*0.4 = 6.800000000000001`).\n\n## Проверка\n- 24/24 образца — код 0, валидный JSON.\n- 960 записей v1/v2 сверены с выгрузками `vtldump` — полное совпадение времён, типов, полей; ошибки блоков (`crc`/`truncated`) совпали по номерам и смещениям.\n- 22 + 22 синтетических записи по контрольным примерам из писем — значения совпали до знака.\n- Отдельно проверены: все 29 типов пакета датчиков (имена полей ровно как в реестре), GPS-приращения в v3, `unknown`-записи и гейтинг по версиям, а также `truncated`/`bad_marker`/`crc`.\n\nДополнительно удалил временные файлы разбора — в каталоге остался только `vtl_decode.py` (плюс исходные `docs/`, `samples/`, `decoded/`).",
+      "workspace": null,
+      "session_id": "session-cc72b490-9271-43bf-9b26-c1239c1a6a9a",
+      "agent_input_tokens": 1226538,
+      "agent_output_tokens": 114644,
+      "agent_total_tokens": 12116606,
+      "agent_cache_read_tokens": 10157184,
+      "agent_cache_write_tokens": 0,
+      "agent_steps": 64,
+      "agent_tool_calls": 92
+    }
+  ],
+  "summary": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "pass_rate": 1.0,
+    "total_seconds": 2296.3,
+    "total_input_tokens": 1226538,
+    "total_output_tokens": 114644,
+    "total_cache_read_tokens": 10157184,
+    "total_cache_write_tokens": 0,
+    "total_tokens": 12116606,
+    "total_steps": 64,
+    "total_tool_calls": 92,
+    "estimated_cost_rub": 168.01,
+    "rates_available": true,
+    "bench_credential": "CLOUD_RU_KAP_HERMES",
+    "timeout": 7200,
+    "permission_mode": "workspace-write"
+  }
+}

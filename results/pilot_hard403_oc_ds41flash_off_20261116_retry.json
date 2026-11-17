@@ -1,0 +1,52 @@
+{
+  "task_set_version": "0.17.0",
+  "harness": "openclaw",
+  "harness_version": "OpenClaw 2026.11.2 (b556fdf)",
+  "thinking": "off",
+  "model": "custom-foundation-models-api-cloud-ru/deepseek-ai/DeepSeek-V4.1-Flash",
+  "command": "python run_openclaw_bench.py --tasks task_403_binary_format_reverse --thinking off --model custom-foundation-models-api-cloud-ru/deepseek-ai/DeepSeek-V4.1-Flash --timeout 7200 --json-output results/pilot_hard403_oc_ds41flash_off_20261116_retry.json --status-file /tmp/pilot_oc2_status.json",
+  "total": 1,
+  "passed": 0,
+  "pass_rate": 0.0,
+  "tokens": 0,
+  "tasks": [
+    {
+      "task_id": "task_403_binary_format_reverse",
+      "passed": false,
+      "message": "нет файла vtl_decode.py",
+      "elapsed_seconds": 535.58,
+      "error": "exit=1: rsExceededWarning: Possible EventEmitter memory leak detected. 11 connect listeners added to [Socket]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit\n[state/agent-db] agent database clean-close receipt: written\n403 Input text May contain sensitive information, please try again.\n",
+      "workspace": null,
+      "thinking": "off",
+      "agent_input_tokens": 0,
+      "agent_output_tokens": 0,
+      "agent_total_tokens": 0,
+      "agent_reasoning_tokens": 0,
+      "agent_cache_read_tokens": 0,
+      "agent_cache_write_tokens": 0,
+      "agent_usage_available": true,
+      "agent_steps": 14,
+      "agent_turns": 27,
+      "agent_cost_usd": null,
+      "agent_session_id": "9ec16ca5-e217-43d0-a7d6-24a35c3856a5"
+    }
+  ],
+  "summary": {
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "pass_rate": 0.0,
+    "total_seconds": 535.6,
+    "total_steps": 14,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_reasoning_tokens": 0,
+    "total_tokens": 0,
+    "total_cache_read_tokens": 0,
+    "total_cache_write_tokens": 0,
+    "estimated_cost_rub": 0.0,
+    "usage_unavailable_tasks": [],
+    "usage_unavailable_count": 0,
+    "bench_credential": "CLOUD_RU_KAP_HERMES"
+  }
+}

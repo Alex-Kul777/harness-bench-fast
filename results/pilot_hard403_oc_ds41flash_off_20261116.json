@@ -1,0 +1,52 @@
+{
+  "task_set_version": "0.17.0",
+  "harness": "openclaw",
+  "harness_version": "OpenClaw 2026.11.2 (b556fdf)",
+  "thinking": "off",
+  "model": "custom-foundation-models-api-cloud-ru/deepseek-ai/DeepSeek-V4.1-Flash",
+  "command": "python run_openclaw_bench.py --tasks task_403_binary_format_reverse --thinking off --model custom-foundation-models-api-cloud-ru/deepseek-ai/DeepSeek-V4.1-Flash --timeout 7200 --json-output results/pilot_hard403_oc_ds41flash_off_20261116.json --status-file /tmp/pilot_oc_status.json",
+  "total": 1,
+  "passed": 0,
+  "pass_rate": 0.0,
+  "tokens": 0,
+  "tasks": [
+    {
+      "task_id": "task_403_binary_format_reverse",
+      "passed": false,
+      "message": "нет файла vtl_decode.py",
+      "elapsed_seconds": 2967.34,
+      "error": "exit=1:  Use emitter.setMaxListeners() to increase limit\n(node:2092032) MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 connect listeners added to [Socket]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit\nProvider returned an incomplete or malformed tool call\n",
+      "workspace": null,
+      "thinking": "off",
+      "agent_input_tokens": 0,
+      "agent_output_tokens": 0,
+      "agent_total_tokens": 0,
+      "agent_reasoning_tokens": 0,
+      "agent_cache_read_tokens": 0,
+      "agent_cache_write_tokens": 0,
+      "agent_usage_available": true,
+      "agent_steps": 1,
+      "agent_turns": 55,
+      "agent_cost_usd": null,
+      "agent_session_id": "5c57251d-ff41-4ce9-a6d1-4b9f5965c00e"
+    }
+  ],
+  "summary": {
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "pass_rate": 0.0,
+    "total_seconds": 2967.3,
+    "total_steps": 1,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_reasoning_tokens": 0,
+    "total_tokens": 0,
+    "total_cache_read_tokens": 0,
+    "total_cache_write_tokens": 0,
+    "estimated_cost_rub": 0.0,
+    "usage_unavailable_tasks": [],
+    "usage_unavailable_count": 0,
+    "bench_credential": "CLOUD_RU_KAP_HERMES"
+  }
+}
