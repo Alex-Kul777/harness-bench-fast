@@ -1,0 +1,50 @@
+## ADDED Requirements
+
+### Requirement: Изолированный bench-конфиг OC-вызова
+
+`run_openclaw_bench.py` SHALL запускать `openclaw agent exec` против **pinned**
+bench-конфига (`bench/openclaw.bench.json`) через флаг `--config`, а SHALL NOT
+наследовать ambient-конфиг оператора. Bench-конфиг SHALL содержать только провайдера
+`custom-foundation-models-api-cloud-ru` (baseUrl + модели) и `agents.defaults.model`, а
+SHALL NOT содержать секций `plugins`, `mcp`, `skills`, `channels`, `memory`.
+
+#### Scenario: Команда содержит pinned config
+
+- **WHEN** раннер формирует команду задачи
+- **THEN** argv SHALL содержать `--config <repo>/bench/openclaw.bench.json`, а SHALL NOT
+  запускаться без явного конфига
+
+#### Scenario: Ambient-плагины и MCP не подхватываются
+
+- **WHEN** bench-конфиг загружается
+- **THEN** он SHALL NOT определять `plugins`, `mcp.servers` и `skills`, поэтому боевые
+  интеграции оператора SHALL NOT активироваться в прогоне
+
+#### Scenario: Провайдер Cloud.ru резолвится
+
+- **WHEN** прогон идёт с bench-конфигом, а в окружении задан `CLOUD_RU_BENCH_API_KEY`
+- **THEN** провайдер `custom-foundation-models-api-cloud-ru` SHALL резолвиться, а модель
+  из `--model` — запускаться
+
+#### Scenario: Невалидный/отсутствующий bench-конфиг
+
+- **WHEN** файл bench-конфига отсутствует или не проходит валидацию
+- **THEN** прогон SHALL завершаться явной ошибкой, а SHALL NOT тихо откатываться на
+  ambient-конфиг оператора
+
+### Requirement: Ключ bench-инстанса через SecretRef окружения
+
+Bench-конфиг SHALL задавать `models.providers.custom-foundation-models-api-cloud-ru.apiKey`
+как SecretRef `{source: "env", provider: "default", id: "CLOUD_RU_BENCH_API_KEY"}`, а
+SHALL NOT ссылаться на боевой secret store. Раннер SHALL обеспечивать наличие
+`CLOUD_RU_BENCH_API_KEY` в окружении вызова `agent exec`.
+
+#### Scenario: Ключ из окружения
+
+- **WHEN** раннер запускает `agent exec` с bench-конфигом
+- **THEN** `CLOUD_RU_BENCH_API_KEY` SHALL присутствовать в окружении дочернего процесса
+
+#### Scenario: Значение ключа не хранится в репозитории
+
+- **WHEN** bench-конфиг закоммичен
+- **THEN** он SHALL NOT содержать значение ключа — только SecretRef с именем переменной
