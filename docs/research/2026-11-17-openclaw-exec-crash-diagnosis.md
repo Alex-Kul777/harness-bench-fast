@@ -58,3 +58,38 @@ python3 run_openclaw_bench.py \
 ## Примечание о границах
 Баг в `openclaw agent exec` (продукт OpenClaw), **вне** репозитория `harness-bench-fast`;
 issues в bench-репо отключены → трекаем карточкой + этого дока.
+
+## 9. КОРРЕКЦИЯ (2026-11-17, полный stderr) — лик = шум, причина другая
+Инструментированный ручной прогон `task_403` под чистым bench-конфигом, **полный stderr**
+(`/tmp/oc_instr.stderr`, `--timeout 1200`) дал точную цепочку. Прежняя гипотеза
+(«plugin/MCP → лик листенеров → краш») **опровергнута**.
+
+Факты из stderr:
+1. `agent exec` **читает ambient config** (`[secrets] … resolved command secrets locally`)
+   — но на чистом конфиге всё равно падает ⇒ дело не в plugins/MCP.
+2. Идут длинные ходы: ~54 assistant-turn; тело запроса растёт **142 KB → 2.2 MB**,
+   `promptTokens` до ~443K; `[prompt-cache] cache read dropped …` много раз.
+3. `[provider-transport-fetch] … causeName=SocketError causeCode=UND_ERR_SOCKET
+   message=fetch failed` (request 23, 44) → `transient same-model retry 1/8`.
+4. `output-limit continuation 1/1` (вывод упёрся в лимит → возможная обрезка tool-call).
+5. Финал: `Provider returned an incomplete or malformed tool call` →
+   `Assistant attempt failed` → `embedded run … isError=true` → `kind: incomplete_turn`.
+6. `[state/agent-db] clean-close` → **пачка 8× `MaxListenersExceededWarning`** на `[Socket]`
+   уже **при завершении процесса**, затем `exit=1`.
+7. Envelope: `usageReport.state = "unavailable"` → раннер пишет **0 токенов**.
+
+**Вывод:** `MaxListenersExceededWarning` — **teardown-шум** от множества сокетов/ретраев,
+а **не** причина. Настоящий сбой — провайдер/модель возвращает **incomplete/malformed
+tool call** (kind `incomplete_turn`) на очень длинном, раздутом контексте, плюс
+transient `UND_ERR_SOCKET`; после исчерпания ретраев ход падает, usage = unavailable → 0.
+
+**Что мы (вызов) сделали хуже:** чистый bench-конфиг **выбросил**
+`agents.defaults.contextPruning` + `agents.defaults.compaction` (в боевом они есть:
+compaction `maxActiveTranscriptBytes=10mb`, `keepRecentTokens=30000`). Возвращены в
+`bench/openclaw.bench.json`.
+
+**Кандидаты «починить вызов»:**
+- вернуть pruning/compaction (сделано);
+- проверить `maxTokens: 8192` провайдер-модели как причину обрезки tool-call;
+- ретраить задачу при `incomplete_turn` (`--rerun-on-fail`), т.к. сбой может быть транзиентным;
+- (к лику отношения не имеет; `NODE_OPTIONS=defaultMaxListeners` не нужен — это шум).
