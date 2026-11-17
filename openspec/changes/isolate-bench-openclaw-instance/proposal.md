@@ -39,15 +39,20 @@ roots».
   провайдер `custom-foundation-models-api-cloud-ru` (baseUrl + модели) и
   `agents.defaults.model`; **без** плагинов, MCP, скиллов, memory, TTS, каналов.
   Ключ — через SecretRef `{source:"env", provider:"default", id:"CLOUD_RU_BENCH_API_KEY"}`
-  (значение в репозитории не хранится).
+  (значение в репозитории не хранится). Возвращены `agents.defaults.contextPruning` /
+  `compaction`; `maxTokens` модели поднят до 32768 (обрезка tool-call → `incomplete_turn`).
 - **`run_openclaw_bench.py`** — запускает `openclaw agent exec` с **pinned** конфигом
   (`--config <repo>/bench/openclaw.bench.json`), а SHALL NOT наследовать ambient-конфиг
   оператора; дополнительно прокидывает `CLOUD_RU_BENCH_API_KEY` в окружение вызова.
+  Плюс **ретрай задачи** при классифицируемом инфра-крахе (`error.kind ==
+  "incomplete_turn"`) — флаг `--retries` (default 1).
 - **`bench/README.md`** — назначение, запуск, что изолировано, что осталось общим.
 - **Регресс-тест** `tests/test_oc_bench_isolation.py`: команда `agent exec` содержит
   `--config …/bench/openclaw.bench.json`; конфиг-файл парсится и содержит ровно одного
-  провайдера и **ноль** секций `plugins`/`mcp`/`skills`.
-- **OpenSpec-дельта `benchmark-runs`** — ADDED «Изолированный bench-конфиг OC-вызова».
+  провайдера и **ноль** секций `plugins`/`mcp`/`skills`; `incomplete_turn` ретраится, а
+  обычный провал — нет.
+- **OpenSpec-дельта `benchmark-runs`** — ADDED «Изолированный bench-конфиг OC-вызова»,
+  «Управление историей», «Лимит вывода модели», «Ретрай при инфра-крахе».
 
 ## Capabilities
 
@@ -58,7 +63,8 @@ _(нет)_
 ### Modified Capabilities
 
 - `benchmark-runs`: ADDED «Изолированный bench-конфиг OC-вызова» (pinned config,
-  env-ключ, отсутствие ambient-плагинов/MCP).
+  env-ключ, отсутствие ambient-плагинов/MCP), «Управление историей»,
+  «Лимит вывода модели», «Ретрай при инфра-крахе».
 
 ## Out of scope
 
@@ -66,7 +72,7 @@ _(нет)_
   guardrail Cloud.ru) — продукт OpenClaw, вне репо; фиксируется диагнозом и карточкой.
 - **Детекция** краха в артефакте (отдельный change, см. отклонённый
   `detect-oc-harness-crash`) — оставлено на усмотрение, здесь не делается.
-- Смена тарифов/моделей, методологии pass/fail, ретраи задач.
+- Смена тарифов/моделей, методологии pass/fail.
 - Изменение боевого `~/.openclaw/*` (не трогаем).
 
 ## Impact

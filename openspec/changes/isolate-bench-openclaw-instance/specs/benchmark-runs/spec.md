@@ -67,3 +67,31 @@ Bench-конфиг SHALL задавать `agents.defaults.contextPruning` и
 - **WHEN** длинный прогон выполняет много ходов
 - **THEN** compaction SHALL удерживать объём активного транскрипта в пределах лимита,
   а размер запроса SHALL NOT расти без ограничения
+
+### Requirement: Лимит вывода модели в bench-конфиге
+
+Bench-конфиг SHALL задавать для бенчируемой модели `maxTokens` не ниже 32768, чтобы
+крупные tool-call не обрезались по лимиту вывода и не превращались в
+`Provider returned an incomplete or malformed tool call`.
+
+#### Scenario: Достаточный лимит вывода
+
+- **WHEN** bench-конфиг задаёт модель
+- **THEN** её `maxTokens` SHALL быть ≥ 32768
+
+### Requirement: Ретрай задачи при инфраструктурном крахе
+
+`run_openclaw_bench.run_one_task` SHALL повторять прогон задачи, когда
+`openclaw agent exec` завершается классифицируемым инфраструктурным крахом
+(`error.kind == "incomplete_turn"`), до `--retries` раз (по умолчанию 1). Число попыток
+SHALL ограничиваться: исчерпав ретраи, раннер SHALL записать задачу как проваленную.
+
+#### Scenario: incomplete_turn ретраится
+
+- **WHEN** первая попытка падает с `error.kind == "incomplete_turn"`, а ретраи доступны
+- **THEN** раннер SHALL выполнить задачу ещё раз
+
+#### Scenario: Обычный провал не ретраится
+
+- **WHEN** `agent exec` завершается успешно (exit 0), но верификатор не проходит
+- **THEN** раннер SHALL NOT повторять задачу (это провал модели, а не инфра-крах)
