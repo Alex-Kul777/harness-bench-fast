@@ -84,7 +84,7 @@ def test_agent_exec_pins_bench_config(monkeypatch):
     cmd = seen["cmd"]
     assert "--config" in cmd, "agent exec must be pinned to the bench config"
     cfg_path = cmd[cmd.index("--config") + 1]
-    assert cfg_path.endswith("bench/openclaw.bench.json")
+    assert Path(cfg_path).as_posix().endswith("bench/openclaw.bench.json")
 
 
 # ── error classification + retry ───────────────────────────────────────
