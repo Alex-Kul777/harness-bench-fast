@@ -89,3 +89,10 @@ python3 run_dsh_bench.py --tasks task_392_manuscript_continuity,task_398_card_ga
 → Краш **воспроизводится** (не флейк): openclaw-агент добавляет листенеры на каждый `connect` и падает на длинной задаче. Это же объясняет старые OC «0-usage/0-token» прогоны на hard-задачах.
 
 **Статус пилота:** dsh — валиден (PASS); openclaw — систематически broken (инфра); pi — не запускался (нет модели в pi-конфиге). Для честного вывода нужны (а) фикс openclaw-краша или (б) решение ограничиться dsh + отдельный прогон pi после онбординга.
+
+## 8. Диагноз OC-краша (2026-11-17) — карточка `3cae8a52`
+Отдельная задача (навык `diagnosing-bugs`): воспроизведено **2/2**, корень — EventEmitter `connect`-listener leak
+на keep-alive `[Socket]` (`MaxListenersExceededWarning: 11 connect listeners … MaxListeners is 10`) на фоне
+ретраев провайдера (403 Cloud.ru «sensitive information» / «incomplete or malformed tool call») → `exit=1`, **0 usage**.
+Полный разбор: `docs/research/2026-11-17-openclaw-exec-crash-diagnosis.md`, минимальный репро: `scripts/repro_oc_longtask_crash.sh`.
+Это объясняет OC «0-usage/0-token» прогоны и отвязывает их от «модель не решила».
