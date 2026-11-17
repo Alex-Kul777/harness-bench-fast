@@ -15,14 +15,21 @@ roots».
    telegram-footer-plugin, …), **MCP-серверы** (`mcp.servers`: playwright-mcp, context7,
    sequential-thinking, github) и **скиллы**. Это делает прогон невоспроизводимым и
    машинно-зависимым.
-2. **Возможный источник нестабильности**: OC-нога дважды упала
-   (`MaxListenersExceededWarning: 11 connect listeners added to [Socket]` + `403 …
-   sensitive information` / `Provider returned an incomplete or malformed tool call`),
-   `exit=1`, **0 usage**. `connect`-листенеры на `[Socket]` — это EventEmitter-листенеры
-   транспорта; тяжёлые ambient-интеграции (MCP/плагины) — вероятный их источник.
+2. **Регрессия истории**: чистый bench-конфиг **выбрасывает**
+   `agents.defaults.contextPruning` + `agents.defaults.compaction`, которые есть в
+   боевом конфиге. Из-за этого история в `agent exec` не компактится — тело запроса
+   растёт до ~2.2 MB / ~443K prompt-токенов (см. диагноз §9), что ведёт к
+   `UND_ERR_SOCKET` и `Provider returned an incomplete or malformed tool call`.
 3. **Нет фиксации ключа**: `models.providers.*.apiKey` берётся из **secret store**
    боевого инстанса (`{source:"store", id:"CLOUD_RU_API_KEY"}`), а не из выделенного
    бенч-ключа `CLOUD_RU_BENCH_API_KEY` (см. `use-dedicated-bench-account`).
+
+> ⚠️ **Уточнение по диагнозу.** Ранее предполагалось, что источник краха —
+> ambient-плагины/MCP (лик `connect`-листенеров). Полный stderr **опроверг** это:
+> `MaxListenersExceededWarning` — **teardown-шум**, а не причина; сам сбой —
+> `incomplete/malformed tool call` (`kind: incomplete_turn`) на раздутом контексте.
+> Поэтому изоляция **не** «лечит» краш; она даёт воспроизводимость и убирает регрессию
+> истории (возврат pruning/compaction).
 
 Диагноз: `docs/research/2026-11-17-openclaw-exec-crash-diagnosis.md`. Карточка: `3cae8a52`.
 

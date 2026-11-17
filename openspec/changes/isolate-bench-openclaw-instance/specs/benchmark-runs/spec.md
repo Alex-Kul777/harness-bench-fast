@@ -48,3 +48,22 @@ SHALL NOT ссылаться на боевой secret store. Раннер SHALL 
 
 - **WHEN** bench-конфиг закоммичен
 - **THEN** он SHALL NOT содержать значение ключа — только SecretRef с именем переменной
+
+### Requirement: Настройки управления историей в bench-конфиге
+
+Bench-конфиг SHALL задавать `agents.defaults.contextPruning` и
+`agents.defaults.compaction`, чтобы история диалога ограничивалась по объёму. Без них
+тело запроса растёт неограниченно (наблюдалось ~2.2 MB / ~443K prompt-токенов),
+вызывая `UND_ERR_SOCKET` и `Provider returned an incomplete or malformed tool call`.
+
+#### Scenario: Pruning/compaction присутствуют
+
+- **WHEN** bench-конфиг загружается
+- **THEN** `agents.defaults.contextPruning` и `agents.defaults.compaction` SHALL
+  присутствовать (зеркалят боевые настройки)
+
+#### Scenario: Запрос не растёт неограниченно
+
+- **WHEN** длинный прогон выполняет много ходов
+- **THEN** compaction SHALL удерживать объём активного транскрипта в пределах лимита,
+  а размер запроса SHALL NOT расти без ограничения

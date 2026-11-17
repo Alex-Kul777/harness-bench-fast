@@ -506,6 +506,25 @@
     "defaults": {
       "model": {
         "primary": "custom-foundation-models-api-cloud-ru/deepseek-ai/DeepSeek-V4.1-Flash"
+      },
+      "contextPruning": {
+        "mode": "cache-ttl"
+      },
+      "compaction": {
+        "mode": "safeguard",
+        "model": "custom-foundation-models-api-cloud-ru/deepseek-ai/DeepSeek-V4-Pro",
+        "memoryFlush": {
+          "model": "custom-foundation-models-api-cloud-ru/zai-org/GLM-5.2"
+        },
+        "maxActiveTranscriptBytes": "10mb",
+        "thinkingLevel": "low",
+        "timeoutSeconds": 300,
+        "keepRecentTokens": 30000,
+        "qualityGuard": {
+          "enabled": true,
+          "maxRetries": 3
+        },
+        "notifyUser": true
       }
     }
   }
