@@ -93,3 +93,22 @@ compaction `maxActiveTranscriptBytes=10mb`, `keepRecentTokens=30000`). Возв�
 - проверить `maxTokens: 8192` провайдер-модели как причину обрезки tool-call;
 - ретраить задачу при `incomplete_turn` (`--rerun-on-fail`), т.к. сбой может быть транзиентным;
 - (к лику отношения не имеет; `NODE_OPTIONS=defaultMaxListeners` не нужен — это шум).
+
+## 10. Тест-2 (bench-конфиг + pruning/compaction) — 2026-11-17
+Прогон `task_403` под `bench/openclaw.bench.json` **с возвращёнными**
+`contextPruning`/`compaction`:
+- **FAIL**, но **1056.5 s** (было 265 s), 38 шагов;
+- **usage ДОСТУПЕН**: 8 727 827 токенов (1 427 819 input / 56 744 output);
+- та же терминальная ошибка: `Provider returned an incomplete or malformed tool call`
+  (`kind: incomplete_turn`) + `MaxListenersExceededWarning` ×N при teardown.
+
+**Вывод:** pruning/compaction улучшают ход (в 4× длиннее, usage фиксируется), но **не**
+устраняют malformed tool call. Т.е. корневой сбой — на границе **провайдер/модель**
+(недетерминированный мусорный tool-call), а не в настройках нашего вызова. Модель
+`maxTokens=16384`; перед падением был `output-limit continuation 1/1` → вероятная обрезка
+tool-call.
+
+**Рычаги на нашей стороне (без правки продукта):**
+1. **Ретрай задачи** при `incomplete_turn`/`usage unavailable` в раннере (N попыток) — дёшево.
+2. **Поднять `maxTokens`** модели в bench-конфиге (16384 → выше) — меньше обрезки.
+3. Эскалация к Cloud.ru по качеству tool-call у `DeepSeek-V4.1-Flash`.
