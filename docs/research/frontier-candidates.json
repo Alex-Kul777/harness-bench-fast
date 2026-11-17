@@ -1,0 +1,387 @@
+{
+  "generated": "2026-11-17",
+  "source": "results/*.json (committed artifacts)",
+  "note": "DeepSeek-V4.1-Flash failed >=1x AND >=1 premium model passed.",
+  "candidate_count": 29,
+  "by_wave": {
+    "tool-reflection": 10,
+    "legacy/263": 1,
+    "wave19-feasibility": 10,
+    "long-context": 2,
+    "legacy/231": 1,
+    "legacy/352": 1,
+    "legacy/266": 1,
+    "legacy/353": 1,
+    "legacy/222": 1,
+    "legacy/378": 1
+  },
+  "candidates": [
+    {
+      "task_id": "task_417_transfer_fees",
+      "wave": "tool-reflection",
+      "deepseek_failed": 4,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "anthropic/claude-sonnet-4.6"
+      ],
+      "premium_passed_n": 1
+    },
+    {
+      "task_id": "task_431_admin_elevation",
+      "wave": "tool-reflection",
+      "deepseek_failed": 3,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5"
+      ],
+      "premium_passed_n": 1
+    },
+    {
+      "task_id": "task_263_terminal_du_top_dirs",
+      "wave": "legacy/263",
+      "deepseek_failed": 4,
+      "deepseek_runs": 7,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "anthropic/claude-opus-4.8",
+        "anthropic/claude-sonnet-4.6",
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5",
+        "fable-5",
+        "openai/gpt-5.5",
+        "zai-org/GLM-5.3"
+      ],
+      "premium_passed_n": 7
+    },
+    {
+      "task_id": "task_415_api_throttle",
+      "wave": "tool-reflection",
+      "deepseek_failed": 2,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "anthropic/claude-sonnet-4.6",
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5",
+        "openai/gpt-5.5"
+      ],
+      "premium_passed_n": 4
+    },
+    {
+      "task_id": "task_418_ticket_timeout_dupes",
+      "wave": "tool-reflection",
+      "deepseek_failed": 2,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "anthropic/claude-sonnet-4.6",
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5",
+        "openai/gpt-5.5"
+      ],
+      "premium_passed_n": 4
+    },
+    {
+      "task_id": "task_435_archive_transfer",
+      "wave": "wave19-feasibility",
+      "deepseek_failed": 2,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "anthropic/claude-sonnet-4.6",
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5",
+        "openai/gpt-5.5"
+      ],
+      "premium_passed_n": 4
+    },
+    {
+      "task_id": "task_451_search_index",
+      "wave": "wave19-feasibility",
+      "deepseek_failed": 2,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "anthropic/claude-sonnet-4.6",
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5",
+        "openai/gpt-5.5"
+      ],
+      "premium_passed_n": 4
+    },
+    {
+      "task_id": "task_393_intranet_multihop",
+      "wave": "long-context",
+      "deepseek_failed": 2,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "anthropic/claude-sonnet-4.6",
+        "openai/gpt-5.5"
+      ],
+      "premium_passed_n": 2
+    },
+    {
+      "task_id": "task_395_homework_grading",
+      "wave": "long-context",
+      "deepseek_failed": 1,
+      "deepseek_runs": 4,
+      "premium_passed": [
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5"
+      ],
+      "premium_passed_n": 1
+    },
+    {
+      "task_id": "task_420_wiki_optimistic_lock",
+      "wave": "tool-reflection",
+      "deepseek_failed": 2,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3"
+      ],
+      "premium_passed_n": 1
+    },
+    {
+      "task_id": "task_422_calendar_timezone",
+      "wave": "tool-reflection",
+      "deepseek_failed": 2,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "anthropic/claude-sonnet-4.6"
+      ],
+      "premium_passed_n": 1
+    },
+    {
+      "task_id": "task_426_kv_eventual",
+      "wave": "tool-reflection",
+      "deepseek_failed": 2,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "openai/gpt-5.5"
+      ],
+      "premium_passed_n": 1
+    },
+    {
+      "task_id": "task_423_rooms_duration_cap",
+      "wave": "tool-reflection",
+      "deepseek_failed": 1,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "anthropic/claude-sonnet-4.6",
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5",
+        "openai/gpt-5.5"
+      ],
+      "premium_passed_n": 4
+    },
+    {
+      "task_id": "task_443_search_count",
+      "wave": "wave19-feasibility",
+      "deepseek_failed": 1,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "anthropic/claude-sonnet-4.6",
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5",
+        "openai/gpt-5.5"
+      ],
+      "premium_passed_n": 4
+    },
+    {
+      "task_id": "task_449_search_capabilities",
+      "wave": "wave19-feasibility",
+      "deepseek_failed": 1,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "anthropic/claude-sonnet-4.6",
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5",
+        "openai/gpt-5.5"
+      ],
+      "premium_passed_n": 4
+    },
+    {
+      "task_id": "task_456_build_critical_path",
+      "wave": "wave19-feasibility",
+      "deepseek_failed": 1,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "anthropic/claude-sonnet-4.6",
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5",
+        "openai/gpt-5.5"
+      ],
+      "premium_passed_n": 4
+    },
+    {
+      "task_id": "task_457_search_pool",
+      "wave": "wave19-feasibility",
+      "deepseek_failed": 1,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "anthropic/claude-sonnet-4.6",
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5",
+        "openai/gpt-5.5"
+      ],
+      "premium_passed_n": 4
+    },
+    {
+      "task_id": "task_424_payments_split_limits",
+      "wave": "tool-reflection",
+      "deepseek_failed": 1,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "anthropic/claude-sonnet-4.6",
+        "openai/gpt-5.5"
+      ],
+      "premium_passed_n": 3
+    },
+    {
+      "task_id": "task_442_ledger_reachability",
+      "wave": "wave19-feasibility",
+      "deepseek_failed": 1,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5",
+        "openai/gpt-5.5"
+      ],
+      "premium_passed_n": 3
+    },
+    {
+      "task_id": "task_453_opaque_guid",
+      "wave": "wave19-feasibility",
+      "deepseek_failed": 1,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5",
+        "openai/gpt-5.5"
+      ],
+      "premium_passed_n": 3
+    },
+    {
+      "task_id": "task_458_deployment_matching",
+      "wave": "wave19-feasibility",
+      "deepseek_failed": 1,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "anthropic/claude-sonnet-4.6",
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5"
+      ],
+      "premium_passed_n": 3
+    },
+    {
+      "task_id": "task_427_report_deprecated_flag",
+      "wave": "tool-reflection",
+      "deepseek_failed": 1,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "anthropic/claude-sonnet-4.6"
+      ],
+      "premium_passed_n": 2
+    },
+    {
+      "task_id": "task_448_aggregate_identifiability",
+      "wave": "wave19-feasibility",
+      "deepseek_failed": 1,
+      "deepseek_runs": 5,
+      "premium_passed": [
+        "openai/gpt-5.5"
+      ],
+      "premium_passed_n": 1
+    },
+    {
+      "task_id": "task_231_memory_refuse_secrets",
+      "wave": "legacy/231",
+      "deepseek_failed": 2,
+      "deepseek_runs": 7,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "anthropic/claude-opus-4.8",
+        "anthropic/claude-sonnet-4.6",
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5",
+        "fable-5",
+        "openai/gpt-5.5",
+        "zai-org/GLM-5.3"
+      ],
+      "premium_passed_n": 7
+    },
+    {
+      "task_id": "task_352_structured_log_summary",
+      "wave": "legacy/352",
+      "deepseek_failed": 2,
+      "deepseek_runs": 7,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "anthropic/claude-opus-4.8",
+        "anthropic/claude-sonnet-4.6",
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5",
+        "fable-5",
+        "openai/gpt-5.5",
+        "zai-org/GLM-5.3"
+      ],
+      "premium_passed_n": 7
+    },
+    {
+      "task_id": "task_266_terminal_sha256_manifest",
+      "wave": "legacy/266",
+      "deepseek_failed": 1,
+      "deepseek_runs": 7,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "anthropic/claude-opus-4.8",
+        "anthropic/claude-sonnet-4.6",
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5",
+        "fable-5",
+        "openai/gpt-5.5",
+        "zai-org/GLM-5.3"
+      ],
+      "premium_passed_n": 7
+    },
+    {
+      "task_id": "task_353_reconstruct_sessions",
+      "wave": "legacy/353",
+      "deepseek_failed": 1,
+      "deepseek_runs": 7,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "anthropic/claude-opus-4.8",
+        "anthropic/claude-sonnet-4.6",
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5",
+        "fable-5",
+        "openai/gpt-5.5",
+        "zai-org/GLM-5.3"
+      ],
+      "premium_passed_n": 7
+    },
+    {
+      "task_id": "task_222_memory_name_pyproject",
+      "wave": "legacy/222",
+      "deepseek_failed": 1,
+      "deepseek_runs": 7,
+      "premium_passed": [
+        "MiniMaxAI/MiniMax-M3",
+        "anthropic/claude-opus-4.8",
+        "anthropic/claude-sonnet-4.6",
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5",
+        "fable-5",
+        "openai/gpt-5.5"
+      ],
+      "premium_passed_n": 6
+    },
+    {
+      "task_id": "task_378_cli_cfgctl_layered_merge",
+      "wave": "legacy/378",
+      "deepseek_failed": 1,
+      "deepseek_runs": 7,
+      "premium_passed": [
+        "anthropic/claude-opus-4.8",
+        "anthropic/claude-sonnet-4.6",
+        "custom-foundation-models-api-cloud-ru/openai/gpt-5.5",
+        "fable-5",
+        "openai/gpt-5.5",
+        "zai-org/GLM-5.3"
+      ],
+      "premium_passed_n": 6
+    }
+  ]
+}
