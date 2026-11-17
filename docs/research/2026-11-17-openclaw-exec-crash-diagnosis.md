@@ -112,3 +112,21 @@ tool-call.
 1. **Ретрай задачи** при `incomplete_turn`/`usage unavailable` в раннере (N попыток) — дёшево.
 2. **Поднять `maxTokens`** модели в bench-конфиге (16384 → выше) — меньше обрезки.
 3. Эскалация к Cloud.ru по качеству tool-call у `DeepSeek-V4.1-Flash`.
+
+## 11. Тест-3 (реализованный вариант: pinned config + maxTokens 32768 + retry 1) — 2026-11-17
+**PASS 1/1** — `task_403_binary_format_reverse`, 4382.2 s, «скрытые файлы: верно 40/40».
+Лог: `[1/1] … starting...` → `retryable infra crash (incomplete_turn) — attempt 2/2`
+→ `[✅ PASS]`. **Попытка 1 упала с `incomplete_turn`, попытка 2 прошла.**
+
+⇒ **Рычаг B (ретрай) подтверждён в бою**: без него прогон снова был бы записан как
+ложный провал модели, хотя агент решает задачу. Изоляция + maxTokens + retry —
+работающая комбинация.
+
+### ⚠️ Новый нюанс: 0 токенов при `usage_available=True`
+Артефакт тест-3: `agent_usage_available: True`, но `agent_*_tokens = 0`, `agent_turns=38`,
+`agent_steps=1`. Контрольный смоук той же командой (`--config …`) показал **нормальную**
+форму: `{"usageReport":{"state":"available"},"input":10421,"output":161,"total":30934,…}`.
+Похоже, финальный конверт успешного прогона в retry/continuation-пути отдаёт
+`usageReport.state=unavailable` (или пустые бакеты), и `_reported_usage` считает непустой
+dict доступным → 0. Это **token-accounting**, отдельная тема (change
+`fix-bench-token-accounting`), НЕ этот PR. Зафиксировать как follow-up.
