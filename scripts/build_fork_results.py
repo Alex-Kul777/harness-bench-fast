@@ -17,8 +17,8 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from fork_i18n import t  # noqa: E402
 from fork_false_negative_override import apply_summary as _fn_apply  # noqa: E402
+from fork_i18n import t  # noqa: E402
 from fork_ladder_override import apply as _ladder_apply  # noqa: E402
 from fork_metrics import steps_from_json  # noqa: E402
 

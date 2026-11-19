@@ -36,14 +36,17 @@ import urllib.parse
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from fork_i18n import DEFAULT_LOCALE, LOCALES, locale_filename, other_locale, t  # noqa: E402
-from fork_metrics import steps_from_json  # noqa: E402
 from fork_false_negative_override import (  # noqa: E402
-    apply_number as _fn_number,
     apply_summary as _fn_summary,
+)
+from fork_false_negative_override import (
     rescored_label as _fn_label,
+)
+from fork_false_negative_override import (
     task_status as _fn_status,
 )
+from fork_i18n import DEFAULT_LOCALE, LOCALES, locale_filename, other_locale, t  # noqa: E402
+from fork_metrics import steps_from_json  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUT = REPO_ROOT / "docs" / "fork-medium90-results.json"
