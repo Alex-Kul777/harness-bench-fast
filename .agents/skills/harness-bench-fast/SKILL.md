@@ -31,6 +31,19 @@ publishing results. Load this skill before the run.
 - Add every new model to `~/.openclaw/openclaw.json` under the Cloud.ru provider id
   `custom-foundation-models-api-cloud-ru/<catalog-id>` in TWO places (models block + `modelPolicy.allow`).
   Never add the bare catalog id (`z-ai/…`, `zai/…`) — it resolves to the direct z.ai provider and fails.
+- **Also add to `~/pi-agent/models.json`** — the Pi runner mounts it read-only. Its `input` field
+  allows only `text`/`image`; `video`/`file`/`audio` fail schema validation and invalidate the WHOLE
+  file (pi then reports "No models available"). Use `input: ["text","image"]`.
+- **Cloud.ru model quirks — verify per model, don't assume:**
+  - Some models reject the OpenAI `developer` role → set `compat.supportsDeveloperRole: false` so Pi
+    sends `system`. Seen on `z-ai/glm-5.3-flashx` (and `deepseek-ai/DeepSeek-V4.1-Flash`).
+  - `reasoning_effort` values are model-specific. `z-ai/glm-5.3-flashx` accepts only `low|high|max`;
+    its default `medium` (Pi's default thinking level) → HTTP 400. If you don't need level control,
+    set `compat.supportsReasoningEffort: false` (model still reasons by default); otherwise run with a
+    supported `--thinking` value.
+  - Before any pilot: (a) `docker run --rm pi-sandbox:latest --model cloud-ru/<id> -p "Reply with exactly: OK"`,
+    (b) one-task smoke run. A `400 invalid_request` means a request-shape mismatch (role/param), NOT a
+    model outage — capture the exact body with a host dump proxy + `docker run --network host`.
 
 ## Run a model (two waves)
 1. List the catalog: `python3 scripts/fm.py models` (skill `cloudru-foundation-models`);
