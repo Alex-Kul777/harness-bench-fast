@@ -33,7 +33,7 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 > [`docs/reconciliation-2026-11-15.md`](reconciliation-2026-11-15.md)).
 
 <!-- FORK:RESULTS:BEGIN -->
-Автосинк: 120 прогонов
+Автосинк: 132 прогонов
 
 | Harness | Suite | Profile | Model | Result | % | Time | Steps | Tokens (cost) |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
@@ -55,6 +55,18 @@ Upstream-методика и upstream-строки — в [`../README.md`](../RE
 | DeepSeek Harness | Medium (392-471) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 39/40 | 97.5% | 161.8m | 727 | 20 621 016 (494₽) |
 | DeepSeek Harness | Medium (392-471) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 16/20 | 80.0% | 95.8m | 379 | 8 316 142 (206₽) |
 | DeepSeek Harness | Medium (392-471) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 5/6 | 83.3% | 244.9m | 436 | 74 296 407 (979₽) |
+| DeepSeek Harness | Medium (392-471) | thinking: max | GLM-5.3-FlashX (thinking: max) | 37/40 | 92.5% | 114.6m | 798 | 22 214 399 (494₽) |
+| DeepSeek Harness | Medium (392-471) | thinking: max | GLM-5.3-FlashX (thinking: max) | 14/20 | 70.0% | 57.6m | 347 | 6 009 031 (166₽) |
+| DeepSeek Harness | Medium (392-471) | thinking: max | GLM-5.3-FlashX (thinking: max) | 4/6 | 66.7% | 98.7m | 449 | 100 522 611 (1 493₽) |
+| DeepSeek Harness | Medium (392-471) | thinking: off | GPT-6.1-Sol (thinking: off) | 14/40 | 35.0% | 40.2m | 254 | 4 653 151 (742₽) |
+| DeepSeek Harness | Medium (392-471) | thinking: off | GPT-6.1-Sol (thinking: off) | 14/20 | 70.0% | 48.1m | 297 | 2 785 969 (506₽) |
+| DeepSeek Harness | Medium (392-471) | thinking: off | GPT-6.1-Sol (thinking: off) | 5/6 | 83.3% | 88.7m | 566 | 37 864 544 (2 813₽) |
+| DeepSeek Harness | Medium (392-471) | thinking: off | Gemini-3.8-Flash (thinking: off) | 37/40 | 92.5% | 114.9m | 890 | 29 064 424 (1 046₽) |
+| DeepSeek Harness | Medium (392-471) | thinking: off | Gemini-3.8-Flash (thinking: off) | 17/20 | 85.0% | 77.4m | 810 | 19 771 104 (677₽) |
+| DeepSeek Harness | Medium (392-471) | thinking: off | Gemini-3.8-Flash (thinking: off) | 1/6 | 16.7% | 133.8m | 918 | 140 944 425 (2 676₽) |
+| DeepSeek Harness | Medium (392-471) | thinking: medium | Kimi-K3 (thinking: medium) | 39/40 | 97.5% | 152.2m | 499 | 11 028 194 (1 949₽) |
+| DeepSeek Harness | Medium (392-471) | thinking: medium | Kimi-K3 (thinking: medium) | 17/20 | 85.0% | 99.1m | 265 | 3 224 787 (785₽) |
+| DeepSeek Harness | Medium (392-471) | thinking: medium | Kimi-K3 (thinking: medium) | 5/6 | 83.3% | 245.2m | 394 | 64 431 559 (7 288₽) |
 | Hermes | Shot List (52) | thinking: off | DeepSeek-V4.1-Flash (thinking: off) | 49/52 | 94.2% | 22.0m | 221 | 4 030 565 (289₽) |
 | Hermes | Shot List (52) | thinking: off | GLM-5.2 (thinking: off) | 46/52 | 88.5% | 68.5m | — | 6 209 159 (1 509₽) |
 | Hermes | Shot List (52) | — | GPT-OSS-120B | 28/52 | 53.8% | 37.9m | 427 | 8 833 747 (145₽) |

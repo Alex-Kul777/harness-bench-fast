@@ -3,8 +3,8 @@
  "branch": "research/model-selection-guidance",
  "note": "READ-ONLY analysis layer; results/*.json; premium ₽ from provider billing.",
  "terciles_cps": {
-  "p33": 7.58,
-  "p66": 20.79
+  "p33": 8.14,
+  "p66": 31.6
  },
  "buckets_full": {
   "shot-list": 52,
@@ -3537,6 +3537,34 @@
    "tier": "Default",
    "pareto": true,
    "singleton": false,
+   "recommended": false,
+   "dominated_by": [],
+   "confidence": "medium (single run, full suite)"
+  },
+  {
+   "harness": "DeepSeek Harness",
+   "model": "GLM-5.3-FlashX (thinking: max)",
+   "reasoning": "max",
+   "suite": "Medium (392-471) · reflect",
+   "situation_bucket": "medium-reflect",
+   "passed": 14,
+   "total": 20,
+   "pass_rate": 0.7,
+   "cost_rub": 165.73,
+   "cost_per_solved": 11.8379,
+   "time_min": 57.58,
+   "steps": 347,
+   "coverage": {
+    "runs": 1,
+    "full": true,
+    "version": "0.18.0"
+   },
+   "stem": "dsh_medium_reflect_glm53flashx_max_20261126",
+   "tokens": 6009031,
+   "basis": "estimate",
+   "tier": "Default",
+   "pareto": true,
+   "singleton": false,
    "recommended": true,
    "dominated_by": [],
    "confidence": "medium (single run, full suite)"
@@ -3568,6 +3596,67 @@
    "recommended": false,
    "dominated_by": [],
    "confidence": "low (single run, partial suite)"
+  },
+  {
+   "harness": "DeepSeek Harness",
+   "model": "Gemini-3.8-Flash (thinking: off)",
+   "reasoning": "off",
+   "suite": "Medium (392-471) · reflect",
+   "situation_bucket": "medium-reflect",
+   "passed": 17,
+   "total": 20,
+   "pass_rate": 0.85,
+   "cost_rub": 676.57,
+   "cost_per_solved": 39.7982,
+   "time_min": 77.36,
+   "steps": 810,
+   "coverage": {
+    "runs": 1,
+    "full": true,
+    "version": "0.18.0"
+   },
+   "stem": "dsh_medium_reflect_gem38flash_off_20261126",
+   "tokens": 19771104,
+   "basis": "estimate",
+   "tier": "Balanced",
+   "pareto": false,
+   "singleton": false,
+   "recommended": false,
+   "dominated_by": [
+    "oc_medium_reflect_ds41flash_high_20261108"
+   ],
+   "confidence": "medium (single run, full suite)"
+  },
+  {
+   "harness": "DeepSeek Harness",
+   "model": "Kimi-K3 (thinking: medium)",
+   "reasoning": "medium",
+   "suite": "Medium (392-471) · reflect",
+   "situation_bucket": "medium-reflect",
+   "passed": 17,
+   "total": 20,
+   "pass_rate": 0.85,
+   "cost_rub": 785.33,
+   "cost_per_solved": 46.1959,
+   "time_min": 99.078,
+   "steps": 265,
+   "coverage": {
+    "runs": 1,
+    "full": true,
+    "version": "0.18.0"
+   },
+   "stem": "dsh_medium_reflect_kimik3_medium_20261126",
+   "tokens": 3224787,
+   "basis": "estimate",
+   "tier": "Balanced",
+   "pareto": false,
+   "singleton": false,
+   "recommended": false,
+   "dominated_by": [
+    "dsh_medium_reflect_gem38flash_off_20261126",
+    "oc_medium_reflect_ds41flash_high_20261108"
+   ],
+   "confidence": "medium (single run, full suite)"
   },
   {
    "harness": "OpenClaw",
@@ -3626,6 +3715,8 @@
    "recommended": false,
    "dominated_by": [
     "dsh_medium_reflect_ds41flash_off_20261111",
+    "dsh_medium_reflect_gem38flash_off_20261126",
+    "dsh_medium_reflect_kimik3_medium_20261126",
     "oc_medium_reflect_ds41flash_high_20261108",
     "oc_medium_reflect_ds41flash_medium_20261108"
    ],
@@ -3660,6 +3751,39 @@
    "confidence": "low (single run, partial suite)"
   },
   {
+   "harness": "DeepSeek Harness",
+   "model": "GPT-6.1-Sol (thinking: off)",
+   "reasoning": "off",
+   "suite": "Medium (392-471) · reflect",
+   "situation_bucket": "medium-reflect",
+   "passed": 14,
+   "total": 20,
+   "pass_rate": 0.7,
+   "cost_rub": 505.68,
+   "cost_per_solved": 36.12,
+   "time_min": 48.078,
+   "steps": 297,
+   "coverage": {
+    "runs": 1,
+    "full": true,
+    "version": "0.18.0"
+   },
+   "stem": "dsh_medium_reflect_gpt61sol_off_20261126",
+   "tokens": 2785969,
+   "basis": "estimate",
+   "tier": "Balanced",
+   "pareto": false,
+   "singleton": false,
+   "recommended": false,
+   "dominated_by": [
+    "dsh_medium_reflect_ds41flash_off_20261111",
+    "dsh_medium_reflect_glm53flashx_max_20261126",
+    "oc_medium_reflect_ds41flash_high_20261108",
+    "oc_medium_reflect_ds41flash_medium_20261108"
+   ],
+   "confidence": "medium (single run, full suite)"
+  },
+  {
    "harness": "Pi",
    "model": "Claude Sonnet 4.6 (thinking: medium)",
    "reasoning": "medium",
@@ -3686,6 +3810,10 @@
    "recommended": false,
    "dominated_by": [
     "dsh_medium_reflect_ds41flash_off_20261111",
+    "dsh_medium_reflect_gem38flash_off_20261126",
+    "dsh_medium_reflect_glm53flashx_max_20261126",
+    "dsh_medium_reflect_gpt61sol_off_20261126",
+    "dsh_medium_reflect_kimik3_medium_20261126",
     "oc_medium_reflect_ds41flash_high_20261108",
     "oc_medium_reflect_ds41flash_medium_20261108"
    ],
@@ -3718,6 +3846,10 @@
    "recommended": false,
    "dominated_by": [
     "dsh_medium_reflect_ds41flash_off_20261111",
+    "dsh_medium_reflect_gem38flash_off_20261126",
+    "dsh_medium_reflect_glm53flashx_max_20261126",
+    "dsh_medium_reflect_gpt61sol_off_20261126",
+    "dsh_medium_reflect_kimik3_medium_20261126",
     "oc_medium_reflect_ds41flash_high_20261108",
     "oc_medium_reflect_ds41flash_medium_20261108",
     "pi_medium_reflect_sonnet46_medium_20261113"
@@ -3745,12 +3877,16 @@
    "stem": "oc_medium_reflect_minimaxm3_off_20261109",
    "tokens": 12178668,
    "basis": "estimate",
-   "tier": "Balanced",
+   "tier": "Premium",
    "pareto": false,
    "singleton": false,
    "recommended": false,
    "dominated_by": [
     "dsh_medium_reflect_ds41flash_off_20261111",
+    "dsh_medium_reflect_gem38flash_off_20261126",
+    "dsh_medium_reflect_glm53flashx_max_20261126",
+    "dsh_medium_reflect_gpt61sol_off_20261126",
+    "dsh_medium_reflect_kimik3_medium_20261126",
     "oc_medium_reflect_ds41flash_high_20261108",
     "oc_medium_reflect_ds41flash_medium_20261108",
     "pi_medium_reflect_gpt55_off_20261110",
@@ -3779,12 +3915,13 @@
    "stem": "oc_medium_reflect_ds41flash_off_20261108",
    "tokens": 10009328,
    "basis": "estimate",
-   "tier": "Balanced",
+   "tier": "Default",
    "pareto": false,
    "singleton": false,
    "recommended": false,
    "dominated_by": [
     "dsh_medium_reflect_ds41flash_off_20261111",
+    "dsh_medium_reflect_glm53flashx_max_20261126",
     "oc_medium_reflect_ds41flash_high_20261108",
     "oc_medium_reflect_ds41flash_medium_20261108"
    ],
@@ -3817,6 +3954,10 @@
    "recommended": false,
    "dominated_by": [
     "dsh_medium_reflect_ds41flash_off_20261111",
+    "dsh_medium_reflect_gem38flash_off_20261126",
+    "dsh_medium_reflect_glm53flashx_max_20261126",
+    "dsh_medium_reflect_gpt61sol_off_20261126",
+    "dsh_medium_reflect_kimik3_medium_20261126",
     "oc_medium_reflect_ds41flash_high_20261108",
     "oc_medium_reflect_ds41flash_medium_20261108",
     "oc_medium_reflect_ds41flash_off_20261108",
@@ -3854,6 +3995,10 @@
    "recommended": false,
    "dominated_by": [
     "dsh_medium_reflect_ds41flash_off_20261111",
+    "dsh_medium_reflect_gem38flash_off_20261126",
+    "dsh_medium_reflect_glm53flashx_max_20261126",
+    "dsh_medium_reflect_gpt61sol_off_20261126",
+    "dsh_medium_reflect_kimik3_medium_20261126",
     "oc_medium_reflect_ds41flash_high_20261108",
     "oc_medium_reflect_ds41flash_medium_20261108",
     "oc_medium_reflect_ds41flash_off_20261108",
@@ -3890,6 +4035,10 @@
    "recommended": false,
    "dominated_by": [
     "dsh_medium_reflect_ds41flash_off_20261111",
+    "dsh_medium_reflect_gem38flash_off_20261126",
+    "dsh_medium_reflect_glm53flashx_max_20261126",
+    "dsh_medium_reflect_gpt61sol_off_20261126",
+    "dsh_medium_reflect_kimik3_medium_20261126",
     "oc_medium_reflect_ds41flash_high_20261108",
     "oc_medium_reflect_ds41flash_medium_20261108",
     "oc_medium_reflect_ds41flash_off_20261108",
@@ -4071,6 +4220,97 @@
    "confidence": "low (single run, partial suite)"
   },
   {
+   "harness": "DeepSeek Harness",
+   "model": "GPT-6.1-Sol (thinking: off)",
+   "reasoning": "off",
+   "suite": "Medium (392-471) · long",
+   "situation_bucket": "long-context",
+   "passed": 5,
+   "total": 6,
+   "pass_rate": 0.8333,
+   "cost_rub": 2813.48,
+   "cost_per_solved": 562.696,
+   "time_min": 88.673,
+   "steps": 566,
+   "coverage": {
+    "runs": 1,
+    "full": false,
+    "version": "0.17.0"
+   },
+   "stem": "dsh_medium_long_gpt61sol_off_20261126",
+   "tokens": 37864544,
+   "basis": "estimate",
+   "tier": "Balanced",
+   "pareto": false,
+   "singleton": false,
+   "recommended": false,
+   "dominated_by": [
+    "dsh_medium_long_ds41flash_off_20261111"
+   ],
+   "confidence": "low (single run, partial suite)"
+  },
+  {
+   "harness": "DeepSeek Harness",
+   "model": "Kimi-K3 (thinking: medium)",
+   "reasoning": "medium",
+   "suite": "Medium (392-471) · long",
+   "situation_bucket": "long-context",
+   "passed": 5,
+   "total": 6,
+   "pass_rate": 0.8333,
+   "cost_rub": 7288.32,
+   "cost_per_solved": 1457.664,
+   "time_min": 245.165,
+   "steps": 394,
+   "coverage": {
+    "runs": 1,
+    "full": false,
+    "version": "0.17.0"
+   },
+   "stem": "dsh_medium_long_kimik3_medium_20261126",
+   "tokens": 64431559,
+   "basis": "estimate",
+   "tier": "Balanced",
+   "pareto": false,
+   "singleton": false,
+   "recommended": false,
+   "dominated_by": [
+    "dsh_medium_long_ds41flash_off_20261111",
+    "dsh_medium_long_gpt61sol_off_20261126"
+   ],
+   "confidence": "low (single run, partial suite)"
+  },
+  {
+   "harness": "DeepSeek Harness",
+   "model": "GLM-5.3-FlashX (thinking: max)",
+   "reasoning": "max",
+   "suite": "Medium (392-471) · long",
+   "situation_bucket": "long-context",
+   "passed": 4,
+   "total": 6,
+   "pass_rate": 0.6667,
+   "cost_rub": 1492.97,
+   "cost_per_solved": 373.2425,
+   "time_min": 98.73,
+   "steps": 449,
+   "coverage": {
+    "runs": 1,
+    "full": false,
+    "version": "0.17.0"
+   },
+   "stem": "dsh_medium_long_glm53flashx_max_20261126",
+   "tokens": 100522611,
+   "basis": "estimate",
+   "tier": "Balanced",
+   "pareto": false,
+   "singleton": false,
+   "recommended": false,
+   "dominated_by": [
+    "dsh_medium_long_ds41flash_off_20261111"
+   ],
+   "confidence": "low (single run, partial suite)"
+  },
+  {
    "harness": "OpenClaw",
    "model": "DeepSeek-V4.1-Flash (thinking: off)",
    "reasoning": "off",
@@ -4091,13 +4331,49 @@
    "stem": "oc_medium_long_ds41flash_off_20261109",
    "tokens": 8425060,
    "basis": "estimate",
-   "tier": "Balanced",
+   "tier": "Default",
    "pareto": false,
    "singleton": false,
    "recommended": false,
    "dominated_by": [
     "oc_medium_long_ds41flash_high_20261109",
     "oc_medium_long_ds41flash_medium_20261109"
+   ],
+   "confidence": "low (single run, partial suite)"
+  },
+  {
+   "harness": "DeepSeek Harness",
+   "model": "Gemini-3.8-Flash (thinking: off)",
+   "reasoning": "off",
+   "suite": "Medium (392-471) · long",
+   "situation_bucket": "long-context",
+   "passed": 1,
+   "total": 6,
+   "pass_rate": 0.1667,
+   "cost_rub": 2675.78,
+   "cost_per_solved": 2675.78,
+   "time_min": 133.797,
+   "steps": 918,
+   "coverage": {
+    "runs": 1,
+    "full": false,
+    "version": "0.17.0"
+   },
+   "stem": "dsh_medium_long_gem38flash_off_20261126",
+   "tokens": 140944425,
+   "basis": "estimate",
+   "tier": "Premium",
+   "pareto": false,
+   "singleton": false,
+   "recommended": false,
+   "dominated_by": [
+    "dsh_medium_long_ds41flash_off_20261111",
+    "dsh_medium_long_glm53flashx_max_20261126",
+    "dsh_medium_long_gpt61sol_off_20261126",
+    "dsh_medium_long_kimik3_medium_20261126",
+    "oc_medium_long_ds41flash_high_20261109",
+    "oc_medium_long_ds41flash_medium_20261109",
+    "oc_medium_long_ds41flash_off_20261109"
    ],
    "confidence": "low (single run, partial suite)"
   },
@@ -4128,6 +4404,10 @@
    "recommended": false,
    "dominated_by": [
     "dsh_medium_long_ds41flash_off_20261111",
+    "dsh_medium_long_gem38flash_off_20261126",
+    "dsh_medium_long_glm53flashx_max_20261126",
+    "dsh_medium_long_gpt61sol_off_20261126",
+    "dsh_medium_long_kimik3_medium_20261126",
     "oc_medium_long_ds41flash_high_20261109",
     "oc_medium_long_ds41flash_medium_20261109",
     "oc_medium_long_ds41flash_off_20261109"
@@ -4161,6 +4441,10 @@
    "recommended": false,
    "dominated_by": [
     "dsh_medium_long_ds41flash_off_20261111",
+    "dsh_medium_long_gem38flash_off_20261126",
+    "dsh_medium_long_glm53flashx_max_20261126",
+    "dsh_medium_long_gpt61sol_off_20261126",
+    "dsh_medium_long_kimik3_medium_20261126",
     "oc_medium_long_ds41flash_high_20261109",
     "oc_medium_long_ds41flash_medium_20261109",
     "oc_medium_long_ds41flash_off_20261109",
@@ -4195,6 +4479,10 @@
    "recommended": false,
    "dominated_by": [
     "dsh_medium_long_ds41flash_off_20261111",
+    "dsh_medium_long_gem38flash_off_20261126",
+    "dsh_medium_long_glm53flashx_max_20261126",
+    "dsh_medium_long_gpt61sol_off_20261126",
+    "dsh_medium_long_kimik3_medium_20261126",
     "oc_medium_long_ds41flash_high_20261109",
     "oc_medium_long_ds41flash_medium_20261109",
     "oc_medium_long_ds41flash_off_20261109",
@@ -4570,6 +4858,37 @@
    "confidence": "medium (single run, full suite)"
   },
   {
+   "harness": "DeepSeek Harness",
+   "model": "Kimi-K3 (thinking: medium)",
+   "reasoning": "medium",
+   "suite": "Medium (392-471) · feasibility",
+   "situation_bucket": "wave19-feasibility",
+   "passed": 39,
+   "total": 40,
+   "pass_rate": 0.975,
+   "cost_rub": 1949.49,
+   "cost_per_solved": 49.9869,
+   "time_min": 152.198,
+   "steps": 499,
+   "coverage": {
+    "runs": 1,
+    "full": true,
+    "version": "0.19.1"
+   },
+   "stem": "dsh_medium_feasibility_kimik3_medium_20261126",
+   "tokens": 11028194,
+   "basis": "estimate",
+   "tier": "Balanced",
+   "pareto": false,
+   "singleton": false,
+   "recommended": false,
+   "dominated_by": [
+    "dsh_medium_feasibility_ds41flash_off_20261111",
+    "oc_medium_feasibility_ds41flash_medium_20261108"
+   ],
+   "confidence": "medium (single run, full suite)"
+  },
+  {
    "harness": "OpenClaw",
    "model": "DeepSeek-V4.1-Flash (thinking: high)",
    "reasoning": "high",
@@ -4627,6 +4946,7 @@
    "recommended": false,
    "dominated_by": [
     "dsh_medium_feasibility_ds41flash_off_20261111",
+    "dsh_medium_feasibility_kimik3_medium_20261126",
     "oc_medium_feasibility_ds41flash_high_20261108",
     "oc_medium_feasibility_ds41flash_medium_20261108"
    ],
@@ -4653,15 +4973,80 @@
    "stem": "pi_medium_feasibility_gpt55_off_20261110",
    "tokens": 11850369,
    "basis": "estimate",
+   "tier": "Premium",
+   "pareto": false,
+   "singleton": false,
+   "recommended": false,
+   "dominated_by": [
+    "dsh_medium_feasibility_ds41flash_off_20261111",
+    "dsh_medium_feasibility_kimik3_medium_20261126",
+    "oc_medium_feasibility_ds41flash_high_20261108",
+    "oc_medium_feasibility_ds41flash_medium_20261108",
+    "oc_medium_feasibility_gpt55_off_20261110"
+   ],
+   "confidence": "medium (single run, full suite)"
+  },
+  {
+   "harness": "DeepSeek Harness",
+   "model": "GLM-5.3-FlashX (thinking: max)",
+   "reasoning": "max",
+   "suite": "Medium (392-471) · feasibility",
+   "situation_bucket": "wave19-feasibility",
+   "passed": 37,
+   "total": 40,
+   "pass_rate": 0.925,
+   "cost_rub": 493.78,
+   "cost_per_solved": 13.3454,
+   "time_min": 114.553,
+   "steps": 798,
+   "coverage": {
+    "runs": 1,
+    "full": true,
+    "version": "0.19.1"
+   },
+   "stem": "dsh_medium_feasibility_glm53flashx_max_20261126",
+   "tokens": 22214399,
+   "basis": "estimate",
+   "tier": "Default",
+   "pareto": false,
+   "singleton": false,
+   "recommended": false,
+   "dominated_by": [
+    "dsh_medium_feasibility_ds41flash_off_20261111",
+    "oc_medium_feasibility_ds41flash_medium_20261108"
+   ],
+   "confidence": "medium (single run, full suite)"
+  },
+  {
+   "harness": "DeepSeek Harness",
+   "model": "Gemini-3.8-Flash (thinking: off)",
+   "reasoning": "off",
+   "suite": "Medium (392-471) · feasibility",
+   "situation_bucket": "wave19-feasibility",
+   "passed": 37,
+   "total": 40,
+   "pass_rate": 0.925,
+   "cost_rub": 1046.08,
+   "cost_per_solved": 28.2724,
+   "time_min": 114.892,
+   "steps": 890,
+   "coverage": {
+    "runs": 1,
+    "full": true,
+    "version": "0.19.1"
+   },
+   "stem": "dsh_medium_feasibility_gem38flash_off_20261126",
+   "tokens": 29064424,
+   "basis": "estimate",
    "tier": "Balanced",
    "pareto": false,
    "singleton": false,
    "recommended": false,
    "dominated_by": [
     "dsh_medium_feasibility_ds41flash_off_20261111",
+    "dsh_medium_feasibility_glm53flashx_max_20261126",
     "oc_medium_feasibility_ds41flash_high_20261108",
-    "oc_medium_feasibility_ds41flash_medium_20261108",
-    "oc_medium_feasibility_gpt55_off_20261110"
+    "oc_medium_feasibility_ds41flash_medium_20261108"
    ],
    "confidence": "medium (single run, full suite)"
   },
@@ -4692,6 +5077,7 @@
    "recommended": false,
    "dominated_by": [
     "dsh_medium_feasibility_ds41flash_off_20261111",
+    "dsh_medium_feasibility_glm53flashx_max_20261126",
     "oc_medium_feasibility_ds41flash_high_20261108",
     "oc_medium_feasibility_ds41flash_medium_20261108"
    ],
@@ -4724,6 +5110,9 @@
    "recommended": false,
    "dominated_by": [
     "dsh_medium_feasibility_ds41flash_off_20261111",
+    "dsh_medium_feasibility_gem38flash_off_20261126",
+    "dsh_medium_feasibility_glm53flashx_max_20261126",
+    "dsh_medium_feasibility_kimik3_medium_20261126",
     "oc_medium_feasibility_ds41flash_high_20261108",
     "oc_medium_feasibility_ds41flash_medium_20261108",
     "oc_medium_feasibility_ds41flash_off_20261108",
@@ -4758,6 +5147,9 @@
    "recommended": false,
    "dominated_by": [
     "dsh_medium_feasibility_ds41flash_off_20261111",
+    "dsh_medium_feasibility_gem38flash_off_20261126",
+    "dsh_medium_feasibility_glm53flashx_max_20261126",
+    "dsh_medium_feasibility_kimik3_medium_20261126",
     "oc_medium_feasibility_ds41flash_high_20261108",
     "oc_medium_feasibility_ds41flash_medium_20261108",
     "oc_medium_feasibility_ds41flash_off_20261108",
@@ -4794,6 +5186,9 @@
    "recommended": false,
    "dominated_by": [
     "dsh_medium_feasibility_ds41flash_off_20261111",
+    "dsh_medium_feasibility_gem38flash_off_20261126",
+    "dsh_medium_feasibility_glm53flashx_max_20261126",
+    "dsh_medium_feasibility_kimik3_medium_20261126",
     "oc_medium_feasibility_ds41flash_high_20261108",
     "oc_medium_feasibility_ds41flash_medium_20261108",
     "oc_medium_feasibility_ds41flash_off_20261108",
@@ -4830,6 +5225,9 @@
    "recommended": false,
    "dominated_by": [
     "dsh_medium_feasibility_ds41flash_off_20261111",
+    "dsh_medium_feasibility_gem38flash_off_20261126",
+    "dsh_medium_feasibility_glm53flashx_max_20261126",
+    "dsh_medium_feasibility_kimik3_medium_20261126",
     "oc_medium_feasibility_ds41flash_high_20261108",
     "oc_medium_feasibility_ds41flash_medium_20261108",
     "oc_medium_feasibility_ds41flash_off_20261108",
@@ -4838,6 +5236,42 @@
     "oc_medium_feasibility_minimaxm3_off_20261109",
     "pi_medium_feasibility_gpt55_off_20261110",
     "pi_medium_feasibility_sonnet46_medium_20261113"
+   ],
+   "confidence": "medium (single run, full suite)"
+  },
+  {
+   "harness": "DeepSeek Harness",
+   "model": "GPT-6.1-Sol (thinking: off)",
+   "reasoning": "off",
+   "suite": "Medium (392-471) · feasibility",
+   "situation_bucket": "wave19-feasibility",
+   "passed": 14,
+   "total": 40,
+   "pass_rate": 0.35,
+   "cost_rub": 741.85,
+   "cost_per_solved": 52.9893,
+   "time_min": 40.163,
+   "steps": 254,
+   "coverage": {
+    "runs": 1,
+    "full": true,
+    "version": "0.19.1"
+   },
+   "stem": "dsh_medium_feasibility_gpt61sol_off_20261126",
+   "tokens": 4653151,
+   "basis": "estimate",
+   "tier": "Balanced",
+   "pareto": false,
+   "singleton": false,
+   "recommended": false,
+   "dominated_by": [
+    "dsh_medium_feasibility_ds41flash_off_20261111",
+    "dsh_medium_feasibility_gem38flash_off_20261126",
+    "dsh_medium_feasibility_glm53flashx_max_20261126",
+    "dsh_medium_feasibility_kimik3_medium_20261126",
+    "oc_medium_feasibility_ds41flash_high_20261108",
+    "oc_medium_feasibility_ds41flash_medium_20261108",
+    "oc_medium_feasibility_ds41flash_off_20261108"
    ],
    "confidence": "medium (single run, full suite)"
   },
@@ -4868,6 +5302,10 @@
    "recommended": false,
    "dominated_by": [
     "dsh_medium_feasibility_ds41flash_off_20261111",
+    "dsh_medium_feasibility_gem38flash_off_20261126",
+    "dsh_medium_feasibility_glm53flashx_max_20261126",
+    "dsh_medium_feasibility_gpt61sol_off_20261126",
+    "dsh_medium_feasibility_kimik3_medium_20261126",
     "oc_medium_feasibility_ds41flash_high_20261108",
     "oc_medium_feasibility_ds41flash_medium_20261108",
     "oc_medium_feasibility_ds41flash_off_20261108",
@@ -4900,12 +5338,16 @@
    "stem": "oc_medium_feasibility_giga35base_off_20261113",
    "tokens": 9226537,
    "basis": "estimate",
-   "tier": "Balanced",
+   "tier": "Premium",
    "pareto": false,
    "singleton": false,
    "recommended": false,
    "dominated_by": [
     "dsh_medium_feasibility_ds41flash_off_20261111",
+    "dsh_medium_feasibility_gem38flash_off_20261126",
+    "dsh_medium_feasibility_glm53flashx_max_20261126",
+    "dsh_medium_feasibility_gpt61sol_off_20261126",
+    "dsh_medium_feasibility_kimik3_medium_20261126",
     "oc_medium_feasibility_ds41flash_high_20261108",
     "oc_medium_feasibility_ds41flash_medium_20261108",
     "oc_medium_feasibility_ds41flash_off_20261108",
