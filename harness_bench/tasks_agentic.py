@@ -739,7 +739,7 @@ TASK_266 = Task(
     name="Create a deterministic SHA256 manifest",
     tags=("terminal-bench-like", "hash", "manifest", "execute", "hard"),
     prompt=(
-        "Для всех обычных файлов внутри каталога payload создай SHA256SUMS."
+        "Для всех обычных файлов внутри каталога payload создай SHA256SUMS в корне рабочей директории (не внутри payload)."
         " Формат каждой строки как у sha256sum: '<hex>  <relative-path>'."
         " Пути должны быть относительно корня рабочей директории и"
         " отсортированы лексикографически."
