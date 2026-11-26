@@ -725,6 +725,7 @@ Rows are sorted by pass count.
 | DeepSeek Harness | thinking: max (2026-11-20) | GLM-5.3-FlashX | 51/52 | 98.1% | 23.2m | 281 | 2,070,362 (66₽) |
 | Pi | thinking: max (2026-11-19) | GLM-5.3-FlashX | 49/52 | 94.2% | 11.8m | 258 | 517,470 (22₽) |
 | DeepSeek Harness | thinking: off (2026-11-20) | GPT-6.1-Sol | 49/52 | 94.2% | 44.6m | 333 | 1,669,883 (369₽) |
+| Pi | — (2026-11-26) | GigaChat/GigaChat-4-37B-A3 | 47/52 | 90.4% | 33.7m | 456 | 5,351,405 (~476₽) |
 
 The shot list separates models into clear tiers: \**>90%** (Kimi, Pi, Hermes,
 Claude, OpenClaw thinking:off), **88-90%** (OpenClaw thinking:high, Hermes
