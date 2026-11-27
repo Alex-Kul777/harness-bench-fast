@@ -22,23 +22,20 @@ where a reconciled sidecar exists**, otherwise a tariff estimate (see the `Basis
   **51/52** at `thinking: off`/`medium` (~0.85 ₽/solved) to **52/52 at `thinking: max`** — at ~5× the
   cost (≈4.18 ₽/solved, 84 min). `medium` is the balance point; reach for `max` only when that last
   task matters.
-- **Cloud.ru batch (2026-11-19, Pi, 52 tasks):** `GLM-5.3-FlashX` is the cheapest
-  (≈0.45 ₽/solved, 49/52 at `max`); `GPT-6.1-Sol` and `Kimi-K3` hold **51/52 across all levels**
-  (off/medium/max) but cost more (~3–5 ₽/solved); `Gemini-3.8-Flash` shows a **token runaway** at
-  higher reasoning (2.3M→8.8M tokens off→max) while its score drops (51→50/52) — worst ₽/solved.
-  None of the new models beats DeepSeek-V4.1-Flash on ₽/solved.
-- **Cloud.ru batch on DeepSeek Harness (dsh, 2026-11-20):** `Kimi-K3` is the only one to reach
-  **52/52** (medium/max); `Gemini-3.8-Flash` also scores **52/52 at all levels** but with a
-  catastrophic token blow-up (3.3M→15M→30M off→max); `GLM-5.3-FlashX` peaks at `max` (51/52),
-  `GPT-6.1-Sol` regresses (44–49/52). On ₽/solved none beats DeepSeek-V4.1-Flash.
-- **Cloud.ru batch on OpenClaw (reduced scope, 2026-11-20):** only the best levels (per
-  Pi/dsh) were run — `GLM-5.3-FlashX` (`high`) **49/52**, `GPT-6.1-Sol` (`off`) **50/52**,
-  `Kimi-K3` (`medium`) **52/52**, `Gemini-3.8-Flash` (`off`) **52/52**. OpenClaw holds the Kimi/Gemini
-  ceiling but costs more per solved task than Pi/dsh (gpt-6.1-sol `off` ≈978₽).
-- **Cloud.ru batch on Medium-66 (dsh, 2026-11-26):** `Kimi-K3` (`medium`) — **61/66** (best at
-  depth); `GLM-5.3-FlashX` (`max`) and `Gemini-3.8-Flash` (`off`) both **55/66**; `GPT-6.1-Sol`
-  (`off`) regresses — **33/66** (feasibility 14/40). ⚠️ The new models **cracked the long wave**
-  (historically 0/6): kimi 5/6 · gpt 5/6 · glm 4/6 · gemini 1/6. Total ~20.6k₽ (cap 40k).
+- **Cloud.ru batch — new models (2026-11).** One consolidated view (per-harness detail is in the matrix below):
+  - ⚠️ **The long-context wave is cracked for the first time**: historically it was **0/6 for every model**; the new ones solve it — `kimi` 5/6 · `gpt` 5/6 · `glm` 4/6 · `gemini` 1/6 (dsh, 2026-11-26).
+  - **Among the new models:** ₽ leader — **`GLM-5.3-FlashX`** (on both 52 and 66); raw depth leader — **`Kimi-K3`** (61/66); `GPT-6.1-Sol` is strong on 52 but **collapses at depth** (33/66, feasibility 14/40); `Gemini-3.8-Flash` holds its score but is token-heavy.
+  - None of the new models beats DeepSeek-V4.1-Flash on ₽/solved.
+- **52 ≠ 66: the shot list does not predict depth.** The best level on 52 does not guarantee depth:
+
+  | Model | 52 (dsh) | 66 (dsh) | Takeaway |
+  |---|---:|---:|---|
+  | Kimi-K3 `medium` | 52 | **61** | holds the lead |
+  | GLM-5.3-FlashX `max` | 51 | 55 | ok |
+  | Gemini-3.8-Flash `off` | 52 | 55 | ok (×2.5 tokens) |
+  | GPT-6.1-Sol `off` | 49 | **33** | 🔻 depth collapse |
+
+  Rule of thumb: **fast iteration → Shot List 52; long/heavy multi-step → Medium-66.**
 - **Not covered:** `wave21 (hard-coupled)` is not measured at all; the long wave only partially
   (6/20); Light-391 has 3 runs. Such cells are `unmeasured`, never "fail".
 
@@ -141,28 +138,28 @@ Auto-sync: 130 rows (incl. 0/N) · tiers per bucket by ₽/solved · ✅ — Par
 | Medium · reflect (20) | OpenClaw | GigaChat 3.5-432B-A28B (thinking: off) | н/д | 0/20 | н/д | est. | 84.6 | 935 | — | `oc_medium_reflect_giga35base_off_20261113` |
 | Medium · reflect (20) | OpenClaw | GigaChat 3.5-432B-A28B (thinking: ultra) | н/д | 0/20 | н/д | est. | 20.1 | 259 | — | `oc_medium_reflect_giga35base_ultra_20261114` |
 | Medium · reflect (20) | Pi | GigaChat 3 Pro (thinking: n/a) | н/д | 0/20 | н/д | est. | 31.6 | 2948 | — | `pi_medium_reflect_gigachat3pro_20261109` |
-| Medium · long (20) | DeepSeek Harness | DeepSeek-V4.1-Flash (thinking: off) | Balanced | 5/6 (partial) | 195.89₽ | est. | 244.9 | 436 | ✅ | `dsh_medium_long_ds41flash_off_20261111` |
-| Medium · long (20) | OpenClaw | DeepSeek-V4.1-Flash (thinking: high) | Default | 3/6 (partial) | 56.48₽ | est. | 128.2 | 183 | ✅ | `oc_medium_long_ds41flash_high_20261109` |
-| Medium · long (20) | OpenClaw | DeepSeek-V4.1-Flash (thinking: medium) | Default | 2/6 (partial) | 6.29₽ | est. | 115.5 | 66 | ✅ | `oc_medium_long_ds41flash_medium_20261109` |
-| Medium · long (20) | DeepSeek Harness | GPT-6.1-Sol (thinking: off) | Balanced | 5/6 (partial) | 562.70₽ | est. | 88.7 | 566 | — | `dsh_medium_long_gpt61sol_off_20261126` |
-| Medium · long (20) | DeepSeek Harness | Kimi-K3 (thinking: medium) | Balanced | 5/6 (partial) | 1 457.66₽ | est. | 245.2 | 394 | — | `dsh_medium_long_kimik3_medium_20261126` |
-| Medium · long (20) | DeepSeek Harness | GLM-5.3-FlashX (thinking: max) | Balanced | 4/6 (partial) | 373.24₽ | est. | 98.7 | 449 | — | `dsh_medium_long_glm53flashx_max_20261126` |
-| Medium · long (20) | OpenClaw | DeepSeek-V4.1-Flash (thinking: off) | Default | 2/6 (partial) | 94.45₽ | est. | 131.6 | 86 | — | `oc_medium_long_ds41flash_off_20261109` |
-| Medium · long (20) | DeepSeek Harness | Gemini-3.8-Flash (thinking: off) | Premium | 1/6 (partial) | 2 675.78₽ | est. | 133.8 | 918 | — | `dsh_medium_long_gem38flash_off_20261126` |
-| Medium · long (20) | OpenClaw | GPT-5.5 (thinking: off) | Premium | 1/6 (partial) | 12 926.41₽ | est. | 43.2 | 209 | — | `oc_medium_long_gpt55_off_20261110` |
-| Medium · long (20) | Pi | GPT-5.5 (thinking: off) | Premium | 1/6 (partial) | 16 102.59₽ | est. | 47.6 | 426 | — | `pi_medium_long_gpt55_off_20261110` |
-| Medium · long (20) | Pi | Claude Sonnet 4.6 (thinking: off) | Premium | 1/6 (partial) | 55 280.97₽ | est. | 119.4 | 2718 | — | `pi_medium_long_sonnet46_off_20261113` |
-| Medium · long (20) | OpenClaw | — | н/д | 0/6 (partial) | н/д | est. | 40.3 | 326 | — | `oc_m66-plain-long_20261113` |
-| Medium · long (20) | OpenClaw | — | н/д | 0/6 (partial) | н/д | est. | 22.0 | 173 | — | `oc_m66-ultra-long_20261114` |
-| Medium · long (20) | OpenClaw | DeepSeek-V4.1-Flash (thinking: off) | н/д | 0/2 (partial) | н/д | est. | 45.6 | 4 | — | `oc_medium_long_ds41flash_off_20261108` |
-| Medium · long (20) | OpenClaw | GigaChat 3.5-432B-A28B (thinking: off) | н/д | 0/6 (partial) | н/д | est. | 40.3 | 326 | — | `oc_medium_long_giga35base_off_20261113` |
-| Medium · long (20) | OpenClaw | GigaChat 3.5-432B-A28B (thinking: ultra) | н/д | 0/6 (partial) | н/д | est. | 22.0 | 173 | — | `oc_medium_long_giga35base_ultra_20261114` |
-| Medium · long (20) | OpenClaw | MiniMax-M3 (thinking: medium) | н/д | 0/6 (partial) | н/д | est. | 154.9 | 284 | — | `oc_medium_long_minimaxm3_medium_20261109` |
-| Medium · long (20) | OpenClaw | MiniMax-M3 (thinking: off) | н/д | 0/6 (partial) | н/д | est. | 363.2 | 276 | — | `oc_medium_long_minimaxm3_off_20261109` |
-| Medium · long (20) | Pi | DeepSeek-V4.1-Flash (thinking: n/a) | н/д | 0/3 (partial) | н/д | est. | 288.7 | 1650 | — | `pi_long_ds41flash_20261106` |
-| Medium · long (20) | Pi | GigaChat 3.5 Reasoning (thinking: low) | н/д | 0/6 (partial) | н/д | est. | 62.2 | 1419 | — | `pi_medium_long_giga35_low_20261107` |
-| Medium · long (20) | Pi | GigaChat 3 Pro (thinking: n/a) | н/д | 0/6 (partial) | н/д | est. | 23.5 | 1020 | — | `pi_medium_long_gigachat3pro_20261109` |
-| Medium · long (20) | Pi | Claude Sonnet 4.6 (thinking: medium) | н/д | 0/6 (partial) | н/д | est. | 103.2 | 1004 | — | `pi_medium_long_sonnet46_medium_20261113` |
+| Medium · long (6/20) | DeepSeek Harness | DeepSeek-V4.1-Flash (thinking: off) | Balanced | 5/6 (partial) | 195.89₽ | est. | 244.9 | 436 | ✅ | `dsh_medium_long_ds41flash_off_20261111` |
+| Medium · long (6/20) | OpenClaw | DeepSeek-V4.1-Flash (thinking: high) | Default | 3/6 (partial) | 56.48₽ | est. | 128.2 | 183 | ✅ | `oc_medium_long_ds41flash_high_20261109` |
+| Medium · long (6/20) | OpenClaw | DeepSeek-V4.1-Flash (thinking: medium) | Default | 2/6 (partial) | 6.29₽ | est. | 115.5 | 66 | ✅ | `oc_medium_long_ds41flash_medium_20261109` |
+| Medium · long (6/20) | DeepSeek Harness | GPT-6.1-Sol (thinking: off) | Balanced | 5/6 (partial) | 562.70₽ | est. | 88.7 | 566 | — | `dsh_medium_long_gpt61sol_off_20261126` |
+| Medium · long (6/20) | DeepSeek Harness | Kimi-K3 (thinking: medium) | Balanced | 5/6 (partial) | 1 457.66₽ | est. | 245.2 | 394 | — | `dsh_medium_long_kimik3_medium_20261126` |
+| Medium · long (6/20) | DeepSeek Harness | GLM-5.3-FlashX (thinking: max) | Balanced | 4/6 (partial) | 373.24₽ | est. | 98.7 | 449 | — | `dsh_medium_long_glm53flashx_max_20261126` |
+| Medium · long (6/20) | OpenClaw | DeepSeek-V4.1-Flash (thinking: off) | Default | 2/6 (partial) | 94.45₽ | est. | 131.6 | 86 | — | `oc_medium_long_ds41flash_off_20261109` |
+| Medium · long (6/20) | DeepSeek Harness | Gemini-3.8-Flash (thinking: off) | Premium | 1/6 (partial) | 2 675.78₽ | est. | 133.8 | 918 | — | `dsh_medium_long_gem38flash_off_20261126` |
+| Medium · long (6/20) | OpenClaw | GPT-5.5 (thinking: off) | Premium | 1/6 (partial) | 12 926.41₽ | est. | 43.2 | 209 | — | `oc_medium_long_gpt55_off_20261110` |
+| Medium · long (6/20) | Pi | GPT-5.5 (thinking: off) | Premium | 1/6 (partial) | 16 102.59₽ | est. | 47.6 | 426 | — | `pi_medium_long_gpt55_off_20261110` |
+| Medium · long (6/20) | Pi | Claude Sonnet 4.6 (thinking: off) | Premium | 1/6 (partial) | 55 280.97₽ | est. | 119.4 | 2718 | — | `pi_medium_long_sonnet46_off_20261113` |
+| Medium · long (6/20) | OpenClaw | — | н/д | 0/6 (partial) | н/д | est. | 40.3 | 326 | — | `oc_m66-plain-long_20261113` |
+| Medium · long (6/20) | OpenClaw | — | н/д | 0/6 (partial) | н/д | est. | 22.0 | 173 | — | `oc_m66-ultra-long_20261114` |
+| Medium · long (6/20) | OpenClaw | DeepSeek-V4.1-Flash (thinking: off) | н/д | 0/2 (partial) | н/д | est. | 45.6 | 4 | — | `oc_medium_long_ds41flash_off_20261108` |
+| Medium · long (6/20) | OpenClaw | GigaChat 3.5-432B-A28B (thinking: off) | н/д | 0/6 (partial) | н/д | est. | 40.3 | 326 | — | `oc_medium_long_giga35base_off_20261113` |
+| Medium · long (6/20) | OpenClaw | GigaChat 3.5-432B-A28B (thinking: ultra) | н/д | 0/6 (partial) | н/д | est. | 22.0 | 173 | — | `oc_medium_long_giga35base_ultra_20261114` |
+| Medium · long (6/20) | OpenClaw | MiniMax-M3 (thinking: medium) | н/д | 0/6 (partial) | н/д | est. | 154.9 | 284 | — | `oc_medium_long_minimaxm3_medium_20261109` |
+| Medium · long (6/20) | OpenClaw | MiniMax-M3 (thinking: off) | н/д | 0/6 (partial) | н/д | est. | 363.2 | 276 | — | `oc_medium_long_minimaxm3_off_20261109` |
+| Medium · long (6/20) | Pi | DeepSeek-V4.1-Flash (thinking: n/a) | н/д | 0/3 (partial) | н/д | est. | 288.7 | 1650 | — | `pi_long_ds41flash_20261106` |
+| Medium · long (6/20) | Pi | GigaChat 3.5 Reasoning (thinking: low) | н/д | 0/6 (partial) | н/д | est. | 62.2 | 1419 | — | `pi_medium_long_giga35_low_20261107` |
+| Medium · long (6/20) | Pi | GigaChat 3 Pro (thinking: n/a) | н/д | 0/6 (partial) | н/д | est. | 23.5 | 1020 | — | `pi_medium_long_gigachat3pro_20261109` |
+| Medium · long (6/20) | Pi | Claude Sonnet 4.6 (thinking: medium) | н/д | 0/6 (partial) | н/д | est. | 103.2 | 1004 | — | `pi_medium_long_sonnet46_medium_20261113` |
 | Medium · feasibility (40) | OpenClaw | DeepSeek-V4.1-Flash (thinking: medium) ★ | Default | 39/40 | 12.65₽ | est. | 123.7 | 811 | ✅ | `oc_medium_feasibility_ds41flash_medium_20261108` |
 | Medium · feasibility (40) | DeepSeek Harness | DeepSeek-V4.1-Flash (thinking: off) | Default | 39/40 | 12.68₽ | est. | 161.8 | 727 | — | `dsh_medium_feasibility_ds41flash_off_20261111` |
 | Medium · feasibility (40) | DeepSeek Harness | Kimi-K3 (thinking: medium) | Balanced | 39/40 | 49.99₽ | est. | 152.2 | 499 | — | `dsh_medium_feasibility_kimik3_medium_20261126` |
@@ -185,25 +182,32 @@ Auto-sync: 130 rows (incl. 0/N) · tiers per bucket by ₽/solved · ✅ — Par
 
 **Anti-patterns — paying without winning** (dominated by a cheaper config with equal/better result):
 
-- `Claude Sonnet 4.6 (thinking: off)` @ 55 280.97₽ (long-context) ← `dsh_medium_long_ds41flash_off_20261111`
-- `GPT-5.5 (thinking: off)` @ 16 102.59₽ (long-context) ← `dsh_medium_long_ds41flash_off_20261111`
+- `Claude Sonnet 4.6 (thinking: off)` @ 1 640.02₽ (wave19-feasibility) ← `dsh_medium_feasibility_ds41flash_off_20261111`
 - `MiniMax-M3 (thinking: medium)` @ 506.65₽ (wave19-feasibility) ← `dsh_medium_feasibility_ds41flash_off_20261111`
+- `GPT-5.5 (thinking: off)` @ 320.52₽ (medium-reflect) ← `dsh_medium_reflect_ds41flash_off_20261111`
 - `GigaChat 3 Pro (thinking: n/a)` @ 59.81₽ (shot-list) ← `dsh_shotlist_ds41flash_max_20261118`
+- `GPT-6.1-Sol (thinking: off)` @ 52.99₽ (wave19-feasibility) ← `dsh_medium_feasibility_ds41flash_off_20261111`
+- `Kimi-K3 (thinking: medium)` @ 49.99₽ (wave19-feasibility) ← `dsh_medium_feasibility_ds41flash_off_20261111`
 - `GPT-OSS-120B (thinking: n/a)` @ 46.22₽ (shot-list) ← `dsh_shotlist_ds41flash_max_20261118`
+- `Gemini-3.8-Flash (thinking: off)` @ 39.80₽ (medium-reflect) ← `oc_medium_reflect_ds41flash_high_20261108`
 - `GLM-5.2 (thinking: off)` @ 32.80₽ (shot-list) ← `dsh_shotlist_ds41flash_max_20261118`
 - `Claude Fable 5.1 (thinking: n/a)` @ 31.60₽ (shot-list) ← `dsh_shotlist_ds41flash_max_20261118`
 - `Claude Fable 5 (thinking: n/a)` @ 27.46₽ (shot-list) ← `dsh_shotlist_ds41flash_max_20261118`
 - `Claude Sonnet 4.5 (thinking: n/a)` @ 20.79₽ (shot-list) ← `dsh_shotlist_ds41flash_max_20261118`
-- `Claude Opus 4.8 (thinking: n/a)` @ 15.60₽ (shot-list) ← `dsh_shotlist_ds41flash_max_20261118`
-- `Claude Opus 5.5 (thinking: n/a)` @ 11.59₽ (shot-list) ← `dsh_shotlist_ds41flash_max_20261118`
 <!-- MSEL:END -->
 
 ## How to read it (situation recommendations)
 
 - **`shot-list`** — the only densely comparable bucket (4 harnesses, full set).
   Action: **Default = DeepSeek-V4.1-Flash** on OpenClaw or DeepSeek Harness.
-- **`medium-reflect` / `long-context` / `wave19-feasibility`** — DeepSeek stays on the Pareto
-  frontier; the long bucket is partial → low-confidence decisions.
+- **`medium-reflect` (20)** — DeepSeek is on the Pareto frontier (16/20 @12.9₽); the new
+  Gemini/Kimi give 17/20 but cost more (40–46₽) → only if those 2 tasks matter more than ₽.
+- **`long-context` (6/20)** — partial → low confidence; ⚠️ but non-zero for the first time:
+  **kimi 5/6 · gpt 5/6** (historically 0/6).
+- **`wave19-feasibility` (40)** — DeepSeek 39/40 @12.7₽ is the cheap frontier; `Kimi-K3` 39/40
+  but ×4 the cost (→ anti-pattern); **`GPT-6.1-Sol` 14/40 — avoid**.
+- **Long/heavy multi-step tasks** — `Kimi-K3` (`medium`, raw max 61/66) or `GLM-5.3-FlashX`
+  (`max`, best ₽/result, 55/66 for ~2.2k₽).
 - **`light-391`** — no single-harness comparable pair → `unmeasured` only.
 - **`hard-coupled (wave21)`** — not measured at all → no recommendation until runs exist.
 
