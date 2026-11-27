@@ -69,6 +69,10 @@ BUCKET_LABEL = {
 # Premium models (by published model label) — used for the anti-pattern section.
 PREMIUM_LABELS = ("Claude", "GPT-5.5", "GigaChat 3 Pro", "GPT-OSS-120B", "MiniMax", "GLM-5.2")
 
+# New-model watchlist: dominated rows from the 2026-11 Cloud.ru batch are also
+# surfaced as anti-patterns (not "premium", but can still be dominated).
+ANTIPATTERN_EXTRA_LABELS = ("Kimi-K3", "Gemini-3.8-Flash", "GLM-5.3-FlashX", "GPT-6.1-Sol")
+
 REQUIRED_COLUMNS = ["Bucket", "Harness", "Model", "Tier", "Result",
                     "Cost/solved", "Basis", "Min", "Steps", "Pareto", "Stem"]
 
@@ -246,6 +250,12 @@ def build_rows() -> list[dict]:
                              not r["pareto"], r["cost_per_solved"] is None,
                              -(r["pass_rate"] or 0),
                              r["cost_per_solved"] if r["cost_per_solved"] is not None else float("inf")))
+    # F4: the long wave is measured only partially (6 of 20) — make the bucket
+    # label show the measured denominator instead of the full suite size.
+    long_total = max((r["total"] for r in rows
+                      if r["situation_bucket"] == "long-context" and r["total"]), default=None)
+    if long_total and long_total < BUCKET_FULL["long-context"]:
+        BUCKET_LABEL["long-context"] = f"Medium · long ({long_total}/{BUCKET_FULL['long-context']})"
     return rows, {"p33": round(p33, 2), "p66": round(p66, 2)}
 
 
@@ -351,6 +361,12 @@ def _is_premium(r: dict) -> bool:
     return any(label in (r["model"] or "") for label in PREMIUM_LABELS)
 
 
+def _is_antipattern(r: dict) -> bool:
+    """Eligible for the anti-pattern section: premium ladder + new-model watchlist."""
+    model = r["model"] or ""
+    return any(label in model for label in PREMIUM_LABELS + ANTIPATTERN_EXTRA_LABELS)
+
+
 def render_block(rows: list[dict], locale: str = "ru") -> str:
     ru = locale == "ru"
     out: list[str] = []
@@ -367,9 +383,9 @@ def render_block(rows: list[dict], locale: str = "ru") -> str:
 
     # anti-patterns: premium, priced, dominated on a full (comparable) suite.
     # One row per model (the most expensive offender) keeps the list meaningful.
-    anti = [r for r in rows if _is_premium(r) and not r["pareto"]
+    anti = [r for r in rows if _is_antipattern(r) and not r["pareto"]
             and not r["singleton"] and r["dominated_by"]
-            and r["cost_per_solved"] is not None]
+            and r["coverage"]["full"] and r["cost_per_solved"] is not None]
     if anti:
         out.append("")
         head = ("**Anti-patterns — переплата без выигрыша** (доминируемы более дешёвой "
@@ -722,7 +738,7 @@ def render_html(rows: list[dict], locale: str) -> str:
     out.append(f'    <p class="legend">{x["legend"]}</p>')
     out.append(MSEL_SCRIPT)
 
-    anti = [r for r in rows if _is_premium(r) and not r["pareto"]
+    anti = [r for r in rows if _is_antipattern(r) and not r["pareto"]
             and r["dominated_by"] and r["coverage"]["full"]
             and r["cost_per_solved"] is not None]
     out.append(f'    <h2>{_esc(x["h2_anti"])}</h2>')
