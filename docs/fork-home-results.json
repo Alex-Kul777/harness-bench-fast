@@ -1115,6 +1115,62 @@
           "source": "upstream",
           "waves": null,
           "detail": null
+        },
+        {
+          "harness": "DeepSeek Harness",
+          "profile": "thinking: medium (2026-11-20)",
+          "model": "Kimi-K3",
+          "result": "52/52",
+          "pct": "100.0%",
+          "time": "27.0m",
+          "steps": "211",
+          "tokens_cost": "1 275 039 (287₽)",
+          "version": "—",
+          "source": "upstream",
+          "waves": null,
+          "detail": null
+        },
+        {
+          "harness": "DeepSeek Harness",
+          "profile": "thinking: off (2026-11-20)",
+          "model": "Gemini-3.8-Flash",
+          "result": "52/52",
+          "pct": "100.0%",
+          "time": "49.1m",
+          "steps": "469",
+          "tokens_cost": "3 296 914 (220₽)",
+          "version": "—",
+          "source": "upstream",
+          "waves": null,
+          "detail": null
+        },
+        {
+          "harness": "DeepSeek Harness",
+          "profile": "thinking: max (2026-11-20)",
+          "model": "GLM-5.3-FlashX",
+          "result": "51/52",
+          "pct": "98.1%",
+          "time": "23.2m",
+          "steps": "281",
+          "tokens_cost": "2 070 362 (66₽)",
+          "version": "—",
+          "source": "upstream",
+          "waves": null,
+          "detail": null
+        },
+        {
+          "harness": "DeepSeek Harness",
+          "profile": "thinking: off (2026-11-20)",
+          "model": "GPT-6.1-Sol",
+          "result": "49/52",
+          "pct": "94.2%",
+          "time": "44.6m",
+          "steps": "333",
+          "tokens_cost": "1 669 883 (369₽)",
+          "version": "—",
+          "source": "upstream",
+          "waves": null,
+          "detail": null
         }
       ]
     },
@@ -2551,6 +2607,134 @@
           "coverage": "66/90"
         },
         {
+          "harness": "DeepSeek Harness 0.2.2-rc.1",
+          "profile": "thinking: max (2026-11-26)",
+          "model": "GLM-5.3-FlashX (cloud.ru) (thinking: max)",
+          "result": "55/66 (partial 66/90)",
+          "pct": "83.3%",
+          "time": "270.9m",
+          "steps": "1 594",
+          "tokens_cost": "128 746 041 (2 152₽)",
+          "version": "v0.21.3",
+          "source": "ours",
+          "waves": {
+            "long": {
+              "passed": 4,
+              "total": 6
+            },
+            "reflect": {
+              "passed": 14,
+              "total": 20
+            },
+            "feasibility": {
+              "passed": 37,
+              "total": 40
+            },
+            "composite_hard": {
+              "passed": null,
+              "total": null
+            }
+          },
+          "detail": "fork-run-deepseek-harness-glm-5-3-flashx-thinking-max.html",
+          "coverage": "66/90"
+        },
+        {
+          "harness": "DeepSeek Harness 0.2.2-rc.1",
+          "profile": "thinking: off (2026-11-26)",
+          "model": "GPT-6.1-Sol (cloud.ru) (thinking: off)",
+          "result": "33/66 (partial 66/90)",
+          "pct": "50.0%",
+          "time": "176.9m",
+          "steps": "1 117",
+          "tokens_cost": "45 303 664 (4 061₽)",
+          "version": "v0.21.3",
+          "source": "ours",
+          "waves": {
+            "long": {
+              "passed": 5,
+              "total": 6
+            },
+            "reflect": {
+              "passed": 14,
+              "total": 20
+            },
+            "feasibility": {
+              "passed": 14,
+              "total": 40
+            },
+            "composite_hard": {
+              "passed": null,
+              "total": null
+            }
+          },
+          "detail": "fork-run-deepseek-harness-gpt-6-1-sol-thinking-off.html",
+          "coverage": "66/90"
+        },
+        {
+          "harness": "DeepSeek Harness 0.2.2-rc.1",
+          "profile": "thinking: off (2026-11-26)",
+          "model": "Gemini-3.8-Flash (cloud.ru) (thinking: off)",
+          "result": "55/66 (partial 66/90)",
+          "pct": "83.3%",
+          "time": "326.0m",
+          "steps": "2 618",
+          "tokens_cost": "189 779 953 (4 398₽)",
+          "version": "v0.21.3",
+          "source": "ours",
+          "waves": {
+            "long": {
+              "passed": 1,
+              "total": 6
+            },
+            "reflect": {
+              "passed": 17,
+              "total": 20
+            },
+            "feasibility": {
+              "passed": 37,
+              "total": 40
+            },
+            "composite_hard": {
+              "passed": null,
+              "total": null
+            }
+          },
+          "detail": "fork-run-deepseek-harness-gemini-3-8-flash-thinking-off.html",
+          "coverage": "66/90"
+        },
+        {
+          "harness": "DeepSeek Harness 0.2.2-rc.1",
+          "profile": "thinking: medium (2026-11-26)",
+          "model": "Kimi-K3 (cloud.ru) (thinking: medium)",
+          "result": "61/66 (partial 66/90)",
+          "pct": "92.4%",
+          "time": "496.4m",
+          "steps": "1 158",
+          "tokens_cost": "78 684 540 (10 023₽)",
+          "version": "v0.21.3",
+          "source": "ours",
+          "waves": {
+            "long": {
+              "passed": 5,
+              "total": 6
+            },
+            "reflect": {
+              "passed": 17,
+              "total": 20
+            },
+            "feasibility": {
+              "passed": 39,
+              "total": 40
+            },
+            "composite_hard": {
+              "passed": null,
+              "total": null
+            }
+          },
+          "detail": "fork-run-deepseek-harness-kimi-k3-thinking-medium.html",
+          "coverage": "66/90"
+        },
+        {
           "harness": "OpenClaw 2026.10.9 (8b18b55)",
           "profile": "thinking: high (2026-11-08)",
           "model": "DeepSeek-V4.1-Flash (cloud.ru) (thinking: high)",
@@ -3136,6 +3320,78 @@
           "tokens_cost": "103 233 565 (1 680₽)",
           "status_key": "status_partial",
           "detail": "fork-run-deepseek-harness-deepseek-v4-1-flash-thinking-off.html"
+        },
+        {
+          "kind": "coverage",
+          "harness": "DeepSeek Harness 0.2.2-rc.1",
+          "profile": "thinking: max (2026-11-26)",
+          "model": "GLM-5.3-FlashX (cloud.ru) (thinking: max)",
+          "subset_key": "subset_our_runs",
+          "subset_args": {
+            "n": 66
+          },
+          "result": "55/66",
+          "pct": "83.3%",
+          "coverage": "66/90",
+          "time": "270.9m",
+          "steps": "1 594",
+          "tokens_cost": "128 746 041 (2 152₽)",
+          "status_key": "status_partial",
+          "detail": "fork-run-deepseek-harness-glm-5-3-flashx-thinking-max.html"
+        },
+        {
+          "kind": "coverage",
+          "harness": "DeepSeek Harness 0.2.2-rc.1",
+          "profile": "thinking: off (2026-11-26)",
+          "model": "GPT-6.1-Sol (cloud.ru) (thinking: off)",
+          "subset_key": "subset_our_runs",
+          "subset_args": {
+            "n": 66
+          },
+          "result": "33/66",
+          "pct": "50.0%",
+          "coverage": "66/90",
+          "time": "176.9m",
+          "steps": "1 117",
+          "tokens_cost": "45 303 664 (4 061₽)",
+          "status_key": "status_partial",
+          "detail": "fork-run-deepseek-harness-gpt-6-1-sol-thinking-off.html"
+        },
+        {
+          "kind": "coverage",
+          "harness": "DeepSeek Harness 0.2.2-rc.1",
+          "profile": "thinking: off (2026-11-26)",
+          "model": "Gemini-3.8-Flash (cloud.ru) (thinking: off)",
+          "subset_key": "subset_our_runs",
+          "subset_args": {
+            "n": 66
+          },
+          "result": "55/66",
+          "pct": "83.3%",
+          "coverage": "66/90",
+          "time": "326.0m",
+          "steps": "2 618",
+          "tokens_cost": "189 779 953 (4 398₽)",
+          "status_key": "status_partial",
+          "detail": "fork-run-deepseek-harness-gemini-3-8-flash-thinking-off.html"
+        },
+        {
+          "kind": "coverage",
+          "harness": "DeepSeek Harness 0.2.2-rc.1",
+          "profile": "thinking: medium (2026-11-26)",
+          "model": "Kimi-K3 (cloud.ru) (thinking: medium)",
+          "subset_key": "subset_our_runs",
+          "subset_args": {
+            "n": 66
+          },
+          "result": "61/66",
+          "pct": "92.4%",
+          "coverage": "66/90",
+          "time": "496.4m",
+          "steps": "1 158",
+          "tokens_cost": "78 684 540 (10 023₽)",
+          "status_key": "status_partial",
+          "detail": "fork-run-deepseek-harness-kimi-k3-thinking-medium.html"
         },
         {
           "kind": "coverage",
